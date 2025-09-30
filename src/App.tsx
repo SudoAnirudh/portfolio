@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
@@ -10,7 +10,6 @@ import {
   ExternalLink, 
   ChevronDown,
   User,
-  Briefcase,
   GraduationCap,
   Code,
   Award,
@@ -440,7 +439,7 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
+            {projects.map((project: Project) => (
               <div
                 key={project.id}
                 className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group"
@@ -755,7 +754,7 @@ function App() {
               <div className="mb-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Technologies Used</h4>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.technologies.map((tech, index) => (
+                  {selectedProject.technologies.map((tech: string, index: number) => (
                     <span key={index} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
                       {tech}
                     </span>
