@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Menu, 
   X, 
@@ -15,7 +15,16 @@ import {
   Award,
   Send,
   Calendar,
-  Building
+  Building,
+  Terminal,
+  Play,
+  Filter,
+  Zap,
+  Brain,
+  Database,
+  Globe,
+  Cpu,
+  Sparkles
 } from 'lucide-react';
 
 type Project = {
@@ -33,6 +42,23 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSection, setActiveSection] = useState('home');
+  const [typedText, setTypedText] = useState('');
+  const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('All');
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  
+  // Contact form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // Smooth scroll to section
   const scrollToSection = (sectionId: string) => {
@@ -42,6 +68,57 @@ function App() {
     }
     setIsMenuOpen(false);
   };
+
+  // Typing animation for hero section
+  const roles = ['AI & ML Engineer', 'Data Scientist', 'Full Stack Developer', 'Problem Solver'];
+  
+  useEffect(() => {
+    const currentRole = roles[currentTypeIndex];
+    const typeSpeed = 100;
+    const deleteSpeed = 50;
+    const pauseTime = 2000;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && typedText === currentRole) {
+        setTimeout(() => setIsDeleting(true), pauseTime);
+      } else if (isDeleting && typedText === '') {
+        setIsDeleting(false);
+        setCurrentTypeIndex((prev) => (prev + 1) % roles.length);
+      } else if (isDeleting) {
+        setTypedText((prev) => prev.slice(0, -1));
+      } else {
+        setTypedText((prev) => currentRole.slice(0, prev.length + 1));
+      }
+    }, isDeleting ? deleteSpeed : typeSpeed);
+
+    return () => clearTimeout(timer);
+  }, [typedText, isDeleting, currentTypeIndex, roles]);
+
+  // Scroll animations observer
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const sections = ['about', 'experience', 'projects', 'skills', 'education', 'contact'];
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) {
+        observerRef.current?.observe(element);
+      }
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, []);
 
   // Track active section on scroll
   useEffect(() => {
@@ -156,11 +233,154 @@ function App() {
   ];
 
   const skills = [
-    { category: "Programming Languages", items: ["Python", "C Language", "Java", "Dart", "PHP"] },
-    { category: "Libraries/Frameworks", items: ["Django", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Flask", "scikit-learn", "Flutter"] },
-    { category: "Tools/Platforms", items: ["Git", "VS Code", "Excel", "Power BI", "Tableau", "Jupyter Notebook", "Anaconda"] },
-    { category: "Databases", items: ["SQL", "MongoDB"] }
+    { 
+      category: "Programming Languages", 
+      icon: <Code className="w-6 h-6" />,
+      items: [
+        { name: "Python", level: 95 },
+        { name: "C Language", level: 85 },
+        { name: "Java", level: 80 },
+        { name: "Dart", level: 75 },
+        { name: "PHP", level: 70 }
+      ]
+    },
+    { 
+      category: "AI/ML & Data Science", 
+      icon: <Brain className="w-6 h-6" />,
+      items: [
+        { name: "Machine Learning", level: 90 },
+        { name: "Deep Learning", level: 85 },
+        { name: "Computer Vision", level: 80 },
+        { name: "NLP", level: 85 },
+        { name: "Data Analysis", level: 90 }
+      ]
+    },
+    { 
+      category: "Libraries/Frameworks", 
+      icon: <Zap className="w-6 h-6" />,
+      items: [
+        { name: "Django", level: 85 },
+        { name: "Flask", level: 90 },
+        { name: "React", level: 80 },
+        { name: "NumPy", level: 95 },
+        { name: "Pandas", level: 95 },
+        { name: "TensorFlow", level: 80 },
+        { name: "scikit-learn", level: 90 }
+      ]
+    },
+    { 
+      category: "Tools & Databases", 
+      icon: <Database className="w-6 h-6" />,
+      items: [
+        { name: "Git", level: 90 },
+        { name: "Docker", level: 75 },
+        { name: "SQL", level: 85 },
+        { name: "MongoDB", level: 80 },
+        { name: "Power BI", level: 85 }
+      ]
+    }
   ];
+
+  // Filter projects by category
+  const filteredProjects = selectedFilter === 'All' 
+    ? projects 
+    : projects.filter(project => project.category === selectedFilter);
+
+  const projectCategories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+
+  // Form validation
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formData.subject.trim()) {
+      errors.subject = 'Subject is required';
+    }
+    
+    if (!formData.message.trim()) {
+      errors.message = 'Message is required';
+    } else if (formData.message.trim().length < 10) {
+      errors.message = 'Message must be at least 10 characters long';
+    }
+    
+    return errors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setFormErrors({});
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      // Reset success status after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  // Particle animation component
+  const ParticleField = () => {
+    const particles = Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2
+    }));
+
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {particles.map((particle) => (
+          <div
+            key={particle.id}
+            className="absolute w-1 h-1 bg-teal-400 rounded-full opacity-30"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              animation: `float ${particle.duration}s ease-in-out infinite ${particle.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
 
   const education = [
     {
@@ -256,21 +476,38 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="home" className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-gray-50 via-white to-teal-50 relative overflow-hidden">
+        <ParticleField />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
+            <div className="space-y-8 animate-fade-in">
+              <div className="space-y-6">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Hi, I'm <span className="text-teal-600">Anirudh S</span>
+                  Hi, I'm <span className="text-teal-600 bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">Anirudh S</span>
                 </h1>
-                <p className="text-xl sm:text-2xl text-gray-600 font-light">
-                  AI & ML Engineering Student
-                </p>
+                <div className="text-xl sm:text-2xl text-gray-600 font-light min-h-[2rem]">
+                  <span className="inline-block">
+                    {typedText}
+                    <span className="animate-pulse text-teal-600">|</span>
+                  </span>
+                </div>
                 <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
-                  Passionate about artificial intelligence and its potential to shape the future. 
+                  Passionate about <span className="text-teal-600 font-semibold">artificial intelligence</span> and its potential to shape the future. 
                   I continuously explore emerging technologies and innovate to solve real-world problems.
                 </p>
+                
+                {/* Tech badges */}
+                <div className="flex flex-wrap gap-3">
+                  {['Python', 'Machine Learning', 'Deep Learning', 'React', 'AI Research'].map((tech, index) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 bg-white/80 backdrop-blur-sm text-teal-700 rounded-full text-sm font-medium border border-teal-200 hover:shadow-md transition-all duration-300"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -304,16 +541,38 @@ function App() {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center">
-                <User size={120} className="text-white" />
+            <div className="relative group">
+              {/* Main profile circle */}
+              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl group-hover:shadow-teal-500/25 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-50"></div>
+                <User size={120} className="text-white relative z-10 group-hover:scale-110 transition-transform duration-500" />
+                
+                {/* Rotating ring */}
+                <div className="absolute inset-4 border-2 border-white/20 rounded-full animate-spin-slow"></div>
+                <div className="absolute inset-8 border border-white/10 rounded-full animate-spin-reverse-slow"></div>
               </div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center">
-                <Code size={32} className="text-teal-600" />
+              
+              {/* Floating tech icons */}
+              <div className="absolute -top-6 -right-6 w-16 h-16 bg-white rounded-xl shadow-lg flex items-center justify-center transform rotate-12 hover:rotate-0 hover:scale-110 transition-all duration-300">
+                <Brain size={28} className="text-teal-600" />
               </div>
-              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center">
-                <Award size={24} className="text-teal-600" />
+              <div className="absolute -bottom-6 -left-6 w-14 h-14 bg-white rounded-lg shadow-lg flex items-center justify-center transform -rotate-12 hover:rotate-0 hover:scale-110 transition-all duration-300">
+                <Cpu size={24} className="text-teal-600" />
               </div>
+              <div className="absolute top-8 -left-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                <Database size={20} className="text-teal-600" />
+              </div>
+              <div className="absolute -top-2 left-16 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
+                <Globe size={16} className="text-teal-600" />
+              </div>
+              <div className="absolute bottom-16 -right-8 w-12 h-12 bg-white rounded-lg shadow-lg flex items-center justify-center transform rotate-45 hover:rotate-0 hover:scale-110 transition-all duration-300">
+                <Code size={20} className="text-teal-600" />
+              </div>
+              
+              {/* Pulsing dots */}
+              <div className="absolute top-1/4 -right-4 w-3 h-3 bg-teal-400 rounded-full animate-ping"></div>
+              <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-teal-500 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute top-1/3 -left-2 w-1 h-1 bg-teal-300 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
             </div>
           </div>
         </div>
@@ -385,47 +644,245 @@ function App() {
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Terminal Code Showcase */}
+      <section className="py-20 bg-gray-900 text-green-400 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300ff88' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Professional Experience</h2>
-            <p className="text-lg text-gray-600">My journey in AI, ML, and software development</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              <Terminal className="inline-block w-10 h-10 mr-4 text-green-400" />
+              Code in Action
+            </h2>
+            <p className="text-lg text-gray-300">A glimpse into my technical expertise</p>
           </div>
 
-          <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-300">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-                  <div className="flex items-center gap-4 mb-4 lg:mb-0">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <Building size={24} className="text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">{exp.position}</h3>
-                      <p className="text-teal-600 font-medium">{exp.company}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={16} />
-                      <span className="text-sm">{exp.duration}</span>
-                    </div>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{exp.type}</span>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Python ML Code */}
+            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-green-500/50 transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 text-sm ml-4">ml_model.py</span>
+                </div>
+                <Brain className="w-5 h-5 text-teal-400" />
+              </div>
+              <pre className="text-green-400 text-sm overflow-x-auto">
+                <code>{`# AI Model Training Pipeline
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+def train_disaster_classifier():
+    # Load and preprocess data
+    data = pd.read_csv('disaster_tweets.csv')
+    X_train, y_train = preprocess_data(data)
+    
+    # Train Random Forest model
+    model = RandomForestClassifier(n_estimators=100)
+    model.fit(X_train, y_train)
+    
+    # Evaluate performance
+    accuracy = accuracy_score(y_test, predictions)
+    print(f"Model Accuracy: {accuracy:.2f}")
+    
+    return model
+
+# Execute training
+classifier = train_disaster_classifier()
+>> Model Accuracy: 0.94`}</code>
+              </pre>
+            </div>
+
+            {/* React Component Code */}
+            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 text-sm ml-4">Portfolio.tsx</span>
+                </div>
+                <Code className="w-5 h-5 text-blue-400" />
+              </div>
+              <pre className="text-green-400 text-sm overflow-x-auto">
+                <code>{`// Interactive Portfolio Component
+const Portfolio = () => {
+  const [activeProject, setActiveProject] = useState(null);
+  
+  useEffect(() => {
+    // Animate on scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+          }
+        });
+      }
+    );
+    
+    return () => observer.disconnect();
+  }, []);
+  
+  return (
+    <div className="portfolio-grid">
+      {projects.map(project => (
+        <ProjectCard 
+          key={project.id}
+          {...project}
+          onClick={() => setActiveProject(project)}
+        />
+      ))}
+    </div>
+  );
+};`}</code>
+              </pre>
+            </div>
+          </div>
+
+          {/* Command prompt simulation */}
+          <div className="mt-12 max-w-4xl mx-auto">
+            <div className="bg-gray-800 rounded-lg border border-gray-700">
+              <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-700">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-400 text-sm ml-4">anirudh@portfolio:~</span>
+              </div>
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-green-400">$</span>
+                  <span className="text-white">whoami</span>
+                </div>
+                <div className="text-gray-300 mb-4">AI & ML Engineering Student | Full Stack Developer | Problem Solver</div>
+                
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-green-400">$</span>
+                  <span className="text-white">ls -la skills/</span>
+                </div>
+                <div className="text-gray-300 mb-4">
+                  <div>drwxr-xr-x 2 anirudh staff 64 Sep 30 2025 python/</div>
+                  <div>drwxr-xr-x 2 anirudh staff 64 Sep 30 2025 machine-learning/</div>
+                  <div>drwxr-xr-x 2 anirudh staff 64 Sep 30 2025 react/</div>
+                  <div>drwxr-xr-x 2 anirudh staff 64 Sep 30 2025 ai-research/</div>
                 </div>
                 
-                <p className="text-gray-700 mb-4 leading-relaxed">{exp.description}</p>
-                
-                <div className="flex flex-wrap gap-2">
-                  {exp.skills.map((skill, skillIndex) => (
-                    <span key={skillIndex} className="px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium">
-                      {skill}
-                    </span>
-                  ))}
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400">$</span>
+                  <span className="text-white animate-pulse">_</span>
                 </div>
               </div>
-            ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="py-20 bg-gray-50 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.1'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30v26l-6-6-4 4 14 14 14-14-4-4-6 6v-26h-8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-4">
+              <Building className="w-10 h-10 text-teal-600" />
+              Professional Journey
+            </h2>
+            <p className="text-lg text-gray-600">My experience in AI, ML, and software development</p>
+          </div>
+
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-1/2 transform -translate-x-px top-0 bottom-0 w-0.5 bg-teal-200"></div>
+            
+            <div className="space-y-12">
+              {experiences.map((exp, index) => (
+                <div 
+                  key={index} 
+                  className={`relative flex items-center ${
+                    index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                  }`}
+                  style={{
+                    animation: visibleSections.has('experience') ? `fadeInUp 0.6s ease-out forwards` : 'none',
+                    animationDelay: `${index * 0.2}s`,
+                    opacity: visibleSections.has('experience') ? 1 : 0
+                  }}
+                >
+                  {/* Timeline dot */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-teal-600 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  {/* Content card */}
+                  <div className={`w-5/12 ${index % 2 === 0 ? 'pr-8' : 'pl-8'}`}>
+                    <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-8 hover:shadow-xl hover:scale-105 transition-all duration-500 group">
+                      {/* Date badge */}
+                      <div className={`absolute top-4 ${
+                        index % 2 === 0 ? 'right-4' : 'left-4'
+                      } px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium`}>
+                        {exp.duration}
+                      </div>
+                      
+                      <div className="flex items-start gap-4 mb-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-teal-500/25 transition-all duration-300">
+                          <Building size={28} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-teal-600 transition-colors duration-300">
+                            {exp.position}
+                          </h3>
+                          <p className="text-teal-600 font-semibold text-lg">{exp.company}</p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm flex items-center gap-2">
+                              <Globe size={12} />
+                              {exp.type}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <p className="text-gray-700 mb-6 leading-relaxed">{exp.description}</p>
+                      
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Key Skills</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {exp.skills.map((skill, skillIndex) => (
+                            <span 
+                              key={skillIndex} 
+                              className="px-3 py-1 bg-teal-50 text-teal-700 rounded-lg text-sm font-medium border border-teal-200 hover:bg-teal-100 transition-colors duration-200 cursor-default"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Arrow pointing to timeline */}
+                      <div className={`absolute top-1/2 transform -translate-y-1/2 ${
+                        index % 2 === 0 
+                          ? 'right-0 translate-x-1/2' 
+                          : 'left-0 -translate-x-1/2'
+                      } w-4 h-4 bg-white border-r border-b border-gray-200 rotate-45`}></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Timeline end */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-8 h-8 bg-teal-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -436,13 +893,35 @@ function App() {
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
             <p className="text-lg text-gray-600">Showcasing my work in AI, ML, and software development</p>
+            
+            {/* Project Filter */}
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              {projectCategories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedFilter(category)}
+                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+                    selectedFilter === category
+                      ? 'bg-teal-600 text-white shadow-lg scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <Filter size={16} />
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project: Project) => (
+            {filteredProjects.map((project: Project, index: number) => (
               <div
                 key={project.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 cursor-pointer group transform hover:-translate-y-2"
+                style={{ 
+                  animationDelay: `${index * 0.1}s`,
+                  animation: visibleSections.has('projects') ? 'fadeInUp 0.6s ease-out forwards' : 'none'
+                }}
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="relative overflow-hidden">
@@ -494,27 +973,95 @@ function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="skills" className="py-20 bg-gray-50 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23064e3b' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='m0 40v-40h40v40z'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Skills & Technologies</h2>
-            <p className="text-lg text-gray-600">Technologies I work with</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-4">
+              <Sparkles className="w-10 h-10 text-teal-600" />
+              Skills & Technologies
+            </h2>
+            <p className="text-lg text-gray-600">Interactive showcase of my technical expertise</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {skills.map((skillGroup, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">{skillGroup.category}</h3>
-                <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {skills.map((skillGroup, groupIndex) => (
+              <div 
+                key={groupIndex} 
+                className={`bg-white rounded-xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-500 ${
+                  visibleSections.has('skills') ? 'animate-fade-in-up' : 'opacity-0'
+                }`}
+                style={{ animationDelay: `${groupIndex * 0.2}s` }}
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center text-teal-600">
+                    {skillGroup.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">{skillGroup.category}</h3>
+                </div>
+                
+                <div className="space-y-4">
                   {skillGroup.items.map((skill, skillIndex) => (
-                    <div key={skillIndex} className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
-                      <span className="text-gray-700 text-sm">{skill}</span>
+                    <div key={skillIndex} className="group">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-700 font-medium">{skill.name}</span>
+                        <span className="text-teal-600 font-semibold text-sm">{skill.level}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                        <div 
+                          className={`h-2 bg-gradient-to-r from-teal-500 to-teal-600 rounded-full transition-all duration-1000 ease-out ${
+                            visibleSections.has('skills') ? 'animate-progress-bar' : 'w-0'
+                          }`}
+                          style={{ 
+                            '--progress': `${skill.level}%`,
+                            width: visibleSections.has('skills') ? `${skill.level}%` : '0%',
+                            animationDelay: `${(groupIndex * 0.2) + (skillIndex * 0.1)}s`
+                          } as React.CSSProperties}
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Floating tech icons */}
+          <div className="mt-16 relative">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Tech Stack</h3>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6">
+              {[
+                { name: 'Python', icon: '🐍', delay: 0 },
+                { name: 'React', icon: '⚛️', delay: 0.1 },
+                { name: 'TensorFlow', icon: '🧠', delay: 0.2 },
+                { name: 'Docker', icon: '🐳', delay: 0.3 },
+                { name: 'MongoDB', icon: '🍃', delay: 0.4 },
+                { name: 'Git', icon: '📚', delay: 0.5 },
+              ].map((tech, index) => (
+                <div
+                  key={tech.name}
+                  className={`group relative bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:scale-110 cursor-pointer ${
+                    visibleSections.has('skills') ? 'animate-bounce-in' : 'opacity-0 scale-50'
+                  }`}
+                  style={{ animationDelay: `${tech.delay + 0.5}s` }}
+                >
+                  <div className="text-4xl mb-2 text-center">{tech.icon}</div>
+                  <div className="text-sm font-medium text-gray-700 text-center">{tech.name}</div>
+                  
+                  {/* Tooltip */}
+                  <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-1 rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    {tech.name}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -625,59 +1172,166 @@ function App() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-              <form className="space-y-6">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
+                    Full Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors duration-200"
-                    placeholder="Your full name"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 ${
+                        formErrors.name 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-teal-300'
+                      }`}
+                      placeholder="Your full name"
+                    />
+                    {formData.name && (
+                      <div className="absolute right-3 top-3 text-green-500">
+                        ✓
+                      </div>
+                    )}
+                  </div>
+                  {formErrors.name && (
+                    <p className="mt-1 text-sm text-red-600 animate-fade-in">{formErrors.name}</p>
+                  )}
                 </div>
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
+                    Email Address <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors duration-200"
-                    placeholder="your.email@example.com"
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 ${
+                        formErrors.email 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-teal-300'
+                      }`}
+                      placeholder="your.email@example.com"
+                    />
+                    {formData.email && !formErrors.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+                      <div className="absolute right-3 top-3 text-green-500">
+                        ✓
+                      </div>
+                    )}
+                  </div>
+                  {formErrors.email && (
+                    <p className="mt-1 text-sm text-red-600 animate-fade-in">{formErrors.email}</p>
+                  )}
                 </div>
+
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject
+                    Subject <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors duration-200"
-                    placeholder="What's this about?"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 ${
+                        formErrors.subject 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-teal-300'
+                      }`}
+                      placeholder="What's this about?"
+                    />
+                    {formData.subject && (
+                      <div className="absolute right-3 top-3 text-green-500">
+                        ✓
+                      </div>
+                    )}
+                  </div>
+                  {formErrors.subject && (
+                    <p className="mt-1 text-sm text-red-600 animate-fade-in">{formErrors.subject}</p>
+                  )}
                 </div>
+
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message
+                    Message <span className="text-red-500">*</span>
+                    <span className="text-gray-500 font-normal">({formData.message.length}/500)</span>
                   </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors duration-200 resize-none"
-                    placeholder="Tell me about your project or opportunity..."
-                  ></textarea>
+                  <div className="relative">
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows={5}
+                      maxLength={500}
+                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 resize-none ${
+                        formErrors.message 
+                          ? 'border-red-300 bg-red-50' 
+                          : 'border-gray-300 hover:border-teal-300'
+                      }`}
+                      placeholder="Tell me about your project or opportunity..."
+                    />
+                    {formData.message.length >= 10 && (
+                      <div className="absolute right-3 top-3 text-green-500">
+                        ✓
+                      </div>
+                    )}
+                  </div>
+                  {formErrors.message && (
+                    <p className="mt-1 text-sm text-red-600 animate-fade-in">{formErrors.message}</p>
+                  )}
                 </div>
+
                 <button
                   type="submit"
-                  className="w-full bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className={`w-full px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                    isSubmitting
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : submitStatus === 'success'
+                      ? 'bg-green-600 hover:bg-green-700'
+                      : 'bg-teal-600 hover:bg-teal-700 hover:shadow-lg transform hover:-translate-y-1'
+                  } text-white`}
                 >
-                  <Send size={20} />
-                  Send Message
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Sending...
+                    </>
+                  ) : submitStatus === 'success' ? (
+                    <>
+                      <div className="w-5 h-5 text-white">✓</div>
+                      Message Sent!
+                    </>
+                  ) : (
+                    <>
+                      <Send size={20} />
+                      Send Message
+                    </>
+                  )}
                 </button>
+
+                {submitStatus === 'success' && (
+                  <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg animate-fade-in">
+                    <p className="text-green-700 font-medium">Thanks for reaching out! I'll get back to you soon.</p>
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="text-center p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in">
+                    <p className="text-red-700 font-medium">Something went wrong. Please try again or contact me directly.</p>
+                  </div>
+                )}
               </form>
             </div>
           </div>
