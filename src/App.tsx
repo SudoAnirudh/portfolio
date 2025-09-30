@@ -19,9 +19,20 @@ import {
   Building
 } from 'lucide-react';
 
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  technologies: string[];
+  category: string;
+  image: string;
+  github: string;
+  demo: string;
+};
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeSection, setActiveSection] = useState('home');
 
   // Smooth scroll to section
@@ -55,7 +66,7 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const projects = [
+  const projects: Project[] = [
     {
       id: 1,
       title: "Disaster Tweet Classifier",
