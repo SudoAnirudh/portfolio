@@ -540,15 +540,6 @@ function App() {
               </div>
             </div>
 
-<<<<<<< Current (Your changes)
-            <div className="relative">
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full overflow-hidden border-4 border-white shadow-xl">
-                <img 
-                  src="profile.jpg?auto=format&fit=crop&w=500&q=80" 
-                  alt="Anirudh S - AI & ML Engineering Student" 
-                  className="w-full h-full object-cover"
-                />
-=======
             <div className="relative group">
               {/* Main profile circle */}
               <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl group-hover:shadow-teal-500/25 transition-all duration-500">
@@ -566,7 +557,6 @@ function App() {
               </div>
               <div className="absolute -bottom-6 -left-6 w-14 h-14 bg-white rounded-lg shadow-lg flex items-center justify-center transform -rotate-12 hover:rotate-0 hover:scale-110 transition-all duration-300">
                 <Cpu size={24} className="text-teal-600" />
->>>>>>> Incoming (Background Agent changes)
               </div>
               <div className="absolute top-8 -left-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
                 <Database size={20} className="text-teal-600" />
