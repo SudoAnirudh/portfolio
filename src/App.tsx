@@ -9,7 +9,6 @@ import {
   MapPin, 
   ExternalLink, 
   ChevronDown,
-  User,
   GraduationCap,
   Code,
   Award,
@@ -305,8 +304,12 @@ function App() {
             </div>
 
             <div className="relative">
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center">
-                <User size={120} className="text-white" />
+              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" 
+                  alt="Anirudh S - AI & ML Engineering Student" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center">
                 <Code size={32} className="text-teal-600" />
