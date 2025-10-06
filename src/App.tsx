@@ -543,7 +543,7 @@ function App() {
             <div className="relative">
               <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full overflow-hidden border-4 border-white shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" 
+                  src="IMG2025031411415711zon.jpg?auto=format&fit=crop&w=500&q=80" 
                   alt="Anirudh S - AI & ML Engineering Student" 
                   className="w-full h-full object-cover"
                 />
