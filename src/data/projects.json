@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Disaster Tweet Classifier",
+    "description": "NLP-based disaster detection",
+    "github": "#"
+  },
+  {
+    "title": "Age & Gender Detection",
+    "description": "Deep learning with OpenCV",
+    "github": "#"
+  },
+  {
+    "title": "Customer Churn Prediction",
+    "description": "Predictive analytics",
+    "github": "#"
+  },
+  {
+    "title": "Stock Price Predictor",
+    "description": "ML + LSTM model with Streamlit",
+    "github": "#"
+  },
+  {
+    "title": "Image Enhancement Toolkit",
+    "description": "PyQt6 desktop app",
+    "github": "#"
+  },
+  {
+    "title": "Intrusion Detection System",
+    "description": "Flask ML-based web app",
+    "github": "#"
+  }
+]
