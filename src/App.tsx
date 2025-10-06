@@ -540,23 +540,13 @@ function App() {
               </div>
             </div>
 
-            <div className="relative group">
-              {/* Main profile circle */}
-              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 via-teal-500 to-teal-600 rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl group-hover:shadow-teal-500/25 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-50"></div>
-                <User size={120} className="text-white relative z-10 group-hover:scale-110 transition-transform duration-500" />
-                
-                {/* Rotating ring */}
-                <div className="absolute inset-4 border-2 border-white/20 rounded-full animate-spin-slow"></div>
-                <div className="absolute inset-8 border border-white/10 rounded-full animate-spin-reverse-slow"></div>
-              </div>
-              
-              {/* Floating tech icons */}
-              <div className="absolute -top-6 -right-6 w-16 h-16 bg-white rounded-xl shadow-lg flex items-center justify-center transform rotate-12 hover:rotate-0 hover:scale-110 transition-all duration-300">
-                <Brain size={28} className="text-teal-600" />
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-14 h-14 bg-white rounded-lg shadow-lg flex items-center justify-center transform -rotate-12 hover:rotate-0 hover:scale-110 transition-all duration-300">
-                <Cpu size={24} className="text-teal-600" />
+            <div className="relative">
+              <div className="w-80 h-80 mx-auto bg-gradient-to-br from-teal-400 to-teal-600 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" 
+                  alt="Anirudh S - AI & ML Engineering Student" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="absolute top-8 -left-8 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300">
                 <Database size={20} className="text-teal-600" />
