@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaPython, FaJava, FaPhp, FaGitAlt, FaDatabase } from 'react-icons/fa';
 import { DiDjango, DiFlask, DiMongodb } from 'react-icons/di';
 import { SiFlutter, SiScikitlearn, SiTableau, SiPowerbi } from 'react-icons/si';
