@@ -10,7 +10,7 @@ import {
   ExternalLink, 
   ChevronDown,
   GraduationCap,
-  Code,
+  Briefcase,
   Award,
   Send,
   Calendar,
@@ -59,7 +59,6 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  // Smooth scroll to section
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -418,11 +417,11 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
+      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-gray-700">Anirudh S</h1>
+              <h1 className="text-xl font-bold text-gray-900">Anirudh S</h1>
             </div>
             
             {/* Desktop Navigation */}
@@ -432,10 +431,10 @@ function App() {
                   <button
                     key={item}
                     onClick={() => scrollToSection(item.toLowerCase())}
-                    className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                    className={`px-3 py-2 text-sm font-medium transition-colors ${
                       activeSection === item.toLowerCase()
-                        ? 'text-teal-600 border-b-2 border-teal-600'
-                        : 'text-gray-700 hover:text-teal-600'
+                        ? 'text-primary-600'
+                        : 'text-gray-600 hover:text-primary-600'
                     }`}
                   >
                     {item}
@@ -448,7 +447,7 @@ function App() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700 hover:text-teal-600 transition-colors duration-200"
+                className="text-gray-600 hover:text-primary-600"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -458,13 +457,13 @@ function App() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100">
+          <div className="md:hidden bg-white border-t border-gray-200">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {['Home', 'About', 'Experience', 'Projects', 'Skills', 'Education', 'Contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-teal-600 hover:bg-gray-50 w-full text-left transition-colors duration-200"
+                  className="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-gray-50 w-full text-left rounded-lg"
                 >
                   {item}
                 </button>
@@ -508,33 +507,43 @@ function App() {
                   ))}
                 </div>
               </div>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                Hi, I'm <span className="text-gradient">Anirudh S</span>
+              </h1>
+              <p className="text-xl text-gray-600">
+                AI & ML Engineering Student
+              </p>
+              <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
+                Passionate about artificial intelligence and its potential to shape the future. 
+                I continuously explore emerging technologies and innovate to solve real-world problems.
+              </p>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-wrap gap-4 pt-4">
                 <button
                   onClick={() => scrollToSection('projects')}
-                  className="bg-teal-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center gap-2"
                 >
                   View My Work
-                  <ChevronDown size={20} />
+                  <ArrowRight size={18} />
                 </button>
                 <a
                   href="https://www.linkedin.com/in/sudoanirudh/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-medium hover:border-teal-600 hover:text-teal-600 transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-primary-600 hover:text-primary-600 transition-colors flex items-center gap-2"
                 >
-                  <Linkedin size={20} />
-                  LinkedIn Profile
+                  <Linkedin size={18} />
+                  Connect
                 </a>
               </div>
 
-              <div className="flex items-center gap-6 text-gray-600">
+              <div className="flex flex-wrap gap-6 pt-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                  <MapPin size={18} />
+                  <MapPin size={16} className="text-primary-600" />
                   <span>Kozhikode, Kerala, India</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail size={18} />
+                  <Mail size={16} className="text-primary-600" />
                   <span>anirudhsudheer@gmail.com</span>
                 </div>
               </div>
@@ -568,17 +577,27 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">About Me</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">About Me</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               I'm a dedicated AI & ML engineering student with a strong foundation in Python and C programming.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
               <p className="text-gray-700 leading-relaxed">
                 My passion for AI and its potential to shape the future drives me to continuously explore 
                 emerging technologies and innovate. I'm eager to apply my skills and knowledge to solve 
@@ -586,49 +605,53 @@ function App() {
               </p>
               
               <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-teal-600 mb-2">6+</div>
-                  <div className="text-gray-600">Projects Completed</div>
+                <div className="text-center p-6 bg-white rounded-xl shadow-sm">
+                  <div className="text-4xl font-bold text-primary-600 mb-2">6+</div>
+                  <div className="text-gray-600">Projects</div>
                 </div>
-                <div className="text-center p-6 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-teal-600 mb-2">3</div>
+                <div className="text-center p-6 bg-white rounded-xl shadow-sm">
+                  <div className="text-4xl font-bold text-primary-600 mb-2">3</div>
                   <div className="text-gray-600">Internships</div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-gray-900">Recent Achievements</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
-                    <span className="text-gray-700">Participating in GSSoC'25 as a Contributor</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
-                    <span className="text-gray-700">Neo4j Certified Professional</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
-                    <span className="text-gray-700">Participated in National Level Hackathon</span>
-                  </li>
+                <ul className="space-y-3">
+                  {[
+                    'Participating in GSSoC\'25 as a Contributor',
+                    'Neo4j Certified Professional',
+                    'Participated in National Level Hackathon'
+                  ].map((achievement, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 bg-primary-600 rounded-full mt-2"></div>
+                      <span className="text-gray-700">{achievement}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
               <h3 className="text-xl font-semibold text-gray-900">Certifications</h3>
               <div className="space-y-3">
                 {certifications.slice(0, 5).map((cert, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <Award size={20} className="text-teal-600 flex-shrink-0" />
+                  <div key={index} className="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <Award size={20} className="text-primary-600 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700 text-sm">{cert}</span>
                   </div>
                 ))}
               </div>
-              <button className="text-teal-600 hover:text-teal-700 font-medium">
-                View All Certifications →
+              <button className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2">
+                View All Certifications 
+                <ArrowRight size={16} />
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -877,10 +900,15 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-white">
+      <section id="projects" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Projects</h2>
             <p className="text-lg text-gray-600">Showcasing my work in AI, ML, and software development</p>
             
             {/* Project Filter */}
@@ -913,49 +941,49 @@ const Portfolio = () => {
                 }}
                 onClick={() => setSelectedProject(project)}
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden h-48">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-white/90 text-gray-700 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1 bg-white/90 backdrop-blur text-primary-600 rounded-full text-xs font-medium">
                       {project.category}
                     </span>
                   </div>
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors duration-200">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
                     {project.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-3">{project.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech, index) => (
-                      <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                      <span key={techIndex} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
                         {tech}
                       </span>
                     ))}
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <button className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center gap-1">
+                    <span className="text-primary-600 font-medium text-sm flex items-center gap-1">
                       View Details
                       <ExternalLink size={14} />
-                    </button>
-                    <div className="flex items-center gap-2">
-                      <a href={project.github} className="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <a href={project.github} className="text-gray-400 hover:text-gray-600" onClick={(e) => e.stopPropagation()}>
                         <Github size={18} />
                       </a>
-                      <a href={project.demo} className="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                      <a href={project.demo} className="text-gray-400 hover:text-gray-600" onClick={(e) => e.stopPropagation()}>
                         <ExternalLink size={18} />
                       </a>
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -1016,7 +1044,7 @@ const Portfolio = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -1056,107 +1084,115 @@ const Portfolio = () => {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-20 bg-white">
+      <section id="education" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Education</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Education</h2>
             <p className="text-lg text-gray-600">My academic journey</p>
-          </div>
+          </motion.div>
 
-          <div className="space-y-8">
+          <div className="space-y-6">
             {education.map((edu, index) => (
-              <div key={index} className="bg-gray-50 rounded-xl p-8">
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-sm p-8 border border-gray-100"
+              >
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex items-center gap-4 mb-4 lg:mb-0">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <GraduationCap size={24} className="text-teal-600" />
+                    <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                      <GraduationCap size={24} className="text-primary-600" />
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900">{edu.degree}</h3>
-                      <p className="text-teal-600 font-medium">{edu.institution}</p>
+                      <p className="text-primary-600 font-medium">{edu.institution}</p>
                       <p className="text-gray-600 text-sm">{edu.location}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-gray-600 text-sm">{edu.duration}</p>
+                  <div className="text-left lg:text-right">
+                    <p className="text-gray-600 text-sm mb-2">{edu.duration}</p>
                     {edu.percentage && (
-                      <p className="text-teal-600 font-semibold">{edu.percentage}</p>
+                      <p className="text-primary-600 font-semibold text-lg">{edu.percentage}</p>
                     )}
                     {edu.status && (
-                      <span className="inline-block px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium mt-2">
+                      <span className="inline-block px-3 py-1 bg-primary-100 text-primary-600 rounded-full text-sm font-medium mt-2">
                         {edu.status}
                       </span>
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
+      <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
             <p className="text-lg text-gray-600">Let's discuss opportunities and collaborations</p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <Mail size={20} className="text-teal-600" />
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div className="space-y-6">
+                <h3 className="text-xl font-semibold text-gray-900">Contact Information</h3>
+                {[
+                  { icon: <Mail size={20} />, label: 'Email', value: 'anirudhsudheer@gmail.com' },
+                  { icon: <Phone size={20} />, label: 'Phone', value: '+91 95391 02851' },
+                  { icon: <MapPin size={20} />, label: 'Location', value: 'Kozhikode, Kerala, India' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600">
+                      {item.icon}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">Email</p>
-                      <p className="text-gray-600">anirudhsudheer@gmail.com</p>
+                      <p className="font-medium text-gray-900">{item.label}</p>
+                      <p className="text-gray-600 text-sm">{item.value}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <Phone size={20} className="text-teal-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Phone</p>
-                      <p className="text-gray-600">+91 95391 02851</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                      <MapPin size={20} className="text-teal-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Location</p>
-                      <p className="text-gray-600">Kozhikode, Kerala, India</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">Connect With Me</h3>
                 <div className="flex gap-4">
-                  <a
-                    href="https://www.linkedin.com/in/sudoanirudh/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center hover:bg-blue-200 transition-colors duration-200"
-                  >
-                    <Linkedin size={20} className="text-blue-600" />
-                  </a>
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors duration-200"
-                  >
-                    <Github size={20} className="text-gray-600" />
-                  </a>
+                  {[
+                    { icon: <Linkedin size={20} />, href: 'https://www.linkedin.com/in/sudoanirudh/', label: 'LinkedIn' },
+                    { icon: <Github size={20} />, href: '#', label: 'GitHub' },
+                    { icon: <Mail size={20} />, href: 'mailto:anirudhsudheer@gmail.com', label: 'Email' }
+                  ].map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-primary-600 hover:bg-primary-700 rounded-lg flex items-center justify-center text-white transition-colors"
+                      title={social.label}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1322,7 +1358,7 @@ const Portfolio = () => {
                   </div>
                 )}
               </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -1334,28 +1370,21 @@ const Portfolio = () => {
             <h3 className="text-2xl font-bold mb-4">Anirudh S</h3>
             <p className="text-gray-400 mb-6">AI & ML Engineering Student</p>
             <div className="flex justify-center gap-6 mb-8">
-              <a
-                href="https://www.linkedin.com/in/sudoanirudh/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200"
-              >
-                <Linkedin size={24} />
-              </a>
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors duration-200"
-              >
-                <Github size={24} />
-              </a>
-              <a
-                href="mailto:anirudhsudheer@gmail.com"
-                className="text-gray-400 hover:text-white transition-colors duration-200"
-              >
-                <Mail size={24} />
-              </a>
+              {[
+                { icon: <Linkedin size={24} />, href: 'https://www.linkedin.com/in/sudoanirudh/' },
+                { icon: <Github size={24} />, href: '#' },
+                { icon: <Mail size={24} />, href: 'mailto:anirudhsudheer@gmail.com' }
+              ].map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
             <div className="border-t border-gray-800 pt-8">
               <p className="text-gray-400 text-sm">
@@ -1368,8 +1397,16 @@ const Portfolio = () => {
 
       {/* Project Modal */}
       {selectedProject && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedProject(null)}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="relative">
               <img
                 src={selectedProject.image}
@@ -1378,7 +1415,7 @@ const Portfolio = () => {
               />
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 w-10 h-10 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-colors duration-200"
+                className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg"
               >
                 <X size={20} />
               </button>
@@ -1387,7 +1424,7 @@ const Portfolio = () => {
             <div className="p-8">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-2xl font-bold text-gray-900">{selectedProject.title}</h3>
-                <span className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-primary-100 text-primary-600 rounded-full text-sm font-medium">
                   {selectedProject.category}
                 </span>
               </div>
@@ -1397,7 +1434,7 @@ const Portfolio = () => {
               <div className="mb-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Technologies Used</h4>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.technologies.map((tech: string, index: number) => (
+                  {selectedProject.technologies.map((tech, index) => (
                     <span key={index} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
                       {tech}
                     </span>
@@ -1408,21 +1445,21 @@ const Portfolio = () => {
               <div className="flex gap-4">
                 <a
                   href={selectedProject.github}
-                  className="flex-1 bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="flex-1 bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
                 >
                   <Github size={20} />
                   View Code
                 </a>
                 <a
                   href={selectedProject.demo}
-                  className="flex-1 bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="flex-1 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <ExternalLink size={20} />
                   Live Demo
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>
