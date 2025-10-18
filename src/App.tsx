@@ -312,11 +312,16 @@ function App() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="aspect-square max-w-md mx-auto bg-gradient-to-br from-primary-100 to-blue-100 rounded-3xl p-8">
-                <div className="w-full h-full bg-gradient-to-br from-primary-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-8xl font-bold">
-                  AS
-                </div>
+              <div className="aspect-square max-w-md mx-auto rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_creative-rebuild/artifacts/4ck4wblz_IMG_20250314_114157_11zon%20-%20Copy.jpg"
+                  alt="Anirudh S"
+                  className="w-full h-full object-cover"
+                />
               </div>
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary-600 rounded-2xl -z-10"></div>
+              <div className="absolute -top-4 -left-4 w-16 h-16 bg-blue-400 rounded-2xl -z-10"></div>
             </motion.div>
           </div>
         </div>
