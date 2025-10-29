@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react' // or your framework plugin
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
+  preview: {
+    allowedHosts: ['sudoanirudh.onrender.com'],
+    host: true,
+    port: process.env.PORT || 5173,
   },
-});
+})
