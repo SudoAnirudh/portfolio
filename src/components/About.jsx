@@ -1,67 +1,85 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { skills, education } from '../data';
+import TechMarquee from './TechMarquee';
 
 const About = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, []);
+
     return (
-        <section id="about" className="section">
+        <section ref={sectionRef} id="about" className="section" style={{ padding: '4rem 0' }}>
             <div className="container">
-                <h2 className="section-title">About Me</h2>
+                <h2 className="section-title" style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'all 0.6s ease',
+                }}>About Me</h2>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                    {/* Education */}
-                    <div className="md:col-span-2">
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent)' }}>Education</h3>
-                        <div className="grid md:grid-cols-3 gap-2">
-                            {education.map((edu, index) => (
-                                <div key={index} className="card" style={{ padding: '1.5rem' }}>
-                                    <h4 style={{ fontSize: '1.2rem', fontWeight: '600' }}>{edu.institution}</h4>
-                                    <p style={{ color: 'var(--accent)', fontWeight: '500', margin: '0.5rem 0' }}>{edu.degree}</p>
-                                    <div className="flex justify-between" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                        <span>{edu.duration}</span>
-                                        <span>{edu.details}</span>
-                                    </div>
+                {/* Education Section */}
+                <div style={{
+                    marginBottom: '3rem',
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'all 0.6s ease 0.2s',
+                }}>
+                    <h3 className="subsection-title-center">
+                        <span className="title-icon">🎓</span>
+                        Education
+                    </h3>
+                    <div className="education-grid">
+                        {education.map((edu, index) => (
+                            <div
+                                key={index}
+                                className="education-card"
+                                style={{
+                                    opacity: isVisible ? 1 : 0,
+                                    transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+                                    transition: `all 0.6s ease ${0.3 + index * 0.1}s`,
+                                }}
+                            >
+                                <h4 className="edu-institution">{edu.institution}</h4>
+                                <p className="edu-degree">{edu.degree}</p>
+                                <div className="edu-footer">
+                                    <span className="edu-duration">{edu.duration}</span>
+                                    <span className="edu-details">{edu.details}</span>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
                     </div>
+                </div>
 
-                    {/* Skills */}
-                    <div className="md:col-span-2" style={{ marginTop: '1rem' }}>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--accent)', textAlign: 'center' }}>Technical Skills</h3>
-                        <div className="skills-grid">
-                            {skills.map((skillGroup, index) => {
-                                const IconComponent = skillGroup.icon;
-                                return (
-                                    <div key={index} className="skill-category-card">
-                                        <div className="skill-category-header">
-                                            <IconComponent className="skill-category-icon" size={24} />
-                                            <h4 className="skill-category-title">{skillGroup.category}</h4>
-                                        </div>
-                                        <div className="skill-items">
-                                            {skillGroup.items.map((skill, idx) => (
-                                                <span key={idx} className="skill-badge">
-                                                    {skill}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* GitHub Activity */}
-                    <div className="md:col-span-2" style={{ marginTop: '1rem' }}>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--accent)', textAlign: 'center' }}>GitHub Activity</h3>
-                        <div className="card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
-                            {/* Using ghchart.rshah.org API for a lightweight solution without extra dependencies */}
-                            <img
-                                src="https://ghchart.rshah.org/38bdf8/anirudhsudheer"
-                                alt="Anirudh's GitHub Contribution Graph"
-                                style={{ maxWidth: '100%', minWidth: '600px' }}
-                            />
-                        </div>
-                    </div>
+                {/* Skills Section - Looping Marquee */}
+                <div style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'all 0.6s ease 0.5s',
+                }}>
+                    <h3 className="subsection-title-center">
+                        <span className="title-icon">💻</span>
+                        Technical Skills
+                    </h3>
+                    <TechMarquee />
                 </div>
             </div>
         </section>
@@ -69,3 +87,4 @@ const About = () => {
 };
 
 export default About;
+

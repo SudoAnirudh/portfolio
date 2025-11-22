@@ -21,16 +21,16 @@ const TechMarquee = () => {
         }}>
             <div className="marquee-content" style={{
                 display: 'inline-block',
-                animation: `marquee ${direction === 'reverse' ? '25s' : '20s'} linear infinite ${direction === 'reverse' ? 'reverse' : ''}`
+                animation: `marquee ${direction === 'reverse' ? '30s' : '25s'} linear infinite ${direction === 'reverse' ? 'reverse' : ''}`
             }}>
                 {items.map((skill, index) => (
-                    <span key={index} className="skill-tag">
+                    <span key={index} className="skill-tag-marquee">
                         {skill}
                     </span>
                 ))}
                 {/* Duplicate for seamless loop */}
                 {items.map((skill, index) => (
-                    <span key={`dup-${index}`} className="skill-tag">
+                    <span key={`dup-${index}`} className="skill-tag-marquee">
                         {skill}
                     </span>
                 ))}
@@ -39,7 +39,7 @@ const TechMarquee = () => {
     );
 
     return (
-        <div className="flex flex-col">
+        <div className="marquee-wrapper">
             <MarqueeRow items={row1} />
             <MarqueeRow items={row2} direction="reverse" />
         </div>
