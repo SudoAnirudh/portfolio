@@ -1,35 +1,32 @@
 {
-  "name": "portfolio",
+  "name": "port_new",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview --port $PORT --host 0.0.0.0",
-    "lint": "eslint ."
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "framer-motion": "^12.23.24",
-    "lucide-react": "^0.471.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-typed-component": "^1.0.6"
+    "lucide-react": "^0.554.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-type-animation": "^3.2.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.13.0",
-    "eslint-plugin-react-hooks": "^5.0.0-canary-7118f5dd7-20230705",
-    "eslint-plugin-react-refresh": "^0.4.12",
-    "globals": "^15.11.0",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.10.0",
-    "vite": "^5.4.8"
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "vite": "^7.2.4"
   }
 }
