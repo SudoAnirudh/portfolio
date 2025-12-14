@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { projects } from '../data';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { Github, ExternalLink } from 'lucide-react';
 
 const Projects = () => {
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
@@ -13,6 +16,23 @@ const Projects = () => {
         : projects.filter(project => project.category === filter);
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "projects"));
+                const projectsData = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setProjects(projectsData);
+            } catch (error) {
+                console.error("Error fetching projects: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProjects();
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
