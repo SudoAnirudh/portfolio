@@ -124,25 +124,9 @@ const Projects = () => {
                                         WebkitBackgroundClip: 'text',
                                         WebkitTextFillColor: 'transparent',
                                     }}>{project.title}</h3>
-                                    <span style={{
-                                        fontSize: '0.75rem',
-                                        padding: '0.3rem 0.7rem',
-                                        borderRadius: '12px',
-                                        background: 'rgba(56, 189, 248, 0.15)',
-                                        color: 'var(--accent)',
-                                        border: '1px solid rgba(56, 189, 248, 0.3)',
-                                        fontWeight: '600',
-                                        whiteSpace: 'nowrap',
-                                    }}>
-                                        {project.category}
-                                    </span>
+
                                 </div>
-                                <p style={{
-                                    fontSize: '0.85rem',
-                                    color: 'var(--accent)',
-                                    marginBottom: '1rem',
-                                    fontWeight: '500',
-                                }}>{project.tech}</p>
+
                                 <p style={{
                                     color: 'var(--text-secondary)',
                                     marginBottom: '1.5rem',
