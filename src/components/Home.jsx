@@ -10,6 +10,7 @@ import ParticleBackground from './ParticleBackground';
 import Statistics from './Statistics';
 import BackToTop from './BackToTop';
 import Terminal from './Terminal';
+import GitHubHeatmap from './GitHubHeatmap';
 
 const Home = () => {
     const [showTerminal, setShowTerminal] = useState(true);
@@ -31,6 +32,7 @@ const Home = () => {
                         <Navbar />
                         <Hero />
                         <About />
+                        <GitHubHeatmap />
                         <Statistics />
                         <Experience />
                         <Projects />
