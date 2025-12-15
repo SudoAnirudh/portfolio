@@ -513,3 +513,96 @@ ul {
     opacity: 0;
   }
 }
+
+/* Responsive Timeline */
+.timeline {
+  position: relative;
+  padding-top: 2rem;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--card-border);
+  transition: all 0.3s ease;
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  /* Mobile default */
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 14px;
+  /* Center on line at 20px (width 12px) */
+  top: 1.5rem;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-color);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.timeline-content {
+  width: calc(100% - 60px);
+  margin-left: 60px;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .timeline-line {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-item:nth-child(odd) {
+    justify-content: flex-end;
+    /* Right side for odd (using flex-end to push to right) */
+  }
+
+  .timeline-item:nth-child(even) {
+    justify-content: flex-start;
+    /* Left side for even */
+  }
+
+  .timeline-dot {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-content {
+    width: 45%;
+    margin-left: 0;
+  }
+
+  /* Specific targeting if needed, or rely on flex alignment */
+  .timeline-item:nth-child(odd) .timeline-content {
+    text-align: left;
+    /* Keep text left aligned inside card */
+  }
+
+  .timeline-item:nth-child(even) .timeline-content {
+    text-align: right;
+    /* Wait, standard timeline usually:
+       Left Item: Content | Line
+       Right Item: Line | Content
+    */
+  }
+}
+
+/* Fix for alternating logic in CSS vs mapping index 
+   The JS map index is 0-based. 
+   nth-child is 1-based.
+   Index 0 (1st item) -> nth-child(2) (because line is 1st child?) NO, line is sibling.
+   Let's assume line is separate.
+   Items are children of .timeline container.
+*/
