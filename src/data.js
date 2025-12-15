@@ -8,8 +8,8 @@ export const profile = {
     location: "Kozhikode, Kerala, India",
     summary: "Highly motivated AI & ML engineering student with a strong command of Python and C, passionate about leveraging emerging technologies to solve real-world problems. My passion for AI and its potential to shape the future drives me to continuously explore emerging technologies and innovate.",
     social: {
-        github: "https://github.com", // Placeholder
-        linkedin: "https://linkedin.com", // Placeholder
+        github: "https://github.com/SudoAnirudh", // Placeholder
+        linkedin: "https://www.linkedin.com/in/sudoanirudh/", // Placeholder
         email: "mailto:anirudhsudheer@gmail.com"
     }
 };
@@ -37,11 +37,25 @@ export const education = [
 
 export const experience = [
     {
-        company: "Webstack Academy",
-        role: "MERN Stack Developer Intern",
-        duration: "Sept 2025 - Present",
+        company: "Vodafone Idea Foundation",
+        role: "Data Analytics Intern",
+        duration: "Sept 2025 - Nov 2025",
         type: "Virtual",
-        description: "Developing full-stack applications using the MERN stack, ensuring scalability and optimization through team collaboration."
+        description: "This internship gave me hands-on exposure to: • Working with Large Language Models • Understanding conversational AI pipelines • Applying real-world data analysis methods • Exploring how telecom + AI combine to build smarter customer experiences"
+    },
+    {
+        company: "Hacktoberfest'25",
+        role: "Open Source Contributor",
+        duration: "Oct 2025 - Nov 2025",
+        type: "Virtual",
+        description: "Contributed to open source projects and helped the community grow."
+    },
+    {
+        company: "GSSoC'25",
+        role: "Contributor",
+        duration: "Jul 2025 - Nov 2025",
+        type: "Virtual",
+        description: " Contributed to open source projects and helped the community grow."
     },
     {
         company: "Edunet Foundation",
@@ -68,18 +82,18 @@ export const skills = [
 
 export const projects = [
     {
-        title: "Stock Price Predictor",
-        category: "Machine Learning",
-        tech: "Python, LSTM, Streamlit",
-        description: "Predicts stock prices using machine learning models such as Random Forest and LSTM. Features a Streamlit web app for interactive charts.",
-        link: "#"
+        title: "CNN Filter Visualizer",
+        category: "Web App",
+        tech: "React, JavaScript, CNN",
+        description: "Visualizes the filters of a CNN model.",
+        link: "https://github.com/SudoAnirudh/CNN-VISUALIZER"
     },
     {
         title: "Intrusion Detection System",
         category: "Machine Learning",
         tech: "ML, Flask, Python",
         description: "Uses machine learning with scikit-learn to detect network intrusions, featuring a Flask-based web interface for easy monitoring.",
-        link: "#"
+        link: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML"
     },
     {
         title: "Disaster Tweet Classifier",
@@ -89,25 +103,25 @@ export const projects = [
         link: "#"
     },
     {
-        title: "Age & Gender Detection",
-        category: "Computer Vision",
-        tech: "Python, OpenCV, CNN",
-        description: "Uses deep learning to classify age and gender from images, leveraging CNNs and OpenCV for accuracy.",
-        link: "#"
+        title: "PashuSwasthya",
+        category: "Deep Learning",
+        tech: "Python,Dart,CNN, MobileNet",
+        description: "Developed a mobile application using Flutter and Dart to classify animal diseases using deep learning models.",
+        link: "https://github.com/SudoAnirudh/PashuSwasthya"
     },
     {
         title: "Image Enhancement Toolkit",
         category: "App Dev",
         tech: "PyQt6, OpenCV",
         description: "Desktop application for basic image processing like Gaussian blur with interactive adjustments.",
-        link: "#"
+        link: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit"
     },
     {
         title: "Customer Churn Prediction",
         category: "Machine Learning",
         tech: "ML, Jupyter",
         description: "Predicts which customers are likely to leave a company to help businesses take retention actions.",
-        link: "#"
+        link: "https://github.com/SudoAnirudh/Customer_Churn_Prediction"
     }
 ];
 
@@ -117,7 +131,8 @@ export const certifications = [
     "Machine Learning for All - Coursera",
     "Artificial Intelligence - Certiport",
     "Fundamentals of Cybersecurity - Zscaler",
-    "Machine Learning With Python - IBM"
+    "Machine Learning With Python - IBM",
+    "Deep Learning with Tensorflow - IBM"
 ];
 
 export const achievements = [
