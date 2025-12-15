@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, FileText, Code, Database, Terminal, Cpu, Globe,
 export const profile = {
     name: "Anirudh S",
     title: "AI & ML Engineering Student",
-    imgUrl: "profile.jpg", // Replace with your actual image URL
+    imgUrl: "https://ibb.co/35sb9LZF", // Replace with your actual image URL
     email: "anirudhsudheer@gmail.com",
     phone: "+91 95391 02851",
     location: "Kozhikode, Kerala, India",
