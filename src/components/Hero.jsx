@@ -88,7 +88,7 @@ const Hero = () => {
                         <a href="#projects" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             View Projects <ArrowRight size={18} />
                         </a>
-                        <a href="/Anirudh S.pdf" download className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <a href="https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link" download className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             Download CV <Download size={18} />
                         </a>
                     </div>

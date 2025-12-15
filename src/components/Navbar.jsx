@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {

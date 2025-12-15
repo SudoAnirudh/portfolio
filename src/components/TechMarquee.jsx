@@ -1,6 +1,35 @@
 import React from 'react';
 import { skills } from '../data';
 
+// eslint-disable-next-line react/prop-types
+const MarqueeRow = ({ items, direction = 'normal' }) => (
+    <div className="marquee-container" style={{
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        position: 'relative',
+        maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+        marginBottom: '1rem'
+    }}>
+        <div className="marquee-content" style={{
+            display: 'inline-block',
+            animation: `marquee ${direction === 'reverse' ? '30s' : '25s'} linear infinite ${direction === 'reverse' ? 'reverse' : ''}`
+        }}>
+            {items.map((skill, index) => (
+                <span key={index} className="skill-tag-marquee">
+                    {skill}
+                </span>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {items.map((skill, index) => (
+                <span key={`dup-${index}`} className="skill-tag-marquee">
+                    {skill}
+                </span>
+            ))}
+        </div>
+    </div>
+);
+
 const TechMarquee = () => {
     // Flatten all skills into a single array
     const allSkills = skills.flatMap(skillGroup => skillGroup.items);
@@ -9,34 +38,6 @@ const TechMarquee = () => {
     const half = Math.ceil(allSkills.length / 2);
     const row1 = allSkills.slice(0, half);
     const row2 = allSkills.slice(half);
-
-    const MarqueeRow = ({ items, direction = 'normal' }) => (
-        <div className="marquee-container" style={{
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            position: 'relative',
-            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-            marginBottom: '1rem'
-        }}>
-            <div className="marquee-content" style={{
-                display: 'inline-block',
-                animation: `marquee ${direction === 'reverse' ? '30s' : '25s'} linear infinite ${direction === 'reverse' ? 'reverse' : ''}`
-            }}>
-                {items.map((skill, index) => (
-                    <span key={index} className="skill-tag-marquee">
-                        {skill}
-                    </span>
-                ))}
-                {/* Duplicate for seamless loop */}
-                {items.map((skill, index) => (
-                    <span key={`dup-${index}`} className="skill-tag-marquee">
-                        {skill}
-                    </span>
-                ))}
-            </div>
-        </div>
-    );
 
     return (
         <div className="marquee-wrapper">

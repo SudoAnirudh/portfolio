@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Code } from 'lucide-react';
 
 const LoadingScreen = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {

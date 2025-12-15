@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { skills, education } from '../data';
+import { education } from '../data';
 import TechMarquee from './TechMarquee';
 
 const About = () => {

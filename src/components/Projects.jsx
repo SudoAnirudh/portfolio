@@ -1,38 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
-import { Github, ExternalLink } from 'lucide-react';
+import { projects } from '../data';
+import { Github } from 'lucide-react';
 
 const Projects = () => {
-    const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('All');
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
-    const categories = ['All', 'Machine Learning', 'NLP', 'Computer Vision', 'App Dev'];
-
-    const filteredProjects = filter === 'All'
-        ? projects
-        : projects.filter(project => project.category === filter);
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "projects"));
-                const projectsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setProjects(projectsData);
-            } catch (error) {
-                console.error("Error fetching projects: ", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProjects();
-
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -62,51 +36,8 @@ const Projects = () => {
                     transition: 'all 0.6s ease',
                 }}>Featured Projects</h2>
 
-                {/* Filter Buttons */}
-                <div className="flex justify-center gap-2 mb-8 flex-wrap" style={{
-                    marginBottom: '3rem',
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 0.6s ease 0.2s',
-                }}>
-                    {categories.map(category => (
-                        <button
-                            key={category}
-                            onClick={() => setFilter(category)}
-                            style={{
-                                padding: '0.6rem 1.8rem',
-                                borderRadius: '50px',
-                                border: filter === category ? '2px solid var(--accent)' : '2px solid transparent',
-                                background: filter === category ? 'var(--accent)' : 'rgba(56, 189, 248, 0.05)',
-                                color: filter === category ? 'var(--bg-color)' : 'var(--text-secondary)',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                boxShadow: filter === category ? '0 0 20px var(--accent-glow)' : 'none',
-                                backdropFilter: 'blur(10px)',
-                            }}
-                            onMouseEnter={(e) => {
-                                if (filter !== category) {
-                                    e.currentTarget.style.background = 'rgba(56, 189, 248, 0.1)';
-                                    e.currentTarget.style.borderColor = 'var(--accent)';
-                                    e.currentTarget.style.color = 'var(--accent)';
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (filter !== category) {
-                                    e.currentTarget.style.background = 'rgba(56, 189, 248, 0.05)';
-                                    e.currentTarget.style.borderColor = 'transparent';
-                                    e.currentTarget.style.color = 'var(--text-secondary)';
-                                }
-                            }}
-                        >
-                            {category}
-                        </button>
-                    ))}
-                </div>
-
                 <div className="grid md:grid-cols-2 md:grid-cols-3 gap-4">
-                    {filteredProjects.map((project, index) => (
+                    {projects.map((project, index) => (
                         <div
                             key={`${project.title}-${index}`}
                             className="card flex flex-col justify-between group project-card"
@@ -179,6 +110,31 @@ const Projects = () => {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            <div style={{
+                textAlign: 'center',
+                marginTop: '3rem',
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 0.6s ease 0.6s',
+            }}>
+                <a
+                    href="https://github.com/SudoAnirudh?tab=repositories"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline"
+                    style={{
+                        padding: '0.8rem 2rem',
+                        fontSize: '1rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        borderRadius: '50px',
+                    }}
+                >
+                    <Github size={20} /> Explore More Projects
+                </a>
             </div>
         </section>
     );
