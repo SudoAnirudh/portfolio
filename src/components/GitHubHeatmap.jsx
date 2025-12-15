@@ -34,13 +34,13 @@ const GitHubHeatmap = () => {
         }
     };
 
-    // Helper to get GitHub theme color (Green)
+    // Helper to get GitHub theme color (Violet)
     const getGitHubColor = (level) => {
         switch (level) {
-            case 1: return '#0e4429';
-            case 2: return '#006d32';
-            case 3: return '#26a641';
-            case 4: return '#39d353';
+            case 1: return '#ddd6fe'; // Violet 100
+            case 2: return '#a78bfa'; // Violet 400
+            case 3: return '#8b5cf6'; // Violet 500
+            case 4: return '#7c3aed'; // Violet 600
             default: return 'rgba(255,255,255,0.03)';
         }
     };

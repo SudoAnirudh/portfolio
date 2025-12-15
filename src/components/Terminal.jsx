@@ -8,6 +8,7 @@ const Terminal = ({ onComplete }) => {
         { type: 'output', content: 'Welcome guest@anirudh-portfolio:~$ type "help" to see commands or "enter" to view the full site.' }
     ]);
     const [input, setInput] = useState('');
+    const [isBarrelRoll, setIsBarrelRoll] = useState(false);
     const bottomRef = useRef(null);
 
     const commands = {
@@ -41,6 +42,18 @@ const Terminal = ({ onComplete }) => {
 
         if (cleanCmd === 'clear') {
             setHistory([]);
+            return;
+        }
+
+        if (cleanCmd === 'do a barrel roll') {
+            setHistory(prev => [...prev, { type: 'input', content: cmd }, { type: 'output', content: 'Wheeeeeee!' }]);
+            setIsBarrelRoll(true);
+            setTimeout(() => setIsBarrelRoll(false), 1000);
+            return;
+        }
+
+        if (cleanCmd === 'sudo') {
+            setHistory(prev => [...prev, { type: 'input', content: cmd }, { type: 'output', content: 'User is not in the sudoers file. This incident will be reported.' }]);
             return;
         }
 
@@ -102,7 +115,9 @@ const Terminal = ({ onComplete }) => {
                 border: '1px solid #333',
                 display: 'flex',
                 flexDirection: 'column',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                transition: 'transform 1s',
+                transform: isBarrelRoll ? 'rotate(360deg)' : 'none'
             }}>
                 {/* Header */}
                 <div style={{

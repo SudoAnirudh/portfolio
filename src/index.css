@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
 
 :root {
-  --bg-color: #0a0a0a;
-  --bg-secondary: #171717;
-  --text-primary: #ededed;
-  --text-secondary: #a1a1a1;
-  --accent: #ffffff;
-  --accent-dim: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(23, 23, 23, 0.6);
-  --card-border: rgba(255, 255, 255, 0.08);
+  --bg-color: #050505;
+  --bg-secondary: #0a0a0a;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --accent: #8b5cf6;
+  --accent-dim: rgba(139, 92, 246, 0.15);
+  --card-bg: rgba(17, 17, 17, 0.8);
+  --card-border: rgba(139, 92, 246, 0.2);
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --radius: 12px;
+  --radius: 16px;
 }
 
 [data-theme='light'] {
@@ -124,6 +124,22 @@ ul {
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:hidden {
+    display: none;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
 }
 
 /* Components */
@@ -476,4 +492,24 @@ ul {
   background: var(--accent);
   color: var(--bg-color);
   border-color: var(--accent);
+}
+
+/* Typewriter Cursor */
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
