@@ -9,34 +9,23 @@ const Projects = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
+                if (entry.isIntersecting) setIsVisible(true);
             },
             { threshold: 0.1 }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
+        if (sectionRef.current) observer.observe(sectionRef.current);
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
-            }
+            if (sectionRef.current) observer.unobserve(sectionRef.current);
         };
     }, []);
 
     return (
         <section ref={sectionRef} id="projects" className="section">
             <div className="container">
-                <h2 className="section-title" style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 0.6s ease',
-                }}>Featured Projects</h2>
+                <h2 className="section-title">Featured Projects</h2>
 
-                <div className="grid md:grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {projects.map((project, index) => (
                         <div
                             key={`${project.title}-${index}`}
@@ -45,9 +34,8 @@ const Projects = () => {
                                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                 transformStyle: 'preserve-3d',
                                 perspective: '1000px',
-                                opacity: isVisible ? 1 : 0,
-                                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-                                transitionDelay: `${0.4 + index * 0.1}s`,
+                                opacity: 0,
+                                animation: isVisible ? `fadeInUp 0.6s ease ${index * 0.1}s forwards` : 'none',
                             }}
                             onMouseMove={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();
@@ -55,8 +43,8 @@ const Projects = () => {
                                 const y = e.clientY - rect.top;
                                 const centerX = rect.width / 2;
                                 const centerY = rect.height / 2;
-                                const rotateX = (y - centerY) / 20;
-                                const rotateY = (centerX - x) / 20;
+                                const rotateX = (y - centerY) / 30; // Reduced rotation
+                                const rotateY = (centerX - x) / 30;
 
                                 e.currentTarget.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
                             }}
@@ -67,15 +55,11 @@ const Projects = () => {
                             <div>
                                 <div className="flex justify-between items-start mb-2">
                                     <h3 style={{
-                                        fontSize: '1.3rem',
-                                        fontWeight: '700',
-                                        marginBottom: '0.5rem',
-                                        background: 'linear-gradient(135deg, var(--text-primary), var(--accent))',
-                                        backgroundClip: 'text',
-                                        WebkitBackgroundClip: 'text',
-                                        WebkitTextFillColor: 'transparent',
+                                        fontSize: '1.25rem',
+                                        fontWeight: '600',
+                                        marginBottom: '0.8rem',
+                                        color: 'var(--text-primary)',
                                     }}>{project.title}</h3>
-
                                 </div>
 
                                 <p style={{
@@ -83,6 +67,7 @@ const Projects = () => {
                                     marginBottom: '1.5rem',
                                     fontSize: '0.95rem',
                                     lineHeight: '1.6',
+                                    fontWeight: '400'
                                 }}>
                                     {project.description}
                                 </p>
@@ -95,13 +80,11 @@ const Projects = () => {
                                     rel="noopener noreferrer"
                                     className="btn btn-outline"
                                     style={{
-                                        padding: '0.6rem 1.2rem',
-                                        fontSize: '0.9rem',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.5rem',
-                                        flex: 1,
+                                        width: '100%',
                                         justifyContent: 'center',
+                                        gap: '0.5rem',
+                                        fontSize: '0.9rem',
+                                        padding: '0.6rem 0'
                                     }}
                                 >
                                     <Github size={16} /> View Code
@@ -114,10 +97,9 @@ const Projects = () => {
 
             <div style={{
                 textAlign: 'center',
-                marginTop: '3rem',
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'all 0.6s ease 0.6s',
+                marginTop: '4rem',
+                opacity: 0,
+                animation: isVisible ? 'fadeInUp 0.6s ease 0.6s forwards' : 'none',
             }}>
                 <a
                     href="https://github.com/SudoAnirudh?tab=repositories"
@@ -126,9 +108,6 @@ const Projects = () => {
                     className="btn btn-outline"
                     style={{
                         padding: '0.8rem 2rem',
-                        fontSize: '1rem',
-                        display: 'inline-flex',
-                        alignItems: 'center',
                         gap: '0.5rem',
                         borderRadius: '50px',
                     }}

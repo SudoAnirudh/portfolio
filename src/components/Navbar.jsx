@@ -5,7 +5,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
+            setScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -19,80 +19,41 @@ const Navbar = () => {
         { name: 'Contact', href: '#contact' },
     ];
 
-    const toggleTheme = () => {
-        const newTheme = theme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    };
-
-    const [theme, setTheme] = useState('dark');
-
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    }, []);
-
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/90 backdrop-blur-md py-4 shadow-lg' : 'bg-transparent py-6'}`}
+        <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'glass-effect' : 'bg-transparent'}`}
             style={{
                 position: 'fixed',
                 top: 0,
                 left: 0,
                 right: 0,
                 zIndex: 1000,
-                background: scrolled ? 'var(--bg-secondary)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(10px)' : 'none',
-                padding: scrolled ? '1rem 0' : '1.5rem 0',
-                transition: 'all 0.3s ease',
+                padding: '1.2rem 0',
+                transition: 'all 0.4s ease',
                 borderBottom: scrolled ? '1px solid var(--card-border)' : 'none'
             }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <a href="#" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+                <a href="#" style={{ fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                     Anirudh<span style={{ color: 'var(--accent)' }}>.</span>
                 </a>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="hidden md:flex">
                     {navLinks.map((link) => (
                         <a
                             key={link.name}
                             href={link.href}
                             style={{
                                 color: 'var(--text-secondary)',
+                                fontSize: '0.9rem',
                                 fontWeight: '500',
                                 transition: 'color 0.3s'
                             }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
+                            onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
                             onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
                         >
                             {link.name}
                         </a>
                     ))}
-
-                    {/* Theme Toggle */}
-                    <button
-                        onClick={toggleTheme}
-                        style={{
-                            background: 'transparent',
-                            border: '1px solid var(--card-border)',
-                            color: 'var(--accent)',
-                            padding: '0.5rem',
-                            borderRadius: '50%',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {theme === 'dark' ? '☀️' : '🌙'}
-                    </button>
-                </div>
-
-                {/* Mobile Menu Button */}
-                <div className="md:hidden" style={{ display: 'none' }}>
-                    {/* Mobile menu implementation would go here */}
                 </div>
             </div>
         </nav>

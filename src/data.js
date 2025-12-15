@@ -3,10 +3,12 @@ import { Github, Linkedin, Mail, FileText, Code, Database, Terminal, Cpu, Globe,
 export const profile = {
     name: "Anirudh S",
     title: "AI & ML Engineering Student",
+    imgUrl: "profile.jpg", // Replace with your actual image URL
     email: "anirudhsudheer@gmail.com",
     phone: "+91 95391 02851",
     location: "Kozhikode, Kerala, India",
     summary: "Highly motivated AI & ML engineering student with a strong command of Python and C, passionate about leveraging emerging technologies to solve real-world problems. My passion for AI and its potential to shape the future drives me to continuously explore emerging technologies and innovate.",
+    about: "I am an enthusiastic AI & ML Engineering student with a deep passion for building intelligent systems. My journey involves exploring the depths of Neural Networks, solving complex problems with code, and contributing to the open-source community. I thrive on learning new technologies and turning innovative ideas into reality.",
     social: {
         github: "https://github.com/SudoAnirudh", // Placeholder
         linkedin: "https://www.linkedin.com/in/sudoanirudh/", // Placeholder

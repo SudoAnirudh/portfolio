@@ -18,18 +18,28 @@ const ContactForm = () => {
         e.preventDefault();
         setStatus('sending');
 
-        // Simulate sending email
         setTimeout(() => {
             console.log('Form submitted:', formData);
             setStatus('success');
             setFormData({ name: '', email: '', subject: '', message: '' });
-
             setTimeout(() => setStatus(''), 3000);
         }, 1500);
     };
 
+    const inputStyle = {
+        padding: '1rem',
+        borderRadius: '8px',
+        border: '1px solid var(--card-border)',
+        background: 'var(--bg-secondary)',
+        color: 'var(--text-primary)',
+        outline: 'none',
+        width: '100%',
+        fontSize: '0.95rem',
+        transition: 'border-color 0.3s'
+    };
+
     return (
-        <form onSubmit={handleSubmit} className="card" style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem' }}>
+        <form onSubmit={handleSubmit} className="card" style={{ maxWidth: '600px', margin: '0 auto', border: 'none', background: 'transparent', padding: 0, boxShadow: 'none', backdropFilter: 'none' }}>
             <div className="flex flex-col gap-4">
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
@@ -40,14 +50,8 @@ const ContactForm = () => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            style={{
-                                padding: '0.8rem',
-                                borderRadius: '8px',
-                                border: '1px solid var(--card-border)',
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                color: 'var(--text-primary)',
-                                outline: 'none'
-                            }}
+                            style={inputStyle}
+                            className="form-input"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -58,14 +62,8 @@ const ContactForm = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            style={{
-                                padding: '0.8rem',
-                                borderRadius: '8px',
-                                border: '1px solid var(--card-border)',
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                color: 'var(--text-primary)',
-                                outline: 'none'
-                            }}
+                            style={inputStyle}
+                            className="form-input"
                         />
                     </div>
                 </div>
@@ -78,14 +76,8 @@ const ContactForm = () => {
                         value={formData.subject}
                         onChange={handleChange}
                         required
-                        style={{
-                            padding: '0.8rem',
-                            borderRadius: '8px',
-                            border: '1px solid var(--card-border)',
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            color: 'var(--text-primary)',
-                            outline: 'none'
-                        }}
+                        style={inputStyle}
+                        className="form-input"
                     />
                 </div>
 
@@ -97,15 +89,8 @@ const ContactForm = () => {
                         onChange={handleChange}
                         required
                         rows="5"
-                        style={{
-                            padding: '0.8rem',
-                            borderRadius: '8px',
-                            border: '1px solid var(--card-border)',
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            color: 'var(--text-primary)',
-                            outline: 'none',
-                            resize: 'none'
-                        }}
+                        style={{ ...inputStyle, resize: 'none' }}
+                        className="form-input"
                     ></textarea>
                 </div>
 
@@ -119,7 +104,8 @@ const ContactForm = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        opacity: status === 'sending' ? 0.7 : 1
+                        opacity: status === 'sending' ? 0.7 : 1,
+                        width: '100%'
                     }}
                 >
                     {status === 'sending' ? 'Sending...' : (

@@ -8,32 +8,21 @@ const Experience = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
+                if (entry.isIntersecting) setIsVisible(true);
             },
             { threshold: 0.1 }
         );
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
-        }
-
+        if (sectionRef.current) observer.observe(sectionRef.current);
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
-            }
+            if (sectionRef.current) observer.unobserve(sectionRef.current);
         };
     }, []);
 
     return (
         <section ref={sectionRef} id="experience" className="section" style={{ background: 'var(--bg-secondary)' }}>
             <div className="container">
-                <h2 className="section-title" style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 0.6s ease',
-                }}>Experience</h2>
+                <h2 className="section-title">Experience</h2>
 
                 <div className="timeline" style={{ position: 'relative', paddingTop: '2rem' }}>
                     {/* Vertical Line */}
@@ -42,8 +31,8 @@ const Experience = () => {
                         left: '50%',
                         top: 0,
                         bottom: 0,
-                        width: '2px',
-                        background: 'linear-gradient(180deg, transparent, var(--accent), transparent)',
+                        width: '1px',
+                        background: 'var(--card-border)',
                         transform: 'translateX(-50%)',
                         opacity: isVisible ? 1 : 0,
                         transition: 'opacity 1s ease 0.3s',
@@ -58,9 +47,9 @@ const Experience = () => {
                                 display: 'flex',
                                 justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end',
                                 marginBottom: '3rem',
-                                opacity: isVisible ? 1 : 0,
-                                transform: isVisible ? 'translateX(0)' : `translateX(${index % 2 === 0 ? '-50px' : '50px'})`,
-                                transition: `all 0.6s ease ${0.4 + index * 0.15}s`,
+                                animation: isVisible ? `fadeInUp 0.6s ease ${0.4 + index * 0.15}s forwards` : 'none',
+                                opacity: 0,
+                                transform: isVisible ? 'translateX(0)' : `translateX(${index % 2 === 0 ? '-20px' : '20px'})`,
                             }}
                         >
                             {/* Dot */}
@@ -68,52 +57,47 @@ const Experience = () => {
                                 position: 'absolute',
                                 left: '50%',
                                 top: '1.5rem',
-                                width: '16px',
-                                height: '16px',
-                                background: 'var(--accent)',
+                                width: '12px',
+                                height: '12px',
+                                background: 'var(--bg-color)',
+                                border: '2px solid var(--text-primary)',
                                 borderRadius: '50%',
                                 transform: 'translateX(-50%)',
-                                boxShadow: '0 0 0 4px var(--bg-secondary), 0 0 20px var(--accent-glow)',
                                 zIndex: 2,
-                                opacity: isVisible ? 1 : 0,
-                                transition: `all 0.6s ease ${0.5 + index * 0.15}s`,
                             }}></div>
 
                             <div className="card" style={{
                                 width: '45%',
-                                padding: '1.5rem',
+                                padding: '2rem',
+                                border: '1px solid var(--card-border)'
                             }}>
                                 <div style={{
                                     display: 'inline-block',
-                                    padding: '0.3rem 0.8rem',
-                                    background: 'rgba(56, 189, 248, 0.1)',
-                                    borderRadius: '20px',
-                                    fontSize: '0.85rem',
-                                    color: 'var(--accent)',
                                     marginBottom: '1rem',
-                                    border: '1px solid rgba(56, 189, 248, 0.2)',
+                                    fontSize: '0.85rem',
+                                    color: 'var(--text-secondary)',
+                                    fontWeight: '500',
+                                    letterSpacing: '0.05em'
                                 }}>
                                     {exp.duration}
                                 </div>
                                 <h3 style={{
-                                    fontSize: '1.3rem',
-                                    fontWeight: '700',
-                                    marginBottom: '0.5rem',
-                                    background: 'linear-gradient(135deg, var(--text-primary), var(--accent))',
-                                    backgroundClip: 'text',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
+                                    fontSize: '1.2rem',
+                                    fontWeight: '600',
+                                    marginBottom: '0.2rem',
+                                    color: 'var(--text-primary)'
                                 }}>{exp.role}</h3>
                                 <p style={{
                                     fontSize: '1rem',
-                                    color: 'var(--accent)',
+                                    color: 'var(--text-secondary)',
                                     marginBottom: '1rem',
-                                    fontWeight: '600',
+                                    fontWeight: '500'
                                 }}>{exp.company}</p>
                                 <p style={{
                                     color: 'var(--text-secondary)',
                                     fontSize: '0.95rem',
                                     lineHeight: '1.6',
+                                    opacity: 0.9
                                 }}>{exp.description}</p>
                             </div>
                         </div>
