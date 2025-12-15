@@ -124,22 +124,6 @@ ul {
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, 1fr);
   }
-
-  .md\:flex {
-    display: flex;
-  }
-
-  .md\:hidden {
-    display: none;
-  }
-}
-
-.hidden {
-  display: none;
-}
-
-.block {
-  display: block;
 }
 
 /* Components */
