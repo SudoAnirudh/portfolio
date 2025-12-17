@@ -9,7 +9,7 @@ const Statistics = () => {
         { icon: Code, label: 'Projects Completed', value: 15, suffix: '+' },
         { icon: Award, label: 'Certifications', value: 5, suffix: '+' },
         { icon: Briefcase, label: 'Internships', value: 3, suffix: '' },
-        { icon: Users, label: 'Hackathons', value: 8, suffix: '+' },
+        { icon: Users, label: 'Hackathons', value: 5, suffix: '+' },
     ];
 
     const Counter = ({ end, duration = 2000, suffix = '' }) => {
