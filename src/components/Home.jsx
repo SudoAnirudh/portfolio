@@ -13,6 +13,7 @@ import Terminal from './Terminal';
 import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
+import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
 
 const Home = () => {
     const [showTerminal, setShowTerminal] = useState(true);
@@ -40,6 +41,7 @@ const Home = () => {
                     <CommandPalette />
                     <ParticleBackground />
                     <BackToTop />
+                    <BuyMeACoffeeWidget />
                     <div className="App animate-fade-in">
                         <Navbar />
                         <Hero />

@@ -102,6 +102,39 @@ const Contact = () => {
                         <a href={`mailto:${profile.email}`} className="btn btn-outline" style={{ borderRadius: '50%', padding: '0.8rem' }}>
                             <Mail size={20} />
                         </a>
+                        <a
+                            href="https://buymeacoffee.com/anirudh"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn btn-outline"
+                            style={{
+                                borderRadius: '50%',
+                                padding: '0.8rem',
+                                borderColor: '#FFDD00',
+                                color: '#FFDD00',
+                                background: 'rgba(255, 221, 0, 0.05)'
+                            }}
+                            title="Buy Me A Coffee"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-coffee"
+                            >
+                                <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path>
+                                <line x1="6" x2="6" y1="2" y2="4"></line>
+                                <line x1="10" x2="10" y1="2" y2="4"></line>
+                                <line x1="14" x2="14" y1="2" y2="4"></line>
+                            </svg>
+                        </a>
                     </div>
                 </motion.div>
 

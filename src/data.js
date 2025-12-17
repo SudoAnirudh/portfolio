@@ -139,5 +139,7 @@ export const certifications = [
 
 export const achievements = [
     "Participated in GSSoC’25 as a Contributor",
-    "Participated in Hacktoberfest 2025 as a Contributor"
+    "Participated in Hacktoberfest 2025 as a Contributor",
+    "Neo4j Certified Professional",
+    "Participated in national-level hackathons and technical events including GDSC WOW, IEEE Symposiums."
 ];
