@@ -14,6 +14,7 @@ import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
+import CustomCursor from './CustomCursor';
 
 const Home = () => {
     const [showTerminal, setShowTerminal] = useState(true);
@@ -38,6 +39,7 @@ const Home = () => {
                 <Terminal onComplete={handleTerminalComplete} />
             ) : (
                 <>
+                    <CustomCursor />
                     <CommandPalette />
                     <ParticleBackground />
                     <BackToTop />
@@ -54,7 +56,8 @@ const Home = () => {
                         <HintPopup />
                     </div>
                 </>
-            )}
+            )
+            }
         </>
     );
 };
