@@ -12,6 +12,7 @@ import BackToTop from './BackToTop';
 import Terminal from './Terminal';
 import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
+import CommandPalette from './CommandPalette';
 
 const Home = () => {
     const [showTerminal, setShowTerminal] = useState(true);
@@ -36,6 +37,7 @@ const Home = () => {
                 <Terminal onComplete={handleTerminalComplete} />
             ) : (
                 <>
+                    <CommandPalette />
                     <ParticleBackground />
                     <BackToTop />
                     <div className="App animate-fade-in">
