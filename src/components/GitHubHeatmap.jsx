@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
 
 const GitHubHeatmap = () => {
     // Generate dummy contribution data for the last 365 days
@@ -46,25 +47,39 @@ const GitHubHeatmap = () => {
     };
 
     return (
-        <div className="section" style={{ paddingBottom: '2rem' }}>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="section"
+            style={{ paddingBottom: '2rem' }}
+        >
             <div className="container">
                 <h3 className="subsection-title-center" style={{ marginBottom: '2rem' }}>
                     Code Activity
                 </h3>
 
-                <div className="heatmap-container" style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '4px',
-                    justifyContent: 'center',
-                    maxWidth: '800px',
-                    margin: '0 auto',
-                    padding: '1.5rem',
-                    background: 'var(--card-bg)',
-                    border: '1px solid var(--card-border)',
-                    borderRadius: 'var(--radius)',
-                    backdropFilter: 'blur(10px)'
-                }}>
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="heatmap-container"
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '4px',
+                        justifyContent: 'center',
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                        padding: '1.5rem',
+                        background: 'var(--card-bg)',
+                        border: '1px solid var(--card-border)',
+                        borderRadius: 'var(--radius)',
+                        backdropFilter: 'blur(10px)'
+                    }}
+                >
                     {contributionData.map((day, index) => (
                         <div
                             key={index}
@@ -91,18 +106,24 @@ const GitHubHeatmap = () => {
                             }}
                         />
                     ))}
-                </div>
+                </motion.div>
 
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    gap: '5px',
-                    maxWidth: '800px',
-                    margin: '10px auto 0',
-                    fontSize: '0.8rem',
-                    color: 'var(--text-secondary)',
-                    alignItems: 'center'
-                }}>
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        gap: '5px',
+                        maxWidth: '800px',
+                        margin: '10px auto 0',
+                        fontSize: '0.8rem',
+                        color: 'var(--text-secondary)',
+                        alignItems: 'center'
+                    }}
+                >
                     <span>Less</span>
                     <div style={{ width: '10px', height: '10px', background: 'rgba(255,255,255,0.03)', borderRadius: '2px' }}></div>
                     <div style={{ width: '10px', height: '10px', background: 'var(--card-border)', borderRadius: '2px' }}></div>
@@ -110,9 +131,9 @@ const GitHubHeatmap = () => {
                     <div style={{ width: '10px', height: '10px', background: 'var(--text-primary)', borderRadius: '2px' }}></div>
                     <div style={{ width: '10px', height: '10px', background: 'var(--accent)', borderRadius: '2px' }}></div>
                     <span>More</span>
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

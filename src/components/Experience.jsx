@@ -1,44 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { experience } from '../data';
 
 const Experience = () => {
-    const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) setIsVisible(true);
-            },
-            { threshold: 0.1 }
-        );
-
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => {
-            if (sectionRef.current) observer.unobserve(sectionRef.current);
-        };
-    }, []);
-
     return (
-        <section ref={sectionRef} id="experience" className="section" style={{ background: 'var(--bg-secondary)' }}>
+        <section id="experience" className="section" style={{ background: 'var(--bg-secondary)' }}>
             <div className="container">
-                <h2 className="section-title">Experience</h2>
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="section-title"
+                >
+                    Experience
+                </motion.h2>
 
                 <div className="timeline">
                     {/* Vertical Line */}
-                    <div className="timeline-line"></div>
+                    <motion.div
+                        initial={{ height: 0 }}
+                        whileInView={{ height: '100%' }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, ease: 'easeInOut' }}
+                        className="timeline-line"
+                    ></motion.div>
 
                     {experience.map((exp, index) => (
-                        <div
+                        <motion.div
                             key={index}
+                            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: index * 0.2 }}
                             className="timeline-item"
-                            style={{
-                                animation: isVisible ? `fadeInUp 0.6s ease ${0.4 + index * 0.15}s forwards` : 'none',
-                                opacity: 0
-                            }}
                         >
                             {/* Dot */}
-                            <div className="timeline-dot"></div>
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.2 + 0.2 }}
+                                className="timeline-dot"
+                            ></motion.div>
 
                             <div className="card timeline-content">
                                 <div style={{
@@ -70,7 +74,7 @@ const Experience = () => {
                                     opacity: 0.9
                                 }}>{exp.description}</p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

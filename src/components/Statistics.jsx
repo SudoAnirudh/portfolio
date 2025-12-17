@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Code, Award, Briefcase, Users } from 'lucide-react';
 
 const Statistics = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef(null);
 
     const stats = [
         { icon: Code, label: 'Projects Completed', value: 15, suffix: '+' },
@@ -11,20 +11,6 @@ const Statistics = () => {
         { icon: Briefcase, label: 'Internships', value: 3, suffix: '' },
         { icon: Users, label: 'Hackathons', value: 8, suffix: '+' },
     ];
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) setIsVisible(true);
-            },
-            { threshold: 0.3 }
-        );
-
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => {
-            if (sectionRef.current) observer.unobserve(sectionRef.current);
-        };
-    }, []);
 
     const Counter = ({ end, duration = 2000, suffix = '' }) => {
         const [count, setCount] = useState(0);
@@ -45,7 +31,12 @@ const Statistics = () => {
     };
 
     return (
-        <section ref={sectionRef} className="section" style={{ background: 'var(--bg-secondary)' }}>
+        <motion.section
+            onViewportEnter={() => setIsVisible(true)}
+            viewport={{ once: true, amount: 0.3 }}
+            className="section"
+            style={{ background: 'var(--bg-secondary)' }}
+        >
             <div className="container">
                 <div className="grid md:grid-cols-2" style={{
                     display: 'grid',
@@ -53,14 +44,16 @@ const Statistics = () => {
                     gap: '1.5rem'
                 }}>
                     {stats.map((stat, index) => (
-                        <div
+                        <motion.div
                             key={index}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
                             className="card"
                             style={{
                                 textAlign: 'center',
                                 padding: '2rem',
-                                animation: isVisible ? `fadeInUp 0.6s ease ${index * 0.1}s forwards` : 'none',
-                                opacity: 0,
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
@@ -91,11 +84,11 @@ const Statistics = () => {
                             }}>
                                 {stat.label}
                             </p>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 
