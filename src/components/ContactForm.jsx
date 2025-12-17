@@ -14,16 +14,36 @@ const ContactForm = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('sending');
 
-        setTimeout(() => {
-            console.log('Form submitted:', formData);
-            setStatus('success');
-            setFormData({ name: '', email: '', subject: '', message: '' });
-            setTimeout(() => setStatus(''), 3000);
-        }, 1500);
+        // REPLACE'your-form-id' WITH YOUR ACTUAL FORMSPREE FORM ID
+        // Example: https://formspree.io/f/xyzyxzyx
+        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzznnnak';
+
+        try {
+            const response = await fetch(FORMSPREE_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                setTimeout(() => setStatus(''), 5000);
+            } else {
+                setStatus('error');
+                setTimeout(() => setStatus(''), 5000);
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setStatus('error');
+            setTimeout(() => setStatus(''), 5000);
+        }
     };
 
     const inputStyle = {
@@ -116,6 +136,11 @@ const ContactForm = () => {
                 {status === 'success' && (
                     <p style={{ color: '#4ade80', textAlign: 'center', marginTop: '0.5rem' }}>
                         Message sent successfully!
+                    </p>
+                )}
+                {status === 'error' && (
+                    <p style={{ color: '#ef4444', textAlign: 'center', marginTop: '0.5rem' }}>
+                        Oops! Something went wrong. Please try again later.
                     </p>
                 )}
             </div>
