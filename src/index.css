@@ -5,12 +5,14 @@
   --bg-secondary: #0a0a0a;
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;
-  --accent: #8b5cf6;
-  --accent-dim: rgba(139, 92, 246, 0.15);
+  --accent: #ff2e2e;
+  /* Festive Poinsettia Red */
+  --accent-dim: rgba(255, 46, 46, 0.15);
   --card-bg: rgba(17, 17, 17, 0.8);
-  --card-border: rgba(139, 92, 246, 0.2);
+  --card-border: rgba(255, 46, 46, 0.2);
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --radius: 16px;
+  --festive-green: #2ecc71;
 }
 
 [data-theme='light'] {

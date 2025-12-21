@@ -48,8 +48,9 @@ const Navbar = () => {
                 background: scrolled || isMenuOpen ? 'var(--bg-secondary)' : 'transparent'
             }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <a href="#" style={{ fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                    Anirudh<span
+                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                    <span style={{ fontSize: '1.6rem' }}>🎅</span>
+                    <span>Anirudh</span><span
                         onClick={handleDotClick}
                         style={{
                             color: 'var(--accent)',

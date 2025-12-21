@@ -138,7 +138,8 @@ const Contact = () => {
                     </div>
                 </motion.div>
 
-                <div className="text-center" style={{ marginTop: '5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', opacity: 0.6 }}>
+                <div className="text-center" style={{ marginTop: '5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', opacity: 0.8 }}>
+                    <p style={{ marginBottom: '0.5rem', color: 'var(--accent)', fontWeight: '500' }}>🎁 Wishing you a joyful holiday season! 🎄</p>
                     <p>© {new Date().getFullYear()} {profile.name}. All rights reserved.</p>
                 </div>
             </div>
