@@ -83,7 +83,7 @@ const Hero = () => {
                         animationDelay: '0.2s',
                         height: '3rem' // Fixed height to prevent layout shift
                     }}>
-                        {text}<span className="cursor">|</span>
+                        {text}
                     </h2>
 
                     <p className="animate-fade-in" style={{

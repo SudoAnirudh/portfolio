@@ -17,47 +17,25 @@ import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
 import CustomCursor from './CustomCursor';
 
 const Home = () => {
-    const [showTerminal, setShowTerminal] = useState(true);
-
-    // Console Easter Egg
-    useEffect(() => {
-        const style1 = "background: #0a0a0a; color: #4ade80; font-size: 20px; font-weight: bold; padding: 10px;";
-        const style2 = "background: #0a0a0a; color: #fff; font-size: 14px; padding: 5px;";
-
-        console.log("%c    ANIRUDH S.    ", style1);
-        console.log("%cHello, fellow developer! 👨‍💻\nIf you're reading this, you're probably looking for bugs (or Easter eggs).\nTry typing 'do a barrel roll' in the terminal intro!", style2);
-    }, []);
-
-    const handleTerminalComplete = () => {
-        setShowTerminal(false);
-    };
-
     return (
         <>
             <LoadingScreen />
-            {showTerminal ? (
-                <Terminal onComplete={handleTerminalComplete} />
-            ) : (
-                <>
-                    <CustomCursor />
-                    <CommandPalette />
-                    <ParticleBackground />
-                    <BackToTop />
-                    <BuyMeACoffeeWidget />
-                    <div className="App animate-fade-in">
-                        <Navbar />
-                        <Hero />
-                        <About />
-                        <GitHubHeatmap />
-                        <Statistics />
-                        <Experience />
-                        <Projects />
-                        <Contact />
-                        <HintPopup />
-                    </div>
-                </>
-            )
-            }
+            <CustomCursor />
+            <CommandPalette />
+            <ParticleBackground />
+            <BackToTop />
+            <BuyMeACoffeeWidget />
+            <div className="App animate-fade-in">
+                <Navbar />
+                <Hero />
+                <About />
+                <GitHubHeatmap />
+                <Statistics />
+                <Experience />
+                <Projects />
+                <Contact />
+                <HintPopup />
+            </div>
         </>
     );
 };

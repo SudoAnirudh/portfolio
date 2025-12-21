@@ -506,27 +506,7 @@ ul {
   border-color: var(--accent);
 }
 
-/* Typewriter Cursor */
-.cursor {
-  display: inline-block;
-  margin-left: 2px;
-  animation: blink 1s step-end infinite;
-  color: var(--accent);
-}
-
-@keyframes blink {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Responsive Timeline */
+/* Timeline */
 .timeline {
   position: relative;
   padding-top: 2rem;

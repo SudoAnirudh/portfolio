@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Home, User, Briefcase, Code, Mail, Github, Linkedin, Terminal, Moon, Sun } from 'lucide-react';
+import { Search, Home, User, Briefcase, Code, Mail, Github, Linkedin, CornerDownLeft, Moon, Sun } from 'lucide-react';
 import { profile } from '../data';
 
 const CommandPalette = () => {
@@ -224,7 +224,7 @@ const CommandPalette = () => {
                                         <action.icon size={18} />
                                         <span>{action.label}</span>
                                         {index === selectedIndex && (
-                                            <Terminal size={14} style={{ marginLeft: 'auto', opacity: 0.5 }} />
+                                            <CornerDownLeft size={14} style={{ marginLeft: 'auto', opacity: 0.5 }} />
                                         )}
                                     </button>
                                 ))

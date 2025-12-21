@@ -40,7 +40,7 @@ const HintPopup = () => {
                     Easter Egg Hunt!
                 </h4>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.4' }}>
-                    Psst! Try clicking the <strong>dot</strong> in the logo or type <strong>"do a barrel roll"</strong> in the terminal!
+                    Psst! Try clicking the <strong>dot</strong> in the logo or press <strong>Ctrl + K</strong> to search everything!
                 </p>
             </div>
             <button
