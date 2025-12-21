@@ -9,7 +9,6 @@ import LoadingScreen from './LoadingScreen';
 import ParticleBackground from './ParticleBackground';
 import Statistics from './Statistics';
 import BackToTop from './BackToTop';
-import Terminal from './Terminal';
 import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
