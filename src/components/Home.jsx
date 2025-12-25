@@ -14,13 +14,11 @@ import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
 import CustomCursor from './CustomCursor';
-import Snowfall from './Snowfall';
 
 const Home = () => {
     return (
         <>
             <LoadingScreen />
-            <Snowfall />
             <CustomCursor />
             <CommandPalette />
             <ParticleBackground />

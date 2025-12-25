@@ -49,15 +49,6 @@ const Hero = () => {
             <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="flex flex-col items-center text-center">
                     <div className="animate-fade-in" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{
-                            fontSize: '0.8rem',
-                            color: 'var(--accent)',
-                            fontWeight: '600',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase'
-                        }}>
-                            ✨ Season's Greetings ✨
-                        </div>
                         <span style={{
                             background: 'var(--card-bg)',
                             color: 'var(--text-secondary)',
