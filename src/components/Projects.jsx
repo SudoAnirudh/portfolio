@@ -2,20 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { projects } from '../data';
 import { Github } from 'lucide-react';
+import ScrambleTitle from './ScrambleTitle';
 
 const Projects = () => {
     return (
         <section id="projects" className="section">
             <div className="container">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="section-title"
-                >
-                    Featured Projects
-                </motion.h2>
+                <ScrambleTitle title="Featured Projects" />
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {projects.map((project, index) => (
@@ -27,16 +20,23 @@ const Projects = () => {
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
                             <div
-                                className="card flex flex-col justify-between group project-card h-full"
+                                className="card flex flex-col justify-between group project-card h-full overflow-hidden"
                                 style={{
                                     transition: 'transform 0.1s ease', // Faster transition for tilt
                                     transformStyle: 'preserve-3d',
                                     perspective: '1000px',
+                                    position: 'relative'
                                 }}
                                 onMouseMove={(e) => {
                                     const rect = e.currentTarget.getBoundingClientRect();
                                     const x = e.clientX - rect.left;
                                     const y = e.clientY - rect.top;
+
+                                    // Set heatmap position
+                                    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                                    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+
+                                    // Handle tilt
                                     const centerX = rect.width / 2;
                                     const centerY = rect.height / 2;
                                     const rotateX = (y - centerY) / 30;
@@ -48,7 +48,9 @@ const Projects = () => {
                                     e.currentTarget.style.transform = 'translateY(0) rotateX(0) rotateY(0) scale(1)';
                                 }}
                             >
-                                <div>
+                                <div className="attention-grid"></div>
+                                <div className="attention-heatmap"></div>
+                                <div style={{ position: 'relative', zIndex: 2 }}>
                                     <div className="flex justify-between items-start mb-2">
                                         <h3 style={{
                                             fontSize: '1.25rem',
@@ -69,7 +71,7 @@ const Projects = () => {
                                     </p>
                                 </div>
 
-                                <div className="flex gap-2" style={{ marginTop: 'auto' }}>
+                                <div className="flex gap-2" style={{ marginTop: 'auto', position: 'relative', zIndex: 2 }}>
                                     <a
                                         href={project.link}
                                         target="_blank"

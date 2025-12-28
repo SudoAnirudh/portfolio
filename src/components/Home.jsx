@@ -13,12 +13,16 @@ import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
+import Terminal from './Terminal';
+import MobileWarning from './MobileWarning';
 
 const Home = () => {
     return (
         <>
+            <MobileWarning />
             <LoadingScreen />
             <CommandPalette />
+            <Terminal />
             <NeuralBackground />
             <BackToTop />
             <BuyMeACoffeeWidget />

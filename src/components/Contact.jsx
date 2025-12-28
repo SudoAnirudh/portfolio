@@ -4,6 +4,7 @@ import { profile, certifications, achievements } from '../data';
 import { Mail, Phone, MapPin, Github, Linkedin, Award } from 'lucide-react';
 import ContactForm from './ContactForm';
 import Magnetic from './Magnetic';
+import ScrambleTitle from './ScrambleTitle';
 
 const Contact = () => {
     return (
@@ -50,15 +51,7 @@ const Contact = () => {
                     </motion.div>
                 </div>
 
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="section-title"
-                >
-                    Get In Touch
-                </motion.h2>
+                <ScrambleTitle title="Get In Touch" />
 
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}

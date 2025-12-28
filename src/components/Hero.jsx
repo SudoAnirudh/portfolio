@@ -3,6 +3,7 @@ import { profile } from '../data';
 import { ArrowRight, Download } from 'lucide-react';
 import DiscordStatus from './DiscordStatus';
 import Magnetic from './Magnetic';
+import CVButton from './CVButton';
 
 const Hero = () => {
     const roles = [profile.title, "Full Stack Developer", "Open Source Enthusiast"];
@@ -109,9 +110,7 @@ const Hero = () => {
                             </a>
                         </Magnetic>
                         <Magnetic strength={0.3}>
-                            <a href="https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link" download className="btn btn-outline" style={{ gap: '0.5rem' }}>
-                                Download CV <Download size={18} />
-                            </a>
+                            <CVButton href="https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link" />
                         </Magnetic>
                     </div>
                 </div>

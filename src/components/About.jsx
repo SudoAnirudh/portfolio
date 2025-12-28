@@ -2,20 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { education, profile } from '../data';
 import TechMarquee from './TechMarquee';
+import JupyterAbout from './JupyterAbout';
+import ScrambleTitle from './ScrambleTitle';
 
 const About = () => {
     return (
         <section id="about" className="section">
             <div className="container">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="section-title"
-                >
-                    About Me
-                </motion.h2>
+                <ScrambleTitle title="About Me" />
 
                 <div className="about-content">
                     <motion.div
@@ -32,9 +26,9 @@ const About = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="about-text"
+                        style={{ flex: 1, width: '100%' }}
                     >
-                        <p>{profile.about}</p>
+                        <JupyterAbout />
                     </motion.div>
                 </div>
 
