@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { profile } from '../data';
-import { ArrowRight, Download, Code, Cpu, Globe, Sparkles } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
+import DiscordStatus from './DiscordStatus';
+import Magnetic from './Magnetic';
 
 const Hero = () => {
     const roles = [profile.title, "Full Stack Developer", "Open Source Enthusiast"];
@@ -96,14 +98,21 @@ const Hero = () => {
                     }}>
                         {profile.summary}
                     </p>
+                    <div className="animate-fade-in" style={{ animationDelay: '0.35s', marginBottom: '3rem', display: 'flex', justifyContent: 'center' }}>
+                        <DiscordStatus />
+                    </div>
 
                     <div className="flex gap-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                        <a href="#projects" className="btn btn-primary" style={{ gap: '0.5rem' }}>
-                            View Projects <ArrowRight size={18} />
-                        </a>
-                        <a href="https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link" download className="btn btn-outline" style={{ gap: '0.5rem' }}>
-                            Download CV <Download size={18} />
-                        </a>
+                        <Magnetic strength={0.3}>
+                            <a href="#projects" className="btn btn-primary" style={{ gap: '0.5rem' }}>
+                                View Projects <ArrowRight size={18} />
+                            </a>
+                        </Magnetic>
+                        <Magnetic strength={0.3}>
+                            <a href="https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link" download className="btn btn-outline" style={{ gap: '0.5rem' }}>
+                                Download CV <Download size={18} />
+                            </a>
+                        </Magnetic>
                     </div>
                 </div>
             </div>

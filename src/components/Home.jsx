@@ -6,22 +6,20 @@ import Experience from './Experience';
 import Projects from './Projects';
 import Contact from './Contact';
 import LoadingScreen from './LoadingScreen';
-import ParticleBackground from './ParticleBackground';
+import NeuralBackground from './NeuralBackground';
 import Statistics from './Statistics';
 import BackToTop from './BackToTop';
 import GitHubHeatmap from './GitHubHeatmap';
 import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
-import CustomCursor from './CustomCursor';
 
 const Home = () => {
     return (
         <>
             <LoadingScreen />
-            <CustomCursor />
             <CommandPalette />
-            <ParticleBackground />
+            <NeuralBackground />
             <BackToTop />
             <BuyMeACoffeeWidget />
             <div className="App animate-fade-in">
