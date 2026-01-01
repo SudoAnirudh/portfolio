@@ -20,6 +20,17 @@ const MobileWarning = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    useEffect(() => {
+        if (isVisible) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isVisible]);
+
     if (!isVisible) return null;
 
     return (
@@ -51,9 +62,9 @@ const MobileWarning = () => {
                     </p>
 
                     <div className="warning-actions">
-                        <button className="btn-secondary" onClick={() => setIsVisible(false)}>
-                            Continue Anyway
-                        </button>
+                        <div className="desktop-required-badge">
+                            Large Screen Required
+                        </div>
                     </div>
 
                     <div className="technical-note">

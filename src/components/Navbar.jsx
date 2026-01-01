@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { profile } from '../data';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -12,6 +13,15 @@ const Navbar = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const openCalendly = (e) => {
+        e.preventDefault();
+        if (window.Calendly) {
+            window.Calendly.showPopupWidget(profile.social.calendly);
+        } else {
+            window.open(profile.social.calendly, '_blank');
+        }
+    };
 
     const navLinks = [
         { name: 'Home', href: '#home' },
@@ -79,6 +89,16 @@ const Navbar = () => {
                             {link.name}
                         </a>
                     ))}
+                    <button
+                        onClick={openCalendly}
+                        className="btn btn-primary"
+                        style={{
+                            padding: '0.5rem 1.2rem',
+                            fontSize: '0.85rem'
+                        }}
+                    >
+                        Hire Me
+                    </button>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -127,6 +147,19 @@ const Navbar = () => {
                             {link.name}
                         </a>
                     ))}
+                    <button
+                        onClick={(e) => {
+                            setIsMenuOpen(false);
+                            openCalendly(e);
+                        }}
+                        className="btn btn-primary"
+                        style={{
+                            width: '100%',
+                            marginTop: '0.5rem'
+                        }}
+                    >
+                        Hire Me
+                    </button>
                 </div>
             )}
         </nav>

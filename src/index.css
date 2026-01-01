@@ -402,6 +402,13 @@ ul {
   letter-spacing: -0.02em;
 }
 
+.subsection-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
 .education-list {
   display: flex;
   flex-direction: column;
@@ -482,18 +489,6 @@ ul {
   }
 }
 
-/* Back To Top */
-.back-to-top {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-primary);
-}
-
-.back-to-top:hover {
-  background: var(--accent);
-  color: var(--bg-color);
-  border-color: var(--accent);
-}
 
 /* Timeline */
 .timeline {
@@ -779,6 +774,33 @@ ul {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.4);
   color: #fff;
+}
+
+.desktop-required-badge {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 210, 255, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 210, 255, 0);
+  }
 }
 
 .technical-note {
@@ -1139,5 +1161,85 @@ ul {
   .code-block {
     font-size: 0.8rem;
     padding: 1rem;
+  }
+}
+
+/* matrix-active overrides */
+.matrix-active {
+  filter: sepia(100%) hue-rotate(80deg) brightness(1.2) contrast(1.2);
+  transition: filter 0.5s ease;
+}
+
+/* Scan Overlay Styles */
+.scan-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  overflow: hidden;
+}
+
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 210, 255, 0.6);
+  box-shadow: 0 0 20px var(--accent);
+  animation: scan-move 4s linear infinite;
+}
+
+.scan-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 210, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 210, 255, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+}
+
+.scan-flicker {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 210, 255, 0.03);
+  animation: flicker 0.15s infinite;
+}
+
+.scan-text {
+  position: absolute;
+  bottom: 5rem;
+  left: 3rem;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 8px var(--accent);
+  z-index: 9999;
+}
+
+@keyframes scan-move {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.8;
   }
 }

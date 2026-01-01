@@ -33,16 +33,7 @@ const About = () => {
                 </div>
 
                 <div style={{ marginBottom: '4rem' }}>
-                    <motion.h3
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                        className="subsection-title-center"
-                        style={{ color: 'var(--text-primary)', fontWeight: '500' }}
-                    >
-                        Education
-                    </motion.h3>
+                    <ScrambleTitle title="Education" className="subsection-title-center" />
                     <div className="education-list">
                         {education.map((edu, index) => (
                             <motion.div
@@ -64,17 +55,10 @@ const About = () => {
                     </div>
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                >
-                    <h3 className="subsection-title-center" style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        Technical Skills
-                    </h3>
+                <div style={{ marginBottom: '4rem' }}>
+                    <ScrambleTitle title="Technical Skills" className="subsection-title-center" />
                     <TechMarquee />
-                </motion.div>
+                </div>
             </div>
         </section>
     );

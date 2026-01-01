@@ -8,25 +8,34 @@ import Contact from './Contact';
 import LoadingScreen from './LoadingScreen';
 import NeuralBackground from './NeuralBackground';
 import Statistics from './Statistics';
-import BackToTop from './BackToTop';
 import GitHubHeatmap from './GitHubHeatmap';
-import HintPopup from './HintPopup';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
 import Terminal from './Terminal';
 import MobileWarning from './MobileWarning';
+import MatrixBackground from './MatrixBackground';
+import ScanOverlay from './ScanOverlay';
 
 const Home = () => {
+    const [isMatrixMode, setIsMatrixMode] = useState(false);
+    const [isScanMode, setIsScanMode] = useState(false);
+
     return (
         <>
             <MobileWarning />
             <LoadingScreen />
             <CommandPalette />
-            <Terminal />
-            <NeuralBackground />
-            <BackToTop />
+            {isMatrixMode && <MatrixBackground />}
+            {isScanMode && <ScanOverlay />}
+            <Terminal
+                onMatrixToggle={() => setIsMatrixMode(!isMatrixMode)}
+                onScanToggle={() => setIsScanMode(!isScanMode)}
+                isMatrixMode={isMatrixMode}
+                isScanMode={isScanMode}
+            />
+            {!isMatrixMode && <NeuralBackground />}
             <BuyMeACoffeeWidget />
-            <div className="App animate-fade-in">
+            <div className={`App animate-fade-in ${isMatrixMode ? 'matrix-active' : ''}`}>
                 <Navbar />
                 <Hero />
                 <About />
@@ -35,7 +44,6 @@ const Home = () => {
                 <Experience />
                 <Projects />
                 <Contact />
-                <HintPopup />
             </div>
         </>
     );

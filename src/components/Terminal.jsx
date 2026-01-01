@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Terminal as TerminalIcon, X, Minus, Square, ChevronRight } from 'lucide-react';
 import { projects } from '../data';
 
-const Terminal = () => {
+const Terminal = ({ onMatrixToggle, onScanToggle, isMatrixMode, isScanMode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
     const [history, setHistory] = useState([
@@ -27,7 +27,7 @@ const Terminal = () => {
 
             switch (cmd) {
                 case 'help':
-                    newHistory.push({ type: 'output', content: 'Available commands: ls, clear, whoami, help, cat brain.exe, contact' });
+                    newHistory.push({ type: 'output', content: 'Available commands: ls, clear, whoami, help, cat brain.exe, contact, sudo matrix, scan, exit' });
                     break;
                 case 'ls':
                 case 'ls projects':
@@ -37,7 +37,33 @@ const Terminal = () => {
                     });
                     break;
                 case 'whoami':
-                    newHistory.push({ type: 'output', content: 'Anirudh S - AI & ML Engineering Student' });
+                    newHistory.push({ type: 'output', content: '----------------------------------------' });
+                    newHistory.push({ type: 'output', content: 'USER_ID: ANIRUDH_S' });
+                    newHistory.push({ type: 'output', content: 'CLASS: AI_ML_ENGINEER_STUDENT' });
+                    newHistory.push({ type: 'output', content: 'LOCATION: EARTH_SECTOR_7' });
+                    newHistory.push({ type: 'output', content: 'TRAITS: [CAFFEINE_DRIVEN, NEURAL_OBSESSED]' });
+                    newHistory.push({ type: 'output', content: '----------------------------------------' });
+                    break;
+                case 'sudo matrix':
+                    if (isMatrixMode) {
+                        newHistory.push({ type: 'output', content: 'Deactivating system override... Reverting to standard neural link.' });
+                    } else {
+                        newHistory.push({ type: 'output', content: 'Executing system override... Enter the Matrix.' });
+                    }
+                    if (onMatrixToggle) onMatrixToggle();
+                    break;
+                case 'scan':
+                    if (isScanMode) {
+                        newHistory.push({ type: 'output', content: 'Terminating scan sequence...' });
+                    } else {
+                        newHistory.push({ type: 'output', content: 'Initializing environmental scan...' });
+                    }
+                    if (onScanToggle) onScanToggle();
+                    break;
+                case 'exit':
+                    newHistory.push({ type: 'output', content: 'Shutting down all active overrides...' });
+                    if (isMatrixMode && onMatrixToggle) onMatrixToggle();
+                    if (isScanMode && onScanToggle) onScanToggle();
                     break;
                 case 'clear':
                     setHistory([]);

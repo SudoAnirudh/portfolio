@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 const ScrambleTitle = ({ title, className = "section-title" }) => {
-    const [displayText, setDisplayText] = useState(title);
+    const [displayText, setDisplayText] = useState("");
     const [isScrambling, setIsScrambling] = useState(false);
     const intervalRef = useRef(null);
     const iterationRef = useRef(0);
+    const containerRef = useRef(null);
+    const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
     const chars = "01"; // Binary theme
 
@@ -15,7 +17,7 @@ const ScrambleTitle = ({ title, className = "section-title" }) => {
         iterationRef.current = 0;
 
         intervalRef.current = setInterval(() => {
-            setDisplayText(prev =>
+            setDisplayText(
                 title.split("")
                     .map((char, index) => {
                         if (index < iterationRef.current) {
@@ -36,11 +38,11 @@ const ScrambleTitle = ({ title, className = "section-title" }) => {
         }, 30);
     };
 
-    const stopScramble = () => {
-        clearInterval(intervalRef.current);
-        setDisplayText(title);
-        setIsScrambling(false);
-    };
+    useEffect(() => {
+        if (isInView) {
+            startScramble();
+        }
+    }, [isInView]);
 
     useEffect(() => {
         return () => clearInterval(intervalRef.current);
@@ -48,16 +50,14 @@ const ScrambleTitle = ({ title, className = "section-title" }) => {
 
     return (
         <motion.h2
+            ref={containerRef}
             className={className}
-            onMouseEnter={startScramble}
-            onMouseLeave={stopScramble}
             style={{ cursor: 'default' }}
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
         >
-            {displayText}
+            {displayText || " "}
         </motion.h2>
     );
 };

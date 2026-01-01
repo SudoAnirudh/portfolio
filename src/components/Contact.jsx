@@ -1,17 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { profile, certifications, achievements } from '../data';
-import { Mail, Phone, MapPin, Github, Linkedin, Award } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Linkedin, Award, Calendar, ExternalLink } from 'lucide-react';
 import ContactForm from './ContactForm';
 import Magnetic from './Magnetic';
 import ScrambleTitle from './ScrambleTitle';
 
 const Contact = () => {
+    const openCalendly = (e) => {
+        e.preventDefault();
+        if (window.Calendly) {
+            window.Calendly.showPopupWidget(profile.social.calendly);
+        } else {
+            window.open(profile.social.calendly, '_blank');
+        }
+    };
+
     return (
         <section id="contact" className="section">
             <div className="container">
 
-                <div className="grid md:grid-cols-2 gap-4" style={{ marginBottom: '4rem' }}>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" style={{ marginBottom: '4rem' }}>
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -19,9 +28,10 @@ const Contact = () => {
                         transition={{ duration: 0.5 }}
                         className="card"
                     >
-                        <h3 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Award size={20} color="var(--accent)" /> Certifications
-                        </h3>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                            <Award size={20} color="var(--accent)" />
+                            <ScrambleTitle title="Certifications" className="subsection-title" />
+                        </div>
                         <ul className="flex flex-col gap-2">
                             {certifications.map((cert, index) => (
                                 <li key={index} style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
@@ -37,17 +47,32 @@ const Contact = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="card"
+                        style={{
+                            border: '1px solid var(--accent)',
+                            background: 'linear-gradient(145deg, var(--card-bg), rgba(0, 210, 255, 0.05))',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between'
+                        }}
                     >
-                        <h3 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Award size={20} color="var(--accent)" /> Achievements
-                        </h3>
-                        <ul className="flex flex-col gap-2">
-                            {achievements.map((ach, index) => (
-                                <li key={index} style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-                                    {ach}
-                                </li>
-                            ))}
-                        </ul>
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                                <Calendar size={20} color="var(--accent)" />
+                                <ScrambleTitle title="Book a Meeting" className="subsection-title" />
+                            </div>
+                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+                                Skip the email back-and-forth. Schedule a 15-30 minute intro call directly into my calendar.
+                            </p>
+                        </div>
+                        <Magnetic strength={0.2}>
+                            <button
+                                onClick={openCalendly}
+                                className="btn btn-primary w-full"
+                                style={{ gap: '0.5rem', fontSize: '0.9rem' }}
+                            >
+                                Open Calendar <ExternalLink size={16} />
+                            </button>
+                        </Magnetic>
                     </motion.div>
                 </div>
 

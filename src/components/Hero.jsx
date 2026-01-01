@@ -52,6 +52,33 @@ const Hero = () => {
             <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="flex flex-col items-center text-center">
                     <div className="animate-fade-in" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                        {profile.status && (
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                background: 'rgba(34, 197, 94, 0.1)',
+                                border: '1px solid rgba(34, 197, 94, 0.2)',
+                                padding: '0.4rem 1rem',
+                                borderRadius: '50px',
+                                fontSize: '0.8rem',
+                                fontWeight: '500',
+                                color: '#4ade80',
+                                marginBottom: '0.5rem'
+                            }}>
+                                <div style={{ position: 'relative', width: '8px', height: '8px' }}>
+                                    <div style={{
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '100%',
+                                        background: '#4ade80',
+                                        borderRadius: '50%'
+                                    }}></div>
+                                    <div className="status-ping" style={{ background: '#4ade80' }}></div>
+                                </div>
+                                {profile.status.toUpperCase()}
+                            </div>
+                        )}
                         <span style={{
                             background: 'var(--card-bg)',
                             color: 'var(--text-secondary)',
