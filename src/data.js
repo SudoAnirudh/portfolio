@@ -13,7 +13,6 @@ export const profile = {
         github: "https://github.com/SudoAnirudh",
         linkedin: "https://www.linkedin.com/in/sudoanirudh/",
         email: "mailto:anirudhsudheer@gmail.com",
-        calendly: "https://calendly.com/sudoanirudh/hiring",
         peerlist: "https://peerlist.io/sudoanirudh",
         contra: "https://contra.com/sudoanirudh"
     },

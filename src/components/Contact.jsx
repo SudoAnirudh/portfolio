@@ -1,82 +1,41 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { profile, certifications, achievements } from '../data';
-import { Mail, Phone, MapPin, Github, Linkedin, Award, Calendar, ExternalLink } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Linkedin, Award, ExternalLink } from 'lucide-react';
 import ContactForm from './ContactForm';
 import Magnetic from './Magnetic';
 import ScrambleTitle from './ScrambleTitle';
 
 const Contact = () => {
-    const openCalendly = (e) => {
-        e.preventDefault();
-        if (window.Calendly) {
-            window.Calendly.showPopupWidget(profile.social.calendly);
-        } else {
-            window.open(profile.social.calendly, '_blank');
-        }
-    };
 
     return (
         <section id="contact" className="section">
             <div className="container">
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4" style={{ marginBottom: '4rem' }}>
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className="card"
-                    >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                            <Award size={20} color="var(--accent)" />
-                            <ScrambleTitle title="Certifications" className="subsection-title" />
-                        </div>
-                        <ul className="flex flex-col gap-2">
-                            {certifications.map((cert, index) => (
-                                <li key={index} style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-                                    {cert}
-                                </li>
-                            ))}
-                        </ul>
-                    </motion.div>
+                <div style={{ marginBottom: '4rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginBottom: '2.5rem' }}>
+                        <Award size={24} color="var(--accent)" />
+                        <ScrambleTitle title="Certifications" className="section-title" style={{ margin: 0 }} />
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="card"
-                        style={{
-                            border: '1px solid var(--accent)',
-                            background: 'linear-gradient(145deg, var(--card-bg), rgba(0, 210, 255, 0.05))',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                                <Calendar size={20} color="var(--accent)" />
-                                <ScrambleTitle title="Book a Meeting" className="subsection-title" />
-                            </div>
-                            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: '1.5' }}>
-                                Skip the email back-and-forth. Schedule a 15-30 minute intro call directly into my calendar.
-                            </p>
-                        </div>
-                        <Magnetic strength={0.2}>
-                            <button
-                                onClick={openCalendly}
-                                className="btn btn-primary w-full"
-                                style={{ gap: '0.5rem', fontSize: '0.9rem' }}
+                    <div className="flex justify-center" style={{ flexWrap: 'wrap', gap: '1rem', maxWidth: '900px', margin: '0 auto' }}>
+                        {certifications.map((cert, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
+                                className="cert-badge"
                             >
-                                Open Calendar <ExternalLink size={16} />
-                            </button>
-                        </Magnetic>
-                    </motion.div>
+                                <Award size={14} style={{ opacity: 0.6 }} />
+                                {cert}
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
 
-                <ScrambleTitle title="Get In Touch" />
+                <ScrambleTitle title="Get In Touch" style={{ marginTop: '3rem' }} />
 
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}

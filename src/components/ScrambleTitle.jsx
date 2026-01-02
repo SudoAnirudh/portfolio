@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const ScrambleTitle = ({ title, className = "section-title" }) => {
+const ScrambleTitle = ({ title, className = "section-title", style = {} }) => {
     const [displayText, setDisplayText] = useState("");
     const [isScrambling, setIsScrambling] = useState(false);
     const intervalRef = useRef(null);
@@ -52,7 +52,7 @@ const ScrambleTitle = ({ title, className = "section-title" }) => {
         <motion.h2
             ref={containerRef}
             className={className}
-            style={{ cursor: 'default' }}
+            style={{ cursor: 'default', ...style }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
