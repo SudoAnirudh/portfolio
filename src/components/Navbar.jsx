@@ -87,6 +87,9 @@ const Navbar = () => {
                 <button
                     className="md:hidden"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={isMenuOpen}
+                    aria-controls="mobile-menu"
                     style={{
                         background: 'none',
                         border: 'none',
@@ -100,20 +103,26 @@ const Navbar = () => {
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    width: '100%',
-                    background: 'var(--bg-secondary)',
-                    padding: '2rem',
-                    borderBottom: '1px solid var(--card-border)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1.5rem',
-                    alignItems: 'center',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
-                }} className="md:hidden animate-fade-in">
+                <div
+                    id="mobile-menu"
+                    role="navigation"
+                    aria-label="Mobile menu"
+                    style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        width: '100%',
+                        background: 'var(--bg-secondary)',
+                        padding: '2rem',
+                        borderBottom: '1px solid var(--card-border)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1.5rem',
+                        alignItems: 'center',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
+                    }}
+                    className="md:hidden animate-fade-in"
+                >
                     {navLinks.map((link) => (
                         <a
                             key={link.name}
