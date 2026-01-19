@@ -63,25 +63,31 @@ const ContactForm = () => {
             <div className="flex flex-col gap-4">
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                        <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Name</label>
+                        <label htmlFor="contact-name" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Name</label>
                         <input
+                            id="contact-name"
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                             required
+                            aria-required="true"
+                            autoComplete="name"
                             style={inputStyle}
                             className="form-input"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email</label>
+                        <label htmlFor="contact-email" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email</label>
                         <input
+                            id="contact-email"
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            aria-required="true"
+                            autoComplete="email"
                             style={inputStyle}
                             className="form-input"
                         />
@@ -89,25 +95,29 @@ const ContactForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Subject</label>
+                    <label htmlFor="contact-subject" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Subject</label>
                     <input
+                        id="contact-subject"
                         type="text"
                         name="subject"
                         value={formData.subject}
                         onChange={handleChange}
                         required
+                        aria-required="true"
                         style={inputStyle}
                         className="form-input"
                     />
                 </div>
 
                 <div className="flex flex-col gap-1">
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Message</label>
+                    <label htmlFor="contact-message" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Message</label>
                     <textarea
+                        id="contact-message"
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
                         required
+                        aria-required="true"
                         rows="5"
                         style={{ ...inputStyle, resize: 'none' }}
                         className="form-input"
