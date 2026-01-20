@@ -63,8 +63,9 @@ const ContactForm = () => {
             <div className="flex flex-col gap-4">
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                        <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Name</label>
+                        <label htmlFor="name" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Name</label>
                         <input
+                            id="name"
                             type="text"
                             name="name"
                             value={formData.name}
@@ -75,8 +76,9 @@ const ContactForm = () => {
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email</label>
+                        <label htmlFor="email" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Email</label>
                         <input
+                            id="email"
                             type="email"
                             name="email"
                             value={formData.email}
@@ -89,8 +91,9 @@ const ContactForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Subject</label>
+                    <label htmlFor="subject" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Subject</label>
                     <input
+                        id="subject"
                         type="text"
                         name="subject"
                         value={formData.subject}
@@ -102,8 +105,9 @@ const ContactForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Message</label>
+                    <label htmlFor="message" style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Message</label>
                     <textarea
+                        id="message"
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
