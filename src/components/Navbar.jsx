@@ -50,18 +50,24 @@ const Navbar = () => {
                 background: scrolled || isMenuOpen ? 'var(--bg-secondary)' : 'transparent'
             }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                    <span>Anirudh</span><span
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Anirudh</a>
+                    <button
                         onClick={handleDotClick}
+                        aria-label="Surprise color change"
                         style={{
+                            background: 'none',
+                            border: 'none',
                             color: 'var(--accent)',
                             cursor: 'pointer',
                             padding: '0 2px',
-                            transition: 'all 0.3s ease'
+                            transition: 'all 0.3s ease',
+                            fontSize: 'inherit',
+                            fontWeight: 'inherit'
                         }}
                         title="Click for a surprise!"
-                    >.</span>
-                </a>
+                    >.</button>
+                </div>
 
                 {/* Desktop Menu */}
                 <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="hidden md:flex">
@@ -87,6 +93,7 @@ const Navbar = () => {
                 <button
                     className="md:hidden"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     style={{
                         background: 'none',
                         border: 'none',
