@@ -46,18 +46,6 @@ const ContactForm = () => {
         }
     };
 
-    const inputStyle = {
-        padding: '1rem',
-        borderRadius: '8px',
-        border: '1px solid var(--card-border)',
-        background: 'var(--bg-secondary)',
-        color: 'var(--text-primary)',
-        outline: 'none',
-        width: '100%',
-        fontSize: '0.95rem',
-        transition: 'border-color 0.3s'
-    };
-
     return (
         <form onSubmit={handleSubmit} className="card" style={{ maxWidth: '600px', margin: '0 auto', border: 'none', background: 'transparent', padding: 0, boxShadow: 'none', backdropFilter: 'none' }}>
             <div className="flex flex-col gap-4">
@@ -71,7 +59,6 @@ const ContactForm = () => {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            style={inputStyle}
                             className="form-input"
                         />
                     </div>
@@ -84,7 +71,6 @@ const ContactForm = () => {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            style={inputStyle}
                             className="form-input"
                         />
                     </div>
@@ -99,7 +85,6 @@ const ContactForm = () => {
                         value={formData.subject}
                         onChange={handleChange}
                         required
-                        style={inputStyle}
                         className="form-input"
                     />
                 </div>
@@ -113,7 +98,6 @@ const ContactForm = () => {
                         onChange={handleChange}
                         required
                         rows="5"
-                        style={{ ...inputStyle, resize: 'none' }}
                         className="form-input"
                     ></textarea>
                 </div>

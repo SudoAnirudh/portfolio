@@ -144,6 +144,27 @@ ul {
 }
 
 /* Components */
+.form-input {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  font-size: 0.95rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea.form-input {
+  resize: none;
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
