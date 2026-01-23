@@ -20,13 +20,13 @@ const CustomCursor = () => {
 
             // Allow pointer events to pass through and detect active element
             const target = e.target;
-            const computedStyle = window.getComputedStyle(target);
 
+            // Check efficient properties first to avoid layout thrashing
             if (target.tagName.toLowerCase() === 'a' ||
                 target.tagName.toLowerCase() === 'button' ||
                 target.closest('a') ||
                 target.closest('button') ||
-                computedStyle.cursor === 'pointer') {
+                window.getComputedStyle(target).cursor === 'pointer') {
                 setCursorVariant('pointer');
             } else {
                 setCursorVariant('default');
