@@ -50,18 +50,26 @@ const Navbar = () => {
                 background: scrolled || isMenuOpen ? 'var(--bg-secondary)' : 'transparent'
             }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                    <span>Anirudh</span><span
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.4rem', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                    <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Anirudh</a>
+                    <button
                         onClick={handleDotClick}
+                        className="focus-visible:ring-2 focus-visible:ring-offset-2 ring-offset-black rounded-sm outline-none"
                         style={{
+                            background: 'none',
+                            border: 'none',
                             color: 'var(--accent)',
                             cursor: 'pointer',
                             padding: '0 2px',
-                            transition: 'all 0.3s ease'
+                            transition: 'all 0.3s ease',
+                            fontSize: 'inherit',
+                            fontWeight: 'inherit',
+                            lineHeight: 'inherit'
                         }}
+                        aria-label="Surprise color theme"
                         title="Click for a surprise!"
-                    >.</span>
-                </a>
+                    >.</button>
+                </div>
 
                 {/* Desktop Menu */}
                 <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="hidden md:flex">
@@ -87,6 +95,9 @@ const Navbar = () => {
                 <button
                     className="md:hidden"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={isMenuOpen}
+                    aria-controls="mobile-menu"
                     style={{
                         background: 'none',
                         border: 'none',
@@ -100,7 +111,9 @@ const Navbar = () => {
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div style={{
+                <div
+                    id="mobile-menu"
+                    style={{
                     position: 'absolute',
                     top: '100%',
                     left: 0,
