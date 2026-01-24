@@ -14,31 +14,39 @@ const ContactForm = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // Google Form Configuration
+    const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdYW6y405M2Jsc_MnYhlQ-sGDVZFwSSbc9EBuW0B2IZRRGKog/formResponse";
+
+    const GOOGLE_FORM_FIELDS = {
+        name: "entry.2005620554",
+        email: "entry.1045781291",
+        subject: "entry.839337160",
+        message: "entry.1495416884"
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('sending');
 
-        // REPLACE'your-form-id' WITH YOUR ACTUAL FORMSPREE FORM ID
-        // Example: https://formspree.io/f/xyzyxzyx
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzznnnak';
-
         try {
-            const response = await fetch(FORMSPREE_ENDPOINT, {
+            const formDataToSend = new FormData();
+            formDataToSend.append(GOOGLE_FORM_FIELDS.name, formData.name);
+            formDataToSend.append(GOOGLE_FORM_FIELDS.email, formData.email);
+            formDataToSend.append(GOOGLE_FORM_FIELDS.subject, formData.subject);
+            formDataToSend.append(GOOGLE_FORM_FIELDS.message, formData.message);
+
+            await fetch(GOOGLE_FORM_ACTION_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                mode: 'no-cors', // Required for Google Forms
+                body: formDataToSend
             });
 
-            if (response.ok) {
-                setStatus('success');
-                setFormData({ name: '', email: '', subject: '', message: '' });
-                setTimeout(() => setStatus(''), 5000);
-            } else {
-                setStatus('error');
-                setTimeout(() => setStatus(''), 5000);
-            }
+            // "no-cors" mode returns an opaque response, so we can't check response.ok.
+            // We assume success if no error was thrown.
+            setStatus('success');
+            setFormData({ name: '', email: '', subject: '', message: '' });
+            setTimeout(() => setStatus(''), 5000);
+
         } catch (error) {
             console.error('Error submitting form:', error);
             setStatus('error');
