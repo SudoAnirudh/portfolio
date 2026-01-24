@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { profile } from '../data';
+import Magnetic from './Magnetic';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -74,20 +75,23 @@ const Navbar = () => {
                 {/* Desktop Menu */}
                 <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="hidden md:flex">
                     {navLinks.map((link) => (
-                        <a
-                            key={link.name}
-                            href={link.href}
-                            style={{
-                                color: 'var(--text-secondary)',
-                                fontSize: '0.9rem',
-                                fontWeight: '500',
-                                transition: 'color 0.3s'
-                            }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
-                            onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
-                        >
-                            {link.name}
-                        </a>
+                        <Magnetic key={link.name} strength={0.2}>
+                            <a
+                                href={link.href}
+                                style={{
+                                    color: 'var(--text-secondary)',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    transition: 'color 0.3s',
+                                    display: 'inline-block', // Required for magnetic effect on inline elements
+                                    padding: '0.5rem' // Increase touch target
+                                }}
+                                onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
+                                onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+                            >
+                                {link.name}
+                            </a>
+                        </Magnetic>
                     ))}
                 </div>
 
@@ -114,19 +118,19 @@ const Navbar = () => {
                 <div
                     id="mobile-menu"
                     style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    width: '100%',
-                    background: 'var(--bg-secondary)',
-                    padding: '2rem',
-                    borderBottom: '1px solid var(--card-border)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1.5rem',
-                    alignItems: 'center',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
-                }} className="md:hidden animate-fade-in">
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        width: '100%',
+                        background: 'var(--bg-secondary)',
+                        padding: '2rem',
+                        borderBottom: '1px solid var(--card-border)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1.5rem',
+                        alignItems: 'center',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
+                    }} className="md:hidden animate-fade-in">
                     {navLinks.map((link) => (
                         <a
                             key={link.name}

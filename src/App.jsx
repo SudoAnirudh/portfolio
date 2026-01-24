@@ -7,10 +7,14 @@ import Home from './components/Home';
 
 import KonamiCode from './components/KonamiCode';
 import Spotlight from './components/Spotlight';
+import SmoothScroll from './components/SmoothScroll';
+import NoiseOverlay from './components/NoiseOverlay';
 
 function App() {
   return (
     <Router>
+      <SmoothScroll />
+      <NoiseOverlay />
       <Spotlight />
       <KonamiCode />
       <Routes>
