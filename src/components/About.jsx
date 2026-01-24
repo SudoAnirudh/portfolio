@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { education, profile } from '../data';
-import TechMarquee from './TechMarquee';
+// import TechMarquee from './TechMarquee';
+import SkillSphere from './SkillSphere';
 import JupyterAbout from './JupyterAbout';
 import ScrambleTitle from './ScrambleTitle';
 
@@ -57,7 +58,7 @@ const About = () => {
 
                 <div style={{ marginBottom: '4rem' }}>
                     <ScrambleTitle title="Technical Skills" className="subsection-title-center" />
-                    <TechMarquee />
+                    <SkillSphere />
                 </div>
             </div>
         </section>

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { projects } from '../data';
 import { Github } from 'lucide-react';
+import { Tilt } from 'react-tilt';
 import ScrambleTitle from './ScrambleTitle';
 
 const Projects = () => {
@@ -19,76 +20,51 @@ const Projects = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
-                            <div
-                                className="card flex flex-col justify-between group project-card h-full overflow-hidden"
-                                style={{
-                                    transition: 'transform 0.1s ease', // Faster transition for tilt
-                                    transformStyle: 'preserve-3d',
-                                    perspective: '1000px',
-                                    position: 'relative'
-                                }}
-                                onMouseMove={(e) => {
-                                    const rect = e.currentTarget.getBoundingClientRect();
-                                    const x = e.clientX - rect.left;
-                                    const y = e.clientY - rect.top;
+                            <Tilt className="Tilt" options={{ max: 15, scale: 1.05, speed: 400, glitch: true }}>
+                                <div className="card flex flex-col justify-between group project-card h-full overflow-hidden"
+                                    style={{ transformStyle: "preserve-3d" }}>
+                                    <div className="attention-grid"></div>
+                                    <div className="attention-heatmap"></div>
+                                    <div style={{ position: 'relative', zIndex: 2, transform: "translateZ(30px)" }}>
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 style={{
+                                                fontSize: '1.25rem',
+                                                fontWeight: '600',
+                                                marginBottom: '0.8rem',
+                                                color: 'var(--text-primary)',
+                                            }}>{project.title}</h3>
+                                        </div>
 
-                                    // Set heatmap position
-                                    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-                                    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
-
-                                    // Handle tilt
-                                    const centerX = rect.width / 2;
-                                    const centerY = rect.height / 2;
-                                    const rotateX = (y - centerY) / 30;
-                                    const rotateY = (centerX - x) / 30;
-
-                                    e.currentTarget.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(0) rotateX(0) rotateY(0) scale(1)';
-                                }}
-                            >
-                                <div className="attention-grid"></div>
-                                <div className="attention-heatmap"></div>
-                                <div style={{ position: 'relative', zIndex: 2 }}>
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 style={{
-                                            fontSize: '1.25rem',
-                                            fontWeight: '600',
-                                            marginBottom: '0.8rem',
-                                            color: 'var(--text-primary)',
-                                        }}>{project.title}</h3>
+                                        <p style={{
+                                            color: 'var(--text-secondary)',
+                                            marginBottom: '1.5rem',
+                                            fontSize: '0.95rem',
+                                            lineHeight: '1.6',
+                                            fontWeight: '400'
+                                        }}>
+                                            {project.description}
+                                        </p>
                                     </div>
 
-                                    <p style={{
-                                        color: 'var(--text-secondary)',
-                                        marginBottom: '1.5rem',
-                                        fontSize: '0.95rem',
-                                        lineHeight: '1.6',
-                                        fontWeight: '400'
-                                    }}>
-                                        {project.description}
-                                    </p>
+                                    <div className="flex gap-2" style={{ marginTop: 'auto', position: 'relative', zIndex: 2, transform: "translateZ(30px)" }}>
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="btn btn-outline"
+                                            style={{
+                                                width: '100%',
+                                                justifyContent: 'center',
+                                                gap: '0.5rem',
+                                                fontSize: '0.9rem',
+                                                padding: '0.6rem 0'
+                                            }}
+                                        >
+                                            <Github size={16} /> View Code
+                                        </a>
+                                    </div>
                                 </div>
-
-                                <div className="flex gap-2" style={{ marginTop: 'auto', position: 'relative', zIndex: 2 }}>
-                                    <a
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="btn btn-outline"
-                                        style={{
-                                            width: '100%',
-                                            justifyContent: 'center',
-                                            gap: '0.5rem',
-                                            fontSize: '0.9rem',
-                                            padding: '0.6rem 0'
-                                        }}
-                                    >
-                                        <Github size={16} /> View Code
-                                    </a>
-                                </div>
-                            </div>
+                            </Tilt>
                         </motion.div>
                     ))}
                 </div>

@@ -1269,3 +1269,22 @@ ul {
     opacity: 0.8;
   }
 }
+/* TagCloud */
+.tagcloud {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.tagcloud--item {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tagcloud--item:hover {
+  color: var(--text-primary);
+  opacity: 1;
+  transform: scale(1.1);
+  text-shadow: 0 0 10px var(--accent);
+}
