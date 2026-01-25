@@ -15,7 +15,7 @@ const ContactForm = () => {
     };
 
     // Google Form Configuration
-    const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdYW6y405M2Jsc_MnYhlQ-sGDVZFwSSbc9EBuW0B2IZRRGKog/formResponse";
+    const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdYW6y405M2Jsc_MnYhlQ-sGDVZFwSSbc9EBuW0B2IZRRGKog/formResponse";
 
     const GOOGLE_FORM_FIELDS = {
         name: "entry.2005620554",
@@ -34,6 +34,10 @@ const ContactForm = () => {
             formDataToSend.append(GOOGLE_FORM_FIELDS.email, formData.email);
             formDataToSend.append(GOOGLE_FORM_FIELDS.subject, formData.subject);
             formDataToSend.append(GOOGLE_FORM_FIELDS.message, formData.message);
+
+            // Add hidden fields required by Google Forms
+            formDataToSend.append("fbzx", "6536561340040688800");
+            formDataToSend.append("pageHistory", "0");
 
             await fetch(GOOGLE_FORM_ACTION_URL, {
                 method: 'POST',
