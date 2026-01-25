@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -64,7 +64,6 @@ const ContactForm = () => {
         border: '1px solid var(--card-border)',
         background: 'var(--bg-secondary)',
         color: 'var(--text-primary)',
-        outline: 'none',
         width: '100%',
         fontSize: '0.95rem',
         transition: 'border-color 0.3s'
@@ -144,7 +143,9 @@ const ContactForm = () => {
                         width: '100%'
                     }}
                 >
-                    {status === 'sending' ? 'Sending...' : (
+                    {status === 'sending' ? (
+                        <><Loader2 className="animate-spin" size={18} /> Sending...</>
+                    ) : (
                         <>Send Message <Send size={18} /></>
                     )}
                 </button>
