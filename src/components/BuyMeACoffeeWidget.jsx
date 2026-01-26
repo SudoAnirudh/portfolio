@@ -7,6 +7,8 @@ const BuyMeACoffeeWidget = () => {
             href="https://buymeacoffee.com/anirudh"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Buy Me A Coffee"
+            className="focus-ring"
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             whileHover={{ scale: 1.1, rotate: 10 }}
