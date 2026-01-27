@@ -72,17 +72,36 @@ const Contact = () => {
 
                     <div className="flex justify-center gap-3">
                         <Magnetic strength={0.5}>
-                            <a href={profile.social.github} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ borderRadius: '50%', padding: '0.8rem' }}>
+                            <a
+                                href={profile.social.github}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-outline focus-ring"
+                                aria-label="Visit GitHub Profile"
+                                style={{ borderRadius: '50%', padding: '0.8rem' }}
+                            >
                                 <Github size={20} />
                             </a>
                         </Magnetic>
                         <Magnetic strength={0.5}>
-                            <a href={profile.social.linkedin} target="_blank" rel="noreferrer" className="btn btn-outline" style={{ borderRadius: '50%', padding: '0.8rem' }}>
+                            <a
+                                href={profile.social.linkedin}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-outline focus-ring"
+                                aria-label="Visit LinkedIn Profile"
+                                style={{ borderRadius: '50%', padding: '0.8rem' }}
+                            >
                                 <Linkedin size={20} />
                             </a>
                         </Magnetic>
                         <Magnetic strength={0.5}>
-                            <a href={`mailto:${profile.email}`} className="btn btn-outline" style={{ borderRadius: '50%', padding: '0.8rem' }}>
+                            <a
+                                href={`mailto:${profile.email}`}
+                                className="btn btn-outline focus-ring"
+                                aria-label="Send Email"
+                                style={{ borderRadius: '50%', padding: '0.8rem' }}
+                            >
                                 <Mail size={20} />
                             </a>
                         </Magnetic>
@@ -91,7 +110,8 @@ const Contact = () => {
                                 href="https://buymeacoffee.com/anirudh"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="btn btn-outline"
+                                className="btn btn-outline focus-ring"
+                                aria-label="Buy Me A Coffee"
                                 style={{
                                     borderRadius: '50%',
                                     padding: '0.8rem',
