@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
-/* config options here */
-reactCompiler: true,
+const nextConfig: NextConfig = {
+  /* config options here */
+  reactCompiler: true,
   distDir: "dist",
 };
 
