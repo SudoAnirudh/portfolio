@@ -12,7 +12,6 @@ import GitHubHeatmap from './GitHubHeatmap';
 import CommandPalette from './CommandPalette';
 import BuyMeACoffeeWidget from './BuyMeACoffeeWidget';
 import Terminal from './Terminal';
-import MobileWarning from './MobileWarning';
 import MatrixBackground from './MatrixBackground';
 import ScanOverlay from './ScanOverlay';
 
@@ -22,7 +21,6 @@ const Home = () => {
 
     return (
         <>
-            <MobileWarning />
             <LoadingScreen />
             <CommandPalette />
             {isMatrixMode && <MatrixBackground />}
