@@ -1,53 +1,90 @@
-# 🚀 Anirudh's Portfolio (Now with 100% More Pixels)
+# Portfolio Website
 
-Welcome to the digital manifestation of my consciousness. If you're reading this, you've either stumbled here by accident or you're a recruiter (hi! please hire me).
+A modern, responsive portfolio website built with Next.js 16, React 19, and Tailwind CSS 4. This project showcases my skills, experience, projects, and certifications in a clean and interactive interface.
 
+## 🚀 Tech Stack
 
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Linting**: ESLint
 
-> *Warning: deeper scrolling may cause severe admiration and spontaneous job offers.*
+## ✨ Features
 
-## 🕵️‍♂️ What is this?
+The portfolio includes the following dynamic sections:
 
-This is a **React + Vite** powered portfolio that proves I can center a `div` and much more. It's designed to be interactive, responsive, and slightly over-engineered because "simple" is just a nice word for "boring".
+-   **Hero**: Introduction and greeting.
+-   **About**: Personal bio and background.
+-   **Experience**: Professional work history.
+-   **Projects**: Showcase of key projects.
+-   **Skills**: Technical skills and technologies.
+-   **Certifications**: Professional certifications and achievements.
+-   **Contribution**: Open source contributions or community involvement.
+-   **Contact**: Information to get in touch.
 
-## ✨ Features (The Cool Stuff)
+## 📂 Project Structure
 
-- **💻 Terminal Intro**: Because first impressions matter, and nothing says "I code" like a green blinking cursor on a black screen.
-- **⌘ Command Palette (`Ctrl/Cmd + K`)**: For power users who refuse to touch their mouse. Navigate the site like a pro.
-- **🖱️ Custom Cursor**: A magnetic cursor that follows you obediently. It respects your personal space (mostly).
-- **🔥 GitHub Heatmap**: Live proof that I touch grass occasionally, but mostly keyboards.
-- **🎨 Interactive UI**: Buttons that glow, cards that tilt, and sections that slide in smoothly thanks to **Framer Motion**.
-- **☕ Caffeine Widget**: A subtle button to fuel my coding addiction. (Please, I need it).
+```bash
+src/
+├── app/            # Main application pages and layout
+├── components/     # Reusable UI components (Hero, About, etc.)
+├── data/           # Static data for components
+└── ...
+```
 
-## 🛠️ Tech Stack & Spells Used
+## 🛠️ Getting Started
 
-- **React**: The library that makes me feel powerful.
-- **Vite**: Because waiting for Webpack is so 2020.
-- **Tailwind CSS**: styling = "speed".
-- **Framer Motion**: animating everything because static sites are sad.
-- **Lucide React**: Icons that are sharper than my wit.
+Follow these steps to set up the project locally.
 
-## 🥚 Easter Eggs
+### Prerequisites
 
-There might be some hidden secrets. 
-- Open the browser console (F12).
-- Try typing `do a barrel roll` in the terminal intro (if you're fast enough).
-- Click the period in the Navbar logo. Don't ask why.
+Ensure you have Node.js installed on your machine.
 
-## 🤝 Contributing
+### Installation
 
-1. Fork it.
-2. Create a branch (`git checkout -b fix-my-typos`).
-3. Commit your changes (`git commit -m 'Fixed that embarrassing bug'`).
-4. Push to the branch (`git push origin fix-my-typos`).
-5. Open a Pull Request.
+1.  **Clone the repository:**
 
-## 📜 License
+    ```bash
+    git clone https://github.com/SudoAnirudh/portfolio.git
+    cd portfolio
+    ```
 
-Distributed under the MIT License. Meaning you can steal this code, but you have to live with the guilt.
+2.  **Install dependencies:**
 
----
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    # or
+    bun install
+    ```
 
-<p align="center">
-  Made with ❤️ and too much ☕ by <a href="https://github.com/SudoAnirudh">Anirudh</a>
-</p>
+3.  **Run the development server:**
+
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    # or
+    bun dev
+    ```
+
+4.  **Open your browser:**
+
+    Navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 🚀 Deployment
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
