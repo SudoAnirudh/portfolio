@@ -51,7 +51,7 @@ const Projects = () => {
                                             href={project.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="btn btn-outline"
+                                            className="btn btn-outline focus-ring"
                                             style={{
                                                 width: '100%',
                                                 justifyContent: 'center',
@@ -84,7 +84,7 @@ const Projects = () => {
                     href="https://github.com/SudoAnirudh?tab=repositories"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-outline"
+                    className="btn btn-outline focus-ring"
                     style={{
                         padding: '0.8rem 2rem',
                         gap: '0.5rem',

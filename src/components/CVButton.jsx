@@ -39,7 +39,7 @@ const CVButton = ({ href }) => {
     return (
         <button
             onClick={handleDownload}
-            className={`cv-download-btn ${status}`}
+            className={`cv-download-btn ${status} focus-ring`}
             disabled={status !== 'idle'}
             style={{
                 position: 'relative',
@@ -57,7 +57,6 @@ const CVButton = ({ href }) => {
                 fontWeight: '600',
                 transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                 overflow: 'hidden',
-                outline: 'none',
                 fontFamily: "'JetBrains Mono', monospace"
             }}
         >
