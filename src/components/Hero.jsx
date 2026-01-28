@@ -132,7 +132,7 @@ const Hero = () => {
 
                     <div className="flex gap-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
                         <Magnetic strength={0.3}>
-                            <a href="#projects" className="btn btn-primary" style={{ gap: '0.5rem' }}>
+                            <a href="#projects" className="btn btn-primary focus-ring" style={{ gap: '0.5rem' }}>
                                 View Projects <ArrowRight size={18} />
                             </a>
                         </Magnetic>

@@ -55,7 +55,7 @@ const Navbar = () => {
                     <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Anirudh</a>
                     <button
                         onClick={handleDotClick}
-                        className="focus-visible:ring-2 focus-visible:ring-offset-2 ring-offset-black rounded-sm outline-none"
+                        className="focus-ring rounded-sm"
                         style={{
                             background: 'none',
                             border: 'none',
@@ -97,7 +97,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden"
+                    className="md:hidden focus-ring rounded-sm"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                     aria-expanded={isMenuOpen}
