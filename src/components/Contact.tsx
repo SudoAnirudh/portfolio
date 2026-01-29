@@ -18,16 +18,16 @@ const Contact = () => {
                     <div>
                         <form className="space-y-10">
                             <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
-                                <input className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none" placeholder="Jane Doe" type="text" />
+                                <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
+                                <input id="name" className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2" placeholder="Jane Doe" type="text" />
                             </div>
                             <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
-                                <input className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none" placeholder="jane@company.com" type="email" />
+                                <label htmlFor="email" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
+                                <input id="email" className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2" placeholder="jane@company.com" type="email" />
                             </div>
                             <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
-                                <textarea className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 resize-none focus:outline-none" placeholder="I have an idea..." rows={3}></textarea>
+                                <label htmlFor="message" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
+                                <textarea id="message" className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2" placeholder="I have an idea..." rows={3}></textarea>
                             </div>
                             <button className="bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm" type="submit">
                                 Send Message
