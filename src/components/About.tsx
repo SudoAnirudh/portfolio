@@ -7,7 +7,18 @@ const About = () => {
             <div className="max-w-6xl mx-auto">
                 <div className="grid lg:grid-cols-12 gap-20 items-start">
                     <div className="lg:col-span-5">
-                        <div className="aspect-[4/5] bg-gray-50 border border-gray-100 grayscale hover:grayscale-0 transition-all duration-700">
+                        <style>
+                            {`
+                                @keyframes fadeScaleIn {
+                                    0% { opacity: 0; transform: scale(0.9); }
+                                    100% { opacity: 1; transform: scale(1); }
+                                }
+                                .animate-profile {
+                                    animation: fadeScaleIn 1.5s ease-out forwards;
+                                }
+                            `}
+                        </style>
+                        <div className="aspect-[4/5] bg-gray-50 border border-gray-100 grayscale hover:grayscale-0 transition-all duration-700 animate-profile">
                             <img alt="Portrait" className="w-full h-full object-cover"
                                 src={portfolioData.about.image} />
                         </div>

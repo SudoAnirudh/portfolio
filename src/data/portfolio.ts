@@ -103,32 +103,44 @@ export const portfolioData = {
         {
             title: "PashuSwasthya",
             icon: "agriculture",
-            description: "Offline, multilingual mobile app for cattle breed & disease detection using TensorFlow Lite."
+            description: "Offline, multilingual mobile app for cattle breed & disease detection using TensorFlow Lite.",
+            image: "/projects/pashu_swasthya.png",
+            github: "https://github.com/SudoAnirudh/PashuSwasthya"
         },
         {
             title: "CNN Visualizer",
             icon: "visibility",
-            description: "Web tool to visualize CNN filters, feature maps, and activations for deep learning interpretability."
+            description: "Web tool to visualize CNN filters, feature maps, and activations for deep learning interpretability.",
+            image: "/projects/cnn_visualizer.png",
+            github: "https://github.com/SudoAnirudh/CNN-VISUALIZER"
         },
         {
             title: "Customer Churn Prediction",
             icon: "analytics",
-            description: "ML-based churn prediction using historical data with feature engineering improvements."
+            description: "ML-based churn prediction using historical data with feature engineering improvements.",
+            image: "/projects/churn_prediction.png",
+            github: "https://github.com/SudoAnirudh/Customer_Churn_Prediction"
         },
         {
             title: "Stock Price Predictor",
             icon: "trending_up",
-            description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy."
+            description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",
+            image: "/projects/stock_predictor.png",
+            github: "https://github.com/SudoAnirudh/Stock_Price_Predictor"
         },
         {
             title: "Image Enhancement Toolkit",
             icon: "auto_fix",
-            description: "ML/DL-based enhancement models with a Streamlit dashboard for interaction."
+            description: "ML/DL-based enhancement models with a Streamlit dashboard for interaction.",
+            image: "/projects/image_enhancement.png",
+            github: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit"
         },
         {
             title: "Intrusion Detection System",
             icon: "security",
-            description: "Network intrusion detection using ML with Flask-based real-time monitoring UI."
+            description: "Network intrusion detection using ML with Flask-based real-time monitoring UI.",
+            image: "/projects/intrusion_detection.png",
+            github: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML"
         }
     ],
     certifications: [
