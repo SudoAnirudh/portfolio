@@ -8,6 +8,7 @@ const Contribution = () => {
         // Generate random intensity levels for the squares on the client side only
         // to avoid hydration mismatch.
         const newSquares = Array.from({ length: 280 }).map(() => Math.floor(Math.random() * 5));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSquares(newSquares);
     }, []);
 
