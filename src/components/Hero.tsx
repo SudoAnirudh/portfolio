@@ -28,14 +28,20 @@ const Hero = () => {
                     {portfolioData.hero.subtext}
                 </p>
                 <div className="flex flex-wrap gap-8">
-                    <a className="text-sm font-semibold tracking-widest uppercase flex items-center group" href="#projects">
-                        View Selected Work
-                        <span className="material-symbols-outlined ml-2 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                    </a>
-                    <a className="text-sm font-semibold tracking-widest uppercase flex items-center group" href="#">
-                        Download CV
-                        <span className="material-symbols-outlined ml-2 text-sm">north_east</span>
-                    </a>
+                    {portfolioData.hero.actions.map((action, index) => (
+                        <a
+                            key={index}
+                            className="text-sm font-semibold tracking-widest uppercase flex items-center group"
+                            href={action.href}
+                            target={!action.primary ? "_blank" : undefined}
+                            rel={!action.primary ? "noopener noreferrer" : undefined}
+                        >
+                            {action.text}
+                            <span className={`material-symbols-outlined ml-2 text-sm ${action.primary ? "group-hover:translate-x-1 transition-transform" : ""}`}>
+                                {action.icon}
+                            </span>
+                        </a>
+                    ))}
                 </div>
             </div>
         </header>

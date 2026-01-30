@@ -24,7 +24,7 @@ export const portfolioData = {
         subtext: "AI & ML undergraduate with strong hands-on exposure to Deep Learning, CNNs, and NLP. Experienced in end-to-end AI application development from data to deployment.",
         actions: [
             { text: "View Selected Work", href: "#projects", icon: "arrow_forward", primary: true },
-            { text: "Download CV", href: "#", icon: "north_east", primary: false }
+            { text: "Download CV", href: "https://drive.google.com/uc?export=download&id=1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU", icon: "north_east", primary: false }
         ]
     },
     about: {
