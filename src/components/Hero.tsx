@@ -7,6 +7,7 @@ const Hero = () => {
 
     useEffect(() => {
         const day = new Date().getDay();
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTagline(portfolioData.hero.taglines[day]);
     }, []);
 

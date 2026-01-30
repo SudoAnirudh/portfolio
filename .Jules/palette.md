@@ -5,3 +5,7 @@
 ## 2024-10-24 - Standardizing Focus Indicators
 **Learning:** The project relies on a custom `.focus-ring` utility class in `src/index.css` instead of Tailwind's `focus-visible:*` utilities directly. This ensures consistency across components.
 **Action:** When adding or modifying interactive elements, always apply the `.focus-ring` class and verify it works with the defined CSS variable `--accent`. Avoid inline styles like `outline: none` which break accessibility.
+
+## 2025-02-14 - Native Tailwind Focus Styles
+**Learning:** Avoid custom utility classes (like `.focus-ring`) when Tailwind utilities can achieve the same result more cleanly. Standard `focus-visible:outline-2` combined with `outline-[color]` provides accessible, customizable focus indicators without custom CSS bloat.
+**Action:** Use `focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]` for interactive elements to ensure consistent, accessible focus states.
