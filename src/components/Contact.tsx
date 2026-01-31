@@ -9,6 +9,26 @@ const Contact = () => {
         message: ''
     });
     const [status, setStatus] = React.useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [emailError, setEmailError] = React.useState('');
+
+    const disposableDomains = [
+        'tempmail.com', 'throwawaymail.com', 'mailinator.com', 'guerrillamail.com', 'yopmail.com',
+        'sharklasers.com', 'getnada.com', 'dispostable.com', 'grr.la', 'temp-mail.org'
+    ];
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return { isValid: false, error: 'Please enter a valid email address.' };
+        }
+
+        const domain = email.split('@')[1];
+        if (disposableDomains.some(d => domain.includes(d))) {
+            return { isValid: false, error: 'Please use a permanent email address (Gmail, Outlook, etc.).' };
+        }
+
+        return { isValid: true, error: '' };
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -16,10 +36,21 @@ const Contact = () => {
             ...prev,
             [name]: value
         }));
+
+        if (name === 'email') {
+            setEmailError('');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        const validation = validateEmail(formData.email);
+        if (!validation.isValid) {
+            setEmailError(validation.error);
+            return;
+        }
+
         setStatus('submitting');
 
         const GOOGLE_FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdYW6y405M2Jsc_MnYhlQ-sGDVZFwSSbc9EBuW0B2IZRRGKog/formResponse';
@@ -62,51 +93,72 @@ const Contact = () => {
                         </div>
                     </div>
                     <div>
-                        <form className="space-y-10" onSubmit={handleSubmit}>
-                            <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
-                                <input
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none"
-                                    placeholder="Jane Doe"
-                                    type="text"
-                                    required
-                                />
+                        {status === 'success' ? (
+                            <div className="h-full flex flex-col justify-center animate-in fade-in duration-500">
+                                <div className="mb-8">
+                                    <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-6">
+                                        <span className="material-symbols-outlined text-3xl">check</span>
+                                    </span>
+                                    <h3 className="text-3xl md:text-4xl font-light tracking-tighter mb-4">Message sent successfully!</h3>
+                                    <p className="text-muted text-lg font-light leading-relaxed">
+                                        Thank you for reaching out. I'll get back to you as soon as possible.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setStatus('idle')}
+                                    className="bg-black text-white px-8 py-4 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm w-max"
+                                >
+                                    Send Another Message
+                                </button>
                             </div>
-                            <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
-                                <input
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none"
-                                    placeholder="jane@company.com"
-                                    type="email"
-                                    required
-                                />
-                            </div>
-                            <div className="border-b border-gray-200 pb-4">
-                                <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
-                                <textarea
-                                    name="message"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 resize-none focus:outline-none"
-                                    placeholder="I have an idea..."
-                                    rows={3}
-                                    required
-                                ></textarea>
-                            </div>
-                            <button
-                                className={`bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed`}
-                                type="submit"
-                                disabled={status === 'submitting' || status === 'success'}
-                            >
-                                {status === 'submitting' ? 'Sending...' : status === 'success' ? 'Message Sent!' : status === 'error' ? 'Error. Try Again.' : 'Send Message'}
-                            </button>
-                        </form>
+                        ) : (
+                            <form className="space-y-10" onSubmit={handleSubmit}>
+                                <div className="border-b border-gray-200 pb-4">
+                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
+                                    <input
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none"
+                                        placeholder="Jane Doe"
+                                        type="text"
+                                        required
+                                    />
+                                </div>
+                                <div className="border-b border-gray-200 pb-4">
+                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
+                                    <input
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={`w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none ${emailError ? 'text-red-500' : ''}`}
+                                        placeholder="jane@company.com"
+                                        type="email"
+                                        required
+                                    />
+                                    {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
+                                </div>
+                                <div className="border-b border-gray-200 pb-4">
+                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
+                                    <textarea
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 resize-none focus:outline-none"
+                                        placeholder="I have an idea..."
+                                        rows={3}
+                                        required
+                                    ></textarea>
+                                </div>
+                                <button
+                                    className={`bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed`}
+                                    type="submit"
+                                    disabled={status === 'submitting'}
+                                >
+                                    {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Error. Try Again.' : 'Send Message'}
+                                </button>
+                            </form>
+                        )}
                     </div>
                 </div>
             </div>
