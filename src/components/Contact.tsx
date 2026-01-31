@@ -101,7 +101,7 @@ const Contact = () => {
                                     </span>
                                     <h3 className="text-3xl md:text-4xl font-light tracking-tighter mb-4">Message sent successfully!</h3>
                                     <p className="text-muted text-lg font-light leading-relaxed">
-                                        Thank you for reaching out. I'll get back to you as soon as possible.
+                                        Thank you for reaching out. I&apos;ll get back to you as soon as possible.
                                     </p>
                                 </div>
                                 <button
@@ -114,24 +114,26 @@ const Contact = () => {
                         ) : (
                             <form className="space-y-10" onSubmit={handleSubmit}>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
+                                    <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
                                     <input
+                                        id="name"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none"
+                                        className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                                         placeholder="Jane Doe"
                                         type="text"
                                         required
                                     />
                                 </div>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
+                                    <label htmlFor="email" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
                                     <input
+                                        id="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className={`w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 focus:outline-none ${emailError ? 'text-red-500' : ''}`}
+                                        className={`w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${emailError ? 'text-red-500' : ''}`}
                                         placeholder="jane@company.com"
                                         type="email"
                                         required
@@ -139,12 +141,13 @@ const Contact = () => {
                                     {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
                                 </div>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
+                                    <label htmlFor="message" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
                                     <textarea
+                                        id="message"
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-none p-0 text-xl font-light focus:ring-0 placeholder:text-gray-300 resize-none focus:outline-none"
+                                        className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 resize-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                                         placeholder="I have an idea..."
                                         rows={3}
                                         required
