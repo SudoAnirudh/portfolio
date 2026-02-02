@@ -12,8 +12,10 @@ const Projects = () => {
                     {portfolioData.projects.map((project, index) => (
                         <div key={index} className="group flex flex-col h-full">
                             <div className={`aspect-video bg-white thin-border rounded-sm overflow-hidden mb-8 flex items-center justify-center bg-gray-100 transform hover:shadow-lg transition-all duration-500 ${index % 2 === 0 ? 'hover:-rotate-1' : 'hover:rotate-1'} relative`}>
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 {(project as any).image ? (
                                     <img
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         src={(project as any).image}
                                         alt={project.title}
                                         className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
@@ -25,6 +27,7 @@ const Projects = () => {
                             <h3 className="text-lg font-semibold mb-2">{project.title}</h3>
                             <p className="text-muted text-sm font-light mb-auto">{project.description}</p>
                             <div className="mt-6 pt-6 border-t border-gray-100">
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 <a href={(project as any).github} className="inline-flex items-center text-[11px] font-bold tracking-[0.2em] uppercase text-black hover:text-accent transition-colors" target="_blank" rel="noopener noreferrer">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" className="w-4 h-4 mr-2 opacity-80" alt="GitHub" />
                                     View Code
