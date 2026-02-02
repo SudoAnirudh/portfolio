@@ -8,7 +8,10 @@ const Contribution = () => {
         // Generate random intensity levels for the squares on the client side only
         // to avoid hydration mismatch.
         const newSquares = Array.from({ length: 280 }).map(() => Math.floor(Math.random() * 5));
-        setSquares(newSquares);
+        const timer = setTimeout(() => {
+            setSquares(newSquares);
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     const colors = ['bg-gray-50', 'bg-gray-200', 'bg-gray-300', 'bg-slate-400', 'bg-slate-600'];
