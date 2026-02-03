@@ -3,7 +3,7 @@ import { portfolioData } from '@/data/portfolio';
 
 const Experience = () => {
     return (
-        <section className="py-32 px-8 section-border" id="experience">
+        <section className="py-32 px-8 section-border scroll-reveal" id="experience" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-20">Background / Experience</h2>
                 <div className="space-y-16">

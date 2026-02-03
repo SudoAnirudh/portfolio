@@ -9,10 +9,12 @@ import Projects from "@/components/Projects";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ScrollObserver from "@/components/ScrollObserver";
 
 export default function Home() {
   return (
     <main className="relative">
+      <ScrollObserver />
       <Navbar />
       <Hero />
       <About />

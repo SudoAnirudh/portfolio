@@ -14,8 +14,16 @@ const Hero = () => {
     }, []);
 
     return (
-        <header id="main-content" className="min-h-screen flex items-center px-8 pt-20">
-            <div className="max-w-6xl mx-auto w-full py-24">
+        <header id="main-content" className="relative min-h-screen flex items-center px-8 pt-20 overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 flex justify-center" aria-hidden="true">
+                <div className="w-full max-w-6xl border-l border-gray-100/80"></div>
+            </div>
+            <div className="max-w-6xl mx-auto w-full py-24 relative">
+                <div className="flex flex-wrap items-center gap-6 text-[11px] uppercase tracking-[0.3em] text-muted mb-10">
+                    <span className="font-semibold text-black">{portfolioData.personal.role}</span>
+                    <span className="h-[1px] w-10 bg-gray-200"></span>
+                    <span>{portfolioData.personal.location}</span>
+                </div>
                 <div className="inline-block border border-gray-200 px-3 py-1 text-[11px] tracking-[0.2em] font-medium text-muted uppercase mb-12 rounded-sm">
                     {portfolioData.hero.status}
                 </div>
@@ -45,6 +53,11 @@ const Hero = () => {
                             </span>
                         </a>
                     ))}
+                </div>
+                <div className="mt-16 flex items-center gap-4 text-[11px] uppercase tracking-[0.35em] text-muted">
+                    <span>Scroll</span>
+                    <span className="h-[1px] w-16 bg-gray-200"></span>
+                    <span className="text-black/60">01</span>
                 </div>
             </div>
         </header>
