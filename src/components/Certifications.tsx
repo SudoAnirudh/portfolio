@@ -3,7 +3,7 @@ import { portfolioData } from '@/data/portfolio';
 
 const Certifications = () => {
     return (
-        <section className="py-32 px-8 section-border">
+        <section className="py-32 px-8 section-border scroll-reveal" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-20 text-center">Certifications &amp; Achievements</h2>
                 <div className="grid md:grid-cols-2 gap-16">

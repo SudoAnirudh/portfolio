@@ -3,7 +3,7 @@ import { portfolioData } from '@/data/portfolio';
 
 const Projects = () => {
     return (
-        <section className="py-32 px-8 section-border bg-gray-50/30" id="projects">
+        <section className="py-32 px-8 section-border bg-gray-50/30 scroll-reveal" id="projects" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <div className="flex items-end justify-between mb-20">
                     <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted">Selected Projects</h2>

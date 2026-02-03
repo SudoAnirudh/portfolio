@@ -3,7 +3,7 @@ import { portfolioData } from '@/data/portfolio';
 
 const About = () => {
     return (
-        <section className="py-32 px-8 section-border" id="about">
+        <section className="py-32 px-8 section-border scroll-reveal" id="about" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <div className="grid lg:grid-cols-12 gap-20 items-start">
                     <div className="lg:col-span-5">
