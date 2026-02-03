@@ -80,7 +80,7 @@ const Contact = () => {
     };
 
     return (
-        <section className="py-32 px-8 section-border" id="contact">
+        <section className="py-32 px-8 section-border scroll-reveal" id="contact" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <div className="grid lg:grid-cols-2 gap-24">
                     <div>
