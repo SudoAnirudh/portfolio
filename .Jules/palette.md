@@ -9,3 +9,7 @@
 ## 2025-05-15 - Contact Form Accessibility Pattern
 **Learning:** Forms in this project may have labels that are not programmatically associated with inputs (missing `htmlFor`/`id`), and inputs often have `focus:outline-none` which removes accessibility.
 **Action:** When touching forms, always ensure labels have `htmlFor` matching the input `id`, and replace `outline:none` with `focus-visible:ring-2` (using `focus-visible:ring-accent`).
+
+## 2026-02-03 - Required Field Visual Pattern
+**Learning:** While inputs used the `required` attribute, they lacked visual indicators, relying solely on browser validation.
+**Action:** Standardize on appending `<span className="text-red-500 ml-1" aria-hidden="true">*</span>` to the label of any required input field to improve usability.

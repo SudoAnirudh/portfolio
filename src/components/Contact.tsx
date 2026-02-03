@@ -114,7 +114,7 @@ const Contact = () => {
                         ) : (
                             <form className="space-y-10" onSubmit={handleSubmit}>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name</label>
+                                    <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                     <input
                                         id="name"
                                         name="name"
@@ -127,7 +127,7 @@ const Contact = () => {
                                     />
                                 </div>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="email" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address</label>
+                                    <label htmlFor="email" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                     <input
                                         id="email"
                                         name="email"
@@ -141,7 +141,7 @@ const Contact = () => {
                                     {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
                                 </div>
                                 <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="message" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message</label>
+                                    <label htmlFor="message" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                     <textarea
                                         id="message"
                                         name="message"
