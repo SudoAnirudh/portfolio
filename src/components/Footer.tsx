@@ -9,8 +9,8 @@ const Footer = () => {
                     {portfolioData.footer.copyright}
                 </div>
                 <div className="flex space-x-12">
-                    <a className="text-[11px] tracking-widest text-muted uppercase font-bold hover:text-black transition-colors" href={portfolioData.personal.social.github} target="_blank">GitHub</a>
-                    <a className="text-[11px] tracking-widest text-muted uppercase font-bold hover:text-black transition-colors" href={portfolioData.personal.social.linkedin} target="_blank">LinkedIn</a>
+                    <a className="text-[11px] tracking-widest text-muted uppercase font-bold hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a className="text-[11px] tracking-widest text-muted uppercase font-bold hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" href={portfolioData.personal.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 </div>
             </div>
         </footer>

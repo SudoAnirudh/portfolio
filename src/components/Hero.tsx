@@ -7,11 +7,14 @@ const Hero = () => {
 
     useEffect(() => {
         const day = new Date().getDay();
-        setTagline(portfolioData.hero.taglines[day]);
+        const timer = setTimeout(() => {
+            setTagline(portfolioData.hero.taglines[day]);
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
-        <header className="min-h-screen flex items-center px-8 pt-20">
+        <header id="main-content" className="min-h-screen flex items-center px-8 pt-20">
             <div className="max-w-6xl mx-auto w-full py-24">
                 <div className="inline-block border border-gray-200 px-3 py-1 text-[11px] tracking-[0.2em] font-medium text-muted uppercase mb-12 rounded-sm">
                     {portfolioData.hero.status}
@@ -31,7 +34,7 @@ const Hero = () => {
                     {portfolioData.hero.actions.map((action, index) => (
                         <a
                             key={index}
-                            className="text-sm font-semibold tracking-widest uppercase flex items-center group"
+                            className="text-sm font-semibold tracking-widest uppercase flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                             href={action.href}
                             target={!action.primary ? "_blank" : undefined}
                             rel={!action.primary ? "noopener noreferrer" : undefined}

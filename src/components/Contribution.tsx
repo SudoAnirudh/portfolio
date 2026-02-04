@@ -8,13 +8,16 @@ const Contribution = () => {
         // Generate random intensity levels for the squares on the client side only
         // to avoid hydration mismatch.
         const newSquares = Array.from({ length: 280 }).map(() => Math.floor(Math.random() * 5));
-        setSquares(newSquares);
+        const timer = setTimeout(() => {
+            setSquares(newSquares);
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     const colors = ['bg-gray-50', 'bg-gray-200', 'bg-gray-300', 'bg-slate-400', 'bg-slate-600'];
 
     return (
-        <section className="py-32 px-8 section-border overflow-hidden">
+        <section className="py-32 px-8 section-border overflow-hidden scroll-reveal" data-scroll>
             <div className="max-w-6xl mx-auto">
                 <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-12 text-center">Contribution Graph</h2>
                 <div className="bg-white thin-border p-10 rounded-sm">
