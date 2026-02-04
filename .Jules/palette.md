@@ -13,3 +13,7 @@
 ## 2026-02-03 - Required Field Visual Pattern
 **Learning:** While inputs used the `required` attribute, they lacked visual indicators, relying solely on browser validation.
 **Action:** Standardize on appending `<span className="text-red-500 ml-1" aria-hidden="true">*</span>` to the label of any required input field to improve usability.
+
+## 2025-02-15 - Direct Tailwind Focus Utilities Preferred
+**Learning:** The custom `.focus-ring` class mentioned in previous journal entries was missing from the codebase. Using direct Tailwind utility classes `focus-visible:ring-2 focus-visible:ring-accent` provides a consistent and working solution without needing custom CSS.
+**Action:** Use `focus-visible:ring-2 focus-visible:ring-accent` directly on interactive elements.

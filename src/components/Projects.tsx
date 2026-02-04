@@ -28,7 +28,7 @@ const Projects = () => {
                             <p className="text-muted text-sm font-light mb-auto">{project.description}</p>
                             <div className="mt-6 pt-6 border-t border-gray-100">
                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                <a href={(project as any).github} className="inline-flex items-center text-[11px] font-bold tracking-[0.2em] uppercase text-black hover:text-accent transition-colors" target="_blank" rel="noopener noreferrer">
+                                <a href={(project as any).github} className="inline-flex items-center text-[11px] font-bold tracking-[0.2em] uppercase text-black hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" target="_blank" rel="noopener noreferrer">
                                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" className="w-4 h-4 mr-2 opacity-80" alt="GitHub" />
                                     View Code
                                 </a>
@@ -38,7 +38,7 @@ const Projects = () => {
                 </div>
 
                 <div className="mt-24 text-center">
-                    <a href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-8 py-4 bg-black text-white rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors group">
+                    <a href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-8 py-4 bg-black text-white rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" className="w-5 h-5 mr-3 invert" alt="GitHub" />
                         Explore More Projects
                     </a>

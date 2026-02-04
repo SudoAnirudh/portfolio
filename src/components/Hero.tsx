@@ -34,7 +34,7 @@ const Hero = () => {
                     {portfolioData.hero.actions.map((action, index) => (
                         <a
                             key={index}
-                            className="text-sm font-semibold tracking-widest uppercase flex items-center group"
+                            className="text-sm font-semibold tracking-widest uppercase flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                             href={action.href}
                             target={!action.primary ? "_blank" : undefined}
                             rel={!action.primary ? "noopener noreferrer" : undefined}
