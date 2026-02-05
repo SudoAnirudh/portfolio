@@ -17,3 +17,7 @@
 ## 2025-02-15 - Direct Tailwind Focus Utilities Preferred
 **Learning:** The custom `.focus-ring` class mentioned in previous journal entries was missing from the codebase. Using direct Tailwind utility classes `focus-visible:ring-2 focus-visible:ring-accent` provides a consistent and working solution without needing custom CSS.
 **Action:** Use `focus-visible:ring-2 focus-visible:ring-accent` directly on interactive elements.
+
+## 2026-10-14 - Dynamic Content Focus Management
+**Learning:** When replacing content dynamically (like showing a success message in place of a form), focus is often lost, confusing screen reader and keyboard users. Also, "Try Again" or reset buttons often lack focus styles.
+**Action:** When implementing reset flows, use `useRef` and `useEffect` to programmatically move focus to the first interactive element of the restored content, and ensure all state-change buttons have visible focus rings.
