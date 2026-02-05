@@ -10,11 +10,28 @@ const Contact = () => {
     });
     const [status, setStatus] = React.useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [emailError, setEmailError] = React.useState('');
+    const nameInputRef = React.useRef<HTMLInputElement>(null);
+    const [shouldFocus, setShouldFocus] = React.useState(false);
 
     const disposableDomains = [
         'tempmail.com', 'throwawaymail.com', 'mailinator.com', 'guerrillamail.com', 'yopmail.com',
         'sharklasers.com', 'getnada.com', 'dispostable.com', 'grr.la', 'temp-mail.org'
     ];
+
+    React.useEffect(() => {
+        if (status === 'idle' && shouldFocus) {
+            const timer = setTimeout(() => {
+                nameInputRef.current?.focus();
+                setShouldFocus(false);
+            }, 50);
+            return () => clearTimeout(timer);
+        }
+    }, [status, shouldFocus]);
+
+    const handleReset = () => {
+        setShouldFocus(true);
+        setStatus('idle');
+    };
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -94,7 +111,7 @@ const Contact = () => {
                     </div>
                     <div>
                         {status === 'success' ? (
-                            <div className="h-full flex flex-col justify-center animate-in fade-in duration-500">
+                            <div className="h-full flex flex-col justify-center animate-in fade-in duration-500" role="status" aria-live="polite">
                                 <div className="mb-8">
                                     <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-6">
                                         <span className="material-symbols-outlined text-3xl">check</span>
@@ -105,8 +122,8 @@ const Contact = () => {
                                     </p>
                                 </div>
                                 <button
-                                    onClick={() => setStatus('idle')}
-                                    className="bg-black text-white px-8 py-4 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm w-max"
+                                    onClick={handleReset}
+                                    className="bg-black text-white px-8 py-4 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm w-max focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                                 >
                                     Send Another Message
                                 </button>
@@ -117,6 +134,7 @@ const Contact = () => {
                                     <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                     <input
                                         id="name"
+                                        ref={nameInputRef}
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
