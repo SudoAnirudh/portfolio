@@ -21,3 +21,7 @@
 ## 2026-10-14 - Dynamic Content Focus Management
 **Learning:** When replacing content dynamically (like showing a success message in place of a form), focus is often lost, confusing screen reader and keyboard users. Also, "Try Again" or reset buttons often lack focus styles.
 **Action:** When implementing reset flows, use `useRef` and `useEffect` to programmatically move focus to the first interactive element of the restored content, and ensure all state-change buttons have visible focus rings.
+
+## 2025-05-23 - Spinner Accessibility & Build Artifacts
+**Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
+**Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
