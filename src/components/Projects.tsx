@@ -21,11 +21,9 @@ const Projects = () => {
                     {portfolioData.projects.map((project, index) => (
                         <div key={index} className="group cursor-pointer">
                             <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                {(project as any).image ? (
+                                {project.image ? (
                                     <img
-                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        src={(project as any).image}
+                                        src={project.image}
                                         alt={project.title}
                                         className="w-full aspect-video object-cover border border-black grayscale group-hover:grayscale-0 transition-all"
                                     />
@@ -44,8 +42,7 @@ const Projects = () => {
                                     {project.title.toLowerCase()}.exe
                                 </div>
                                 <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    <a href={(project as any).github} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase underline hover:text-retro-orange">
                                         Open
                                     </a>
                                 </div>

@@ -1,4 +1,98 @@
-export const portfolioData = {
+export interface Social {
+    github: string;
+    linkedin: string;
+}
+
+export interface Personal {
+    name: string;
+    role: string;
+    email: string;
+    phone: string;
+    location: string;
+    social: Social;
+}
+
+export interface HeroAction {
+    text: string;
+    href: string;
+    icon: string;
+    primary: boolean;
+}
+
+export interface Hero {
+    status: string;
+    taglines: string[];
+    subtext: string;
+    actions: HeroAction[];
+}
+
+export interface PythonAttribute {
+    name: string;
+    value: string;
+}
+
+export interface PythonMethod {
+    name: string;
+    return: string;
+}
+
+export interface PythonClass {
+    className: string;
+    attributes: PythonAttribute[];
+    methods: PythonMethod[];
+}
+
+export interface About {
+    title: string;
+    bio: string;
+    pythonClass: PythonClass;
+    image: string;
+}
+
+export interface Education {
+    period: string;
+    degree: string;
+    institution: string;
+}
+
+export interface Experience {
+    period: string;
+    role: string;
+    company: string;
+    description: string;
+}
+
+export interface Skill {
+    category: string;
+    items: string;
+}
+
+export interface Project {
+    title: string;
+    icon: string;
+    description: string;
+    image?: string;
+    github: string;
+}
+
+export interface Footer {
+    copyright: string;
+}
+
+export interface PortfolioData {
+    personal: Personal;
+    hero: Hero;
+    about: About;
+    education: Education[];
+    experience: Experience[];
+    skills: Skill[];
+    projects: Project[];
+    certifications: string[];
+    achievements: string[];
+    footer: Footer;
+}
+
+export const portfolioData: PortfolioData = {
     personal: {
         name: "ANIRUDH S",
         role: "AI & ML Engineer",
