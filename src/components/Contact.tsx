@@ -97,21 +97,66 @@ const Contact = () => {
     };
 
     return (
-        <section className="py-32 px-8 section-border scroll-reveal" id="contact" data-scroll>
-            <div className="max-w-6xl mx-auto">
-                <div className="grid lg:grid-cols-2 gap-24">
-                    <div>
-                        <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-12">Contact / Collaboration</h2>
-                        <h3 className="text-5xl md:text-6xl font-light tracking-tighter mb-12 leading-[1.1]">Let&apos;s build something <span className="italic text-accent">meaningful</span> together.</h3>
-                        <div className="space-y-4">
-                            <p className="text-muted font-light">Based in {portfolioData.personal.location}.</p>
-                            <a className="block text-xl font-light border-b border-black inline-block py-1" href={`mailto:${portfolioData.personal.email}`}>{portfolioData.personal.email}</a>
-                            <p className="text-muted font-light mt-2">{portfolioData.personal.phone}</p>
+        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0" id="contact">
+            <div className="bg-retro-cream bento-card rounded-3xl p-0 relative overflow-hidden border-4 border-black">
+                {/* Mail Window Header */}
+                <div className="bg-retro-charcoal p-3 flex items-center justify-between border-b-4 border-black">
+                    <div className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-retro-white text-xl">mail</span>
+                        <span className="font-pixel text-retro-white text-sm uppercase">COMPOSE MESSAGE</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <div className="w-4 h-4 rounded-full bg-red-500 border border-white/20"></div>
+                        <div className="w-4 h-4 rounded-full bg-yellow-400 border border-white/20"></div>
+                        <div className="w-4 h-4 rounded-full bg-green-500 border border-white/20"></div>
+                    </div>
+                </div>
+
+                <div className="grid lg:grid-cols-2">
+                    {/* Information Sidebar */}
+                    <div className="bg-zinc-200 p-8 border-r-4 border-black border-dashed flex flex-col justify-between">
+                        <div>
+                            <div className="mb-8">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">FROM:</label>
+                                <div className="font-display text-2xl uppercase">{portfolioData.personal.name}</div>
+                                <div className="text-sm font-mono text-zinc-500">{"<"}{portfolioData.personal.email}{">"}</div>
+                            </div>
+
+                            <div className="mb-8">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">TO:</label>
+                                <div className="font-display text-2xl uppercase">FUTURE EMPLOYER</div>
+                                <div className="text-sm font-mono text-zinc-500">{"<"}hiring@manager.com{">"}</div>
+                            </div>
+
+                            <div className="mb-8">
+                                <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">SUBJECT:</label>
+                                <div className="font-display text-2xl uppercase">OPPORTUNITY</div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-8 border-t-2 border-black/10">
+                            <h4 className="font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span className="material-symbols-outlined">alternate_email</span>
+                                Connect
+                            </h4>
+                            <div className="flex gap-4">
+                                <a href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined">code</span>
+                                </a>
+                                <a href={portfolioData.personal.social.linkedin} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined">work</span>
+                                </a>
+                                <a href={`mailto:${portfolioData.personal.email}`} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                                    <span className="material-symbols-outlined">send</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div>
+
+                    {/* Contact Form */}
+                    <div className="bg-retro-white p-8">
                         {status === 'success' ? (
-                            <div className="h-full flex flex-col justify-center animate-in fade-in duration-500" role="status" aria-live="polite">
+                            <div className="h-full flex flex-col justify-center animate-in fade-in duration-500">
                                 <div className="mb-8">
                                     <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-6">
                                         <span className="material-symbols-outlined text-3xl">check</span>
@@ -121,71 +166,60 @@ const Contact = () => {
                                         Thank you for reaching out. I&apos;ll get back to you as soon as possible.
                                     </p>
                                 </div>
+                                <h3 className="text-3xl font-display uppercase tracking-tight mb-2">Sent!</h3>
+                                <p className="font-mono text-zinc-500 mb-8">Your message has been dispatched to the server.</p>
                                 <button
-                                    onClick={handleReset}
-                                    className="bg-black text-white px-8 py-4 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm w-max focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                                    onClick={() => setStatus('idle')}
+                                    className="bg-black text-white px-8 py-4 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm w-max"
                                 >
-                                    Send Another Message
+                                    Write New
                                 </button>
                             </div>
                         ) : (
-                            <form className="space-y-10" onSubmit={handleSubmit}>
-                                <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="name" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Your Name <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
+                            <form className="space-y-6" onSubmit={handleSubmit}>
+                                <div>
                                     <input
                                         id="name"
                                         ref={nameInputRef}
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                                        placeholder="Jane Doe"
+                                        className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
+                                        placeholder="ENTER NAME..."
                                         type="text"
                                         required
                                     />
                                 </div>
-                                <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="email" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Email Address <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
+                                <div>
                                     <input
                                         id="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className={`w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm ${emailError ? 'text-red-500' : ''}`}
-                                        placeholder="jane@company.com"
+                                        className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                        placeholder="ENTER EMAIL..."
                                         type="email"
                                         required
                                     />
-                                    {emailError && <p className="text-red-500 text-xs mt-2">{emailError}</p>}
+                                    {emailError && <p className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                 </div>
-                                <div className="border-b border-gray-200 pb-4">
-                                    <label htmlFor="message" className="block text-[11px] uppercase tracking-widest text-muted mb-4 font-semibold">Message <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
+                                <div>
                                     <textarea
                                         id="message"
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-none p-0 text-xl font-light placeholder:text-gray-300 resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                                        placeholder="I have an idea..."
-                                        rows={3}
+                                        className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-48"
+                                        placeholder="TYPE YOUR MESSAGE HERE..."
                                         required
                                     ></textarea>
                                 </div>
                                 <button
-                                    className={`bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none flex items-center justify-center gap-3`}
+                                    className={`bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
                                     type="submit"
                                     disabled={status === 'submitting'}
-                                    aria-live="polite"
                                 >
-                                    {status === 'submitting' ? (
-                                        <>
-                                            <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            <span>Sending...</span>
-                                        </>
-                                    ) : status === 'error' ? 'Error. Try Again.' : 'Send Message'}
+                                    {status === 'submitting' ? 'Sending...' : status === 'error' ? 'Error. Try Again.' : 'Send Message'}
                                 </button>
                             </form>
                         )}

@@ -15,17 +15,53 @@ export default function Home() {
   return (
     <main className="relative">
       <ScrollObserver />
-      <Navbar />
-      <Hero />
-      <About />
-      <Education />
-      <Skills />
-      <Contribution />
-      <Experience />
-      <Projects />
-      <Certifications />
-      <Contact />
-      <Footer />
+
+      {/* Grid container matches the HTML structure */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        {/* Row 1: Hero Section (Profile + Hello World) - Internal grid is 8+4 */}
+        <div className="lg:col-span-12">
+          <Hero />
+        </div>
+
+        {/* Row 2: About + Skills */}
+        <div className="lg:col-span-6">
+          <About />
+        </div>
+        <div className="lg:col-span-6">
+          <Skills />
+        </div>
+
+        {/* Row 3: Experience (System Log) */}
+        <div className="lg:col-span-12">
+          <Experience />
+        </div>
+
+        {/* Row 4: Projects (File Explorer) */}
+        <div className="lg:col-span-12">
+          <Projects />
+        </div>
+
+        {/* Row 5: Education + Certifications */}
+        <div className="lg:col-span-12">
+          <Education />
+        </div>
+        <div className="lg:col-span-12">
+          <Certifications />
+        </div>
+
+        {/* Row 6: Contribution Graph */}
+        <div className="lg:col-span-12">
+          <Contribution />
+        </div>
+
+        {/* Row 7: Contact + Footer */}
+        <div className="lg:col-span-12">
+          <Contact />
+          <Footer />
+        </div>
+
+      </div>
     </main>
   );
 }

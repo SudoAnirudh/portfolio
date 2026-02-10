@@ -3,48 +3,46 @@ import { portfolioData } from '@/data/portfolio';
 
 const About = () => {
     return (
-        <section className="py-32 px-8 section-border scroll-reveal" id="about" data-scroll>
-            <div className="max-w-6xl mx-auto">
-                <div className="grid lg:grid-cols-12 gap-20 items-start">
-                    <div className="lg:col-span-5">
-                        <style>
-                            {`
-                                @keyframes fadeScaleIn {
-                                    0% { opacity: 0; transform: scale(0.9); }
-                                    100% { opacity: 1; transform: scale(1); }
-                                }
-                                .animate-profile {
-                                    animation: fadeScaleIn 1.5s ease-out forwards;
-                                }
-                            `}
-                        </style>
-                        <div className="aspect-[4/5] bg-gray-50 border border-gray-100 grayscale hover:grayscale-0 transition-all duration-700 animate-profile">
-                            <img alt="Portrait" className="w-full h-full object-cover"
-                                src={portfolioData.about.image} />
+        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0" id="about">
+            <div className="bg-retro-white bento-card rounded-3xl p-8 relative overflow-hidden retro-grain border-4 border-black/10 h-full flex flex-col justify-between">
+                <div className="flex flex-col items-start gap-8">
+                    <div className="w-full">
+                        <h2 className="text-5xl md:text-6xl font-display uppercase tracking-tighter mb-8 text-retro-charcoal">
+                            About <span className="text-stroke-black text-transparent">Me</span>
+                        </h2>
+                        <div className="text-lg md:text-xl font-medium leading-relaxed font-body text-zinc-700 space-y-6 max-w-4xl">
+                            <p>{portfolioData.about.bio}</p>
                         </div>
                     </div>
-                    <div className="lg:col-span-7 flex flex-col justify-center h-full">
-                        <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-8">{portfolioData.about.title}</h2>
-                        <div className="bg-white thin-border p-8 rounded-sm">
-                            <div className="flex items-center space-x-1.5 mb-8 opacity-40">
-                                <div className="w-2 h-2 rounded-full bg-black"></div>
-                                <div className="w-2 h-2 rounded-full bg-black"></div>
-                                <div className="w-2 h-2 rounded-full bg-black"></div>
-                            </div>
-                            <pre className="font-mono text-sm leading-relaxed text-black/80">
-                                {`class `}<span className="text-accent">{portfolioData.about.pythonClass.className}</span>{`:
-    def __init__(self):
-        self.role = ${portfolioData.about.pythonClass.attributes[0].value}
-        self.stack = ${portfolioData.about.pythonClass.attributes[1].value}
-        self.location = ${portfolioData.about.pythonClass.attributes[2].value}
-        self.email = ${portfolioData.about.pythonClass.attributes[3].value}
-    
-    def goal(self):
-        return ${portfolioData.about.pythonClass.methods[0].return}`}
-                            </pre>
+                </div>
+
+                {/* Quick Stats / Footer for About Card */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 border-t-2 border-black/10 pt-8">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-retro-yellow border-2 border-black flex items-center justify-center rounded-full">
+                            <span className="material-symbols-outlined text-retro-charcoal">location_on</span>
                         </div>
-                        <div className="mt-12 text-xl text-muted leading-relaxed font-light">
-                            {portfolioData.about.bio}
+                        <div>
+                            <p className="text-xs font-bold uppercase text-retro-charcoal/60">Base</p>
+                            <p className="font-display text-lg text-retro-charcoal">{portfolioData.personal.location.split(',')[0]}</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-retro-green border-2 border-black flex items-center justify-center rounded-full">
+                            <span className="material-symbols-outlined text-retro-charcoal">terminal</span>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold uppercase text-retro-charcoal/60">Exp</p>
+                            <p className="font-display text-lg text-retro-charcoal">2+ Years</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-retro-orange border-2 border-black flex items-center justify-center rounded-full">
+                            <span className="material-symbols-outlined text-retro-charcoal">bolt</span>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold uppercase text-retro-charcoal/60">Status</p>
+                            <p className="font-display text-lg text-retro-charcoal">Open for Work</p>
                         </div>
                     </div>
                 </div>

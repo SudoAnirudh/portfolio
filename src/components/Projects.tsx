@@ -3,44 +3,66 @@ import { portfolioData } from '@/data/portfolio';
 
 const Projects = () => {
     return (
-        <section className="py-32 px-8 section-border bg-gray-50/30 scroll-reveal" id="projects" data-scroll>
-            <div className="max-w-6xl mx-auto">
-                <div className="flex items-end justify-between mb-20">
-                    <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted">Selected Projects</h2>
+        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0" id="projects">
+            <div className="bg-zinc-200 bento-card rounded-t-xl rounded-b-none border-4 border-black border-b-0 p-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-retro-charcoal">folder_open</span>
+                    <span className="font-pixel text-sm uppercase">C:\USERS\ANIRUDH\PROJECTS</span>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div className="flex gap-2">
+                    <div className="w-4 h-4 bg-retro-charcoal border border-white"></div>
+                    <div className="w-4 h-4 bg-retro-charcoal border border-white"></div>
+                    <div className="w-4 h-4 bg-red-500 border border-white/20"></div>
+                </div>
+            </div>
+
+            <div className="bg-retro-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {portfolioData.projects.map((project, index) => (
-                        <div key={index} className="group flex flex-col h-full">
-                            <div className={`aspect-video bg-white thin-border rounded-sm overflow-hidden mb-8 flex items-center justify-center bg-gray-100 transform hover:shadow-lg transition-all duration-500 ${index % 2 === 0 ? 'hover:-rotate-1' : 'hover:rotate-1'} relative`}>
+                        <div key={index} className="group cursor-pointer">
+                            <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 {(project as any).image ? (
                                     <img
                                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         src={(project as any).image}
                                         alt={project.title}
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                        className="w-full aspect-video object-cover border border-black grayscale group-hover:grayscale-0 transition-all"
                                     />
                                 ) : (
-                                    <span className="material-symbols-outlined text-4xl text-gray-300">{project.icon}</span>
+                                    <div className="w-full aspect-video flex items-center justify-center bg-retro-charcoal/5 border border-black">
+                                        <span className="material-symbols-outlined text-6xl text-retro-charcoal/20 group-hover:text-retro-charcoal transition-colors">{project.icon}</span>
+                                    </div>
                                 )}
                             </div>
-                            <h3 className="text-lg font-semibold mb-2">{project.title}</h3>
-                            <p className="text-muted text-sm font-light mb-auto">{project.description}</p>
-                            <div className="mt-6 pt-6 border-t border-gray-100">
-                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                <a href={(project as any).github} className="inline-flex items-center text-[11px] font-bold tracking-[0.2em] uppercase text-black hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" target="_blank" rel="noopener noreferrer">
-                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" className="w-4 h-4 mr-2 opacity-80" alt="GitHub" />
-                                    View Code
-                                </a>
+
+                            <div className="text-center">
+                                <h3 className="font-pixel text-sm uppercase tracking-wider mb-1 px-2 bg-black text-white inline-block">
+                                    {project.title}
+                                </h3>
+                                <div className="text-xs font-body text-zinc-500 truncate px-2">
+                                    {project.title.toLowerCase()}.exe
+                                </div>
+                                <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                    <a href={(project as any).github} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                        Open
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="mt-24 text-center">
-                    <a href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-8 py-4 bg-black text-white rounded-full text-xs font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" className="w-5 h-5 mr-3 invert" alt="GitHub" />
-                        Explore More Projects
+                <div className="flex justify-center mt-12">
+                    <a
+                        href={portfolioData.personal.social.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-2 px-6 py-3 bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-retro-yellow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    >
+                        <span className="material-symbols-outlined group-hover:rotate-12 transition-transform">rocket_launch</span>
+                        <span className="font-pixel text-sm font-bold uppercase tracking-wider">Explore More Projects</span>
                     </a>
                 </div>
             </div>

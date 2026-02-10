@@ -6,42 +6,55 @@ const Contribution = () => {
 
     useEffect(() => {
         // Generate random intensity levels for the squares on the client side only
-        // to avoid hydration mismatch.
-        const newSquares = Array.from({ length: 280 }).map(() => Math.floor(Math.random() * 5));
+        const newSquares = Array.from({ length: 160 }).map(() => Math.floor(Math.random() * 5));
         const timer = setTimeout(() => {
             setSquares(newSquares);
         }, 0);
         return () => clearTimeout(timer);
     }, []);
 
-    const colors = ['bg-gray-50', 'bg-gray-200', 'bg-gray-300', 'bg-slate-400', 'bg-slate-600'];
+    const colors = [
+        'bg-zinc-200 border-transparent',
+        'bg-green-200 border-black',
+        'bg-green-400 border-black',
+        'bg-green-600 border-black',
+        'bg-green-800 border-black'
+    ];
 
     return (
-        <section className="py-32 px-8 section-border overflow-hidden scroll-reveal" data-scroll>
-            <div className="max-w-6xl mx-auto">
-                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-12 text-center">Contribution Graph</h2>
-                <div className="bg-white thin-border p-10 rounded-sm">
-                    <div className="flex flex-wrap gap-1.5 justify-center">
+        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0">
+            <div className="bg-zinc-100 bento-card rounded-3xl p-8 relative overflow-hidden retro-grain border-4 border-black/10">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-display uppercase tracking-tighter text-retro-charcoal">
+                        Github <span className="text-retro-green">Activity</span>
+                    </h2>
+                    <div className="font-pixel text-xs uppercase bg-black text-white px-2 py-1">
+                        System.Log
+                    </div>
+                </div>
+
+                <div className="bg-retro-charcoal p-4 rounded-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]">
+                    <div className="flex flex-wrap gap-1 justify-center">
                         {squares.length > 0 ? squares.map((intensity, index) => (
-                            <div key={index} className={`contribution-square rounded-sm ${colors[intensity]}`}></div>
+                            <div key={index} className={`w-3 h-3 md:w-4 md:h-4 border ${colors[intensity]} transition-all duration-500 hover:scale-125`}></div>
                         )) : (
-                            /* Placeholder ensuring layout doesn't jump too much, or just empty until loaded */
-                            Array.from({ length: 280 }).map((_, i) => (
-                                <div key={i} className="contribution-square rounded-sm bg-gray-50"></div>
+                            Array.from({ length: 160 }).map((_, i) => (
+                                <div key={i} className="w-3 h-3 md:w-4 md:h-4 bg-zinc-800 border-zinc-700 border"></div>
                             ))
                         )}
                     </div>
-                    <div className="mt-8 flex items-center justify-center space-x-3 text-[10px] text-muted uppercase tracking-widest font-medium">
-                        <span>Less</span>
-                        <div className="flex space-x-1.5">
-                            <div className="contribution-square rounded-sm bg-gray-50 border border-gray-100"></div>
-                            <div className="contribution-square rounded-sm bg-gray-200"></div>
-                            <div className="contribution-square rounded-sm bg-gray-300"></div>
-                            <div className="contribution-square rounded-sm bg-slate-400"></div>
-                            <div className="contribution-square rounded-sm bg-slate-600"></div>
-                        </div>
-                        <span>More</span>
+                </div>
+
+                <div className="mt-4 flex items-center justify-end gap-2 text-[10px] font-bold uppercase font-body">
+                    <span>Less</span>
+                    <div className="flex gap-1">
+                        <div className="w-3 h-3 bg-zinc-200 border border-black"></div>
+                        <div className="w-3 h-3 bg-green-200 border border-black"></div>
+                        <div className="w-3 h-3 bg-green-400 border border-black"></div>
+                        <div className="w-3 h-3 bg-green-600 border border-black"></div>
+                        <div className="w-3 h-3 bg-green-800 border border-black"></div>
                     </div>
+                    <span>More</span>
                 </div>
             </div>
         </section>

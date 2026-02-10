@@ -1,27 +1,97 @@
+"use client";
 import React from 'react';
 import { portfolioData } from '@/data/portfolio';
 
 const Skills = () => {
+    // Helper to extract items string into array
+    const getItems = (category: string) => {
+        const skillFunc = portfolioData.skills.find(s => s.category === category);
+        return skillFunc ? skillFunc.items.split(', ') : [];
+    };
+
+    const languages = getItems("Languages");
+    const frameworks = getItems("Frameworks & Libraries");
+    const tools = getItems("Tools & Platforms");
+    const softSkills = getItems("Soft Skills");
+
     return (
-        <section className="py-32 px-8 section-border scroll-reveal" data-scroll>
-            <div className="max-w-6xl mx-auto">
-                <h2 className="text-xs font-bold tracking-[0.3em] uppercase text-muted mb-20 text-center">Technical Skills</h2>
-                <div className="grid md:grid-cols-2 gap-16">
-                    <div className="space-y-12">
-                        {portfolioData.skills.slice(0, 2).map((skill, index) => (
-                            <div key={index}>
-                                <h3 className="text-sm font-bold uppercase tracking-widest mb-6">{skill.category}</h3>
-                                <p className="text-muted font-light leading-relaxed">{skill.items}</p>
+        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0" id="skills">
+            <div className="w-full">
+                {/* Software Skills - Green Card */}
+                <div className="bg-retro-green bento-card rounded-3xl p-8 relative overflow-hidden retro-grain h-full">
+                    <div className="relative z-20 flex flex-col items-end h-full">
+                        <div className="w-full flex justify-between items-start mb-12">
+                            <div className="w-16 h-16 bg-white/20 border-2 border-black flex items-center justify-center">
+                                <span className="material-symbols-outlined text-4xl text-retro-charcoal">terminal</span>
                             </div>
-                        ))}
-                    </div>
-                    <div className="space-y-12">
-                        {portfolioData.skills.slice(2, 4).map((skill, index) => (
-                            <div key={index}>
-                                <h3 className="text-sm font-bold uppercase tracking-widest mb-6">{skill.category}</h3>
-                                <p className="text-muted font-light leading-relaxed">{skill.items}</p>
+                            <h2 className="text-6xl font-display leading-[0.9] text-right uppercase tracking-tighter text-retro-charcoal">
+                                Tech<br />Stack
+                            </h2>
+                        </div>
+
+                        {/* Fake Retro UI for Skills */}
+                        <div className="w-full bg-zinc-300 border-4 border-black p-4 shadow-[10px_10px_0px_#000] relative">
+                            <div className="bg-blue-900 aspect-video border-4 border-zinc-800 p-4 grid grid-cols-6 gap-4 overflow-y-auto custom-scrollbar content-start">
+                                {[...languages, ...frameworks, ...tools].map((skill, i) => {
+                                    // Simple mapping for icons
+                                    const iconMap: { [key: string]: string } = {
+                                        "Python": "python",
+                                        "C": "c",
+                                        "Java": "java",
+                                        "Dart": "dart",
+                                        "PHP": "php",
+                                        "Django": "django",
+                                        "Flask": "flask",
+                                        "NumPy": "numpy",
+                                        "Pandas": "pandas",
+                                        "Matplotlib": "matplotlib", // might fallback text
+                                        "Seaborn": "python", // fallback
+                                        "scikit-learn": "scikitlearn",
+                                        "Flutter": "flutter",
+                                        "Git": "git",
+                                        "VS Code": "visualstudiocode",
+                                        "Jupyter": "jupyter",
+                                        "Anaconda": "anaconda",
+                                        "Excel": "microsoftexcel",
+                                        "Power BI": "powerbi",
+                                        "Tableau": "tableau",
+                                        "SQL": "sqlite",
+                                        "MongoDB": "mongodb"
+                                    };
+
+                                    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
+                                    const iconUrl = `https://cdn.simpleicons.org/${slug}/white`;
+
+                                    return (
+                                        <div key={i} className="flex flex-col items-center justify-center gap-1 group">
+                                            <div className="w-10 h-10 flex items-center justify-center bg-zinc-800 border-2 border-zinc-600 rounded p-1 group-hover:scale-110 transition-transform cursor-help relative" title={skill}>
+                                                <img
+                                                    src={iconUrl}
+                                                    alt={skill}
+                                                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100"
+                                                    onError={(e) => {
+                                                        // Fallback to text if icon fails
+                                                        (e.target as HTMLImageElement).style.display = 'none';
+                                                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                                                    }}
+                                                />
+                                                <span className="hidden text-[8px] text-white font-bold leading-none">{skill.substring(0, 2)}</span>
+                                            </div>
+                                            <span className="text-[8px] font-pixel text-zinc-300 uppercase tracking-wider text-center hidden sm:block">{skill}</span>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        ))}
+
+                            <div className="h-6 mt-2 flex items-center justify-end gap-2">
+                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                <div className="w-12 h-1 bg-zinc-400"></div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 text-right w-full">
+                            <p className="text-[10px] font-pixel text-black tracking-widest uppercase">System Operational // Ready</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3,51 +3,84 @@ import React, { useEffect, useState } from 'react';
 import { portfolioData } from '@/data/portfolio';
 
 const Hero = () => {
-    const [tagline, setTagline] = useState(portfolioData.hero.taglines[0]);
-
-    useEffect(() => {
-        const day = new Date().getDay();
-        const timer = setTimeout(() => {
-            setTagline(portfolioData.hero.taglines[day]);
-        }, 0);
-        return () => clearTimeout(timer);
-    }, []);
-
     return (
-        <header id="main-content" className="min-h-screen flex items-center px-8 pt-20">
-            <div className="max-w-6xl mx-auto w-full py-24">
-                <div className="inline-block border border-gray-200 px-3 py-1 text-[11px] tracking-[0.2em] font-medium text-muted uppercase mb-12 rounded-sm">
-                    {portfolioData.hero.status}
+        <section className="max-w-7xl mx-auto space-y-6 pt-20 mb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Profile Card */}
+                <div className="lg:col-span-8 bg-retro-white dark:bg-zinc-100 bento-card rounded-2xl p-6 relative overflow-hidden retro-grain border-4 border-black/5">
+                    <div className="flex flex-col md:flex-row gap-6">
+                        <div className="w-full md:w-1/3 space-y-4">
+                            <div className="aspect-square bg-zinc-300 rounded-xl overflow-hidden border-4 border-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                <img
+                                    alt="Profile"
+                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                    src={portfolioData.about.image}
+                                />
+                            </div>
+                            <div className="bg-primary text-black font-display text-center py-2 rounded-full text-sm border-2 border-black font-bold uppercase tracking-widest hover:bg-retro-yellow transition-colors">
+                                {portfolioData.hero.status}
+                            </div>
+                        </div>
+                        <div className="w-full md:w-2/3 space-y-4">
+                            <div className="flex justify-between items-start">
+                                <h1 className="text-6xl md:text-7xl font-display uppercase tracking-tighter leading-none text-zinc-900">
+                                    ANIRUDH S
+                                </h1>
+                                <div className="text-4xl text-zinc-900">
+                                    <span className="material-symbols-outlined text-5xl">sentiment_satisfied</span>
+                                </div>
+                            </div>
+                            <p className="text-sm md:text-base font-medium leading-relaxed max-w-lg font-body text-zinc-700">
+                                {portfolioData.hero.subtext}
+                            </p>
+
+                            {/* Retro Data Grid */}
+                            <div className="grid grid-cols-3 gap-0 border-2 border-black text-[10px] md:text-xs font-bold uppercase bg-zinc-50 font-pixel tracking-widest">
+                                <div className="border-r-2 border-b-2 border-black p-2">Location</div>
+                                <div className="border-r-2 border-b-2 border-black p-2">Role</div>
+                                <div className="border-b-2 border-black p-2">Focus</div>
+                                <div className="border-r-2 border-black p-2 truncate">India</div>
+                                <div className="border-r-2 border-black p-2 truncate">AI Engineer</div>
+                                <div className="p-2 truncate">Deep Learning</div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-4">
+                                <div className="flex gap-3">
+                                    {portfolioData.hero.actions.map((action, index) => (
+                                        <a
+                                            key={index}
+                                            href={action.href}
+                                            target={!action.primary ? "_blank" : undefined}
+                                            className="flex items-center gap-2 group"
+                                        >
+                                            <span className="bg-black text-white px-2 py-1 rounded text-[10px] font-bold group-hover:bg-primary group-hover:text-black transition-colors uppercase">
+                                                {action.text}
+                                            </span>
+                                        </a>
+                                    ))}
+                                </div>
+                                <div className="w-12 h-12 bg-white border-2 border-black p-1 hidden md:block">
+                                    {/* QR Placeholder or decorative */}
+                                    <div className="w-full h-full bg-black/10"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h1 className="text-7xl md:text-[80px] leading-[0.9] font-light tracking-tighter mb-12 max-w-4xl">
-                    {tagline.split(" ").map((word, index) => {
-                        if (["intelligent", "learn", "insights", "neural", "Deeper", "deployment", "future"].some(k => word.includes(k))) {
-                            return <span key={index} className="text-accent italic">{word} </span>
-                        }
-                        return word + " ";
-                    })}
-                </h1>
-                <p className="text-xl md:text-2xl text-muted font-light max-w-2xl leading-relaxed mb-16">
-                    {portfolioData.hero.subtext}
-                </p>
-                <div className="flex flex-wrap gap-8">
-                    {portfolioData.hero.actions.map((action, index) => (
-                        <a
-                            key={index}
-                            className="text-sm font-semibold tracking-widest uppercase flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                            href={action.href}
-                            target={!action.primary ? "_blank" : undefined}
-                            rel={!action.primary ? "noopener noreferrer" : undefined}
-                        >
-                            {action.text}
-                            <span className={`material-symbols-outlined ml-2 text-sm ${action.primary ? "group-hover:translate-x-1 transition-transform" : ""}`}>
-                                {action.icon}
-                            </span>
-                        </a>
-                    ))}
+
+                {/* Hello World / Decor Card */}
+                <div className="lg:col-span-4 bg-zinc-200 bento-card rounded-2xl p-4 flex flex-col items-center justify-center relative overflow-hidden retro-grain border-4 border-zinc-300">
+                    <div className="w-full aspect-square relative rounded-lg overflow-hidden flex flex-col border-2 border-black">
+                        <div className="h-1/2 rainbow-header w-full opacity-90"></div>
+                        <div className="h-1/2 bg-zinc-50 w-full flex items-center justify-center px-4">
+                            <h2 className="text-5xl md:text-6xl font-display leading-[0.8] text-center uppercase tracking-tighter text-zinc-900">
+                                HELLO<br />WORLD
+                            </h2>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
+        </section>
     );
 };
 
