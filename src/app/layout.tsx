@@ -20,8 +20,8 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "Retro Creative Portfolio | ZAMEEL",
-  description: "Visual and Motion Designer Portfolio",
+  title: "Retro Portfolio | ANIRUDH S",
+  description: "AI/ML ENGINEER Portfolio",
 };
 
 export default function RootLayout({
