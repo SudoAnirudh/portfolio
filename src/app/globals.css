@@ -108,6 +108,13 @@
     }
 }
 
+
 .shake-screen {
     animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/* Hide default cursor when custom cursor is enabled */
+body.custom-cursor,
+body.custom-cursor * {
+    cursor: none !important;
 }

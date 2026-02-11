@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Space_Grotesk, VT323 } from "next/font/google"; // Import fonts
 import "./globals.css";
+import RetroCursor from "@/components/RetroCursor";
+import RetroMusicPlayer from "@/components/RetroMusicPlayer";
 
 const archivoBlack = Archivo_Black({
   weight: "400",
@@ -20,7 +22,7 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "Retro Portfolio | ANIRUDH S",
+  title: "ANIRUDH S",
   description: "AI/ML ENGINEER Portfolio",
 };
 
@@ -39,6 +41,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-50"></div>
+        {/* Helper for cursor hiding handled inside component, but adding it here to be safe */}
+        <RetroCursor />
+        <RetroMusicPlayer />
         <div className="max-w-7xl mx-auto space-y-6">
           {children}
         </div>
