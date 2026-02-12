@@ -1,7 +1,11 @@
-import React from 'react';
-import { portfolioData } from '@/data/portfolio';
+"use client";
+import React, { useState } from 'react';
+import { portfolioData, Project } from '@/data/portfolio';
+import ProjectModal from './ProjectModal';
 
 const Projects = () => {
+    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
     return (
         <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0" id="projects">
             <div className="bg-zinc-200 bento-card rounded-t-xl rounded-b-none border-4 border-black border-b-0 p-4 flex items-center justify-between">
@@ -19,7 +23,11 @@ const Projects = () => {
             <div className="bg-retro-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {portfolioData.projects.map((project, index) => (
-                        <div key={index} className="group cursor-pointer">
+                        <div
+                            key={index}
+                            className="group cursor-pointer"
+                            onClick={() => setSelectedProject(project)}
+                        >
                             <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 {project.image ? (
                                     <img
@@ -42,9 +50,9 @@ const Projects = () => {
                                     {project.title.toLowerCase()}.exe
                                 </div>
                                 <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase underline hover:text-retro-orange">
-                                        Open
-                                    </a>
+                                    <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                        Details
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -63,6 +71,11 @@ const Projects = () => {
                     </a>
                 </div>
             </div>
+
+            <ProjectModal
+                project={selectedProject}
+                onClose={() => setSelectedProject(null)}
+            />
         </section>
     );
 };

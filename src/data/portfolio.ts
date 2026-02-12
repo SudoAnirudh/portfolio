@@ -73,6 +73,7 @@ export interface Project {
     description: string;
     image?: string;
     github: string;
+    techStack: string[];
 }
 
 export interface Footer {
@@ -153,7 +154,7 @@ export const portfolioData: PortfolioData = {
             period: "2019 – 2020 | 95%",
             degree: "Secondary School",
             institution: "GHSS Naduvannur, Kozhikode"
-        }
+        },
     ],
     experience: [
         {
@@ -199,42 +200,48 @@ export const portfolioData: PortfolioData = {
             icon: "agriculture",
             description: "Offline, multilingual mobile app for cattle breed & disease detection using TensorFlow Lite.",
             image: "/projects/pashu_swasthya.png",
-            github: "https://github.com/SudoAnirudh/PashuSwasthya"
+            github: "https://github.com/SudoAnirudh/PashuSwasthya",
+            techStack: ["Flutter", "TensorFlow Lite", "Python"]
         },
         {
             title: "CNN Visualizer",
             icon: "visibility",
             description: "Web tool to visualize CNN filters, feature maps, and activations for deep learning interpretability.",
             image: "/projects/cnn_visualizer.png",
-            github: "https://github.com/SudoAnirudh/CNN-VISUALIZER"
+            github: "https://github.com/SudoAnirudh/CNN-VISUALIZER",
+            techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
             title: "Customer Churn Prediction",
             icon: "analytics",
             description: "ML-based churn prediction using historical data with feature engineering improvements.",
             image: "/projects/churn_prediction.png",
-            github: "https://github.com/SudoAnirudh/Customer_Churn_Prediction"
+            github: "https://github.com/SudoAnirudh/Customer_Churn_Prediction",
+            techStack: ["Python", "Scikit-learn", "Pandas", "Matplotlib"]
         },
         {
             title: "Stock Price Predictor",
             icon: "trending_up",
             description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",
             image: "/projects/stock_predictor.png",
-            github: "https://github.com/SudoAnirudh/Stock_Price_Predictor"
+            github: "https://github.com/SudoAnirudh/Stock_Price_Predictor",
+            techStack: ["Python", "LSTM", "Keras", "Pandas"]
         },
         {
             title: "Image Enhancement Toolkit",
             icon: "auto_fix",
             description: "ML/DL-based enhancement models with a Streamlit dashboard for interaction.",
             image: "/projects/image_enhancement.png",
-            github: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit"
+            github: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit",
+            techStack: ["Python", "OpenCV", "Streamlit", "TensorFlow"]
         },
         {
             title: "Intrusion Detection System",
             icon: "security",
             description: "Network intrusion detection using ML with Flask-based real-time monitoring UI.",
             image: "/projects/intrusion_detection.png",
-            github: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML"
+            github: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML",
+            techStack: ["Python", "Flask", "Scikit-learn", "Pandas"]
         }
     ],
     certifications: [
