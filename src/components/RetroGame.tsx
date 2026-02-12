@@ -1,300 +1,336 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
+
+// Types
+type Cell = {
+    x: number;
+    y: number;
+    isMine: boolean;
+    isRevealed: boolean;
+    isFlagged: boolean;
+    neighborCount: number;
+};
+
+type GameState = "START" | "PLAYING" | "WON" | "LOST";
+
+// Constants
+const GRID_SIZE = 10;
+const TOTAL_MINES = 15;
 
 const RetroGame = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [gameState, setGameState] = useState<'START' | 'PLAYING' | 'GAME_OVER'>('START');
-    const [score, setScore] = useState(0);
-    const [highScore, setHighScore] = useState(0);
+    const [grid, setGrid] = useState<Cell[][]>([]);
+    const [gameState, setGameState] = useState<GameState>("START");
+    const [minesLeft, setMinesLeft] = useState(TOTAL_MINES);
+    const [timer, setTimer] = useState(0);
+    const [timerActive, setTimerActive] = useState(false);
 
-    // Game constants
-    const GAME_WIDTH = 400;
-    const GAME_HEIGHT = 400;
-    const PLAYER_SIZE = 24;
-    const BULLET_SIZE = 4;
-    const ENEMY_SIZE = 20;
-    const PLAYER_SPEED = 5;
-    const BULLET_SPEED = 7;
-    const ENEMY_SPEED = 1;
-    const SPAWN_RATE = 60; // Frames between spawns
+    // Initialize Game
+    const initGame = useCallback(() => {
+        // specific logic to ensure first click is safe or map is generated
+        // safely. For simplicity in this version, we'll generate mines immediately
+        // but ensures we have a playable board.
 
-    // Game state refs
-    const playerRef = useRef({ x: GAME_WIDTH / 2 - PLAYER_SIZE / 2, y: GAME_HEIGHT - PLAYER_SIZE - 10 });
-    const bulletsRef = useRef<{ x: number; y: number }[]>([]);
-    const enemiesRef = useRef<{ x: number; y: number }[]>([]);
-    const particlesRef = useRef<{ x: number; y: number; vx: number; vy: number; life: number; color: string }[]>([]);
-    const frameCountRef = useRef(0);
-    const keysRef = useRef<{ [key: string]: boolean }>({});
-    const gameLoopRef = useRef<number | null>(null);
+        // 1. Create Empty Grid
+        let newGrid: Cell[][] = [];
+        for (let y = 0; y < GRID_SIZE; y++) {
+            let row: Cell[] = [];
+            for (let x = 0; x < GRID_SIZE; x++) {
+                row.push({
+                    x,
+                    y,
+                    isMine: false,
+                    isRevealed: false,
+                    isFlagged: false,
+                    neighborCount: 0,
+                });
+            }
+            newGrid.push(row);
+        }
 
-    // Load high score
-    useEffect(() => {
-        const saved = localStorage.getItem('bug-invaders-highscore');
-        if (saved) setHighScore(parseInt(saved));
+        // 2. Place Mines
+        let minesPlaced = 0;
+        while (minesPlaced < TOTAL_MINES) {
+            const x = Math.floor(Math.random() * GRID_SIZE);
+            const y = Math.floor(Math.random() * GRID_SIZE);
+            if (!newGrid[y][x].isMine) {
+                newGrid[y][x].isMine = true;
+                minesPlaced++;
+            }
+        }
+
+        // 3. Calculate Neighbors
+        for (let y = 0; y < GRID_SIZE; y++) {
+            for (let x = 0; x < GRID_SIZE; x++) {
+                if (!newGrid[y][x].isMine) {
+                    let count = 0;
+                    for (let dy = -1; dy <= 1; dy++) {
+                        for (let dx = -1; dx <= 1; dx++) {
+                            const ny = y + dy;
+                            const nx = x + dx;
+                            if (
+                                ny >= 0 &&
+                                ny < GRID_SIZE &&
+                                nx >= 0 &&
+                                nx < GRID_SIZE &&
+                                newGrid[ny][nx].isMine
+                            ) {
+                                count++;
+                            }
+                        }
+                    }
+                    newGrid[y][x].neighborCount = count;
+                }
+            }
+        }
+
+        setGrid(newGrid);
+        setGameState("START");
+        setMinesLeft(TOTAL_MINES);
+        setTimer(0);
+        setTimerActive(false);
     }, []);
 
-    // Save high score
+    // Initial Load
     useEffect(() => {
-        if (score > highScore) {
-            setHighScore(score);
-            localStorage.setItem('bug-invaders-highscore', score.toString());
+        initGame();
+    }, [initGame]);
+
+    // Timer
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (timerActive && gameState === "PLAYING") {
+            interval = setInterval(() => {
+                setTimer((t) => Math.min(t + 1, 999));
+            }, 1000);
         }
-    }, [score, highScore]);
+        return () => clearInterval(interval);
+    }, [timerActive, gameState]);
 
-    const startGame = () => {
-        playerRef.current = { x: GAME_WIDTH / 2 - PLAYER_SIZE / 2, y: GAME_HEIGHT - PLAYER_SIZE - 10 };
-        bulletsRef.current = [];
-        enemiesRef.current = [];
-        particlesRef.current = [];
-        frameCountRef.current = 0;
-        setScore(0);
-        setGameState('PLAYING');
-    };
+    // Game Logic: Reveal Cell
+    const revealCell = (x: number, y: number) => {
+        if (gameState !== "PLAYING" && gameState !== "START") return;
 
-    const createExplosion = (x: number, y: number, color: string) => {
-        for (let i = 0; i < 8; i++) {
-            particlesRef.current.push({
-                x,
-                y,
-                vx: (Math.random() - 0.5) * 4,
-                vy: (Math.random() - 0.5) * 4,
-                life: 20,
-                color
-            });
+        // Start timer on first click
+        if (gameState === "START") {
+            setGameState("PLAYING");
+            setTimerActive(true);
         }
-    };
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            // Prevent default scrolling for game keys
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'Enter', 'z', 'Z'].includes(e.key)) {
-                e.preventDefault();
-            }
+        const currentCell = grid[y][x];
+        if (currentCell.isRevealed || currentCell.isFlagged) return;
 
-            keysRef.current[e.key] = true;
+        // Deep copy grid
+        const newGrid = [...grid.map((row) => [...row])];
+        const cell = newGrid[y][x];
 
-            // Shoot on Enter or Z
-            if ((e.key === 'Enter' || e.key === 'z' || e.key === 'Z') && gameState === 'PLAYING') {
-                bulletsRef.current.push({
-                    x: playerRef.current.x + PLAYER_SIZE / 2 - BULLET_SIZE / 2,
-                    y: playerRef.current.y
-                });
-
-                // Screen Shake Effect
-                document.body.classList.add('shake-screen');
-                setTimeout(() => {
-                    document.body.classList.remove('shake-screen');
-                }, 300);
-            }
-        };
-        const handleKeyUp = (e: KeyboardEvent) => {
-            keysRef.current[e.key] = false;
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
-        };
-    }, [gameState]);
-
-    useEffect(() => {
-        if (gameState !== 'PLAYING') {
-            if (gameLoopRef.current) cancelAnimationFrame(gameLoopRef.current);
+        // Hit Mine
+        if (cell.isMine) {
+            cell.isRevealed = true;
+            setGrid(newGrid);
+            gameOver(newGrid);
             return;
         }
 
-        const updateGame = () => {
-            const canvas = canvasRef.current;
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return;
+        // Flood Fill for empty cells
+        const floodFill = (cx: number, cy: number, gridCopy: Cell[][]) => {
+            if (
+                cx < 0 ||
+                cx >= GRID_SIZE ||
+                cy < 0 ||
+                cy >= GRID_SIZE ||
+                gridCopy[cy][cx].isRevealed ||
+                gridCopy[cy][cx].isFlagged
+            )
+                return;
 
-            // Update Player
-            if (keysRef.current['ArrowLeft'] || keysRef.current['a']) {
-                playerRef.current.x = Math.max(0, playerRef.current.x - PLAYER_SPEED);
-            }
-            if (keysRef.current['ArrowRight'] || keysRef.current['d']) {
-                playerRef.current.x = Math.min(GAME_WIDTH - PLAYER_SIZE, playerRef.current.x + PLAYER_SPEED);
-            }
+            gridCopy[cy][cx].isRevealed = true;
 
-            // Update Bullets
-            bulletsRef.current = bulletsRef.current
-                .map(b => ({ ...b, y: b.y - BULLET_SPEED }))
-                .filter(b => b.y + BULLET_SIZE > 0);
-
-            // Spawn Enemies
-            frameCountRef.current++;
-            if (frameCountRef.current % SPAWN_RATE === 0) {
-                enemiesRef.current.push({
-                    x: Math.random() * (GAME_WIDTH - ENEMY_SIZE),
-                    y: -ENEMY_SIZE
-                });
-            }
-
-            // Update Enemies
-            enemiesRef.current = enemiesRef.current.map(e => ({ ...e, y: e.y + ENEMY_SPEED }));
-
-            // Collision Detection
-            // Bullet hit Enemy
-            bulletsRef.current.forEach((bullet, bIdx) => {
-                enemiesRef.current.forEach((enemy, eIdx) => {
-                    if (
-                        bullet.x < enemy.x + ENEMY_SIZE &&
-                        bullet.x + BULLET_SIZE > enemy.x &&
-                        bullet.y < enemy.y + ENEMY_SIZE &&
-                        bullet.y + BULLET_SIZE > enemy.y
-                    ) {
-                        // Collision!
-                        bulletsRef.current.splice(bIdx, 1);
-                        enemiesRef.current.splice(eIdx, 1);
-                        setScore(s => s + 10);
-                        createExplosion(enemy.x + ENEMY_SIZE / 2, enemy.y + ENEMY_SIZE / 2, '#86EFAC');
+            if (gridCopy[cy][cx].neighborCount === 0) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        // Don't fill diagonals? Standard minesweeper does 8-way.
+                        floodFill(cx + dx, cy + dy, gridCopy);
                     }
-                });
-            });
-
-            // Enemy hit Player or Bottom
-            enemiesRef.current.forEach(enemy => {
-                if (enemy.y > GAME_HEIGHT) {
-                    // Enemy reached bottom - strict Game Over for "Defend the Base" feel
-                    setGameState('GAME_OVER');
                 }
-                if (
-                    playerRef.current.x < enemy.x + ENEMY_SIZE &&
-                    playerRef.current.x + PLAYER_SIZE > enemy.x &&
-                    playerRef.current.y < enemy.y + ENEMY_SIZE &&
-                    playerRef.current.y + PLAYER_SIZE > enemy.y
-                ) {
-                    setGameState('GAME_OVER');
-                    createExplosion(playerRef.current.x + PLAYER_SIZE / 2, playerRef.current.y + PLAYER_SIZE / 2, '#FACC15');
-                }
-            });
-
-            // Update Particles
-            particlesRef.current = particlesRef.current
-                .map(p => ({ ...p, x: p.x + p.vx, y: p.y + p.vy, life: p.life - 1 }))
-                .filter(p => p.life > 0);
-
-
-            // Draw
-            // Background
-            ctx.fillStyle = '#18181B'; // Dark background
-            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-            // Draw Grid (Retro feel)
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            for (let i = 0; i < GAME_WIDTH; i += 40) { ctx.moveTo(i, 0); ctx.lineTo(i, GAME_HEIGHT); }
-            for (let i = 0; i < GAME_HEIGHT; i += 40) { ctx.moveTo(0, i); ctx.lineTo(GAME_WIDTH, i); }
-            ctx.stroke();
-
-            // Draw Player (Ship)
-            ctx.fillStyle = '#FACC15'; // Retro Yellow
-            // Simple triangle ship
-            ctx.beginPath();
-            ctx.moveTo(playerRef.current.x + PLAYER_SIZE / 2, playerRef.current.y);
-            ctx.lineTo(playerRef.current.x + PLAYER_SIZE, playerRef.current.y + PLAYER_SIZE);
-            ctx.lineTo(playerRef.current.x, playerRef.current.y + PLAYER_SIZE);
-            ctx.fill();
-
-            // Draw Bullets
-            ctx.fillStyle = '#FFF';
-            bulletsRef.current.forEach(b => {
-                ctx.fillRect(b.x, b.y, BULLET_SIZE, BULLET_SIZE * 2);
-            });
-
-            // Draw Enemies (Bugs)
-            enemiesRef.current.forEach(e => {
-                ctx.fillStyle = '#ef4444'; // Red bugs
-                // Simple Bug Shape
-                ctx.fillRect(e.x + 4, e.y, 12, 12); // body
-                ctx.fillStyle = '#000';
-                ctx.fillRect(e.x + 6, e.y + 2, 2, 2); // eyes
-                ctx.fillRect(e.x + 12, e.y + 2, 2, 2);
-
-                // Legs
-                ctx.strokeStyle = '#ef4444';
-                ctx.beginPath();
-                ctx.moveTo(e.x, e.y); ctx.lineTo(e.x + 4, e.y + 4);
-                ctx.moveTo(e.x + 20, e.y); ctx.lineTo(e.x + 16, e.y + 4);
-                ctx.stroke();
-            });
-
-            // Draw Particles
-            particlesRef.current.forEach(p => {
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.life / 20;
-                ctx.fillRect(p.x, p.y, 4, 4);
-                ctx.globalAlpha = 1.0;
-            });
-
-            gameLoopRef.current = requestAnimationFrame(updateGame);
+            }
         };
 
-        gameLoopRef.current = requestAnimationFrame(updateGame);
-        return () => {
-            if (gameLoopRef.current) cancelAnimationFrame(gameLoopRef.current);
-        };
-    }, [gameState]);
+        floodFill(x, y, newGrid);
+        setGrid(newGrid);
+        checkWin(newGrid);
+    };
+
+    // Game Logic: Toggle Flag
+    const toggleFlag = (x: number, y: number, e: React.MouseEvent) => {
+        e.preventDefault();
+        if (gameState !== "PLAYING" && gameState !== "START") return;
+
+        // Start timer if needed (though usually starts on left click)
+        if (gameState === "START") {
+            setGameState("PLAYING");
+            setTimerActive(true);
+        }
+
+        const newGrid = [...grid.map((row) => [...row])];
+        const cell = newGrid[y][x];
+
+        if (cell.isRevealed) return;
+
+        if (!cell.isFlagged && minesLeft > 0) {
+            cell.isFlagged = true;
+            setMinesLeft(m => m - 1);
+        } else if (cell.isFlagged) {
+            cell.isFlagged = false;
+            setMinesLeft(m => m + 1);
+        }
+
+        setGrid(newGrid);
+    };
+
+    // Game Over
+    const gameOver = (finalGrid: Cell[][]) => {
+        setGameState("LOST");
+        setTimerActive(false);
+        // Reveal all mines
+        const revealedGrid = finalGrid.map(row =>
+            row.map(cell => {
+                if (cell.isMine) return { ...cell, isRevealed: true };
+                return cell;
+            })
+        );
+        setGrid(revealedGrid);
+    };
+
+    // Check Win
+    const checkWin = (currentGrid: Cell[][]) => {
+        let revealedCount = 0;
+        for (let row of currentGrid) {
+            for (let cell of row) {
+                if (cell.isRevealed) revealedCount++;
+            }
+        }
+        const safeCells = (GRID_SIZE * GRID_SIZE) - TOTAL_MINES;
+        if (revealedCount === safeCells) {
+            setGameState("WON");
+            setTimerActive(false);
+            // Flag all mines
+            const wonGrid = currentGrid.map(row =>
+                row.map(cell => {
+                    if (cell.isMine) return { ...cell, isFlagged: true };
+                    return cell;
+                })
+            );
+            setGrid(wonGrid);
+            setMinesLeft(0);
+        }
+    };
+
+    // UI Helpers
+    const getCellContent = (cell: Cell) => {
+        if (cell.isFlagged) return <span className="text-red-500 text-[10px] md:text-sm">🚩</span>; // Flag
+        if (!cell.isRevealed) return null;
+        if (cell.isMine) return <span className="text-black text-[10px] md:text-sm">💣</span>; // Mine
+        if (cell.neighborCount > 0) return cell.neighborCount;
+        return null; // Empty
+    };
+
+    const getCellColor = (cell: Cell) => {
+        if (!cell.isRevealed) return "bg-retro-grey hover:bg-zinc-300 border-t-white border-l-white border-b-zinc-500 border-r-zinc-500 border-[2px] md:border-[3px]";
+        if (cell.isMine) return "bg-red-500 border border-zinc-400";
+        // Number colors
+        const colors = [
+            "", // 0
+            "text-blue-700", // 1
+            "text-green-700", // 2
+            "text-red-700", // 3
+            "text-blue-900", // 4
+            "text-red-900", // 5
+            "text-teal-700", // 6
+            "text-black", // 7
+            "text-zinc-500", // 8
+        ];
+        return `bg-retro-cream border border-zinc-300 ${colors[cell.neighborCount]}`;
+    };
+
+    const getEmojiStatus = () => {
+        switch (gameState) {
+            case "WON": return "😎";
+            case "LOST": return "😵";
+            case "PLAYING": return "🙂"; // Could add😮 for mouse down in future
+            default: return "🙂";
+        }
+    };
 
     return (
-        <div className="w-full h-full relative font-pixel bg-retro-charcoal overflow-hidden group">
-            <div className="scanlines"></div>
-            <canvas
-                ref={canvasRef}
-                width={400}
-                height={400}
-                className="w-full h-full block image-pixelated object-contain"
-                style={{ imageRendering: 'pixelated' }}
-            />
+        <div className="w-full h-full bg-retro-charcoal p-2 md:p-4 font-mono select-none flex flex-col items-center justify-center border-4 border-zinc-400 rounded-lg shadow-inner bg-zinc-200">
 
-            {/* UI Overlay */}
-            <div className="absolute top-4 left-4 text-retro-green font-bold text-lg tracking-wider mix-blend-difference pointer-events-none z-30">
-                SCORE: {score.toString().padStart(4, '0')}
+            {/* Game Header */}
+            <div className="w-full bg-zinc-300 border-b-white border-r-white border-t-zinc-400 border-l-zinc-400 border-[3px] p-1.5 flex justify-between items-center mb-2 shadow-sm">
+                {/* Mines Counter */}
+                <div className="bg-black text-red-500 font-digital text-xl px-2 py-0.5 min-w-[50px] text-center border-2 border-zinc-400 shadow-inner leading-none tracking-widest">
+                    {Math.max(0, minesLeft).toString().padStart(3, '0')}
+                </div>
+
+                {/* Reset Button */}
+                <button
+                    onClick={initGame}
+                    className="w-8 h-8 md:w-10 md:h-10 bg-zinc-200 border-t-white border-l-white border-b-zinc-500 border-r-zinc-500 border-[3px] active:border-t-zinc-500 active:border-l-zinc-500 active:border-b-white active:border-r-white flex items-center justify-center text-lg hover:bg-zinc-100"
+                >
+                    {getEmojiStatus()}
+                </button>
+
+                {/* Timer */}
+                <div className="bg-black text-red-500 font-digital text-xl px-2 py-0.5 min-w-[50px] text-center border-2 border-zinc-400 shadow-inner leading-none tracking-widest">
+                    {timer.toString().padStart(3, '0')}
+                </div>
             </div>
-            <div className="absolute top-4 right-4 text-retro-yellow font-bold text-sm tracking-wider mix-blend-difference pointer-events-none z-30 opacity-80">
-                HI: {highScore.toString().padStart(4, '0')}
+
+            {/* Game Grid */}
+            <div className="bg-zinc-400 p-1.5 border-l-white border-t-white border-r-zinc-500 border-b-zinc-500 border-[3px] shadow-lg flex flex-col items-center justify-center w-full aspect-square max-w-[320px]">
+                <div
+                    className="grid gap-[1px] bg-zinc-500 w-full h-full" // Gap for grid lines
+                    style={{
+                        gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
+                        gridTemplateRows: `repeat(${GRID_SIZE}, 1fr)`
+                    }}
+                >
+                    {grid.map((row, y) => (
+                        row.map((cell, x) => (
+                            <div
+                                key={`${x}-${y}`}
+                                className={`
+                                w-full h-full
+                                flex items-center justify-center 
+                                text-[10px] md:text-sm font-bold cursor-pointer
+                                ${getCellColor(cell)}
+                            `}
+                                onClick={() => revealCell(x, y)}
+                                onContextMenu={(e) => toggleFlag(x, y, e)}
+                            >
+                                {getCellContent(cell)}
+                            </div>
+                        ))
+                    ))}
+                </div>
             </div>
 
-            {gameState !== 'PLAYING' && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/75 backdrop-blur-sm p-6 text-center z-40">
-                    <h3 className="text-4xl text-retro-yellow mb-2 tracking-widest text-stroke-black drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">
-                        {gameState === 'START' ? 'BUG INVADERS' : 'SYSTEM CRASH'}
-                    </h3>
-
-                    {gameState === 'GAME_OVER' && (
-                        <div className="mb-6 animate-pulse">
-                            <p className="text-retro-green text-sm uppercase">Bugs Squashed</p>
-                            <p className="text-white text-3xl font-bold">{score}</p>
-                            {score >= highScore && score > 0 && (
-                                <p className="text-retro-yellow text-xs mt-1">NEW HIGH SCORE!</p>
-                            )}
-                        </div>
-                    )}
-
-                    {gameState === 'START' && highScore > 0 && (
-                        <div className="mb-6">
-                            <p className="text-retro-green text-xs uppercase">HIGH SCORE</p>
-                            <p className="text-white text-xl font-bold">{highScore}</p>
-                        </div>
-                    )}
-
-                    <button
-                        onClick={startGame}
-                        className="bg-retro-green text-black px-6 py-3 text-xl font-bold border-4 border-black shadow-[4px_4px_0_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#000] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all uppercase"
-                    >
-                        {gameState === 'START' ? 'DEPLOY FIX' : 'REBOOT SYSTEM'}
-                    </button>
-
-                    <div className="mt-8 text-white/60 text-xs space-y-1">
-                        <p>ARROWS / WASD to Move</p>
-                        <p>ENTER / Z to Shoot</p>
-                    </div>
+            {/* Footer/Controls Hint */}
+            {gameState === 'START' && (
+                <div className="mt-2 text-[9px] md:text-[10px] uppercase text-zinc-500 font-bold tracking-wider">
+                    L-Click: Reveal • R-Click: Flag
                 </div>
             )}
+            {gameState === 'WON' && (
+                <div className="mt-2 text-[9px] md:text-[10px] uppercase text-green-600 font-bold tracking-wider animate-pulse">
+                    MISSION ACCOMPLISHED
+                </div>
+            )}
+            {gameState === 'LOST' && (
+                <div className="mt-2 text-[9px] md:text-[10px] uppercase text-red-600 font-bold tracking-wider">
+                    MISSION FAILED
+                </div>
+            )}
+
         </div>
     );
 };

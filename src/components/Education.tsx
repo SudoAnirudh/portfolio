@@ -25,7 +25,7 @@ const Education = () => {
                     <img
                         alt="Pixel Art PC"
                         className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb-RryyFtosf3IpAzU_ANNGpKfwtw2iqY6XyyAEe2LW7cOm9f71KXye2Mv-l0scjlMxMj9OKPOEKpvnlNdsUvoeP-vtHKJpUdr7GqKlnfHKdO7DCNeXz2RtA5T_IpRZkIR1al5HRPywWX_7fXXekB7WyDsnCwKdRpx75u8FGk9D35aemXZpoV7tcEyPJdoWWrjaT4f_92uigb3A3qpiZwcDFlrCu6N-U1Ysice7fWcIO_rVTWBdRY3L1pwf-Sq5aJBvEnI2jpE-JzQ"
+                        src="/education_overlay.png"
                     />
                 </div>
             </div>
