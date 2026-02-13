@@ -19,23 +19,24 @@ const PLAYLIST = [
     }
 ];
 
-const RetroMusicPlayer = () => {
+const RetroMusicPlayer = ({ embedded = false }: { embedded?: boolean }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTrack, setCurrentTrack] = useState(0);
     const [volume, setVolume] = useState(0.5);
     const [isMinimized, setIsMinimized] = useState(false);
 
-    // Dragging state
-    const [position, setPosition] = useState({ x: 20, y: 0 }); // Intentionally set inside useEffect to avoid mismatch
+    // Dragging state (only for floating mode)
+    const [position, setPosition] = useState({ x: 20, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const dragOffset = useRef({ x: 0, y: 0 });
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Initialize position on client only to avoid hydration mismatch
     useEffect(() => {
-        setPosition({ x: window.innerWidth - 320, y: window.innerHeight - 150 });
-    }, []);
+        if (!embedded) {
+            setPosition({ x: window.innerWidth - 320, y: window.innerHeight - 150 });
+        }
+    }, [embedded]);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -49,7 +50,7 @@ const RetroMusicPlayer = () => {
     }, [isPlaying, volume, currentTrack]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
-        if ((e.target as HTMLElement).closest('.no-drag')) return;
+        if (embedded || (e.target as HTMLElement).closest('.no-drag')) return;
         setIsDragging(true);
         dragOffset.current = {
             x: e.clientX - position.x,
@@ -58,7 +59,7 @@ const RetroMusicPlayer = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-        if (isDragging) {
+        if (isDragging && !embedded) {
             setPosition({
                 x: e.clientX - dragOffset.current.x,
                 y: e.clientY - dragOffset.current.y
@@ -88,7 +89,7 @@ const RetroMusicPlayer = () => {
 
     const nextTrack = () => {
         setCurrentTrack((prev) => (prev + 1) % PLAYLIST.length);
-        setIsPlaying(true); // Auto play next
+        setIsPlaying(true);
     };
 
     const prevTrack = () => {
@@ -98,8 +99,8 @@ const RetroMusicPlayer = () => {
 
     return (
         <div
-            className="fixed z-[9990] flex flex-col w-[300px] shadow-[8px_8px_0_0_rgba(0,0,0,0.5)] font-pixel group"
-            style={{
+            className={`${embedded ? 'w-full mt-6 relative' : 'fixed z-[9990] w-[300px]'} flex flex-col shadow-[8px_8px_0_0_rgba(0,0,0,0.5)] font-pixel group`}
+            style={embedded ? {} : {
                 left: position.x,
                 top: position.y,
                 cursor: isDragging ? 'grabbing' : 'auto'

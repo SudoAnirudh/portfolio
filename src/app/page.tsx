@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import RetroInventory from "@/components/RetroInventory";
 import Education from "@/components/Education";
 import Skills from "@/components/Skills";
 import Contribution from "@/components/Contribution";
@@ -27,6 +28,7 @@ export default function Home() {
         {/* Row 2: About + Skills */}
         <div className="lg:col-span-6">
           <About />
+          <RetroInventory />
         </div>
         <div className="lg:col-span-6">
           <Skills />
