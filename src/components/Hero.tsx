@@ -2,8 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import RetroGame from './RetroGame';
+import ReceiptPrinter from './ReceiptPrinter';
 
 const Hero = () => {
+    const [showReceipt, setShowReceipt] = useState(false);
+
+    const handleActionClick = (e: React.MouseEvent, action: any) => {
+        if (action.text === "Download CV") {
+            e.preventDefault();
+            setShowReceipt(true);
+        }
+    };
     return (
         <section className="max-w-7xl mx-auto space-y-6 pt-20 mb-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -52,7 +61,8 @@ const Hero = () => {
                                             key={index}
                                             href={action.href}
                                             target={!action.primary ? "_blank" : undefined}
-                                            className="flex items-center gap-2 group"
+                                            onClick={(e) => handleActionClick(e, action)}
+                                            className="flex items-center gap-2 group cursor-pointer"
                                         >
                                             <span className="bg-black text-white px-2 py-1 rounded text-[10px] font-bold group-hover:bg-primary group-hover:text-black transition-colors uppercase">
                                                 {action.text}
@@ -76,6 +86,7 @@ const Hero = () => {
                     </div>
                 </div>
             </div>
+            {showReceipt && <ReceiptPrinter onClose={() => setShowReceipt(false)} />}
         </section>
     );
 };
