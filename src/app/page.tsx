@@ -1,7 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import RetroInventory from "@/components/RetroInventory";
+
+import SarcasticToastWrapper from "@/components/SarcasticToastWrapper";
+
 import Education from "@/components/Education";
 import Skills from "@/components/Skills";
 import Contribution from "@/components/Contribution";
@@ -15,6 +17,7 @@ import ScrollObserver from "@/components/ScrollObserver";
 export default function Home() {
   return (
     <main className="relative">
+      <SarcasticToastWrapper />
       <ScrollObserver />
 
       {/* Grid container matches the HTML structure */}
@@ -28,7 +31,6 @@ export default function Home() {
         {/* Row 2: About + Skills */}
         <div className="lg:col-span-6">
           <About />
-          <RetroInventory />
         </div>
         <div className="lg:col-span-6">
           <Skills />
