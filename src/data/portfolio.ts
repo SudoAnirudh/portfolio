@@ -1,6 +1,7 @@
 export interface Social {
     github: string;
     linkedin: string;
+    buyMeACoffee?: string;
 }
 
 export interface Personal {
@@ -102,7 +103,8 @@ export const portfolioData: PortfolioData = {
         location: "Kozhikode, Kerala, India",
         social: {
             github: "https://github.com/SudoAnirudh",
-            linkedin: "https://linkedin.com/in/sudoanirudh"
+            linkedin: "https://linkedin.com/in/sudoanirudh",
+            buyMeACoffee: "https://buymeacoffee.com/SudoAnirudh"
         }
     },
     hero: {

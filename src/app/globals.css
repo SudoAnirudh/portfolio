@@ -1,120 +1,196 @@
 @import "tailwindcss";
 
 @theme {
-    --font-display: 'Archivo Black', sans-serif;
-    --font-body: 'Space Grotesk', sans-serif;
-    --font-pixel: 'VT323', monospace;
+  --font-display: "Archivo Black", sans-serif;
+  --font-body: "Space Grotesk", sans-serif;
+  --font-pixel: "VT323", monospace;
 
-    --color-primary: #EAB308;
-    --color-retro-yellow: #FACC15;
-    --color-retro-green: #86EFAC;
-    --color-retro-orange: #FB923C;
-    --color-retro-white: #F8FAFC;
-    --color-retro-cream: #FFFDD0;
-    --color-retro-charcoal: #18181B;
+  --color-primary: #eab308;
+  --color-retro-yellow: #facc15;
+  --color-retro-green: #86efac;
+  --color-retro-orange: #fb923c;
+  --color-retro-white: #f8fafc;
+  --color-retro-cream: #fffdd0;
+  --color-retro-charcoal: #18181b;
 
-    --radius-xl: 24px;
-    --radius-2xl: 40px;
+  --radius-xl: 24px;
+  --radius-2xl: 40px;
 }
 
 /* Custom Utilities */
 .text-stroke-black {
-    -webkit-text-stroke: 2px black;
-    color: transparent;
+  -webkit-text-stroke: 2px black;
+  color: transparent;
 }
 
 .glow-text {
-    text-shadow: 0 0 10px currentColor;
+  text-shadow: 0 0 10px currentColor;
 }
 
 /* Custom Utilities */
 .retro-grain {
-    position: relative;
-    isolation: isolate;
+  position: relative;
+  isolation: isolate;
 }
 
 .retro-grain::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAj-I5oGvCm632Vxj9b8YytHGOIw55q6ptzo578iwuKRtxtdMvSgyQ1c2FdUa_aJ2ztbLYbobDa1RAOwPORoHVQ4Ji12By73VYtGod4ZCpo8ocBUChNh58ySt4eaBOGdckbI3cYLhU5ys43WrZIKTUS4JVm1rAAdEN1fd3EodnLSoSfYqkTiavzesgpbQOdFIEMT8Nm11boWMvwggbXpJbJ_pN1-calobUzVtlupFAUjiqosLnZbpgJWuyDaTODlrZENUUtEL1p0hyL);
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 10;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAj-I5oGvCm632Vxj9b8YytHGOIw55q6ptzo578iwuKRtxtdMvSgyQ1c2FdUa_aJ2ztbLYbobDa1RAOwPORoHVQ4Ji12By73VYtGod4ZCpo8ocBUChNh58ySt4eaBOGdckbI3cYLhU5ys43WrZIKTUS4JVm1rAAdEN1fd3EodnLSoSfYqkTiavzesgpbQOdFIEMT8Nm11boWMvwggbXpJbJ_pN1-calobUzVtlupFAUjiqosLnZbpgJWuyDaTODlrZENUUtEL1p0hyL);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .bento-card {
-    transition: transform 0.2s ease-in-out;
-    box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.3);
 }
 
 .bento-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.4);
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.4);
 }
 
 .pixel-border {
-    border: 4px solid #000;
-    box-shadow: 4px 4px 0 #000;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0 #000;
 }
 
 .rainbow-header {
-    background: linear-gradient(to bottom, #F00, #FF7F00, #FF0, #0F0, #00F, #4B0082, #8B00FF);
+  background: linear-gradient(
+    to bottom,
+    #f00,
+    #ff7f00,
+    #ff0,
+    #0f0,
+    #00f,
+    #4b0082,
+    #8b00ff
+  );
 }
 
 /* Material Symbols */
 .material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    font-feature-settings: 'liga';
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Screen Shake Animation */
 @keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
 
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
 
-    20%,
-    80% {
-        transform: translate3d(2px, 0, 0);
-    }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
 
-    30%,
-    50%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
-
 .shake-screen {
-    animation: shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+  animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /* Hide default cursor when custom cursor is enabled */
 body.custom-cursor,
 body.custom-cursor * {
-    cursor: none !important;
+  cursor: none !important;
+}
+
+@keyframes rainbow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    background-image: linear-gradient(
+      90deg,
+      #ff0000,
+      #ffff00,
+      #00ff00,
+      #00ffff,
+      #0000ff,
+      #ff00ff,
+      #ff0000
+    );
+  }
+  50% {
+    background-position: 100% 50%;
+    background-image: linear-gradient(
+      90deg,
+      #ff0000,
+      #ffff00,
+      #00ff00,
+      #00ffff,
+      #0000ff,
+      #ff00ff,
+      #ff0000
+    );
+  }
+}
+
+.animate-rainbow {
+  animation: rainbow 3s linear infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scanline {
+  animation: scanline 4s linear infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
 }

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { portfolioData } from '@/data/portfolio';
-import RetroGame from './RetroGame';
+import HelloWorld from './HelloWorld';
 import ReceiptPrinter from './ReceiptPrinter';
 
 const Hero = () => {
@@ -82,7 +82,7 @@ const Hero = () => {
                 {/* Hello World / Game Card */}
                 <div className="lg:col-span-4 bg-zinc-200 bento-card rounded-2xl p-4 flex flex-col items-center justify-center relative overflow-hidden retro-grain border-4 border-zinc-300">
                     <div className="w-full aspect-square relative rounded-lg overflow-hidden flex flex-col border-2 border-black bg-retro-cream">
-                        <RetroGame />
+                        <HelloWorld />
                     </div>
                 </div>
             </div>

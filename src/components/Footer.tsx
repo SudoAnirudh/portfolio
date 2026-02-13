@@ -14,6 +14,9 @@ const Footer = () => {
                     <a className="hover:text-retro-orange transition-colors" href="#about">About</a>
                     <a className="hover:text-retro-orange transition-colors" href="#contact">Contact</a>
                     <a className="hover:text-retro-orange transition-colors" href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+                    {portfolioData.personal.social.buyMeACoffee && (
+                        <a className="hover:text-retro-orange transition-colors" href={portfolioData.personal.social.buyMeACoffee} target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-2">
