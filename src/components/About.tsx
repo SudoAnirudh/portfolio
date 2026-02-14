@@ -33,7 +33,7 @@ const About = () => {
                         </div>
                         <div>
                             <p className="text-xs font-bold uppercase text-retro-charcoal/60">Exp</p>
-                            <p className="font-display text-lg text-retro-charcoal">2+ Years</p>
+                            <p className="font-display text-lg text-retro-charcoal">Fresher</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
