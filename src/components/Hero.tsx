@@ -51,7 +51,7 @@ const Hero = () => {
                                 <div className="border-b-2 border-black p-2">Focus</div>
                                 <div className="border-r-2 border-black p-2 truncate">India</div>
                                 <div className="border-r-2 border-black p-2 truncate">AI Engineer</div>
-                                <div className="p-2 truncate">Deep Learning</div>
+                                <div className="p-2 truncate">AI/ML Developer</div>
                             </div>
 
                             <div className="flex items-center justify-between pt-4">
