@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 
@@ -17,6 +16,7 @@ import ScrollObserver from "@/components/ScrollObserver";
 export default function Home() {
   return (
     <main className="relative">
+      <div className="retro-3d-badge" aria-hidden="true" />
       <SarcasticToastWrapper />
       <ScrollObserver />
 

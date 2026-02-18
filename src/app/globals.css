@@ -194,3 +194,55 @@ body.custom-cursor * {
 .animate-glitch {
   animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
 }
+
+/* Tiny retro 3D accent */
+.retro-3d-badge {
+  position: fixed;
+  top: 86px;
+  right: 22px;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #000;
+  background: linear-gradient(135deg, #facc15 0%, #fb923c 55%, #86efac 100%);
+  box-shadow: 4px 4px 0 #000;
+  transform: rotate(-8deg) translateZ(0);
+  z-index: 20;
+  pointer-events: none;
+  image-rendering: pixelated;
+  animation: badge-bob 2.2s steps(2, end) infinite;
+}
+
+.retro-3d-badge::before,
+.retro-3d-badge::after {
+  content: "";
+  position: absolute;
+  border: 2px solid #000;
+}
+
+.retro-3d-badge::before {
+  width: 100%;
+  height: 8px;
+  left: -2px;
+  top: -10px;
+  background: #fffdd0;
+  transform: skewX(-35deg);
+}
+
+.retro-3d-badge::after {
+  width: 8px;
+  height: 100%;
+  right: -10px;
+  top: -2px;
+  background: #eab308;
+  transform: skewY(-35deg);
+}
+
+@keyframes badge-bob {
+  0%,
+  100% {
+    transform: rotate(-8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-8deg) translateY(-4px);
+  }
+}
