@@ -25,3 +25,7 @@
 ## 2025-05-23 - Spinner Accessibility & Build Artifacts
 **Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
 **Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
+
+## 2027-01-20 - Dead Code Removal
+**Learning:** Unused imports increase cognitive load and can clutter the codebase. Even if tree-shaking handles them during build, they should be removed to improve maintainability and readability.
+**Action:** Regularly audit and remove unused imports and components.
