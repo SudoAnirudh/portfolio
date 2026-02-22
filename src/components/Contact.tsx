@@ -2,6 +2,7 @@
 import React from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
+import { submitContactForm } from '@/app/actions/contact';
 
 const Contact = () => {
     const [formData, setFormData] = React.useState({
@@ -71,20 +72,12 @@ const Contact = () => {
 
         setStatus('submitting');
 
-        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSdYW6y405M2Jsc_MnYhlQ-sGDVZFwSSbc9EBuW0B2IZRRGKog/formResponse';
-
-        // Form entries
-        const formBody = new FormData();
-        formBody.append('entry.2005620554', formData.name);
-        formBody.append('entry.1045781291', formData.email);
-        formBody.append('entry.1495416884', formData.message);
-
         try {
-            await fetch(GOOGLE_FORM_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: formBody
-            });
+            const result = await submitContactForm(formData);
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to send message');
+            }
 
             // Start animation sequence
             setStatus('folding');
