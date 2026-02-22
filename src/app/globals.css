@@ -226,3 +226,16 @@ body.custom-cursor * {
   pointer-events: none;
   z-index: 20;
 }
+
+@keyframes cartridge-load {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-cartridge-load {
+  animation: cartridge-load 1s steps(12, end) forwards;
+}
