@@ -17,6 +17,50 @@
   --radius-2xl: 40px;
 }
 
+:root {
+  --color-primary: #22c55e;
+  --color-retro-yellow: #84cc16;
+  --color-retro-green: #22c55e;
+  --color-retro-orange: #65a30d;
+  --color-retro-white: #d9f99d;
+  --color-retro-cream: #0a0f0a;
+  --color-retro-charcoal: #050805;
+}
+
+html[data-era="80s"] {
+  --color-primary: #22c55e;
+  --color-retro-yellow: #84cc16;
+  --color-retro-green: #22c55e;
+  --color-retro-orange: #65a30d;
+  --color-retro-white: #d9f99d;
+  --color-retro-cream: #0a0f0a;
+  --color-retro-charcoal: #050805;
+}
+
+html[data-era="90s"] {
+  --color-primary: #eab308;
+  --color-retro-yellow: #facc15;
+  --color-retro-green: #86efac;
+  --color-retro-orange: #fb923c;
+  --color-retro-white: #f8fafc;
+  --color-retro-cream: #fffdd0;
+  --color-retro-charcoal: #5f4b32;
+}
+
+html[data-era="2000s"] {
+  --color-primary: #22d3ee;
+  --color-retro-yellow: #e879f9;
+  --color-retro-green: #22d3ee;
+  --color-retro-orange: #a78bfa;
+  --color-retro-white: #e0f2fe;
+  --color-retro-cream: #111827;
+  --color-retro-charcoal: #020617;
+}
+
+body {
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
 /* Custom Utilities */
 .text-stroke-black {
   -webkit-text-stroke: 2px black;
@@ -225,4 +269,17 @@ body.custom-cursor * {
   visibility: visible;
   pointer-events: none;
   z-index: 20;
+}
+
+@keyframes cartridge-load {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-cartridge-load {
+  animation: cartridge-load 1s steps(12, end) forwards;
 }
