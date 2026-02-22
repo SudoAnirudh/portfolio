@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { portfolioData, Project } from '@/data/portfolio';
 import ProjectModal from './ProjectModal';
+import Link from 'next/link';
 
 const Projects = () => {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -23,10 +24,10 @@ const Projects = () => {
             <div className="bg-retro-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {portfolioData.projects.map((project, index) => (
-                        <div
+                        <Link
+                            href={`/project/${project.title.toLowerCase().replace(/\s+/g, '-')}`}
                             key={index}
-                            className="group cursor-pointer"
-                            onClick={() => setSelectedProject(project)}
+                            className="group block cursor-pointer"
                         >
                             <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 {project.image ? (
@@ -50,12 +51,12 @@ const Projects = () => {
                                     {project.title.toLowerCase()}.exe
                                 </div>
                                 <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
-                                        Details
-                                    </button>
+                                    <span className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                        View Case Study
+                                    </span>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
