@@ -74,6 +74,11 @@ export interface Project {
     description: string;
     image?: string;
     github: string;
+    demo?: string;
+    specs: {
+        label: string;
+        value: string;
+    }[];
     techStack: string[];
 }
 
@@ -203,6 +208,12 @@ export const portfolioData: PortfolioData = {
             description: "Offline, multilingual mobile app for cattle breed & disease detection using TensorFlow Lite.",
             image: "/projects/pashu_swasthya.png",
             github: "https://github.com/SudoAnirudh/PashuSwasthya",
+            specs: [
+                { label: "Format", value: "Mobile Cartridge" },
+                { label: "Mode", value: "Offline First" },
+                { label: "Region", value: "Multilingual" },
+                { label: "Status", value: "Prototype Ready" }
+            ],
             techStack: ["Flutter", "TensorFlow Lite", "Python"]
         },
         {
@@ -211,6 +222,12 @@ export const portfolioData: PortfolioData = {
             description: "Web tool to visualize CNN filters, feature maps, and activations for deep learning interpretability.",
             image: "/projects/cnn_visualizer.png",
             github: "https://github.com/SudoAnirudh/CNN-VISUALIZER",
+            specs: [
+                { label: "Format", value: "Web Cartridge" },
+                { label: "Mode", value: "Interactive Visuals" },
+                { label: "Engine", value: "Deep Learning" },
+                { label: "Status", value: "Open Source" }
+            ],
             techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
@@ -219,6 +236,12 @@ export const portfolioData: PortfolioData = {
             description: "ML-based churn prediction using historical data with feature engineering improvements.",
             image: "/projects/churn_prediction.png",
             github: "https://github.com/SudoAnirudh/Customer_Churn_Prediction",
+            specs: [
+                { label: "Format", value: "ML Cartridge" },
+                { label: "Dataset", value: "Tabular Customer Data" },
+                { label: "Mode", value: "Binary Prediction" },
+                { label: "Status", value: "Research Complete" }
+            ],
             techStack: ["Python", "Scikit-learn", "Pandas", "Matplotlib"]
         },
         {
@@ -227,6 +250,12 @@ export const portfolioData: PortfolioData = {
             description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",
             image: "/projects/stock_predictor.png",
             github: "https://github.com/SudoAnirudh/Stock_Price_Predictor",
+            specs: [
+                { label: "Format", value: "Sequence Cartridge" },
+                { label: "Core Model", value: "LSTM" },
+                { label: "Output", value: "Time-Series Forecast" },
+                { label: "Status", value: "Iterating" }
+            ],
             techStack: ["Python", "LSTM", "Keras", "Pandas"]
         },
         {
@@ -235,6 +264,12 @@ export const portfolioData: PortfolioData = {
             description: "ML/DL-based enhancement models with a Streamlit dashboard for interaction.",
             image: "/projects/image_enhancement.png",
             github: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit",
+            specs: [
+                { label: "Format", value: "Vision Cartridge" },
+                { label: "Mode", value: "Interactive Dashboard" },
+                { label: "Input", value: "Image Streams" },
+                { label: "Status", value: "Open Source" }
+            ],
             techStack: ["Python", "OpenCV", "Streamlit", "TensorFlow"]
         },
         {
@@ -243,6 +278,12 @@ export const portfolioData: PortfolioData = {
             description: "Network intrusion detection using ML with Flask-based real-time monitoring UI.",
             image: "/projects/intrusion_detection.png",
             github: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML",
+            specs: [
+                { label: "Format", value: "Security Cartridge" },
+                { label: "Mode", value: "Realtime Monitoring" },
+                { label: "Surface", value: "Network Packets" },
+                { label: "Status", value: "Demo Ready" }
+            ],
             techStack: ["Python", "Flask", "Scikit-learn", "Pandas"]
         }
     ],

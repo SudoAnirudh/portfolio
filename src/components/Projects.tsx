@@ -51,7 +51,7 @@ const Projects = () => {
                                 </div>
                                 <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
-                                        Details
+                                        Load Cartridge
                                     </button>
                                 </div>
                             </div>
