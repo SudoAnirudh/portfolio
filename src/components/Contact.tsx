@@ -215,27 +215,29 @@ const Contact = () => {
 
                             <div className="grid lg:grid-cols-2">
                                 {/* Information Sidebar */}
-                                <div className="bg-zinc-200 p-5 sm:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-black border-dashed flex flex-col justify-between z-0">
-                                    <div>
-                                        <div className="mb-8">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">FROM:</label>
-                                            <div className="font-display text-xl sm:text-2xl uppercase break-words">{portfolioData.personal.name}</div>
-                                            <div className="text-xs sm:text-sm font-mono text-zinc-500 break-all">{"<"}{portfolioData.personal.email}{">"}</div>
-                                        </div>
-
-                                        <div className="mb-8">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">TO:</label>
-                                            <div className="font-display text-xl sm:text-2xl uppercase">FUTURE EMPLOYER</div>
-                                            <div className="text-xs sm:text-sm font-mono text-zinc-500">{"<"}hiring@manager.com{">"}</div>
-                                        </div>
-
-                                        <div className="mb-8">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">SUBJECT:</label>
-                                            <div className="font-display text-xl sm:text-2xl uppercase">OPPORTUNITY</div>
+                                <div className="bg-zinc-200 p-5 sm:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-black border-dashed flex flex-col z-0">
+                                    <div className="mb-8">
+                                        <h4 className="font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                                            <span className="material-symbols-outlined">schedule</span>
+                                            Availability
+                                        </h4>
+                                        <div className="bg-retro-cream border-2 border-black p-3 space-y-2 text-[11px] sm:text-xs font-pixel uppercase tracking-wider">
+                                            <div className="flex justify-between gap-2">
+                                                <span className="text-zinc-600">Status</span>
+                                                <span className="text-retro-charcoal text-right">Open for Internships</span>
+                                            </div>
+                                            <div className="flex justify-between gap-2">
+                                                <span className="text-zinc-600">Preferred Role</span>
+                                                <span className="text-retro-charcoal text-right">AI/ML Intern</span>
+                                            </div>
+                                            <div className="flex justify-between gap-2">
+                                                <span className="text-zinc-600">Timezone</span>
+                                                <span className="text-retro-charcoal text-right">IST (UTC+5:30)</span>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="mt-8 pt-8 border-t-2 border-black/10">
+                                    <div>
                                         <h4 className="font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                                             <span className="material-symbols-outlined">alternate_email</span>
                                             Connect
