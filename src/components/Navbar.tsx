@@ -25,9 +25,9 @@ const Navbar = () => {
             >
                 Skip to content
             </a>
-            <div className="max-w-6xl mx-auto px-8 h-20 flex items-center justify-between">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
                 <div className="flex items-center">
-                    <span className="font-semibold tracking-tight text-xl">{portfolioData.personal.name}</span>
+                    <span className="font-semibold tracking-tight text-base sm:text-xl">{portfolioData.personal.name}</span>
                 </div>
                 <div className="hidden md:flex items-center space-x-10 text-[13px] font-medium tracking-widest uppercase">
                     <a className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" href="#">Home</a>

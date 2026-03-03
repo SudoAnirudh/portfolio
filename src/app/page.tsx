@@ -18,7 +18,7 @@ export default function Home() {
       <ScrollObserver />
 
       {/* Grid container matches the HTML structure */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
 
         {/* Row 1: Hero Section (Profile + Hello World) - Internal grid is 8+4 */}
         <div className="lg:col-span-12">

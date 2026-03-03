@@ -5,24 +5,36 @@ import { motion } from 'framer-motion';
 
 interface ProjectModalProps {
     project: Project | null;
+    currentIndex: number | null;
+    totalProjects: number;
     onClose: () => void;
+    onNavigate: (direction: 'prev' | 'next') => void;
 }
 
-const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
+const ProjectModal: React.FC<ProjectModalProps> = ({
+    project,
+    currentIndex,
+    totalProjects,
+    onClose,
+    onNavigate,
+}) => {
     // Close on escape key
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose();
+            if (!project) return;
+            if (e.key === 'ArrowRight') onNavigate('next');
+            if (e.key === 'ArrowLeft') onNavigate('prev');
         };
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
-    }, [onClose]);
+    }, [onClose, onNavigate, project]);
 
     if (!project) return null;
 
     return (
         <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-retro-charcoal/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-retro-charcoal/80 backdrop-blur-sm"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -30,17 +42,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             transition={{ duration: 0.2 }}
         >
             <motion.div
-                className="bg-retro-white border-4 border-black p-0 max-w-3xl w-full shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative flex flex-col max-h-[90vh] overflow-hidden animate-zoom-in"
+                className="bg-retro-white border-4 border-black p-0 max-w-3xl w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative flex flex-col max-h-[92vh] overflow-hidden animate-zoom-in"
                 onClick={(e) => e.stopPropagation()}
                 initial={{ scale: 0.96, y: 14, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.98, y: 8, opacity: 0 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
             >
-                <div className="bg-retro-charcoal text-white p-2 flex justify-between items-center border-b-4 border-black">
-                    <div className="flex items-center gap-2">
+                <div className="bg-retro-charcoal text-white p-2 flex justify-between items-center gap-2 border-b-4 border-black">
+                    <div className="flex items-center gap-2 min-w-0">
                         <span className="material-symbols-outlined text-sm">deployed_code</span>
-                        <span className="font-pixel text-sm tracking-wider">CARTRIDGE_SLOT_A://{project.title.toUpperCase()}</span>
+                        <span className="font-pixel text-[10px] sm:text-sm tracking-wider truncate">CARTRIDGE_SLOT_A://{project.title.toUpperCase()}</span>
                     </div>
                     <button
                         onClick={onClose}
@@ -50,16 +62,24 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                     </button>
                 </div>
 
-                <div className="p-6 overflow-y-auto font-body">
+                <div className="p-3 sm:p-6 overflow-y-auto font-body">
                     <div className="border-4 border-black bg-zinc-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                         <div className="grid lg:grid-cols-12">
                             <div className="lg:col-span-5 p-4 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-retro-cream">
                                 <div className="font-pixel text-xs uppercase tracking-wider bg-black text-white inline-block px-2 py-1 mb-3">
                                     Project Cartridge
                                 </div>
+                                <motion.div
+                                    className="h-3 bg-zinc-800 border-2 border-black mb-3 overflow-hidden"
+                                    initial={{ clipPath: "inset(0 100% 0 0)" }}
+                                    animate={{ clipPath: "inset(0 0% 0 0)" }}
+                                    transition={{ duration: 0.28, delay: 0.1, ease: "easeOut" }}
+                                >
+                                    <div className="h-full bg-retro-yellow w-1/2" />
+                                </motion.div>
 
                                 <motion.div
-                                    className="border-4 border-black bg-white mb-4"
+                                    className="border-4 border-black bg-white mb-4 relative overflow-hidden"
                                     initial={{ opacity: 0, x: -14 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ duration: 0.3, delay: 0.08 }}
@@ -75,6 +95,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                                             <span className="material-symbols-outlined text-6xl text-retro-charcoal/30">{project.icon}</span>
                                         </div>
                                     )}
+                                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                                        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.12)_50%,transparent_100%)] animate-scanline" />
+                                    </div>
                                 </motion.div>
 
                                 <motion.div
@@ -90,13 +113,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                             </div>
 
                             <motion.div
-                                className="lg:col-span-7 p-4 bg-retro-white"
+                                className="lg:col-span-7 p-3 sm:p-4 bg-retro-white"
                                 initial={{ opacity: 0, x: 16 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.3, delay: 0.05 }}
                             >
                                 <motion.h2
-                                    className="font-display text-3xl uppercase tracking-tight leading-none mb-3 text-retro-charcoal"
+                                    className="font-display text-2xl sm:text-3xl uppercase tracking-tight leading-none mb-3 text-retro-charcoal"
                                     initial={{ opacity: 0, y: 8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.25, delay: 0.12 }}
@@ -149,6 +172,30 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                                 </div>
 
                                 <div className="pt-2 flex flex-wrap gap-3">
+                                    <motion.button
+                                        onClick={() => onNavigate('prev')}
+                                        className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.2, delay: 0.28 }}
+                                        whileHover={{ y: -1 }}
+                                    >
+                                        <span className="material-symbols-outlined text-sm">arrow_back</span>
+                                        Prev
+                                    </motion.button>
+
+                                    <motion.button
+                                        onClick={() => onNavigate('next')}
+                                        className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.2, delay: 0.29 }}
+                                        whileHover={{ y: -1 }}
+                                    >
+                                        Next
+                                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                    </motion.button>
+
                                     {project.demo ? (
                                         <motion.a
                                             href={project.demo}
@@ -199,6 +246,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                                         Eject
                                     </motion.button>
                                 </div>
+                                <motion.div
+                                    className="mt-4 font-pixel text-[11px] uppercase text-zinc-500 tracking-wider"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.2, delay: 0.45 }}
+                                >
+                                    Cartridge {currentIndex !== null ? currentIndex + 1 : 1} / {totalProjects}
+                                </motion.div>
                             </motion.div>
                         </div>
                     </div>

@@ -22,10 +22,10 @@ const Contribution = () => {
     ];
 
     return (
-        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0">
-            <div className="bg-zinc-100 bento-card rounded-3xl p-8 relative overflow-hidden retro-grain border-4 border-black/10">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-display uppercase tracking-tighter text-retro-charcoal">
+        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0">
+            <div className="bg-zinc-100 bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain border-4 border-black/10">
+                <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
+                    <h2 className="text-xl sm:text-2xl font-display uppercase tracking-tighter text-retro-charcoal">
                         Github <span className="text-retro-green">Activity</span>
                     </h2>
                     <div className="font-pixel text-xs uppercase bg-black text-white px-2 py-1">
@@ -33,7 +33,7 @@ const Contribution = () => {
                     </div>
                 </div>
 
-                <div className="bg-retro-charcoal p-4 rounded-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]">
+                <div className="bg-retro-charcoal p-3 sm:p-4 rounded-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]">
                     <div className="flex flex-wrap gap-1 justify-center">
                         {squares.length > 0 ? squares.map((intensity, index) => (
                             <div key={index} className={`w-3 h-3 md:w-4 md:h-4 border ${colors[intensity]} transition-all duration-500 hover:scale-125`}></div>

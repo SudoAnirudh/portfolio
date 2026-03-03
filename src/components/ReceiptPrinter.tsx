@@ -15,7 +15,12 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
 
     // Initialize Audio Context on mount
     useEffect(() => {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const AudioCtor =
+            window.AudioContext ||
+            (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtor) {
+            audioContextRef.current = new AudioCtor();
+        }
         return () => {
             if (audioContextRef.current) {
                 audioContextRef.current.close();
@@ -26,7 +31,6 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     const playPrintSound = () => {
         if (!audioContextRef.current) return;
         const ctx = audioContextRef.current;
-        const oscillator = ctx.createOscillator();
         const gainNode = ctx.createGain();
         const filter = ctx.createBiquadFilter();
 
@@ -137,12 +141,12 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-            <div className="relative flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-3" onClick={onClose}>
+            <div className="relative flex flex-col items-center w-full max-w-sm sm:max-w-none" onClick={(e) => e.stopPropagation()}>
 
                 {/* Printer Mechanism Head */}
-                <div className="w-80 bg-zinc-800 rounded-t-lg rounded-b-sm p-4 shadow-2xl border-b-8 border-zinc-900 relative z-20 flex flex-col items-center">
-                    <div className="w-64 h-2 bg-black rounded-full mb-2 shadow-inner"></div> {/* Ejection slot */}
+                <div className="w-full sm:w-80 bg-zinc-800 rounded-t-lg rounded-b-sm p-4 shadow-2xl border-b-8 border-zinc-900 relative z-20 flex flex-col items-center">
+                    <div className="w-3/4 h-2 bg-black rounded-full mb-2 shadow-inner"></div> {/* Ejection slot */}
                     <div className="flex justify-between w-full items-center px-4">
                         <div className="text-zinc-500 font-display text-[10px] tracking-widest uppercase">EPSON-ish</div>
                         <div className={`w-2 h-2 rounded-full ${isPrinting ? 'bg-orange-500 animate-pulse' : 'bg-green-500 shadow-[0_0_10px_#22c55e]'}`}></div>
@@ -150,7 +154,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                 </div>
 
                 {/* The Paper Wrapper */}
-                <div className="relative perspective-1000 z-10 w-72">
+                <div className="relative perspective-1000 z-10 w-[88%] sm:w-72">
                     <div
                         ref={scrollRef}
                         className={`
@@ -158,7 +162,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                             ${isTorn ? 'translate-y-4 rotate-1 shadow-2xl' : 'translate-y-0'}
                         `}
                         style={{
-                            maxHeight: '70vh',
+                            maxHeight: '65vh',
                             overflowY: 'auto',
                             scrollbarWidth: 'none',
                         }}
@@ -190,10 +194,10 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
 
                 {/* Action Buttons (Appear after tear) */}
                 {isTorn && (
-                    <div className="absolute -right-32 top-10 flex flex-col gap-3 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className="mt-4 sm:mt-0 sm:absolute sm:-right-32 sm:top-10 flex flex-col sm:flex-col gap-3 animate-in fade-in slide-in-from-left-4 duration-500">
                         <button
                             onClick={handleDownload}
-                            className="bg-primary text-black px-6 py-3 font-display uppercase text-sm border-4 border-black hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
+                            className="bg-primary text-black px-5 sm:px-6 py-3 font-display uppercase text-xs sm:text-sm border-4 border-black hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2"
                         >
                             <span className="material-symbols-outlined">download</span>
                             Take It

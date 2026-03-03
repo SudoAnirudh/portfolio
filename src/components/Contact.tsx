@@ -98,11 +98,11 @@ const Contact = () => {
     };
 
     return (
-        <section className="max-w-7xl mx-auto mb-6 px-4 md:px-0 min-h-[600px] flex items-center justify-center perspective-[2000px]" id="contact">
+        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 min-h-[520px] sm:min-h-[600px] flex items-center justify-center perspective-[2000px]" id="contact">
             <AnimatePresence mode="wait">
                 {status === 'success' ? (
                     <motion.div
-                        className="bg-retro-cream bento-card rounded-3xl p-12 border-4 border-black text-center max-w-2xl w-full"
+                        className="bg-retro-cream bento-card rounded-3xl p-6 sm:p-10 md:p-12 border-4 border-black text-center max-w-2xl w-full"
                         initial={{ opacity: 0, scale: 0.8, y: 50, rotateX: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
                         exit={{ opacity: 0, scale: 0.8 }}
@@ -110,20 +110,20 @@ const Contact = () => {
                         key="success-message"
                     >
                         <motion.div
-                            className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-100 text-green-600 mb-8 border-4 border-black"
+                            className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-green-100 text-green-600 mb-6 sm:mb-8 border-4 border-black"
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
                         >
                             <span className="material-symbols-outlined text-5xl">check</span>
                         </motion.div>
-                        <h3 className="text-4xl md:text-5xl font-display uppercase tracking-tighter mb-6">Message Sent!</h3>
-                        <p className="font-mono text-xl text-zinc-600 mb-10 leading-relaxed">
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Message Sent!</h3>
+                        <p className="font-mono text-base sm:text-lg md:text-xl text-zinc-600 mb-8 sm:mb-10 leading-relaxed">
                             Your letter is on its way. I&apos;ll get back to you faster than a dial-up connection!
                         </p>
                         <button
                             onClick={() => setStatus('idle')}
-                            className="bg-black text-white px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                            className="bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-xs sm:text-sm font-bold tracking-[0.18em] sm:tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
                         >
                             Write Another
                         </button>
@@ -215,23 +215,23 @@ const Contact = () => {
 
                             <div className="grid lg:grid-cols-2">
                                 {/* Information Sidebar */}
-                                <div className="bg-zinc-200 p-8 border-r-4 border-black border-dashed flex flex-col justify-between z-0">
+                                <div className="bg-zinc-200 p-5 sm:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-black border-dashed flex flex-col justify-between z-0">
                                     <div>
                                         <div className="mb-8">
                                             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">FROM:</label>
-                                            <div className="font-display text-2xl uppercase">{portfolioData.personal.name}</div>
-                                            <div className="text-sm font-mono text-zinc-500">{"<"}{portfolioData.personal.email}{">"}</div>
+                                            <div className="font-display text-xl sm:text-2xl uppercase break-words">{portfolioData.personal.name}</div>
+                                            <div className="text-xs sm:text-sm font-mono text-zinc-500 break-all">{"<"}{portfolioData.personal.email}{">"}</div>
                                         </div>
 
                                         <div className="mb-8">
                                             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">TO:</label>
-                                            <div className="font-display text-2xl uppercase">FUTURE EMPLOYER</div>
-                                            <div className="text-sm font-mono text-zinc-500">{"<"}hiring@manager.com{">"}</div>
+                                            <div className="font-display text-xl sm:text-2xl uppercase">FUTURE EMPLOYER</div>
+                                            <div className="text-xs sm:text-sm font-mono text-zinc-500">{"<"}hiring@manager.com{">"}</div>
                                         </div>
 
                                         <div className="mb-8">
                                             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1 block">SUBJECT:</label>
-                                            <div className="font-display text-2xl uppercase">OPPORTUNITY</div>
+                                            <div className="font-display text-xl sm:text-2xl uppercase">OPPORTUNITY</div>
                                         </div>
                                     </div>
 
@@ -240,7 +240,7 @@ const Contact = () => {
                                             <span className="material-symbols-outlined">alternate_email</span>
                                             Connect
                                         </h4>
-                                        <div className="flex gap-4">
+                                        <div className="flex flex-wrap gap-3 sm:gap-4">
                                             <a href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
                                                 <span className="material-symbols-outlined">code</span>
                                             </a>
@@ -255,8 +255,8 @@ const Contact = () => {
                                 </div>
 
                                 {/* Contact Form */}
-                                <div className="bg-retro-white p-8 relative overflow-hidden flex flex-col justify-center min-h-[500px]">
-                                    <form className="space-y-6" onSubmit={handleSubmit}>
+                                <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
+                                    <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
                                             <input
                                                 id="name"
@@ -289,13 +289,13 @@ const Contact = () => {
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-48"
+                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
                                                 required
                                             ></textarea>
                                         </div>
                                         <button
-                                            className={`bg-black text-white px-12 py-5 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
+                                            className={`w-full sm:w-auto bg-black text-white px-8 sm:px-12 py-4 sm:py-5 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
                                             type="submit"
                                             disabled={status === 'submitting' || status === 'folding' || status === 'sending'}
                                         >
