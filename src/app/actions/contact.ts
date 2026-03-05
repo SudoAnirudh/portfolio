@@ -3,7 +3,7 @@
 import { Resend } from 'resend';
 import { portfolioData } from '@/data/portfolio';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_to_prevent_crash');
 
 // Use a verified domain email here if you have one, e.g., 'hello@yourdomain.com'
 // For testing without a verified domain, Resend only allows sending to your own email using 'onboarding@resend.dev'

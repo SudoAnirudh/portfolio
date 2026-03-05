@@ -14,6 +14,7 @@ const Contact = () => {
     const [emailError, setEmailError] = React.useState('');
     const nameInputRef = React.useRef<HTMLInputElement>(null);
     const [shouldFocus, setShouldFocus] = React.useState(false);
+    const isSaving = status === 'submitting' || status === 'folding' || status === 'sending';
 
     const disposableDomains = [
         'tempmail.com', 'throwawaymail.com', 'mailinator.com', 'guerrillamail.com', 'yopmail.com',
@@ -117,15 +118,15 @@ const Contact = () => {
                         >
                             <span className="material-symbols-outlined text-5xl">check</span>
                         </motion.div>
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Message Sent!</h3>
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Data Saved!</h3>
                         <p className="font-mono text-base sm:text-lg md:text-xl text-zinc-600 mb-8 sm:mb-10 leading-relaxed">
-                            Your letter is on its way. I&apos;ll get back to you faster than a dial-up connection!
+                            Your message has been securely written to disk. I&apos;ll get back to you faster than a dial-up connection!
                         </p>
                         <button
                             onClick={() => setStatus('idle')}
                             className="bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-xs sm:text-sm font-bold tracking-[0.18em] sm:tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
                         >
-                            Write Another
+                            Write Another File
                         </button>
                     </motion.div>
                 ) : (
@@ -146,49 +147,50 @@ const Contact = () => {
                             }
                         }}
                     >
-                        {/* Envelope Flaps (Visible only during folding) */}
+                        {/* Floppy Disk Animation (Visible only during saving) */}
                         <AnimatePresence>
                             {(status === 'folding' || status === 'sending') && (
-                                <>
-                                    {/* Top Flap */}
-                                    <motion.div
-                                        className="absolute top-0 left-0 w-full bg-zinc-200 z-50 origin-top border-b-4 border-black shadow-lg"
-                                        style={{
-                                            height: '55%',
-                                            clipPath: 'polygon(0% 0%, 100% 0%, 50% 100%)',
-                                            backfaceVisibility: 'hidden'
-                                        }}
-                                        initial={{ rotateX: -180, opacity: 0 }}
-                                        animate={{ rotateX: 0, opacity: 1 }}
-                                        transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }} // Bezier for natural fold
-                                    />
-                                    {/* Bottom Flap */}
-                                    <motion.div
-                                        className="absolute bottom-0 left-0 w-full bg-zinc-100 z-50 origin-bottom border-t-4 border-black shadow-lg"
-                                        style={{
-                                            height: '50%',
-                                        }}
-                                        initial={{ rotateX: 180, opacity: 0 }}
-                                        animate={{ rotateX: 0, opacity: 1 }}
-                                        transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], delay: 0.3 }}
-                                    />
-                                    {/* Left Side Cosmetic */}
-                                    <motion.div
-                                        className="absolute top-0 left-0 h-full bg-zinc-300 z-40"
-                                        style={{ width: '50%', clipPath: 'polygon(0% 0%, 0% 100%, 100% 50%)' }}
-                                        initial={{ x: -100, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        transition={{ duration: 0.5, ease: "easeOut" }}
-                                    />
-                                    {/* Right Side Cosmetic */}
-                                    <motion.div
-                                        className="absolute top-0 right-0 h-full bg-zinc-300 z-40"
-                                        style={{ width: '50%', clipPath: 'polygon(100% 0%, 100% 100%, 0% 50%)' }}
-                                        initial={{ x: 100, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        transition={{ duration: 0.5, ease: "easeOut" }}
-                                    />
-                                </>
+                                <motion.div
+                                    className="absolute inset-[-4px] bg-zinc-900 border-4 border-black z-50 rounded-3xl overflow-hidden flex items-center justify-center p-4 sm:p-8"
+                                    initial={{ y: "-100%" }}
+                                    animate={{ y: 0 }}
+                                    exit={{ y: "100%" }}
+                                    transition={{ duration: 0.7, ease: [0.32, 0, 0.67, 0] }}
+                                >
+                                    <div className="absolute inset-0 pattern-dots border-4 border-black opacity-10 pointer-events-none"></div>
+
+                                    {/* Floppy Disk Drive Insert */}
+                                    <div className="w-full max-w-[280px] sm:max-w-xs aspect-square overflow-hidden bg-blue-600 border-[6px] sm:border-8 border-t-0 border-black rounded-b-xl sm:rounded-b-3xl flex flex-col items-center justify-between p-2 pt-0 sm:p-4 sm:pt-0 relative mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                                        
+                                        {/* Top metallic slider part */}
+                                        <div className="w-[70%] h-[35%] bg-zinc-300 border-x-[6px] sm:border-x-8 border-b-[6px] sm:border-b-8 border-black rounded-b-lg flex justify-end items-center px-2 sm:px-4 shadow-inner">
+                                            <div className="w-[30%] h-[60%] bg-zinc-800 rounded-sm shadow-inner relative left-[-10%] sm:left-[-20%]"></div>
+                                        </div>
+
+                                        {/* Bottom Label area */}
+                                        <div className="w-[90%] h-[50%] bg-zinc-50 border-[6px] sm:border-8 border-b-0 border-black rounded-t-xl p-3 sm:p-5 flex flex-col justify-between shadow-inner relative top-[10px] sm:top-[20px]">
+                                            <div className="w-full flex justify-between items-start border-b-4 border-black pb-2 sm:pb-3">
+                                                <div className="flex flex-col">
+                                                    <span className="font-pixel text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-black">A:\CAPACITY 1.44MB</span>
+                                                    <span className="font-pixel text-[7px] sm:text-[8px] uppercase text-zinc-500 mt-1">HD DS DISKETTE</span>
+                                                </div>
+                                                <span className="w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full border-[3px] border-black"></span>
+                                            </div>
+
+                                            <div className="space-y-2 w-full mt-2 lg:mt-3">
+                                                <div className="w-full h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
+                                                <div className="w-4/5 h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
+                                                <div className="w-[90%] h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
+                                                <div className="w-[85%] h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm hidden sm:block"></div>
+                                            </div>
+
+                                            <div className="absolute -top-7 -right-2 sm:-top-8 sm:-right-4 flex items-center justify-center bg-retro-yellow border-4 border-black p-2 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-10 w-[70px] sm:w-[90px]">
+                                                <span className="material-symbols-outlined text-black font-bold animate-spin text-sm sm:text-base mr-1">sync</span>
+                                                <span className="font-pixel text-[8px] sm:text-[10px] font-bold uppercase text-black tracking-[0.1em] animate-pulse">SAVING</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
                             )}
                         </AnimatePresence>
 
@@ -297,11 +299,23 @@ const Contact = () => {
                                             ></textarea>
                                         </div>
                                         <button
-                                            className={`w-full sm:w-auto bg-black text-white px-8 sm:px-12 py-4 sm:py-5 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
+                                            className={`w-full sm:w-auto bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
                                             type="submit"
-                                            disabled={status === 'submitting' || status === 'folding' || status === 'sending'}
+                                            disabled={isSaving}
                                         >
-                                            {status === 'submitting' ? 'Sending...' : status === 'folding' ? 'Sealing...' : status === 'sending' ? 'Sending...' : status === 'error' ? 'Error. Try Again.' : 'Send Message'}
+                                            <span className="flex items-center justify-center gap-2 sm:gap-3">
+                                                <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>save</span>
+                                                <span>
+                                                    {status === 'error' ? 'Disk Error. Retry.' : isSaving ? 'Writing To Disk...' : 'Save to Disk'}
+                                                </span>
+                                                {isSaving ? (
+                                                    <span className="inline-flex items-end gap-[2px] h-3">
+                                                        <span className="w-[3px] h-[4px] bg-retro-green animate-pulse"></span>
+                                                        <span className="w-[3px] h-[7px] bg-retro-green animate-pulse [animation-delay:120ms]"></span>
+                                                        <span className="w-[3px] h-[10px] bg-retro-green animate-pulse [animation-delay:240ms]"></span>
+                                                    </span>
+                                                ) : null}
+                                            </span>
                                         </button>
                                     </form>
                                 </div>
