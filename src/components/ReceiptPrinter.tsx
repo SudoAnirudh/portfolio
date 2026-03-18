@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioData } from '@/data/portfolio';
 
 interface ReceiptPrinterProps {
@@ -10,6 +11,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     const [visibleLines, setVisibleLines] = useState<React.ReactNode[]>([]);
     const [isPrinting, setIsPrinting] = useState(true);
     const [isTorn, setIsTorn] = useState(false);
+    const [isDiscarding, setIsDiscarding] = useState(false);
     const audioContextRef = useRef<AudioContext | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -140,9 +142,18 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
         window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank");
     };
 
+    const handleDiscard = () => {
+        setIsDiscarding(true);
+        playPrintSound();
+        // Wait for framer motion animation to finish
+        setTimeout(() => {
+            onClose();
+        }, 1200);
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-3" onClick={onClose}>
-            <div className="relative flex flex-col items-center w-full max-w-sm sm:max-w-none" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-3" onClick={isDiscarding ? undefined : onClose}>
+            <div className={`relative flex flex-col items-center w-full max-w-sm sm:max-w-none transition-all duration-700 ${isDiscarding ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`} onClick={(e) => e.stopPropagation()}>
 
                 {/* Printer Mechanism Head */}
                 <div className="w-full sm:w-80 bg-zinc-800 rounded-t-lg rounded-b-sm p-4 shadow-2xl border-b-8 border-zinc-900 relative z-20 flex flex-col items-center">
@@ -154,11 +165,27 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                 </div>
 
                 {/* The Paper Wrapper */}
-                <div className="relative perspective-1000 z-10 w-[88%] sm:w-72">
+                <motion.div
+                    initial={{ y: 0, rotate: 0, scale: 1, borderRadius: "0%" }}
+                    animate={isDiscarding ? {
+                        y: [0, -40, 100, 800],
+                        x: [0, 20, 100, 400],
+                        rotate: [0, -15, 90, 720],
+                        scale: [1, 0.9, 0.4, 0.1],
+                        borderRadius: ["0%", "10%", "50%", "100%"],
+                        filter: ["blur(0px)", "blur(0px)", "blur(1px)", "blur(2px)"],
+                    } : {}}
+                    transition={{
+                        duration: 1.2,
+                        times: [0, 0.2, 0.5, 1],
+                        ease: "easeInOut"
+                    }}
+                    className="relative perspective-1000 z-10 w-[88%] sm:w-72"
+                >
                     <div
                         ref={scrollRef}
                         className={`
-                            bg-[#fffdd0] w-full shadow-lg text-black font-pixel text-xs transition-all duration-700 ease-out origin-top
+                            bg-[#fffdd0] w-full shadow-lg text-black font-pixel text-xs transition-all duration-700 ease-out origin-top overflow-hidden
                             ${isTorn ? 'translate-y-4 rotate-1 shadow-2xl' : 'translate-y-0'}
                         `}
                         style={{
@@ -181,6 +208,16 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                             <div className="h-12 w-full"></div>
                         </div>
 
+                        {/* Discard Overlay Message */}
+                        {isDiscarding && (
+                            <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[1px] animate-in fade-in duration-300">
+                                <div className="bg-white border-4 border-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center gap-2 transform -rotate-2">
+                                    <span className="material-symbols-outlined animate-spin text-primary">sync</span>
+                                    <span className="font-display font-bold text-xs uppercase tracking-tighter">RECYCLING PAPER...</span>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Jagged Bottom */}
                         <div className="sticky bottom-0 left-0 w-full h-4 bg-[#fffdd0] z-20" style={{
                             maskImage: 'linear-gradient(45deg, transparent 33.33%, #000 33.33%, #000 66.67%, transparent 66.67%), linear-gradient(-45deg, transparent 33.33%, #000 33.33%, #000 66.67%, transparent 66.67%)',
@@ -190,21 +227,21 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                             transform: 'rotate(180deg) translateY(2px)' // push it down slightly
                         }}></div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Action Buttons (Appear after tear) */}
                 {isTorn && (
-                    <div className="mt-4 sm:mt-0 sm:absolute sm:-right-32 sm:top-10 flex flex-col sm:flex-col gap-3 animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className="mt-8 flex flex-row gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500 w-full justify-center px-4 relative z-30">
                         <button
                             onClick={handleDownload}
-                            className="bg-primary text-black px-5 sm:px-6 py-3 font-display uppercase text-xs sm:text-sm border-4 border-black hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2"
+                            className="bg-primary text-black px-6 py-3 font-display uppercase font-bold text-xs sm:text-sm border-4 border-black hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-2 whitespace-nowrap shadow-xl"
                         >
-                            <span className="material-symbols-outlined">download</span>
+                            <span className="material-symbols-outlined text-sm sm:text-base">download</span>
                             Take It
                         </button>
                         <button
-                            onClick={onClose}
-                            className="bg-white text-black px-6 py-2 font-display uppercase text-xs border-2 border-black hover:bg-zinc-100 transition-colors"
+                            onClick={handleDiscard}
+                            className="bg-white text-black px-6 py-3 font-display uppercase font-bold text-xs sm:text-sm border-2 border-black hover:bg-zinc-100 transition-colors whitespace-nowrap shadow-lg hover:shadow-xl"
                         >
                             Discard
                         </button>
