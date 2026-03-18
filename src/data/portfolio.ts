@@ -231,18 +231,19 @@ export const portfolioData: PortfolioData = {
             techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
-            title: "Customer Churn Prediction",
-            icon: "analytics",
-            description: "ML-based churn prediction using historical data with feature engineering improvements.",
-            image: "/projects/churn_prediction.png",
-            github: "https://github.com/SudoAnirudh/Customer_Churn_Prediction",
+            title: "Hirenix",
+            icon: "psychology",
+            description: "AI-powered SaaS platform for resume intelligence, GitHub portfolio analysis, and mock interview prep using NLP and LLMs.",
+            image: "/projects/hirenix.png",
+            github: "https://github.com/SudoAnirudh/Hirenix",
+            demo: "https://hirenix-frontend.vercel.app/",
             specs: [
-                { label: "Format", value: "ML Cartridge" },
-                { label: "Dataset", value: "Tabular Customer Data" },
-                { label: "Mode", value: "Binary Prediction" },
-                { label: "Status", value: "Research Complete" }
+                { label: "Format", value: "AI SaaS Cartridge" },
+                { label: "Mode", value: "Real-time Analysis" },
+                { label: "Engine", value: "LLM + Vector Search" },
+                { label: "Status", value: "Ongoing 🚀" }
             ],
-            techStack: ["Python", "Scikit-learn", "Pandas", "Matplotlib"]
+            techStack: ["Next.js", "FastAPI", "Supabase", "OpenAI", "pgvector", "Python"]
         },
         {
             title: "Stock Price Predictor",
