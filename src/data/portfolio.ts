@@ -165,6 +165,12 @@ export const portfolioData: PortfolioData = {
     ],
     experience: [
         {
+            period: "Jan 2026 – Mar 2026",
+            role: "AI & Machine Learning Intern",
+            company: "HEPro (AI Product Development)",
+            description: "Developed HEPro AI+, an AI-powered student mentoring system. Implemented scoring algorithms for academic/wellness metrics, applied K-Means clustering for behavioral pattern identification, and built rule-based recommendation logic."
+        },
+        {
             period: "Sep 2025 – Nov 2025",
             role: "Data Analytics Intern",
             company: "Vodafone Idea Foundation",
@@ -190,7 +196,7 @@ export const portfolioData: PortfolioData = {
         },
         {
             category: "Frameworks & Libraries",
-            items: "Django, Flask, NumPy, Pandas, Matplotlib, Seaborn, scikit-learn, Flutter"
+            items: "Django, Flask, NumPy, Pandas, Matplotlib, Seaborn, Plotly, scikit-learn, Flutter"
         },
         {
             category: "Tools & Platforms",
