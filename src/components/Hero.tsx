@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { portfolioData, HeroAction } from '@/data/portfolio';
+import { motion } from 'framer-motion';
 import HelloWorld from './HelloWorld';
 import ReceiptPrinter from './ReceiptPrinter';
 
@@ -36,9 +37,23 @@ const Hero = () => {
                                 <h1 className="text-4xl sm:text-5xl md:text-7xl font-display uppercase tracking-tighter leading-none text-zinc-900 break-words">
                                     ANIRUDH S
                                 </h1>
-                                <div className="text-3xl sm:text-4xl text-zinc-900">
+                                <motion.div 
+                                    className="text-3xl sm:text-4xl text-zinc-900 cursor-default"
+                                    animate={{ 
+                                        rotate: [0, -10, 10, -10, 0],
+                                        scale: [1, 1.1, 1]
+                                    }}
+                                    transition={{ 
+                                        duration: 4, 
+                                        repeat: Infinity, 
+                                        ease: "easeInOut",
+                                        times: [0, 0.2, 0.4, 0.6, 1]
+                                    }}
+                                    whileHover={{ scale: 1.2, rotate: 20 }}
+                                    whileTap={{ scale: 0.9 }}
+                                >
                                     <span className="material-symbols-outlined text-5xl">sentiment_satisfied</span>
-                                </div>
+                                </motion.div>
                             </div>
                             <p className="text-sm md:text-base font-medium leading-relaxed max-w-lg font-body text-zinc-700">
                                 {portfolioData.hero.subtext}
