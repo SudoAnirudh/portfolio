@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://sudoanirudh.vercel.app/sitemap.xml',
+    sitemap: 'https://portfolio-blue-five-10.vercel.app/sitemap.xml',
   };
 }
