@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { portfolioData, HeroAction } from '@/data/portfolio';
 import { motion } from 'framer-motion';
 import HelloWorld from './HelloWorld';
@@ -21,11 +22,13 @@ const Hero = () => {
                 <div className="lg:col-span-8 bg-retro-white dark:bg-zinc-100 bento-card rounded-2xl p-4 sm:p-6 relative overflow-hidden retro-grain border-4 border-black/5">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="w-full md:w-1/3 space-y-4">
-                            <div className="aspect-square bg-zinc-300 rounded-xl overflow-hidden border-4 border-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                                <img
-                                    alt="Profile"
-                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                            <div className="aspect-square bg-zinc-300 rounded-xl overflow-hidden border-4 border-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+                                <Image
+                                    alt={`${portfolioData.personal.name} - ${portfolioData.personal.role}`}
+                                    className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
                                     src={portfolioData.about.image}
+                                    fill
+                                    priority
                                 />
                             </div>
                             <div className="bg-primary text-black font-display text-center py-2 rounded-full text-sm border-2 border-black font-bold uppercase tracking-widest hover:bg-retro-yellow transition-colors">
@@ -34,7 +37,7 @@ const Hero = () => {
                         </div>
                         <div className="w-full md:w-2/3 space-y-4">
                             <div className="flex justify-between items-start">
-                                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display uppercase tracking-tighter leading-none text-zinc-900 break-words">
+                                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display uppercase tracking-tighter leading-none text-zinc-900 overflow-wrap-break-word">
                                     ANIRUDH S
                                 </h1>
                                 <motion.div 

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { portfolioData, Project } from '@/data/portfolio';
 import ProjectModal from './ProjectModal';
 
@@ -53,11 +54,14 @@ const Projects = () => {
                         >
                             <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 {project.image ? (
-                                    <img
-                                        src={project.image}
-                                        alt={project.title}
-                                        className="w-full aspect-video object-cover border border-black grayscale group-hover:grayscale-0 transition-all"
-                                    />
+                                    <div className="relative w-full aspect-video border border-black overflow-hidden">
+                                        <Image
+                                            src={project.image}
+                                            alt={`Project Thumbnail: ${project.title} - ${project.description.slice(0, 50)}...`}
+                                            fill
+                                            className="object-cover grayscale group-hover:grayscale-0 transition-all"
+                                        />
+                                    </div>
                                 ) : (
                                     <div className="w-full aspect-video flex items-center justify-center bg-retro-charcoal/5 border border-black">
                                         <span className="material-symbols-outlined text-6xl text-retro-charcoal/20 group-hover:text-retro-charcoal transition-colors">{project.icon}</span>

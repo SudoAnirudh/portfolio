@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { portfolioData } from '@/data/portfolio';
 
 const Education = () => {
@@ -21,11 +22,12 @@ const Education = () => {
                 </div>
 
                 {/* Decorative Pixel Art Image */}
-                <div className="absolute right-0 top-0 w-36 sm:w-52 md:w-64 opacity-20 pointer-events-none">
-                    <img
-                        alt="Pixel Art PC"
-                        className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated"
+                <div className="absolute right-0 top-0 w-36 sm:w-52 md:w-64 opacity-20 pointer-events-none h-64">
+                    <Image
+                        alt="Retro Pixel Art PC - Education Theme"
+                        className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated object-contain"
                         src="/education_overlay.png"
+                        fill
                     />
                 </div>
             </div>
