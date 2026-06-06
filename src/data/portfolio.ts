@@ -60,7 +60,7 @@ export interface Experience {
     period: string;
     role: string;
     company: string;
-    description: string;
+    description: string | string[];
 }
 
 export interface Skill {
@@ -113,7 +113,7 @@ export const portfolioData: PortfolioData = {
         }
     },
     hero: {
-        status: "Available for AI/ML Intern Roles",
+        status: "Seeking AI/ML & GenAI Roles",
         taglines: [
             "Transforming data into intelligent decisions.", // Sunday
             "Building systems that learn and adapt.",        // Monday
@@ -123,88 +123,91 @@ export const portfolioData: PortfolioData = {
             "Bridging the gap between data and deployment.", // Friday
             "Coding the future of artificial intelligence."  // Saturday
         ],
-        subtext: "AI & ML undergraduate with strong hands-on exposure to Deep Learning, CNNs, and NLP. Experienced in end-to-end AI application development from data to deployment.",
+        subtext: "AI/ML Engineer with a B.E. in Artificial Intelligence & Machine Learning, experienced in building production-grade AI applications, Android solutions, and machine learning systems. Skilled in Python, Kotlin, FastAPI, Google Gemini, NLP, and Deep Learning.",
         actions: [
             { text: "View Selected Work", href: "#projects", icon: "arrow_forward", primary: true },
-            { text: "Download CV", href: "https://drive.google.com/uc?export=download&id=1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU", icon: "north_east", primary: false }
+            { text: "Download CV", href: "/Anirudh_S.pdf", icon: "north_east", primary: false }
         ]
     },
     about: {
         title: "About / Identity",
-        bio: "I am a B.E. student in Artificial Intelligence & Machine Learning (2022–2026) with a passion for building AI solutions. I have experience working with LLMs, conversational AI pipelines, and computer vision models, actively targeting AI/ML Intern roles.",
+        bio: "I am a B.E. student in Artificial Intelligence & Machine Learning (2022–2026) experienced in building production-grade AI applications, Android solutions, and machine learning systems. I have hands-on experience delivering real-world projects through internships in Generative AI and student analytics.",
         pythonClass: {
             className: "AnirudhS",
             attributes: [
-                { name: "role", value: "\"AI/ML Undergraduate\"" },
-                { name: "stack", value: "[\"Deep Learning\", \"CNNs\", \"NLP\"]" },
+                { name: "role", value: "\"AI/ML Engineer\"" },
+                { name: "stack", value: "[\"Python\", \"Kotlin\", \"FastAPI\", \"Gemini API\", \"Deep Learning\"]" },
                 { name: "location", value: "\"Kozhikode, India\"" },
                 { name: "email", value: "\"anirudhsudheer@gmail.com\"" }
             ],
             methods: [
-                { name: "goal", return: "\"Moving from data → model → deployment\"" }
+                { name: "goal", return: "\"Building production-grade AI & mobile systems\"" }
             ]
         },
         image: "/profile.png"
     },
     education: [
         {
-            period: "2022 – 2026 (Pursuing)",
-            degree: "B.E. AI & Machine Learning",
-            institution: "Srinivas Institute of Technology, Mangalore"
+            period: "Sep 2022 – 2026",
+            degree: "B.E. in Artificial Intelligence and Machine Learning (CGPA: 7.77)",
+            institution: "Srinivas Institute Of Technology, Mangalore"
         },
         {
-            period: "2020 – 2022 | 85%",
-            degree: "Pre-University (Bio Science)",
+            period: "Jun 2020 – Mar 2022",
+            degree: "Bio Science Pre-University (85%)",
             institution: "NHSS Vakayad, Kozhikode"
         },
         {
-            period: "2019 – 2020 | 95%",
-            degree: "Secondary School",
+            period: "Jun 2019 – Mar 2020",
+            degree: "Secondary School (95%)",
             institution: "GHSS Naduvannur, Kozhikode"
-        },
+        }
     ],
     experience: [
         {
+            period: "Feb 2026 – May 2026",
+            role: "Android App Development Intern (Generative AI)",
+            company: "MindMatrix",
+            description: [
+                "Developed Nimma-Guru, a community mentorship Android application using Kotlin and Jetpack Compose, connecting students with local mentors.",
+                "Architected an end-to-end solution with Firebase backend services supporting real-time session scheduling, mentor profile management, and multilingual content.",
+                "Integrated Google Gemini 2.0 Flash to enable AI-powered mentor recommendations and voice-assisted interactions.",
+                "Built community engagement features (Thank You Wall, Wall of Fame) and designed 10+ responsive Material 3 Compose screens.",
+                "Utilized Android Studio, Google Cloud Labs, and Google AI Studio to deliver a functional prototype within a 3-month cycle."
+            ]
+        },
+        {
             period: "Jan 2026 – Mar 2026",
-            role: "AI & Machine Learning Intern",
-            company: "HEPro (AI Product Development)",
-            description: "Developed HEPro AI+, an AI-powered student mentoring system. Implemented scoring algorithms for academic/wellness metrics, applied K-Means clustering for behavioral pattern identification, and built rule-based recommendation logic."
-        },
-        {
-            period: "Sep 2025 – Nov 2025",
-            role: "Data Analytics Intern",
-            company: "Vodafone Idea Foundation",
-            description: "Worked with LLMs and conversational AI pipelines. Applied analytics on real telecom datasets and explored AI solutions for customer experience optimization."
-        },
-        {
-            period: "Jun 2025 – Jul 2025",
-            role: "AI & Data Analytics Intern",
-            company: "Edunet Foundation (Shell India)",
-            description: "Built ML models for garbage classification with a focus on environmental sustainability. Handled data preprocessing, training, and evaluation."
-        },
-        {
-            period: "Apr 2025 – May 2025",
-            role: "AI Intern",
-            company: "Codec Technologies",
-            description: "Conducted ML/DL experimentation for applied use cases and improved research workflows."
+            role: "AI/ML Intern",
+            company: "HeproAI",
+            description: [
+                "Designed a data-driven student analytics framework tracking Academic, Wellness, Productivity, and Career Readiness across 200+ student profiles.",
+                "Implemented composite scoring algorithms to generate normalized performance metrics, enabling real-time dashboard updates with sub-100ms inference time.",
+                "Applied K-Means clustering to segment learners into five behavioral cohorts based on risk/readiness indicators.",
+                "Developed a rule-based mentor recommendation engine mapping 15+ student risk signals to personalized intervention strategies."
+            ]
         }
     ],
     skills: [
         {
             category: "Languages",
-            items: "Python, C, Java, Dart, PHP"
+            items: "Python, JavaScript, TypeScript, Kotlin, SQL"
         },
         {
-            category: "Frameworks & Libraries",
-            items: "Django, Flask, NumPy, Pandas, Matplotlib, Seaborn, Plotly, scikit-learn, Flutter"
+            category: "AI / ML",
+            items: "scikit-learn, TensorFlow, TensorFlow Lite, LangChain, ChromaDB, pgvector, NVIDIA NIM, Gemini API"
+        },
+        {
+            category: "Backend & APIs",
+            items: "FastAPI, Flask, Django, Firebase, Supabase, MongoDB, PostgreSQL"
+        },
+        {
+            category: "Frontend & Mobile",
+            items: "React, Next.js, Jetpack Compose, Flutter"
         },
         {
             category: "Tools & Platforms",
-            items: "Git, VS Code, Jupyter, Anaconda, Excel, Power BI, Tableau, SQL, MongoDB"
-        },
-        {
-            category: "Soft Skills",
-            items: "Analytical Thinking, Problem Solving, Collaboration, Leadership, User Empathy"
+            items: "Git, Docker, Google Cloud, Android Studio, Jupyter, Power BI, VS Code"
         }
     ],
     projects: [
@@ -295,16 +298,15 @@ export const portfolioData: PortfolioData = {
         }
     ],
     certifications: [
-        "Google Cloud – Introduction to Generative AI",
-        "Neo4j Certified Professional",
-        "IBM – ML with Python, Deep Learning with TensorFlow",
-        "Infosys Springboard – ML Foundation, GenAI Principles",
-        "Zscaler – Fundamentals of Cybersecurity"
+        "Deep Learning With TensorFlow - IBM",
+        "Machine Learning With Python - IBM",
+        "Introduction to Generative AI - Google Cloud",
+        "Artificial Intelligence - Certiport, Pearson",
+        "Neo4j Certified Professional - Neo4j"
     ],
     achievements: [
-        "Contributor: GSSoC ’25, Hacktoberfest 2025",
-        "Active participant in national hackathons & IEEE events",
-        "GDSC Event Participant"
+        "Merged 5+ PRs across open-source repositories as a contributor to GSSoC ’25 and Hacktoberfest 2025",
+        "Selected for the Student Leadership Team at the USAII Global AI Hackathon 2026, handling participant communications and logistics for 100+ registrants"
     ],
     footer: {
         copyright: "© 2026 Anirudh S / AI & ML Engineer"

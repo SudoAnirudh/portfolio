@@ -9,10 +9,7 @@ const Skills = () => {
         return skillFunc ? skillFunc.items.split(', ') : [];
     };
 
-    const languages = getItems("Languages");
-    const frameworks = getItems("Frameworks & Libraries");
-    const tools = getItems("Tools & Platforms");
-    const softSkills = getItems("Soft Skills");
+    const skillsList = portfolioData.skills.flatMap(s => s.items.split(', '));
 
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="skills">
@@ -32,31 +29,40 @@ const Skills = () => {
                         {/* Fake Retro UI for Skills */}
                         <div className="w-full bg-zinc-300 border-4 border-black p-3 sm:p-4 shadow-[6px_6px_0px_#000] sm:shadow-[10px_10px_0px_#000] relative">
                             <div className="bg-blue-900 min-h-[220px] sm:aspect-video border-4 border-zinc-800 p-3 sm:p-4 grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 overflow-y-auto custom-scrollbar content-start">
-                                {[...languages, ...frameworks, ...tools].map((skill, i) => {
+                                {skillsList.map((skill, i) => {
                                     // Simple mapping for icons
                                     const iconMap: { [key: string]: string } = {
                                         "Python": "python",
-                                        "C": "c",
-                                        "Java": "java",
-                                        "Dart": "dart",
-                                        "PHP": "php",
-                                        "Django": "django",
-                                        "Flask": "flask",
-                                        "NumPy": "numpy",
-                                        "Pandas": "pandas",
-                                        "Matplotlib": "matplotlib", // might fallback text
-                                        "Seaborn": "python", // fallback
+                                        "JavaScript": "javascript",
+                                        "TypeScript": "typescript",
+                                        "Kotlin": "kotlin",
+                                        "SQL": "sqlite",
                                         "scikit-learn": "scikitlearn",
+                                        "TensorFlow": "tensorflow",
+                                        "TensorFlow Lite": "tensorflow",
+                                        "LangChain": "langchain",
+                                        "ChromaDB": "chromadb",
+                                        "pgvector": "postgresql",
+                                        "NVIDIA NIM": "nvidia",
+                                        "Gemini API": "googlegemini",
+                                        "FastAPI": "fastapi",
+                                        "Flask": "flask",
+                                        "Django": "django",
+                                        "Firebase": "firebase",
+                                        "Supabase": "supabase",
+                                        "MongoDB": "mongodb",
+                                        "PostgreSQL": "postgresql",
+                                        "React": "react",
+                                        "Next.js": "nextdotjs",
+                                        "Jetpack Compose": "jetpackcompose",
                                         "Flutter": "flutter",
                                         "Git": "git",
-                                        "VS Code": "visualstudiocode",
+                                        "Docker": "docker",
+                                        "Google Cloud": "googlecloud",
+                                        "Android Studio": "androidstudio",
                                         "Jupyter": "jupyter",
-                                        "Anaconda": "anaconda",
-                                        "Excel": "microsoftexcel",
                                         "Power BI": "powerbi",
-                                        "Tableau": "tableau",
-                                        "SQL": "sqlite",
-                                        "MongoDB": "mongodb"
+                                        "VS Code": "visualstudiocode"
                                     };
 
                                     const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");

@@ -37,11 +37,24 @@ const Experience = () => {
                                 <span className="text-retro-green font-bold uppercase">{exp.company}</span>
                             </div>
 
-                            <p className="text-retro-green/80 leading-relaxed max-w-4xl font-mono text-sm md:text-base border-l-2 border-transparent group-hover:border-retro-yellow pl-4 transition-all">
-                                <span className="text-retro-yellow mr-2">$</span>
-                                {exp.description}
+                            <div className="text-retro-green/80 leading-relaxed max-w-4xl font-mono text-sm md:text-base border-l-2 border-transparent group-hover:border-retro-yellow pl-4 transition-all">
+                                {Array.isArray(exp.description) ? (
+                                    <ul className="space-y-1.5 list-none">
+                                        {exp.description.map((bullet, bulletIdx) => (
+                                            <li key={bulletIdx} className="flex items-start gap-1">
+                                                <span className="text-retro-yellow shrink-0 font-bold">•</span>
+                                                <span>{bullet}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <>
+                                        <span className="text-retro-yellow mr-2">$</span>
+                                        {exp.description}
+                                    </>
+                                )}
                                 <span className="animate-pulse inline-block ml-1 w-2 h-4 bg-retro-green align-middle opacity-0 group-hover:opacity-100"></span>
-                            </p>
+                            </div>
                         </div>
                     ))}
 
