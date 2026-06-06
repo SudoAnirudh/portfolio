@@ -1,0 +1,15 @@
+#   ____  _   _ ____   ___      _    _   _ ___ ____  _   _ ____  _   _ 
+#  / ___|| | | |  _ \ / _ \    / \  | \ | |_ _|  _ \| | | |  _ \| | | |
+#  \___ \| | | | | | | | | |  / _ \ |  \| || || |_) | | | | | | | |_| |
+#   ___) | |_| | |_| | |_| | / ___ \| |\  || ||  _ <| |_| | |_| |  _  |
+#  |____/ \___/|____/ \___/ /_/   \_\_| \_|___|_| \_\\\\___/|____/|_| |_|
+#                                                                      
+#  > SYSTEM READY. HELLO CRAWLERS AND CURIOUS DEVELOPERS.
+#  > Website: https://portfolio-blue-five-10.vercel.app/
+#  > Developer: Anirudh S (AI/ML Engineer)
+
+User-agent: *
+Allow: /
+Disallow: /private/
+
+Sitemap: https://portfolio-blue-five-10.vercel.app/sitemap.xml

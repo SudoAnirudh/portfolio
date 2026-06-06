@@ -1,0 +1,27 @@
+/* THE HUMAN */
+Chef: Anirudh S
+Role: AI/ML Engineer & Full-stack Developer
+Location: India
+Twitter: @SudoAnirudh
+GitHub: SudoAnirudh
+
+/* THE TECHNOLOGY STACK */
+Framework: Next.js (React)
+Styling: Tailwind CSS
+Features: Web Audio API (Retro mechanical switches), custom 3D ASCII projection engines
+
+/* THE MACHINE */
+      ._________________.
+      |.               .|
+      ||   SUDOANIRUDH ||
+      ||               ||
+      ||   AI/ML ENG   ||
+      ||_______________||
+      /.-.-.-.-.-.-.-.-.\
+     /.-.-.-.-.-.-.-.-.-.\
+    /.-.-.-.-.-.-.-.-.-.-.\
+   /                       \
+  /_________________________\
+  \_________________________/
+
+> SYSTEM STATUS: ONLINE
