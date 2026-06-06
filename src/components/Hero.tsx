@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { portfolioData, HeroAction } from '@/data/portfolio';
 import { motion } from 'framer-motion';
@@ -8,6 +8,19 @@ import ReceiptPrinter from './ReceiptPrinter';
 
 const Hero = () => {
     const [showReceipt, setShowReceipt] = useState(false);
+
+    useEffect(() => {
+        const banner = `
+  ____  _   _ ____   ___      _    _   _ ___ ____  _   _ ____  _   _ 
+ / ___|| | | |  _ \\\\ / _ \\\\    / \\\\  | \\\\ | |_ _|  _ \\\\| | | |  _ \\\\| | | |
+ \\\\___ \\\\| | | | | | | | | |  / _ \\\\ |  \\\\| || || |_) | | | | | | | |_| |
+  ___) | |_| | |_| | |_| | / ___ \\\\| |\\\\  || ||  _ <| |_| | |_| |  _  |
+ |____/ \\\\___/|____/ \\\\___/ /_/   \\\\_\\_|_| \\\\_|___|_| \\\\_\\\\\\\\___/|____/|_| |_|
+                                                                     
+ > SYSTEM READY. WELCOME TO ANIRUDH S PORTFOLIO!
+`;
+        console.log('%c' + banner, 'color: #22c55e; font-family: monospace; font-weight: bold; background: #111; padding: 8px; border-radius: 4px;');
+    }, []);
 
     const handleActionClick = (e: React.MouseEvent, action: HeroAction) => {
         if (action.text === "Download CV") {
