@@ -39,6 +39,42 @@ const playClickSound = () => {
     }
 };
 
+// Play CRT static white noise fuzz sound
+const playStaticSound = () => {
+    try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioCtx) return;
+        const audioCtx = new AudioCtx();
+        
+        const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+        
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1200;
+        filter.Q.value = 1.5;
+        
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+        
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        noise.start();
+    } catch (e) {
+        // Fallback silently
+    }
+};
+
 // Channel 04: Matrix Rain Animation
 const MatrixRain = () => {
     const [grid, setGrid] = useState<string[]>([]);
@@ -229,11 +265,42 @@ const AsciiPet = () => {
     );
 };
 
+// Channel 07: Static Noise (No Signal)
+const StaticChannel = () => {
+    const [noise, setNoise] = useState<string[]>([]);
+    const chars = ' .:-=+*#%@';
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const lines = [];
+            for (let r = 0; r < 9; r++) {
+                let line = '';
+                for (let c = 0; c < 20; c++) {
+                    line += chars[Math.floor(Math.random() * chars.length)];
+                }
+                lines.push(line);
+            }
+            setNoise(lines);
+        }, 50);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="font-mono text-[10px] md:text-xs text-green-500/50 leading-none select-none tracking-widest text-center">
+            <div className="text-[9px] uppercase tracking-widest text-green-500 mb-2 opacity-50">NO SIGNAL</div>
+            {noise.map((row, i) => (
+                <div key={i} className="whitespace-pre">{row}</div>
+            ))}
+        </div>
+    );
+};
+
 const HelloWorld = () => {
     const [channel, setChannel] = useState(3);
     const [text, setText] = useState('');
     const fullText = 'HELLO WORLD';
     const [isTyping, setIsTyping] = useState(true);
+    const [isTransitioning, setIsTransitioning] = useState(false);
 
     // Channel 03 Typing text effect
     useEffect(() => {
@@ -262,14 +329,28 @@ const HelloWorld = () => {
         return () => clearTimeout(timeoutId);
     }, [channel]);
 
-    const handleNextChannel = () => {
+    const changeChannel = (nextChannel: number) => {
         playClickSound();
-        setChannel(prev => prev === 6 ? 3 : prev + 1);
+        playStaticSound();
+        setIsTransitioning(true);
+        setTimeout(() => {
+            setChannel(nextChannel);
+        }, 120);
+        setTimeout(() => {
+            setIsTransitioning(false);
+        }, 250);
+    };
+
+    const handleNextChannel = () => {
+        if (isTransitioning) return;
+        const next = channel === 7 ? 3 : channel + 1;
+        changeChannel(next);
     };
 
     const handlePrevChannel = () => {
-        playClickSound();
-        setChannel(prev => prev === 3 ? 6 : prev - 1);
+        if (isTransitioning) return;
+        const prev = channel === 3 ? 7 : channel - 1;
+        changeChannel(prev);
     };
 
     return (
@@ -296,6 +377,16 @@ const HelloWorld = () => {
                         {/* Static Noise */}
                         <div className="tv-static pointer-events-none"></div>
 
+                        {/* Static Noise Overlay during transitions */}
+                        {isTransitioning && (
+                            <div className="absolute inset-0 bg-[#151515] z-50 flex flex-col items-center justify-center pointer-events-none">
+                                <div className="tv-static !opacity-95 absolute inset-0"></div>
+                                <div className="text-[14px] text-green-500 font-pixel uppercase tracking-widest text-shadow-glow animate-pulse">
+                                    TUNING...
+                                </div>
+                            </div>
+                        )}
+
                         {/* On-Screen Display */}
                         <div className="w-full flex justify-between items-center mb-4 z-30 opacity-70 absolute top-4 px-4">
                             <div className="text-[10px] text-green-500 font-pixel uppercase tracking-widest text-shadow-glow">
@@ -317,6 +408,7 @@ const HelloWorld = () => {
                             {channel === 4 && <MatrixRain />}
                             {channel === 5 && <AsciiCube />}
                             {channel === 6 && <AsciiPet />}
+                            {channel === 7 && <StaticChannel />}
                         </div>
 
                         {/* Scanline Overlay */}
