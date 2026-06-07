@@ -1,19 +1,15 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
 
-const TRAIL_LENGTH = 12; // Longer trail for better snake feel
+const TRAIL_LENGTH = 10; // 1 Head, 8 Body segments, 1 Tail
 
 const RetroCursor = () => {
-    const [trail, setTrail] = useState<{ x: number, y: number, angle: number }[]>([]);
+    const [trail, setTrail] = useState<{ x: number; y: number; angle: number }[]>([]);
     const [isHovering, setIsHovering] = useState(false);
     const [isClicking, setIsClicking] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
-    // Refs for animation loop
     const mousePos = useRef({ x: 0, y: 0 });
-    // Track previous position to calculate angle
-    const prevMousePos = useRef({ x: 0, y: 0 });
-    const currentAngle = useRef(0);
 
     useEffect(() => {
         // Only run on client and non-touch devices
@@ -24,10 +20,17 @@ const RetroCursor = () => {
         setIsVisible(true);
         document.body.classList.add('custom-cursor');
 
+        // Initialize segments inside the window bounds
+        const segs = Array.from({ length: TRAIL_LENGTH }).map(() => ({
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            angle: 0
+        }));
+
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
 
-            // Interaction Check
+            // Interaction Check for clickable items
             const target = e.target as HTMLElement;
             const isClickable =
                 target.tagName === 'A' ||
@@ -43,30 +46,46 @@ const RetroCursor = () => {
         const handleMouseDown = () => setIsClicking(true);
         const handleMouseUp = () => setIsClicking(false);
 
-        // Animation loop for smooth trail
+        // Animation loop for smooth slither trail
         let animationFrameId: number;
 
         const loop = () => {
-            // Calculate angle based on movement
-            const dx = mousePos.current.x - prevMousePos.current.x;
-            const dy = mousePos.current.y - prevMousePos.current.y;
+            // 1. Head (index 0) eases toward mouse position
+            const head = segs[0];
+            const dxHead = mousePos.current.x - head.x;
+            const dyHead = mousePos.current.y - head.y;
 
-            if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
-                // Only update angle if moving significantly
-                // -90 adjustment because default SVG points up (or 0 points right, let's align our SVG to 0=Right)
-                // Actually let's assume 0 deg is pointing RIGHT.
-                currentAngle.current = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+            let headAngle = head.angle;
+            if (Math.hypot(dxHead, dyHead) > 0.5) {
+                // Calculate rotation angle. Add 90 deg because default SVG faces UP
+                headAngle = Math.atan2(dyHead, dxHead) * (180 / Math.PI) + 90;
             }
 
-            prevMousePos.current = { ...mousePos.current };
+            head.x += dxHead * 0.25; // Easing speed
+            head.y += dyHead * 0.25;
+            head.angle = headAngle;
 
-            setTrail(prevTrail => {
-                const newPos = { ...mousePos.current, angle: currentAngle.current };
-                // Creating a 'slithering' effect might be too complex for a cursor trail array shift
-                // smooth trail follows path exactly
-                const newTrail = [newPos, ...prevTrail].slice(0, TRAIL_LENGTH);
-                return newTrail;
-            });
+            // 2. Follow-the-leader lerping for body and tail segments
+            for (let i = 1; i < TRAIL_LENGTH; i++) {
+                const current = segs[i];
+                const prev = segs[i - 1];
+
+                const dx = prev.x - current.x;
+                const dy = prev.y - current.y;
+
+                let angle = current.angle;
+                if (Math.hypot(dx, dy) > 0.5) {
+                    angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                }
+
+                // Smoothly pull segment toward the one in front of it
+                current.x += dx * 0.45;
+                current.y += dy * 0.45;
+                current.angle = angle;
+            }
+
+            // Sync updated positions to component state
+            setTrail(segs.map(s => ({ ...s })));
             animationFrameId = requestAnimationFrame(loop);
         };
 
@@ -85,72 +104,76 @@ const RetroCursor = () => {
         };
     }, []);
 
-    if (!isVisible) return null;
+    if (!isVisible || trail.length === 0) return null;
 
     return (
         <>
             {trail.map((pos, index) => {
                 const isHead = index === 0;
-                // Head size 24px, body tapers
-                const size = isHead ? 24 : 14 - (index * 0.8);
+                const isTail = index === TRAIL_LENGTH - 1;
 
-                let color = isHovering
+                // Taper sizes: Head is 24px, body is 18px tapering to 11px, tail is 14px
+                const size = isHead ? 24 : (isTail ? 14 : 18 - (index * 0.8));
+
+                const color = isHovering
                     ? (isHead ? "#EF4444" : "#F87171")
                     : (isHead ? "#86EFAC" : "#4ADE80");
 
-                const scale = isHead && isClicking ? 0.8 : 1;
-
-                // Only rotate the head used mostly, or body too?
-                // Body segments usually just follow position. Integrating rotation into body is tricky without sprite.
-                // Let's rotate ONLY the head for now to avoid "spinning dots" visual noise.
-                const rotation = isHead ? pos.angle : 0;
+                const scale = isHead && isClicking ? 0.75 : 1;
 
                 return (
                     <div
                         key={index}
-                        className="fixed pointer-events-none z-[9999] mix-blend-exclusion"
+                        className="fixed pointer-events-none z-[9999] will-change-transform"
                         style={{
                             left: 0,
                             top: 0,
                             width: `${size}px`,
                             height: `${size}px`,
-                            // Center the pivot for rotation
-                            transform: `translate3d(${pos.x - size / 2}px, ${pos.y - size / 2}px, 0) rotate(${rotation}deg) scale(${scale})`,
-                            willChange: 'transform',
-                            opacity: 1 - (index / (TRAIL_LENGTH + 2)),
-                            zIndex: 10000 - index, // Head on top
+                            transform: `translate3d(${pos.x - size / 2}px, ${pos.y - size / 2}px, 0) rotate(${pos.angle}deg) scale(${scale})`,
+                            opacity: isHead ? 1 : 1 - (index / (TRAIL_LENGTH + 1)),
+                            zIndex: 10000 - index,
                         }}
                     >
                         {isHead ? (
-                            // Pixel Art Head - Pointing UP by default (0 deg rotation needs to match math)
-                            // Math.atan2(dy, dx) + 90 assumes 0deg is UP. 
+                            // Pixel Art Snake Head SVG (Points UP)
                             <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                {/* Head Shape */}
                                 <rect x="5" y="2" width="6" height="10" fill={color} />
                                 <rect x="4" y="4" width="8" height="6" fill={color} />
-                                {/* Snout */}
                                 <rect x="6" y="0" width="4" height="2" fill={color} />
                                 {/* Eyes */}
-                                <rect x="4" y="8" width="2" height="2" fill="black" />
-                                <rect x="10" y="8" width="2" height="2" fill="black" />
-                                {/* Tongue (hover) */}
+                                <rect x="4" y="7" width="2" height="2" fill="#000000" />
+                                <rect x="10" y="7" width="2" height="2" fill="#000000" />
+                                {/* White highlight inside eyes */}
+                                <rect x="5" y="7" width="1" height="1" fill="#FFFFFF" />
+                                <rect x="11" y="7" width="1" height="1" fill="#FFFFFF" />
+                                {/* Flicking tongue when hovering links */}
                                 {isHovering && (
                                     <>
                                         <rect x="7" y="-2" width="2" height="2" fill="#EF4444" />
-                                        <rect x="5" y="-4" width="2" height="2" fill="#EF4444" />
-                                        <rect x="9" y="-4" width="2" height="2" fill="#EF4444" />
+                                        <rect x="6" y="-4" width="1" height="2" fill="#EF4444" />
+                                        <rect x="9" y="-4" width="1" height="2" fill="#EF4444" />
                                     </>
                                 )}
                             </svg>
+                        ) : isTail ? (
+                            // Pixel Art Snake Tail SVG (Points UP/FORWARD, matching segment angle direction)
+                            <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="5" y="0" width="6" height="4" fill={color} />
+                                <rect x="6" y="4" width="4" height="4" fill={color} />
+                                <rect x="7" y="8" width="2" height="4" fill={color} />
+                                {/* Rattle tip */}
+                                <rect x="7" y="12" width="2" height="4" fill={isHovering ? "#FEE2E2" : "#DCFCE7"} />
+                            </svg>
                         ) : (
-                            <div
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundColor: color,
-                                    borderRadius: '50%' // Rounded body segs feel more organic
-                                }}
-                            />
+                            // Pixel Art Snake Body Segment SVG (Points UP)
+                            <svg width="100%" height="100%" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="1" width="8" height="14" fill={color} />
+                                <rect x="3" y="3" width="10" height="10" fill={color} />
+                                {/* Scale details */}
+                                <rect x="6" y="5" width="4" height="6" fill={isHovering ? "#EF4444" : "#22C55E"} opacity="0.6" />
+                                <rect x="7" y="7" width="2" height="2" fill={isHovering ? "#F87171" : "#86EFAC"} />
+                            </svg>
                         )}
                     </div>
                 );
