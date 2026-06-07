@@ -1,10 +1,13 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { portfolioData, Project } from '@/data/portfolio';
 import ProjectModal from './ProjectModal';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 const Projects = () => {
+    const isTrashed = useSectionVisibility('projects');
+    const sectionRef = useRef<HTMLDivElement>(null);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -30,11 +33,34 @@ const Projects = () => {
         setSelectedProject(portfolioData.projects[nextIndex]);
     };
 
+    const handleDragStart = (e: React.DragEvent) => {
+        e.dataTransfer.setData('text/plain', 'projects');
+        e.dataTransfer.effectAllowed = 'move';
+        if (sectionRef.current) {
+            e.dataTransfer.setDragImage(sectionRef.current, 20, 20);
+        }
+    };
+
     return (
-        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="projects">
+        <section 
+            ref={sectionRef}
+            className={`max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 transition-all duration-700 origin-center ${
+                isTrashed 
+                    ? 'opacity-0 scale-90 h-0 my-0 overflow-hidden pointer-events-none p-0 border-0' 
+                    : 'opacity-100 scale-100'
+            }`}
+            id="projects"
+        >
             <div className="bg-zinc-200 bento-card rounded-t-xl rounded-b-none border-4 border-black border-b-0 p-3 sm:p-4 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-retro-charcoal">folder_open</span>
+                    <div
+                        draggable="true"
+                        onDragStart={handleDragStart}
+                        className="flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-black/10 p-1 rounded transition-all select-none"
+                        title="Drag this handle to the Recycle Bin to delete this section"
+                    >
+                        <span className="material-symbols-outlined text-retro-charcoal">drag_indicator</span>
+                    </div>
                     <span className="font-pixel text-[10px] sm:text-sm uppercase break-all">C:\USERS\ANIRUDH\PROJECTS</span>
                 </div>
                 <div className="flex gap-2">
