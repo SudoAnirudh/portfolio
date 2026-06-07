@@ -19,7 +19,7 @@ const PLAYLIST = [
     }
 ];
 
-const RetroMusicPlayer = ({ embedded = false }: { embedded?: boolean }) => {
+const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; onClose?: () => void }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTrack, setCurrentTrack] = useState(0);
     const [volume, setVolume] = useState(0.5);
@@ -125,7 +125,11 @@ const RetroMusicPlayer = ({ embedded = false }: { embedded?: boolean }) => {
                         onClick={() => setIsMinimized(!isMinimized)}
                         className="w-4 h-4 bg-zinc-400 border border-black hover:bg-zinc-200 flex items-center justify-center text-[8px]"
                     >_</button>
-                    <button className="w-4 h-4 bg-red-500 border border-black hover:bg-red-400 flex items-center justify-center text-[8px] text-white">X</button>
+                    <button 
+                        onClick={onClose}
+                        className="w-4 h-4 bg-red-500 border border-black hover:bg-red-400 flex items-center justify-center text-[8px] text-white"
+                        title="Close Player"
+                    >X</button>
                 </div>
                 {/* Horizontal Scanlines Overlay on bar */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 bg-[length:100%_4px,3px_100%] pointer-events-none"></div>

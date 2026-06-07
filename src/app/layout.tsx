@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo_Black, Space_Grotesk, VT323 } from "next/font/google"; // Import fonts
 import "./globals.css";
 import RetroCursor from "@/components/RetroCursor";
+import MusicPlayerWrapper from "@/components/MusicPlayerWrapper";
 
 
 const archivoBlack = Archivo_Black({
@@ -107,6 +108,7 @@ export default function RootLayout({
         />
         {/* Helper for cursor hiding handled inside component, but adding it here to be safe */}
         <RetroCursor />
+        <MusicPlayerWrapper />
 
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {children}
