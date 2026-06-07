@@ -1,0 +1,120 @@
+ANIRUDH S
+
+anirudhsudheer@gmail.com | +91 95391 02851 | Kozhikode,Kerala,India
+Portfolio | GitHub | Linkedin
+Summary
+AI/ML Engineer with a B.E. in Artificial Intelligence & Machine Learning, experienced in building
+production-grade AI applications, Android solutions, and machine learning systems. Skilled in Python, Kotlin,
+FastAPI, Google Gemini, NLP, and deep learning, with hands-on experience delivering real-world projects
+through internships and industry-focused development. Seeking opportunities in AI/ML Engineering and
+Generative AI.
+Education
+Srinivas Institute Of Technology
+B.E. in Artificial Intelligence and Machine Learning
+CGPA: 7.77
+
+Mangalore, India
+September 2022 - 2026
+
+NHSS Vakayad
+Bio Science Pre-University
+Percentage: 85%
+
+Kozhikode, India
+June 2020 - March 2022
+
+GHSS Naduvannur
+Degree in Secondary School
+Percentage: 95%
+
+Kozhikode, India
+June 2019 - March 2020
+
+Experience
+MindMatrix | Android App Development Intern (Generative AI) Hybrid | February 2026 - May 2026
+• Developed Nimma-Guru, a community mentorship Android application using Kotlin and Jetpack
+Compose, connecting students with local mentors, retired teachers, and skilled professionals.
+• Architected an end-to-end solution with Firebase backend services supporting real-time session
+scheduling, mentor profile management, and multilingual content delivery.
+• Integrated Google Gemini 2.0 Flash to enable AI-powered mentor recommendations and voice-assisted
+interactions, enhancing mentor discovery and accessibility.
+• Built community engagement features including Thank You Wall and Wall of Fame, while designing 10+
+responsive Jetpack Compose screens following Material 3 guidelines.
+• Utilized Android Studio, Google Cloud Labs, and Google AI Studio to deliver a full-stack mobile
+product from wireframe to functional prototype within a 3-month internship cycle.
+HeproAI | AI/ML Intern
+Virtual | January 2026 - March 2026
+• Designed a data-driven student analytics framework tracking Academic, Wellness, Productivity, and
+Career Readiness dimensions across 200+ student profiles.
+• Implemented composite scoring algorithms to generate normalized performance metrics, enabling
+real-time dashboard updates with sub-100ms inference time.
+• Applied K-Means clustering to segment learners into five behavioral cohorts based on risk and readiness
+indicators, improving intervention targeting accuracy.
+• Developed a rule-based mentor recommendation engine mapping 15+ student risk signals to
+personalized intervention strategies, reducing manual counseling effort.
+Skills
+Languages:
+
+Python, JavaScript / TypeScript, Kotlin, SQL
+
+AI / ML:
+
+scikit-learn, TensorFlow, TensorFlow Lite, LangChain, ChromaDB, pgvector,
+NVIDIA NIM, Gemini API
+
+Backend & APIs:
+
+FastAPI, Flask, Django, Firebase, Supabase, MongoDB, PostgreSQL
+
+Frontend & Mobile:
+
+React, Next.js, Jetpack Compose, Flutter
+
+Tools & Platforms:
+
+Git, Docker, Google Cloud, Android Studio, Jupyter, Power BI, VS Code
+
+Projects / Open-Source
+Hirenix | GitHub | Live
+
+Next.js, FastAPI, Groq API, NVIDIA NIM, Supabase, pgvector, Docker
+
+• Built and deployed a full-stack AI career intelligence SaaS — frontend on Vercel, backend on Render,
+database on Supabase — integrating Resume, GitHub, and LinkedIn into a unified candidate profile.
+• Engineered a hybrid Resume Scoring Engine combining ATS rule-based parsing with pgvector semantic
+similarity, delivering match scores with sub-200ms API response time via async FastAPI.
+• Designed a GitHub Production Index (GPI) evaluating code quality, stack diversity, and real-world
+project impact across a candidate’s full repository history.
+• Implemented a real-time AI Interview Simulator powered by Groq API (LLaMA 3) with speech-based
+interaction, delivering personalized feedback under 2s latency.
+• Integrated NVIDIA NIM embeddings with pgvector for Job Compatibility Matching and Predictive
+Career Roadmap generation across 50+ skill nodes.
+PashuSwasthya | Link
+Python, Flutter, NLP, Deep Learning, CNN
+• Developed a multilingual, offline-capable mobile application for cattle breed and disease identification.
+• Implemented on-device deep learning models using TensorFlow Lite for real-time inference.
+• Integrated voice-based symptom input with auto-translation across Indian languages.
+• Designed local data storage for fast, offline predictions in low-connectivity rural environments.
+Intrusion Detection System Using ML | Link
+Python, Machine Learning, Flask, HTML, CSS
+• Designed a machine learning–based intrusion detection system for network security threats.
+• Built a Flask web interface for real-time monitoring, prediction, and alert visualization.
+Personal Portfolio | Link
+Web Development, Frontend Engineering
+• Designed and developed a production-ready personal portfolio to showcase projects and technical work.
+• Implemented modular component architecture with a focus on scalability and maintainability.
+• Built fully responsive layouts with performance and accessibility best practices.
+• Configured automated deployment pipelines for continuous delivery.
+Certifications
+• Deep Learning With TensorFlow - IBM
+• Machine Learning With Python - IBM
+• Introduction to Generative AI - Google Cloud
+• Artificial Intelligence - Certiport, Pearson
+• Neo4j Certified Professional - Neo4j
+Achievements & Participation
+• Merged 3–5 PRs across open-source repositories as a contributor to GSSoC ’25 and Hacktoberfest
+2025
+• Selected for the Student Leadership Team at the USAII Global AI Hackathon 2026, handling
+participant communications and event logistics for 100+ registrants
+
+
