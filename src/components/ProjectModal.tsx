@@ -602,6 +602,289 @@ const IdsSimulator: React.FC = () => {
     );
 };
 
+const HirenixSimulator: React.FC = () => {
+    const [selectedRole, setSelectedRole] = useState<'aiml' | 'frontend'>('aiml');
+    const [selectedResume, setSelectedResume] = useState<'anirudh' | 'generic' | 'marketing'>('anirudh');
+    const [scanState, setScanState] = useState<'idle' | 'scanning' | 'done'>('idle');
+    const [progress, setProgress] = useState(0);
+    const [statusText, setStatusText] = useState('');
+
+    const roles = {
+        aiml: {
+            title: "AI/ML Engineer",
+            keywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+        },
+        frontend: {
+            title: "Frontend Developer",
+            keywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion", "HTML/CSS"]
+        }
+    };
+
+    const resumes = {
+        anirudh: {
+            name: "Anirudh S. Resume (AI & ML Focus)",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 100,
+                    keywordDensity: 95,
+                    measurableAchievements: 90,
+                    formatting: 100,
+                    semanticSimilarity: 92,
+                    matchedKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning"],
+                    missingKeywords: ["Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 100,
+                    keywordDensity: 80,
+                    measurableAchievements: 85,
+                    formatting: 100,
+                    semanticSimilarity: 78,
+                    matchedKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "HTML/CSS"],
+                    missingKeywords: ["Vite", "Framer Motion"]
+                }
+            }
+        },
+        generic: {
+            name: "Generic IT Resume",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 90,
+                    keywordDensity: 40,
+                    measurableAchievements: 50,
+                    formatting: 85,
+                    semanticSimilarity: 48,
+                    matchedKeywords: ["Python"],
+                    missingKeywords: ["PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 90,
+                    keywordDensity: 60,
+                    measurableAchievements: 50,
+                    formatting: 85,
+                    semanticSimilarity: 58,
+                    matchedKeywords: ["React", "HTML/CSS"],
+                    missingKeywords: ["TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
+                }
+            }
+        },
+        marketing: {
+            name: "Creative Marketing Resume",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 70,
+                    keywordDensity: 10,
+                    measurableAchievements: 40,
+                    formatting: 90,
+                    semanticSimilarity: 18,
+                    matchedKeywords: [],
+                    missingKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 70,
+                    keywordDensity: 15,
+                    measurableAchievements: 40,
+                    formatting: 90,
+                    semanticSimilarity: 22,
+                    matchedKeywords: ["HTML/CSS"],
+                    missingKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
+                }
+            }
+        }
+    };
+
+    const currentMetrics = resumes[selectedResume].metrics[selectedRole];
+
+    const ruleBasedScore = Math.round(
+        (currentMetrics.sectionCompleteness * 0.3) +
+        (currentMetrics.keywordDensity * 0.4) +
+        (currentMetrics.measurableAchievements * 0.3)
+    );
+    const semanticScore = currentMetrics.semanticSimilarity;
+    const finalScore = Math.round((ruleBasedScore * 0.7) + (semanticScore * 0.3));
+
+    const getMatchRating = (score: number) => {
+        if (score >= 85) return { text: "STRONG MATCH", color: "text-retro-green bg-green-950/40 border-retro-green" };
+        if (score >= 60) return { text: "POTENTIAL MATCH", color: "text-retro-yellow bg-yellow-950/40 border-retro-yellow" };
+        return { text: "LOW ALIGNMENT", color: "text-retro-orange bg-orange-950/40 border-retro-orange" };
+    };
+
+    const runAtsScan = () => {
+        setScanState('scanning');
+        setProgress(0);
+    };
+
+    useEffect(() => {
+        if (scanState !== 'scanning') return;
+
+        const steps = [
+            { limit: 20, text: "Initializing all-MiniLM-L6-v2 embedding model..." },
+            { limit: 40, text: "Parsing resume structure and checking section completeness..." },
+            { limit: 60, text: "Running keyword density scanner and achievement extractor..." },
+            { limit: 80, text: "Computing cosine similarity index against baseline embeddings..." },
+            { limit: 100, text: "Aggregating hybrid scores and generating report card..." }
+        ];
+
+        const interval = setInterval(() => {
+            setProgress(prev => {
+                const nextVal = prev + 5;
+                const currentStep = steps.find(s => nextVal <= s.limit) || steps[steps.length - 1];
+                setStatusText(currentStep.text);
+
+                if (nextVal >= 100) {
+                    clearInterval(interval);
+                    setScanState('done');
+                    return 100;
+                }
+                return nextVal;
+            });
+        }, 100);
+
+        return () => clearInterval(interval);
+    }, [scanState]);
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            <div className="bg-black text-green-500 p-2 text-[10px] uppercase tracking-wider">
+                System: Hirenix ATS Analyzer Client v1.2.0
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-[10px] uppercase text-zinc-500 mb-1">Target Job Role</label>
+                    <div className="flex flex-col gap-1">
+                        {(Object.keys(roles) as Array<keyof typeof roles>).map(r => (
+                            <button
+                                key={r}
+                                onClick={() => { setSelectedRole(r); setScanState('idle'); }}
+                                disabled={scanState === 'scanning'}
+                                className={`px-2 py-1.5 border-2 text-[10px] text-left uppercase transition-all ${selectedRole === r ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white border-zinc-200 text-zinc-600'}`}
+                            >
+                                {roles[r].title}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-[10px] uppercase text-zinc-500 mb-1">Upload/Select Resume</label>
+                    <div className="flex flex-col gap-1">
+                        {(Object.keys(resumes) as Array<keyof typeof resumes>).map(res => (
+                            <button
+                                key={res}
+                                onClick={() => { setSelectedResume(res); setScanState('idle'); }}
+                                disabled={scanState === 'scanning'}
+                                className={`px-2 py-1 border-2 text-[9px] text-left uppercase truncate transition-all ${selectedResume === res ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white border-zinc-200 text-zinc-600'}`}
+                            >
+                                {resumes[res].name.split(' ')[0] + ' ' + (resumes[res].name.includes('AI') ? 'S. (AI/ML)' : resumes[res].name.includes('IT') ? 'IT Template' : 'Marketing')}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div className="border-4 border-black bg-white aspect-video relative flex flex-col justify-center overflow-hidden p-4">
+                <div className="absolute inset-0 bg-zinc-800 pointer-events-none opacity-[0.05]"></div>
+                
+                {scanState === 'idle' && (
+                    <div className="text-center space-y-2">
+                        <span className="material-symbols-outlined text-zinc-400 text-6xl">psychology</span>
+                        <div className="text-xs uppercase text-zinc-600">Ready to score candidate alignment</div>
+                        <div className="text-[9px] text-zinc-400 uppercase">
+                            Weights: 70% rule-based | 30% semantic (cos-sim)
+                        </div>
+                    </div>
+                )}
+
+                {scanState === 'scanning' && (
+                    <div className="flex flex-col items-center justify-center space-y-3 text-center px-4">
+                        <div className="text-xs uppercase font-bold text-retro-orange animate-pulse">Scanning resume...</div>
+                        <div className="text-[9px] text-zinc-400 uppercase h-8 max-w-xs">{statusText}</div>
+                        <div className="w-full max-w-xs bg-zinc-200 h-4 border-2 border-black overflow-hidden relative">
+                            <div className="bg-retro-orange h-full transition-all duration-100" style={{ width: `${progress}%` }} />
+                        </div>
+                        <div className="text-[10px] text-zinc-600">{progress}% COMPLETE</div>
+                    </div>
+                )}
+
+                {scanState === 'done' && (
+                    <div className="h-full flex flex-col justify-between overflow-y-auto text-xs font-body">
+                        <div>
+                            <div className="flex justify-between items-center border-b border-zinc-200 pb-1.5 mb-2">
+                                <span className="font-pixel text-[10px] text-retro-orange uppercase">Analysis Complete</span>
+                                <span className={`font-pixel text-[10px] uppercase border px-2 py-0.5 font-bold ${getMatchRating(finalScore).color}`}>
+                                    {getMatchRating(finalScore).text}
+                                </span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <div className="text-[10px] font-bold text-zinc-800">CANDIDATE SUITABILITY REPORT</div>
+                                    <div className="text-[11px] text-zinc-600">
+                                        <div className="flex justify-between">
+                                            <span>Target:</span> <span className="font-bold text-retro-charcoal">{roles[selectedRole].title}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span>Resume:</span> <span className="font-bold text-retro-charcoal truncate max-w-[120px]">{resumes[selectedResume].name.split(' (')[0]}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="border border-black p-2 bg-retro-cream text-center flex flex-col justify-center items-center">
+                                    <div className="text-[9px] uppercase text-zinc-500 font-pixel">Overall Score</div>
+                                    <div className="text-2xl font-display leading-none text-retro-charcoal">{finalScore}%</div>
+                                </div>
+                            </div>
+
+                            <div className="mt-3 grid grid-cols-2 gap-2 text-[10px] font-pixel bg-zinc-50 border border-zinc-200 p-2">
+                                <div>
+                                    <div className="text-zinc-500 border-b border-zinc-200 pb-0.5 mb-1">RULE-BASED (70%)</div>
+                                    <div>Completeness: {currentMetrics.sectionCompleteness}%</div>
+                                    <div>Density: {currentMetrics.keywordDensity}%</div>
+                                    <div>Achievements: {currentMetrics.measurableAchievements}%</div>
+                                </div>
+                                <div>
+                                    <div className="text-zinc-500 border-b border-zinc-200 pb-0.5 mb-1">SEMANTIC (30%)</div>
+                                    <div>Cos-Sim Rank: {currentMetrics.semanticSimilarity}%</div>
+                                    <div className="text-[8px] text-zinc-400 mt-1 uppercase">all-MiniLM-L6-v2 Model</div>
+                                </div>
+                            </div>
+
+                            <div className="mt-2 text-[10px]">
+                                <span className="font-bold uppercase text-zinc-500 block mb-0.5">Matched Keywords:</span>
+                                <div className="flex flex-wrap gap-1">
+                                    {currentMetrics.matchedKeywords.length > 0 ? (
+                                        currentMetrics.matchedKeywords.map(k => (
+                                            <span key={k} className="px-1.5 py-0.5 bg-green-50 text-green-700 border border-green-200 text-[9px] font-pixel">{k}</span>
+                                        ))
+                                    ) : (
+                                        <span className="text-zinc-400 text-[9px] font-pixel italic">No matched keywords</span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {scanState === 'idle' && (
+                <button 
+                    onClick={runAtsScan}
+                    className="w-full py-2 bg-retro-orange border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                >
+                    Evaluate Match Score
+                </button>
+            )}
+            {scanState === 'done' && (
+                <button 
+                    onClick={() => setScanState('idle')}
+                    className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                >
+                    Reset Evaluator
+                </button>
+            )}
+        </div>
+    );
+};
+
 // --- END OF SUB-SIMULATORS ---
 
 interface ProjectModalProps {
@@ -621,6 +904,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 }) => {
     const [showSimulator, setShowSimulator] = useState(false);
 
+    // Check if the current project title has a simulator
+    const hasSimulator = project ? [
+        "PashuSwasthya",
+        "CNN Visualizer",
+        "Stock Price Predictor",
+        "Image Enhancement Toolkit",
+        "Intrusion Detection System",
+        "Hirenix"
+    ].includes(project.title) : false;
+
     // Reset simulator tab when project changes
     useEffect(() => {
         setShowSimulator(false);
@@ -638,6 +931,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <ImageEnhancementSimulator />;
             case "Intrusion Detection System":
                 return <IdsSimulator />;
+            case "Hirenix":
+                return <HirenixSimulator />;
             default:
                 return <div className="text-center py-8 font-pixel text-zinc-500">Simulator not found.</div>;
         }
@@ -880,21 +1175,23 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                                                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
                                             </motion.button>
 
-                                            {project.demo ? (
+                                            {project.demo && (
                                                 <motion.a
                                                     href={project.demo}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="px-4 py-2 bg-retro-orange border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
+                                                    className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 text-black"
                                                     initial={{ opacity: 0, y: 8 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ duration: 0.2, delay: 0.3 }}
                                                     whileHover={{ y: -1 }}
                                                 >
-                                                    <span className="material-symbols-outlined text-sm">sports_esports</span>
+                                                    <span className="material-symbols-outlined text-sm">open_in_new</span>
                                                     Launch Demo
                                                 </motion.a>
-                                            ) : (
+                                            )}
+
+                                            {hasSimulator && (
                                                 <motion.button
                                                     onClick={() => setShowSimulator(true)}
                                                     className="px-4 py-2 bg-retro-orange border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
