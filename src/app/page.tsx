@@ -11,7 +11,6 @@ import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollObserver from "@/components/ScrollObserver";
-import RecycleBin from "@/components/RecycleBin";
 
 export default function Home() {
   return (
@@ -67,8 +66,6 @@ export default function Home() {
         </div>
 
       </div>
-
-      <RecycleBin />
     </main>
   );
 }

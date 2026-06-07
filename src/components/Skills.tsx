@@ -1,12 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 const Skills = () => {
-    const isTrashed = useSectionVisibility('skills');
-    const sectionRef = useRef<HTMLDivElement>(null);
     const skillsList = portfolioData.skills.flatMap(s => s.items.split(', '));
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,15 +20,6 @@ const Skills = () => {
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isModalOpen]);
 
-    const handleDragStart = (e: React.DragEvent) => {
-        e.dataTransfer.setData('text/plain', 'skills');
-        e.dataTransfer.effectAllowed = 'move';
-        if (sectionRef.current) {
-            e.dataTransfer.setDragImage(sectionRef.current, 20, 20);
-        }
-    };
-
-    // ... (rest of skillDetails and iconMap remains the same)
     const skillDetails: Record<string, string> = {
         "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
         "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
@@ -101,27 +89,14 @@ const Skills = () => {
     };
 
     return (
-        <section 
-            ref={sectionRef}
-            className={`max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 transition-all duration-700 origin-center ${
-                isTrashed 
-                    ? 'opacity-0 scale-90 h-0 my-0 overflow-hidden pointer-events-none p-0 border-0' 
-                    : 'opacity-100 scale-100'
-            }`} 
-            id="skills"
-        >
+        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="skills">
             <div className="w-full">
                 {/* Software Skills - Green Card */}
                 <div className="bg-retro-green bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain h-full">
                     <div className="relative z-20 flex flex-col items-end h-full">
                         <div className="w-full flex justify-between items-start gap-3 mb-8 sm:mb-12">
-                            <div 
-                                draggable="true"
-                                onDragStart={handleDragStart}
-                                className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 border-2 border-black flex items-center justify-center shrink-0 cursor-grab active:cursor-grabbing hover:bg-white/30 transition-all select-none"
-                                title="Drag this handle to the Recycle Bin to delete this section"
-                            >
-                                <span className="material-symbols-outlined text-3xl sm:text-4xl text-retro-charcoal">drag_indicator</span>
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 border-2 border-black flex items-center justify-center shrink-0">
+                                <span className="material-symbols-outlined text-3xl sm:text-4xl text-retro-charcoal">terminal</span>
                             </div>
                             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display leading-[0.9] text-right uppercase tracking-tighter text-retro-charcoal">
                                 Tech<br />Stack

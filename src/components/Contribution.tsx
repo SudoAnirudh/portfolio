@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { portfolioData } from '@/data/portfolio';
-import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 interface ContributionDay {
     color: string;
@@ -12,8 +11,6 @@ interface ContributionDay {
 }
 
 const Contribution = () => {
-    const isTrashed = useSectionVisibility('contributions');
-    const sectionRef = useRef<HTMLDivElement>(null);
     const [squaresData, setSquaresData] = useState<ContributionDay[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [totalContributions, setTotalContributions] = useState<number | null>(null);
@@ -22,14 +19,6 @@ const Contribution = () => {
 
     const githubUrl = portfolioData.personal.social.github;
     const username = githubUrl.split('/').pop() || 'SudoAnirudh';
-
-    const handleDragStart = (e: React.DragEvent) => {
-        e.dataTransfer.setData('text/plain', 'contributions');
-        e.dataTransfer.effectAllowed = 'move';
-        if (sectionRef.current) {
-            e.dataTransfer.setDragImage(sectionRef.current, 20, 20);
-        }
-    };
 
     useEffect(() => {
         const fetchContributions = async () => {
@@ -141,25 +130,10 @@ const Contribution = () => {
     };
 
     return (
-        <section 
-            ref={sectionRef}
-            className={`max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 transition-all duration-700 origin-center ${
-                isTrashed 
-                    ? 'opacity-0 scale-90 h-0 my-0 overflow-hidden pointer-events-none p-0 border-0' 
-                    : 'opacity-100 scale-100'
-            }`}
-        >
+        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0">
             <div className="bg-zinc-100 bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain border-4 border-black/10">
                 <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
                     <h2 className="text-xl sm:text-2xl font-display uppercase tracking-tighter text-retro-charcoal flex items-center gap-2">
-                        <div
-                            draggable="true"
-                            onDragStart={handleDragStart}
-                            className="flex items-center justify-center cursor-grab active:cursor-grabbing hover:bg-black/10 p-1 rounded transition-all select-none"
-                            title="Drag this handle to the Recycle Bin to delete this section"
-                        >
-                            <span className="material-symbols-outlined text-retro-charcoal">drag_indicator</span>
-                        </div>
                         Github <span className="text-retro-green">Activity</span>
                         {totalContributions !== null && (
                             <span className="text-[10px] font-pixel bg-emerald-500/10 text-emerald-700 px-2 py-0.5 border border-emerald-500/25 rounded-none uppercase">
