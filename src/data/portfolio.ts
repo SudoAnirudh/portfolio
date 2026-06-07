@@ -144,7 +144,7 @@ export const portfolioData: PortfolioData = {
                 { name: "goal", return: "\"Building production-grade AI & mobile systems\"" }
             ]
         },
-        image: "/profile.png"
+        image: "/profile_pixel.png"
     },
     education: [
         {

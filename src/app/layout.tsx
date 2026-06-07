@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     description: "AI/ML Undergraduate with hands-on exposure to Deep Learning, CNNs, and NLP. Check out my latest projects and work.",
     images: [
       {
-        url: "/profile.png", // Using the existing profile image
+        url: "/profile_pixel.png", // Using the existing profile image
         width: 1200,
         height: 630,
         alt: "Anirudh S Portfolio",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Anirudh S | AI & ML Engineer",
     description: "AI/ML Undergraduate with hands-on exposure to Deep Learning, CNNs, and NLP.",
-    images: ["/profile.png"],
+    images: ["/profile_pixel.png"],
     creator: "@SudoAnirudh", // Assuming the GH username is useable or fallback
   },
   verification: {
@@ -77,7 +77,7 @@ const jsonLd = {
   "@type": "Person",
   name: "Anirudh S",
   url: "https://portfolio-blue-five-10.vercel.app/",
-  image: "https://portfolio-blue-five-10.vercel.app/profile.png",
+  image: "https://portfolio-blue-five-10.vercel.app/profile_pixel.png",
   jobTitle: "AI & ML Engineer",
   sameAs: [
     "https://github.com/SudoAnirudh",
