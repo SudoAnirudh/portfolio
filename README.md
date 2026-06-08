@@ -26,7 +26,6 @@ system logs, and pixel-art influences.
 > MODULE [IO]: 🖨️ Receipt Printer - Creative interaction for CV output.
 > MODULE [FS]: 📁 File Explorer - Projects displayed as virtual OS directories.
 > MODULE [LG]: 📜 System Log - Professional history mapped as console output.
-> MODULE [AU]: 🎵 Retro Music Player - Built-in background audio engine.
 > MODULE [HM]: 🎮 Hello World - Embedded interactive hero elements.
 
 ================================================================================
