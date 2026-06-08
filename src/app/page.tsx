@@ -1,6 +1,5 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import DinoGame from "@/components/DinoGame";
 
 import Education from "@/components/Education";
 import Skills from "@/components/Skills";
@@ -26,11 +25,8 @@ export default function Home() {
         </div>
 
         {/* Row 2: About + Skills */}
-        <div className="lg:col-span-6 flex flex-col justify-between h-full">
+        <div className="lg:col-span-6">
           <About />
-          <div className="px-3 sm:px-4 md:px-0 w-full mb-6">
-            <DinoGame />
-          </div>
         </div>
         <div className="lg:col-span-6">
           <Skills />
