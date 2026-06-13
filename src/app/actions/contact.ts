@@ -2,6 +2,7 @@
 
 import { Resend } from 'resend';
 import { portfolioData } from '@/data/portfolio';
+import { escapeHTML } from '@/utils/escape';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_to_prevent_crash');
 
@@ -17,6 +18,10 @@ export async function submitContactForm(formData: { name: string; email: string;
         return { success: false, error: 'All fields are required.' };
     }
 
+    const safeName = escapeHTML(name);
+    const safeEmail = escapeHTML(email);
+    const safeMessage = escapeHTML(message);
+
     try {
         // 1. Send notification to YOU (the portfolio owner)
         await resend.emails.send({
@@ -26,10 +31,10 @@ export async function submitContactForm(formData: { name: string; email: string;
             replyTo: email,
             html: `
                 <h3>New Message from Portfolio Contact Form</h3>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Name:</strong> ${safeName}</p>
+                <p><strong>Email:</strong> ${safeEmail}</p>
                 <p><strong>Message:</strong></p>
-                <p>${message.replace(/\n/g, '<br>')}</p>
+                <p>${safeMessage.replace(/\n/g, '<br>')}</p>
             `,
         });
 
@@ -42,11 +47,11 @@ export async function submitContactForm(formData: { name: string; email: string;
             subject: `Thanks for reaching out, ${name}!`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h3>Hi ${name},</h3>
+                    <h3>Hi ${safeName},</h3>
                     <p>Thank you for reaching out! I've received your message and will get back to you as soon as possible.</p>
                     <p>Here is a copy of your message for your records:</p>
                     <blockquote style="border-left: 4px solid #ccc; padding-left: 16px; color: #555;">
-                        ${message.replace(/\n/g, '<br>')}
+                        ${safeMessage.replace(/\n/g, '<br>')}
                     </blockquote>
                     <br/>
                     <p>Best regards,</p>
