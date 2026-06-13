@@ -245,14 +245,14 @@ const Contact = () => {
                                             Connect
                                         </h4>
                                         <div className="flex flex-wrap gap-3 sm:gap-4">
-                                            <a href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">code</span>
+                                            <a href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+                                                <span className="material-symbols-outlined" aria-hidden="true">code</span>
                                             </a>
-                                            <a href={portfolioData.personal.social.linkedin} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">work</span>
+                                            <a href={portfolioData.personal.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
+                                                <span className="material-symbols-outlined" aria-hidden="true">work</span>
                                             </a>
-                                            <a href={`mailto:${portfolioData.personal.email}`} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">send</span>
+                                            <a href={`mailto:${portfolioData.personal.email}`} aria-label="Send an email" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                                                <span className="material-symbols-outlined" aria-hidden="true">send</span>
                                             </a>
                                         </div>
                                     </div>
@@ -262,6 +262,7 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
+                                            <label htmlFor="name" className="sr-only">Name</label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
@@ -275,6 +276,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
+                                            <label htmlFor="email" className="sr-only">Email</label>
                                             <input
                                                 id="email"
                                                 name="email"
@@ -284,10 +286,13 @@ const Contact = () => {
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
                                                 required
+                                                aria-invalid={!!emailError}
+                                                aria-describedby={emailError ? "email-error" : undefined}
                                             />
-                                            {emailError && <p className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
+                                            {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono" role="alert">{emailError}</p>}
                                         </div>
                                         <div>
+                                            <label htmlFor="message" className="sr-only">Message</label>
                                             <textarea
                                                 id="message"
                                                 name="message"
