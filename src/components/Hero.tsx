@@ -92,6 +92,7 @@ const Hero = () => {
                                             key={index}
                                             href={action.href}
                                             target={!action.primary ? "_blank" : undefined}
+                                            rel={!action.primary ? "noopener noreferrer" : undefined}
                                             onClick={(e) => handleActionClick(e, action)}
                                             className="flex items-center gap-2 group cursor-pointer"
                                         >
