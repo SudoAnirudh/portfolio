@@ -25,3 +25,6 @@
 ## 2025-05-23 - Spinner Accessibility & Build Artifacts
 **Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
 **Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
+## 2026-06-14 - [Accessible Forms and Icon Links]
+**Learning:** Placeholder text alone is insufficient for form accessibility. Forms without visible labels must use visually hidden labels (e.g., `sr-only`) for screen readers. Similarly, icon-only buttons/links utilizing font icons (like `material-symbols-outlined`) will be read literally by screen readers unless explicitly hidden with `aria-hidden="true"` while the parent element provides the context via `aria-label`. Proper error association also requires `aria-invalid` and `aria-describedby`.
+**Action:** Always include `<label className="sr-only">` for inputs lacking visible labels. Always apply `aria-hidden="true"` to text-based icons when wrapping them in an `aria-label` link or button. Ensure error states use ARIA attributes to connect the error message to the input.
