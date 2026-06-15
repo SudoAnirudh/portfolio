@@ -262,38 +262,43 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
+                                            <label htmlFor="name" className="sr-only">Name <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
+                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:border-black focus-visible:ring-2 focus-visible:ring-accent transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
                                                 required
                                             />
                                         </div>
                                         <div>
+                                            <label htmlFor="email" className="sr-only">Email <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="email"
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:border-black focus-visible:ring-2 focus-visible:ring-accent transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
                                                 required
+                                                aria-invalid={!!emailError}
+                                                aria-describedby={emailError ? "email-error" : undefined}
                                             />
-                                            {emailError && <p className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
+                                            {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                         </div>
                                         <div>
+                                            <label htmlFor="message" className="sr-only">Message <span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <textarea
                                                 id="message"
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
+                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus-visible:outline-none focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus-visible:ring-2 focus-visible:ring-accent transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
                                                 required
                                             ></textarea>

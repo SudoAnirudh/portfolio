@@ -25,3 +25,7 @@
 ## 2025-05-23 - Spinner Accessibility & Build Artifacts
 **Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
 **Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
+
+## 2025-06-15 - Enhancing Contact Form Accessibility
+**Learning:** Contact form inputs lacked associated `htmlFor` labels, used `focus:outline-none` without `focus-visible` ring fallbacks, and the email error text was not programmatically linked via `aria-describedby` with an `aria-invalid` state.
+**Action:** Always add `<label>` with `htmlFor` matching the input `id`. Add `aria-invalid` to invalid inputs and connect error messages via `aria-describedby`. Replace `focus:outline-none` with `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`.
