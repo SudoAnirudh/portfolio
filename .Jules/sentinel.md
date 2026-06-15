@@ -7,3 +7,8 @@
 **Vulnerability:** Stringified JSON-LD was injected into a script tag using `dangerouslySetInnerHTML` without escaping, allowing XSS. Additionally, `target="_blank"` links in Hero component lacked `rel="noopener noreferrer"`, exposing a reverse tabnabbing vulnerability.
 **Learning:** `JSON.stringify` does not escape `<` characters, so a malicious input could prematurely close a `<script>` block and inject executable code. For tabnabbing, any new tab opened via target blank retains access to the window opener unless explicitly blocked.
 **Prevention:** Sanitize JSON strings before DOM injection using `.replace(/</g, '\\u003c')`. Always add `rel="noopener noreferrer"` to dynamically or statically generated `target="_blank"` anchor tags.
+
+## 2024-08-09 - [Missing Server-Side Input Validation in Email Action]
+**Vulnerability:** The server action `submitContactForm` did not strictly validate the length or format of the incoming `name`, `email`, and `message` payloads, beyond a simple presence check. This could allow excessive payload submissions leading to Denial of Service (DoS) or unexpected downstream behavior when processed by Resend or the email client.
+**Learning:** Client-side validation can always be bypassed. Server actions (like `submitContactForm`) are public APIs and must independently enforce structural limits and sanity checks on all inputs.
+**Prevention:** Always implement server-side validation. Enforce reasonable bounds (e.g., max 100 chars for name, 5000 for message) and format validation (e.g., regex for email) before processing or storing user data.
