@@ -12,10 +12,30 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 const MY_EMAIL = portfolioData.personal.email;
 
 export async function submitContactForm(formData: { name: string; email: string; message: string }) {
-    const { name, email, message } = formData;
+    // SECURITY: Ensure input types are strictly strings to prevent TypeErrors from malicious payloads
+    if (typeof formData.name !== 'string' || typeof formData.email !== 'string' || typeof formData.message !== 'string') {
+        return { success: false, error: 'Invalid input format.' };
+    }
+
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const message = formData.message.trim();
 
     if (!name || !email || !message) {
         return { success: false, error: 'All fields are required.' };
+    }
+
+    // SECURITY: Enforce reasonable length limits to prevent Denial of Service (DoS) via resource exhaustion
+    if (name.length < 2 || name.length > 100) {
+        return { success: false, error: 'Name must be between 2 and 100 characters.' };
+    }
+
+    if (email.length > 255 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        return { success: false, error: 'Please enter a valid email address.' };
+    }
+
+    if (message.length < 10 || message.length > 5000) {
+        return { success: false, error: 'Message must be between 10 and 5000 characters.' };
     }
 
     const safeName = escapeHTML(name);
