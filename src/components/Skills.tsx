@@ -3,8 +3,78 @@ import React, { useState, useEffect } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// ⚡ Bolt: Hoisted static maps and arrays to module level to prevent ~99% overhead on render cycles
+const SKILLS_LIST = portfolioData.skills.flatMap(s => s.items.split(', '));
+
+const SKILL_DETAILS: Record<string, string> = {
+    "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
+    "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
+    "TypeScript": "Utilized in building type-safe UI modules and page routing for the Hirenix candidate portal, ensuring code consistency and robust schema design.",
+    "Kotlin": "Android Intern at MindMatrix. Developed 'Nimma-Guru' mentorship app connecting students with local mentors, retired teachers, and professionals.",
+    "SQL": "Designed relational schemas, optimized index queries, and configured structured database triggers for candidate trackers and student analytics.",
+    "scikit-learn": "HeproAI Intern: Applied K-Means clustering for behavioral cohort segmentation of 200+ profiles. Used for threat profiling in Intrusion Detection System.",
+    "TensorFlow": "Trained Convolutional Neural Networks (CNN) for image classifications. Built 'CNN Visualizer' web tool to analyze filter activations.",
+    "TensorFlow Lite": "PashuSwasthya project: Deployed on-device CNN models for cattle breed & disease detection, optimized for low-connectivity rural areas.",
+    "LangChain": "Used for LLM orchestration, structured data parsing, prompt engineering, and semantic query routing in career intelligence tools.",
+    "ChromaDB": "Created local vector database embeddings for candidate resume search and similarity-based retrieval.",
+    "pgvector": "Hirenix: Configured pgvector in Supabase to power semantic resume-to-job similarity search and career roadmap matching.",
+    "NVIDIA NIM": "Hirenix: Integrated NIM microservices (embeddings) for scalable, sub-200ms career compatibility scoring.",
+    "Gemini API": "MindMatrix Intern: Integrated Gemini 2.0 Flash into Nimma-Guru for voice-assisted commands and AI-powered mentor recommendations.",
+    "FastAPI": "Hirenix backend: Developed async API endpoints handling resume parsing and candidate indexing under 200ms latency.",
+    "Flask": "Built backend routing, data validation, and real-time inference endpoints for the Network Intrusion Detection System.",
+    "Django": "Used for building structured backend panels and administering model database records.",
+    "Firebase": "MindMatrix: Implemented real-time sessions scheduling, user profiles database, and multilingual content management for Nimma-Guru.",
+    "Supabase": "Hirenix backend: Managed authentication, candidate database, and pgvector semantic query execution.",
+    "MongoDB": "Stored semi-structured document payloads, resume parse results, and logging outputs.",
+    "PostgreSQL": "Engineered database schemas and index optimizations. Integrated pgvector plugin in production DB.",
+    "React": "Used for frontends of Hirenix and the portfolio. Crafted highly responsive, animated UI panels.",
+    "Next.js": "Hirenix frontend: Designed dynamic search interfaces, real-time interview simulator dashboard, and metrics visualization.",
+    "Jetpack Compose": "MindMatrix: Developed 10+ responsive screens following Material 3 guidelines for community mentorship features.",
+    "Flutter": "PashuSwasthya: Designed the multilingual, offline-capable mobile app featuring voice symptom input and local storage.",
+    "Git": "Managed project branches and PR workflows. Merged 5+ contributions during GSSoC '25 and Hacktoberfest 2025.",
+    "Docker": "Containerized FastAPI and Node.js backend/frontend services for Hirenix production deployments.",
+    "Google Cloud": "MindMatrix: Utilized Google Cloud Labs and Google AI Studio platforms for training models and API configurations.",
+    "Android Studio": "MindMatrix: Primary IDE for building and debugging Nimma-Guru Android client application with Jetpack Compose.",
+    "Jupyter": "Used for exploratory data analysis, plotting training loss curves, and testing cluster algorithms (K-Means).",
+    "Power BI": "HeproAI: Built interactive analytical dashboards for student wellness, productivity, and academic metrics.",
+    "VS Code": "Primary text editor and workspace environment for Python backend and web projects."
+};
+
+const ICON_MAP: Record<string, string> = {
+    "Python": "python",
+    "JavaScript": "javascript",
+    "TypeScript": "typescript",
+    "Kotlin": "kotlin",
+    "SQL": "sqlite",
+    "scikit-learn": "scikitlearn",
+    "TensorFlow": "tensorflow",
+    "TensorFlow Lite": "tensorflow",
+    "LangChain": "langchain",
+    "ChromaDB": "chromadb",
+    "pgvector": "postgresql",
+    "NVIDIA NIM": "nvidia",
+    "Gemini API": "googlegemini",
+    "FastAPI": "fastapi",
+    "Flask": "flask",
+    "Django": "django",
+    "Firebase": "firebase",
+    "Supabase": "supabase",
+    "MongoDB": "mongodb",
+    "PostgreSQL": "postgresql",
+    "React": "react",
+    "Next.js": "nextdotjs",
+    "Jetpack Compose": "jetpackcompose",
+    "Flutter": "flutter",
+    "Git": "git",
+    "Docker": "docker",
+    "Google Cloud": "googlecloud",
+    "Android Studio": "androidstudio",
+    "Jupyter": "jupyter",
+    "Power BI": "powerbi",
+    "VS Code": "visualstudiocode"
+};
+
 const Skills = () => {
-    const skillsList = portfolioData.skills.flatMap(s => s.items.split(', '));
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,74 +89,6 @@ const Skills = () => {
         }
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isModalOpen]);
-
-    const skillDetails: Record<string, string> = {
-        "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
-        "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
-        "TypeScript": "Utilized in building type-safe UI modules and page routing for the Hirenix candidate portal, ensuring code consistency and robust schema design.",
-        "Kotlin": "Android Intern at MindMatrix. Developed 'Nimma-Guru' mentorship app connecting students with local mentors, retired teachers, and professionals.",
-        "SQL": "Designed relational schemas, optimized index queries, and configured structured database triggers for candidate trackers and student analytics.",
-        "scikit-learn": "HeproAI Intern: Applied K-Means clustering for behavioral cohort segmentation of 200+ profiles. Used for threat profiling in Intrusion Detection System.",
-        "TensorFlow": "Trained Convolutional Neural Networks (CNN) for image classifications. Built 'CNN Visualizer' web tool to analyze filter activations.",
-        "TensorFlow Lite": "PashuSwasthya project: Deployed on-device CNN models for cattle breed & disease detection, optimized for low-connectivity rural areas.",
-        "LangChain": "Used for LLM orchestration, structured data parsing, prompt engineering, and semantic query routing in career intelligence tools.",
-        "ChromaDB": "Created local vector database embeddings for candidate resume search and similarity-based retrieval.",
-        "pgvector": "Hirenix: Configured pgvector in Supabase to power semantic resume-to-job similarity search and career roadmap matching.",
-        "NVIDIA NIM": "Hirenix: Integrated NIM microservices (embeddings) for scalable, sub-200ms career compatibility scoring.",
-        "Gemini API": "MindMatrix Intern: Integrated Gemini 2.0 Flash into Nimma-Guru for voice-assisted commands and AI-powered mentor recommendations.",
-        "FastAPI": "Hirenix backend: Developed async API endpoints handling resume parsing and candidate indexing under 200ms latency.",
-        "Flask": "Built backend routing, data validation, and real-time inference endpoints for the Network Intrusion Detection System.",
-        "Django": "Used for building structured backend panels and administering model database records.",
-        "Firebase": "MindMatrix: Implemented real-time sessions scheduling, user profiles database, and multilingual content management for Nimma-Guru.",
-        "Supabase": "Hirenix backend: Managed authentication, candidate database, and pgvector semantic query execution.",
-        "MongoDB": "Stored semi-structured document payloads, resume parse results, and logging outputs.",
-        "PostgreSQL": "Engineered database schemas and index optimizations. Integrated pgvector plugin in production DB.",
-        "React": "Used for frontends of Hirenix and the portfolio. Crafted highly responsive, animated UI panels.",
-        "Next.js": "Hirenix frontend: Designed dynamic search interfaces, real-time interview simulator dashboard, and metrics visualization.",
-        "Jetpack Compose": "MindMatrix: Developed 10+ responsive screens following Material 3 guidelines for community mentorship features.",
-        "Flutter": "PashuSwasthya: Designed the multilingual, offline-capable mobile app featuring voice symptom input and local storage.",
-        "Git": "Managed project branches and PR workflows. Merged 5+ contributions during GSSoC '25 and Hacktoberfest 2025.",
-        "Docker": "Containerized FastAPI and Node.js backend/frontend services for Hirenix production deployments.",
-        "Google Cloud": "MindMatrix: Utilized Google Cloud Labs and Google AI Studio platforms for training models and API configurations.",
-        "Android Studio": "MindMatrix: Primary IDE for building and debugging Nimma-Guru Android client application with Jetpack Compose.",
-        "Jupyter": "Used for exploratory data analysis, plotting training loss curves, and testing cluster algorithms (K-Means).",
-        "Power BI": "HeproAI: Built interactive analytical dashboards for student wellness, productivity, and academic metrics.",
-        "VS Code": "Primary text editor and workspace environment for Python backend and web projects."
-    };
-
-    const iconMap: Record<string, string> = {
-        "Python": "python",
-        "JavaScript": "javascript",
-        "TypeScript": "typescript",
-        "Kotlin": "kotlin",
-        "SQL": "sqlite",
-        "scikit-learn": "scikitlearn",
-        "TensorFlow": "tensorflow",
-        "TensorFlow Lite": "tensorflow",
-        "LangChain": "langchain",
-        "ChromaDB": "chromadb",
-        "pgvector": "postgresql",
-        "NVIDIA NIM": "nvidia",
-        "Gemini API": "googlegemini",
-        "FastAPI": "fastapi",
-        "Flask": "flask",
-        "Django": "django",
-        "Firebase": "firebase",
-        "Supabase": "supabase",
-        "MongoDB": "mongodb",
-        "PostgreSQL": "postgresql",
-        "React": "react",
-        "Next.js": "nextdotjs",
-        "Jetpack Compose": "jetpackcompose",
-        "Flutter": "flutter",
-        "Git": "git",
-        "Docker": "docker",
-        "Google Cloud": "googlecloud",
-        "Android Studio": "androidstudio",
-        "Jupyter": "jupyter",
-        "Power BI": "powerbi",
-        "VS Code": "visualstudiocode"
-    };
 
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="skills">
@@ -109,8 +111,8 @@ const Skills = () => {
                                 {/* CRT Screen scanlines */}
                                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none z-10 opacity-60"></div>
 
-                                {skillsList.map((skill, i) => {
-                                    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
+                                {SKILLS_LIST.map((skill, i) => {
+                                    const slug = ICON_MAP[skill] || skill.toLowerCase().replace(/ /g, "");
                                     const iconUrl = `https://cdn.simpleicons.org/${slug}/white`;
 
                                     return (
@@ -196,7 +198,7 @@ const Skills = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-retro-charcoal border-2 border-black p-2 flex items-center justify-center shrink-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                             <img
-                                                src={`https://cdn.simpleicons.org/${iconMap[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
+                                                src={`https://cdn.simpleicons.org/${ICON_MAP[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
                                                 alt={selectedSkill}
                                                 className="w-full h-full object-contain"
                                                 onError={(e) => {
@@ -222,7 +224,7 @@ const Skills = () => {
 
                                     {/* Skill Description */}
                                     <div className="text-zinc-700 font-body text-sm leading-relaxed text-left">
-                                        {skillDetails[selectedSkill]}
+                                        {SKILL_DETAILS[selectedSkill]}
                                     </div>
 
                                     {/* Footer Info */}
