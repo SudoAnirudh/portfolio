@@ -1,0 +1,33 @@
+--- src/components/Contact.tsx
++++ src/components/Contact.tsx
+@@ -231,6 +231,7 @@
+                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
+                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
+                                         <div>
++                                            <label htmlFor="name" className="sr-only">Name</label>
+                                             <input
+                                                 id="name"
+                                                 ref={nameInputRef}
+@@ -244,6 +245,7 @@
+                                             />
+                                         </div>
+                                         <div>
++                                            <label htmlFor="email" className="sr-only">Email</label>
+                                             <input
+                                                 id="email"
+                                                 name="email"
+@@ -253,10 +255,13 @@
+                                                 placeholder="ENTER EMAIL..."
+                                                 type="email"
+                                                 required
++                                                aria-invalid={!!emailError}
++                                                aria-describedby={emailError ? "email-error" : undefined}
+                                             />
+-                                            {emailError && <p className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
++                                            {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
+                                         </div>
+                                         <div>
++                                            <label htmlFor="message" className="sr-only">Message</label>
+                                             <textarea
+                                                 id="message"
+                                                 name="message"

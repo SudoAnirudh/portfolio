@@ -25,3 +25,6 @@
 ## 2025-05-23 - Spinner Accessibility & Build Artifacts
 **Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
 **Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
+## 2024-05-18 - Form Accessibility Pattern
+**Learning:** Custom UI components in this application (such as the RetroMusicPlayer and Contact form) frequently rely on visual cues (placeholders, icons) without fallback ARIA labels or visually hidden labels (`sr-only`), leading to poor screen reader experiences.
+**Action:** Always ensure any new form fields use `sr-only` labels if visible labels disrupt the retro aesthetic, and ensure icon-only buttons are explicitly annotated with `aria-label`.
