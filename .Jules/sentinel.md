@@ -12,3 +12,8 @@
 **Vulnerability:** The server action `submitContactForm` checked for the presence of `name`, `email`, and `message`, but lacked input length constraints and format validation. This left the endpoint vulnerable to Denial of Service (DoS) attacks where a malicious actor could send massive string payloads, leading to excessive memory consumption during text manipulation and rendering inside the Resend API payload.
 **Learning:** Checking for truthiness is not sufficient for input validation on server-side endpoints. Input length restrictions are critical to prevent resource exhaustion, especially when the data is directly forwarded to external APIs or interpolated into HTML templates.
 **Prevention:** Enforce strict type checking, regex validation (for emails), and reasonable length constraints (e.g., Name: 2-100, Message: 10-5000) for all server action arguments before processing the payload.
+
+## 2024-10-25 - [Reverse Tabnabbing in Contact Links]
+**Vulnerability:** The external links for GitHub and LinkedIn in the `Contact.tsx` component opened in the same tab (`target="_blank"` was missing initially but if added without `rel="noopener noreferrer"`, it exposes the site to reverse tabnabbing). External links should open in a new tab securely.
+**Learning:** Opening external links in a new tab without `rel="noopener noreferrer"` allows the newly opened tab to potentially manipulate the `window.opener` object, redirecting the original page to a malicious site.
+**Prevention:** Always add `rel="noopener noreferrer"` to any dynamically or statically generated `target="_blank"` anchor tags to protect against reverse tabnabbing and preserve the security of the application.

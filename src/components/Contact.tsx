@@ -245,10 +245,11 @@ const Contact = () => {
                                             Connect
                                         </h4>
                                         <div className="flex flex-wrap gap-3 sm:gap-4">
-                                            <a href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+                                            {/* SECURITY: Added target="_blank" to improve UX for external links and rel="noopener noreferrer" to prevent reverse tabnabbing vulnerabilities where the newly opened tab could manipulate window.opener */}
+                                            <a href={portfolioData.personal.social.github} target="_blank" rel="noopener noreferrer" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
                                                 <span className="material-symbols-outlined">code</span>
                                             </a>
-                                            <a href={portfolioData.personal.social.linkedin} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
+                                            <a href={portfolioData.personal.social.linkedin} target="_blank" rel="noopener noreferrer" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
                                                 <span className="material-symbols-outlined">work</span>
                                             </a>
                                             <a href={`mailto:${portfolioData.personal.email}`} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
