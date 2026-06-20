@@ -1,0 +1,3 @@
+## 2026-06-20 - [Forms Accessibility] Form Fields Need Proper Labels and Error Association
+**Learning:** Relying solely on placeholders for form fields is insufficient for accessibility, as placeholders disappear on input and aren't always read correctly by screen readers. Furthermore, dynamically rendered error messages must be explicitly associated with their corresponding input fields using `aria-describedby` so that assistive technologies announce the error context.
+**Action:** Always provide explicit `<label>` elements (even if visually hidden via `.sr-only`) for all form fields. Use `aria-invalid` and `aria-describedby` on inputs to programmatically link them to their respective error message containers.
