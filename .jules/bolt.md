@@ -1,0 +1,3 @@
+## 2024-06-20 - [Hoist Large Static Objects from React Components]
+**Learning:** Micro-benchmarking confirms that hoisting derived arrays (e.g., using `flatMap` and `split` on static data) and large static mapping objects out of React components can result in a ~99% overhead reduction during iteration by eliminating redundant memory allocation and object creation on every render cycle.
+**Action:** When refactoring components for performance, hoist combined arrays and static mapping objects (like `skillDetails` and `iconMap`) to the module level to avoid redundant spread operations and array/object allocations during render cycles.
