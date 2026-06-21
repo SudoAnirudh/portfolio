@@ -245,14 +245,14 @@ const Contact = () => {
                                             Connect
                                         </h4>
                                         <div className="flex flex-wrap gap-3 sm:gap-4">
-                                            <a href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">code</span>
+                                            <a aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer" href={portfolioData.personal.social.github} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                                                <span className="material-symbols-outlined" aria-hidden="true">code</span>
                                             </a>
-                                            <a href={portfolioData.personal.social.linkedin} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">work</span>
+                                            <a aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer" href={portfolioData.personal.social.linkedin} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                                                <span className="material-symbols-outlined" aria-hidden="true">work</span>
                                             </a>
-                                            <a href={`mailto:${portfolioData.personal.email}`} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined">send</span>
+                                            <a aria-label="Send Email" target="_blank" rel="noopener noreferrer" href={`mailto:${portfolioData.personal.email}`} className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                                                <span className="material-symbols-outlined" aria-hidden="true">send</span>
                                             </a>
                                         </div>
                                     </div>
@@ -262,38 +262,43 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
+                                            <label htmlFor="name" className="sr-only">Name</label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
+                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus:border-black transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
                                                 required
                                             />
                                         </div>
                                         <div>
+                                            <label htmlFor="email" className="sr-only">Email</label>
                                             <input
                                                 id="email"
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
+                                                aria-invalid={!!emailError}
+                                                aria-describedby={emailError ? "email-error" : undefined}
                                                 required
                                             />
-                                            {emailError && <p className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
+                                            {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                         </div>
                                         <div>
+                                            <label htmlFor="message" className="sr-only">Message</label>
                                             <textarea
                                                 id="message"
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
+                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
                                                 required
                                             ></textarea>

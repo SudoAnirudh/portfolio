@@ -25,3 +25,6 @@
 ## 2025-05-23 - Spinner Accessibility & Build Artifacts
 **Learning:** Decorative SVG icons (like loading spinners) inside interactive elements must include `aria-hidden="true"` to prevent redundant screen reader announcements. Also, `next-env.d.ts` is auto-generated and should be excluded from commits.
 **Action:** Always add `aria-hidden="true"` to decorative SVGs and check `git status` for auto-generated files before committing.
+## 2025-05-16 - Social Links Accessibility Pattern
+**Learning:** Icon-only social links using `material-symbols-outlined` need screen-reader accessible labels, `aria-hidden="true"` on the icon itself to prevent the literal icon name from being read, and correct keyboard focus states using `focus-visible`. External links should also use `target="_blank"` alongside `rel="noopener noreferrer"`.
+**Action:** Always add `aria-label` to icon-only links. Add `aria-hidden="true"` to inner decorative elements. Use `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent` for focus states. Pair `target="_blank"` with `rel="noopener noreferrer"`.
