@@ -3,24 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Skills = () => {
-    const skillsList = portfolioData.skills.flatMap(s => s.items.split(', '));
-    const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setIsModalOpen(false);
-            }
-        };
-        if (isModalOpen) {
-            window.addEventListener('keydown', handleEsc);
-        }
-        return () => window.removeEventListener('keydown', handleEsc);
-    }, [isModalOpen]);
+const SKILLS_LIST = portfolioData.skills.flatMap(s => s.items.split(', '));
 
-    const skillDetails: Record<string, string> = {
+const SKILL_DETAILS: Record<string, string> = {
         "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
         "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
         "TypeScript": "Utilized in building type-safe UI modules and page routing for the Hirenix candidate portal, ensuring code consistency and robust schema design.",
@@ -54,7 +40,7 @@ const Skills = () => {
         "VS Code": "Primary text editor and workspace environment for Python backend and web projects."
     };
 
-    const iconMap: Record<string, string> = {
+const ICON_MAP: Record<string, string> = {
         "Python": "python",
         "JavaScript": "javascript",
         "TypeScript": "typescript",
@@ -88,6 +74,25 @@ const Skills = () => {
         "VS Code": "visualstudiocode"
     };
 
+const Skills = () => {
+
+    const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsModalOpen(false);
+            }
+        };
+        if (isModalOpen) {
+            window.addEventListener('keydown', handleEsc);
+        }
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, [isModalOpen]);
+
+
+
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="skills">
             <div className="w-full">
@@ -109,8 +114,8 @@ const Skills = () => {
                                 {/* CRT Screen scanlines */}
                                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none z-10 opacity-60"></div>
 
-                                {skillsList.map((skill, i) => {
-                                    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
+                                {SKILLS_LIST.map((skill, i) => {
+                                    const slug = ICON_MAP[skill] || skill.toLowerCase().replace(/ /g, "");
                                     const iconUrl = `https://cdn.simpleicons.org/${slug}/white`;
 
                                     return (
@@ -196,7 +201,7 @@ const Skills = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-retro-charcoal border-2 border-black p-2 flex items-center justify-center shrink-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                             <img
-                                                src={`https://cdn.simpleicons.org/${iconMap[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
+                                                src={`https://cdn.simpleicons.org/${ICON_MAP[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
                                                 alt={selectedSkill}
                                                 className="w-full h-full object-contain"
                                                 onError={(e) => {
@@ -222,7 +227,7 @@ const Skills = () => {
 
                                     {/* Skill Description */}
                                     <div className="text-zinc-700 font-body text-sm leading-relaxed text-left">
-                                        {skillDetails[selectedSkill]}
+                                        {SKILL_DETAILS[selectedSkill]}
                                     </div>
 
                                     {/* Footer Info */}
