@@ -124,10 +124,13 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
                     <button
                         onClick={() => setIsMinimized(!isMinimized)}
                         className="w-4 h-4 bg-zinc-400 border border-black hover:bg-zinc-200 flex items-center justify-center text-[8px]"
+                        aria-label={isMinimized ? "Maximize Player" : "Minimize Player"}
+                        title={isMinimized ? "Maximize Player" : "Minimize Player"}
                     >_</button>
                     <button 
                         onClick={onClose}
                         className="w-4 h-4 bg-red-500 border border-black hover:bg-red-400 flex items-center justify-center text-[8px] text-white"
+                        aria-label="Close Player"
                         title="Close Player"
                     >X</button>
                 </div>
@@ -159,21 +162,22 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
                     <div className="flex items-center justify-between no-drag">
                         {/* Playback Controls */}
                         <div className="flex gap-1">
-                            <button onClick={prevTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-lg">skip_previous</span>
+                            <button aria-label="Previous Track" title="Previous Track" onClick={prevTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
+                                <span aria-hidden="true" className="material-symbols-outlined text-lg">skip_previous</span>
                             </button>
-                            <button onClick={togglePlay} className="w-10 h-10 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-xl">{isPlaying ? "pause" : "play_arrow"}</span>
+                            <button aria-label={isPlaying ? "Pause" : "Play"} title={isPlaying ? "Pause" : "Play"} onClick={togglePlay} className="w-10 h-10 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
+                                <span aria-hidden="true" className="material-symbols-outlined text-xl">{isPlaying ? "pause" : "play_arrow"}</span>
                             </button>
-                            <button onClick={nextTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-lg">skip_next</span>
+                            <button aria-label="Next Track" title="Next Track" onClick={nextTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
+                                <span aria-hidden="true" className="material-symbols-outlined text-lg">skip_next</span>
                             </button>
                         </div>
 
                         {/* Volume Slider - Retro Bar Style */}
                         <div className="flex flex-col gap-1 w-20">
-                            <label className="text-[8px] text-zinc-500 uppercase font-bold">Volume</label>
+                            <label htmlFor="volume-slider" className="text-[8px] text-zinc-500 uppercase font-bold">Volume</label>
                             <input
+                                id="volume-slider"
                                 type="range"
                                 min="0"
                                 max="1"
