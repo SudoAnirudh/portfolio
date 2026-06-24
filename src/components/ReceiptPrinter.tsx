@@ -13,6 +13,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     const [isTorn, setIsTorn] = useState(false);
     const [isDiscarding, setIsDiscarding] = useState(false);
     const audioContextRef = useRef<AudioContext | null>(null);
+    const noiseBufferRef = useRef<AudioBuffer | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Initialize Audio Context on mount
@@ -36,16 +37,19 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
         const gainNode = ctx.createGain();
         const filter = ctx.createBiquadFilter();
 
-        // White noise buffer for "paper friction" sound
-        const bufferSize = ctx.sampleRate * 0.1; // 100ms
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+        // ⚡ Bolt: Cache the AudioBuffer in a useRef to avoid redundant object allocation
+        // and loop overhead (Math.random()) on every print line tick.
+        if (!noiseBufferRef.current) {
+            const bufferSize = ctx.sampleRate * 0.1; // 100ms
+            noiseBufferRef.current = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = noiseBufferRef.current.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
         }
 
         const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = noiseBufferRef.current;
 
         // Filter to make it sound more mechanical/low-fi
         filter.type = 'bandpass';

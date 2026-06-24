@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
+// ⚡ Bolt: Cache AudioContext and AudioBuffer outside of the component to avoid
+// redundant object allocation and the overhead of generating noise via Math.random()
+// inside loops every time the channel is changed.
+let sharedAudioCtx: AudioContext | null = null;
+let cachedNoiseBuffer: AudioBuffer | null = null;
+
 // Play mechanical click sound using Web Audio API
 const playClickSound = () => {
     try {
         const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
+
+        if (!sharedAudioCtx) {
+            sharedAudioCtx = new AudioCtx();
+        }
+        const audioCtx = sharedAudioCtx;
         
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
@@ -44,17 +54,23 @@ const playStaticSound = () => {
     try {
         const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
         
-        const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+        if (!sharedAudioCtx) {
+            sharedAudioCtx = new AudioCtx();
+        }
+        const audioCtx = sharedAudioCtx;
+
+        if (!cachedNoiseBuffer) {
+            const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
+            cachedNoiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = cachedNoiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
         }
         
         const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = cachedNoiseBuffer;
         
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'bandpass';
