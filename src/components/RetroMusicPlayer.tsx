@@ -123,12 +123,14 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
                 <div className="relative z-10 flex gap-1 no-drag">
                     <button
                         onClick={() => setIsMinimized(!isMinimized)}
-                        className="w-4 h-4 bg-zinc-400 border border-black hover:bg-zinc-200 flex items-center justify-center text-[8px]"
+                        className="w-4 h-4 bg-zinc-400 border border-black hover:bg-zinc-200 flex items-center justify-center text-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green"
+                        aria-label={isMinimized ? "Restore player" : "Minimize player"}
                     >_</button>
                     <button 
                         onClick={onClose}
-                        className="w-4 h-4 bg-red-500 border border-black hover:bg-red-400 flex items-center justify-center text-[8px] text-white"
+                        className="w-4 h-4 bg-red-500 border border-black hover:bg-red-400 flex items-center justify-center text-[8px] text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green"
                         title="Close Player"
+                        aria-label="Close player"
                     >X</button>
                 </div>
                 {/* Horizontal Scanlines Overlay on bar */}
@@ -159,28 +161,29 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
                     <div className="flex items-center justify-between no-drag">
                         {/* Playback Controls */}
                         <div className="flex gap-1">
-                            <button onClick={prevTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-lg">skip_previous</span>
+                            <button onClick={prevTrack} aria-label="Previous track" className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green">
+                                <span className="material-symbols-outlined text-lg" aria-hidden="true">skip_previous</span>
                             </button>
-                            <button onClick={togglePlay} className="w-10 h-10 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-xl">{isPlaying ? "pause" : "play_arrow"}</span>
+                            <button onClick={togglePlay} aria-label={isPlaying ? "Pause" : "Play"} className="w-10 h-10 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green">
+                                <span className="material-symbols-outlined text-xl" aria-hidden="true">{isPlaying ? "pause" : "play_arrow"}</span>
                             </button>
-                            <button onClick={nextTrack} className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900">
-                                <span className="material-symbols-outlined text-lg">skip_next</span>
+                            <button onClick={nextTrack} aria-label="Next track" className="w-8 h-8 bg-zinc-300 border-b-4 border-r-4 border-zinc-600 active:border-0 active:translate-y-1 active:bg-zinc-400 flex items-center justify-center hover:bg-white text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green">
+                                <span className="material-symbols-outlined text-lg" aria-hidden="true">skip_next</span>
                             </button>
                         </div>
 
                         {/* Volume Slider - Retro Bar Style */}
                         <div className="flex flex-col gap-1 w-20">
-                            <label className="text-[8px] text-zinc-500 uppercase font-bold">Volume</label>
+                            <label htmlFor="volume-slider" className="text-[8px] text-zinc-500 uppercase font-bold">Volume</label>
                             <input
+                                id="volume-slider"
                                 type="range"
                                 min="0"
                                 max="1"
                                 step="0.05"
                                 value={volume}
                                 onChange={(e) => setVolume(parseFloat(e.target.value))}
-                                className="w-full h-2 bg-zinc-700 appearance-none rounded-none accent-retro-green cursor-pointer"
+                                className="w-full h-2 bg-zinc-700 appearance-none rounded-none accent-retro-green cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-green"
                             />
                         </div>
                     </div>
