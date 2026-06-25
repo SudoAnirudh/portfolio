@@ -137,7 +137,12 @@ const AsciiCube = () => {
         const height = 10;
         
         const renderCube = () => {
-            const buffer = Array(height).fill(null).map(() => Array(width).fill(' '));
+            // ⚡ Bolt: Replaced map-based array initialization with a for loop
+            // to reduce memory allocation overhead inside the render loop.
+            const buffer = new Array(height);
+            for (let r = 0; r < height; r++) {
+                buffer[r] = new Array(width).fill(' ');
+            }
             const scale = 3.2;
             const vertices = [
                 [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
@@ -201,7 +206,15 @@ const AsciiCube = () => {
                 }
             });
             
-            setFrame(buffer.map(row => row.join('')).join('\n'));
+            // ⚡ Bolt: Replaced map+join with direct string concatenation
+            // for faster rendering of the frame.
+            let nextFrame = '';
+            for (let r = 0; r < height; r++) {
+                nextFrame += buffer[r].join('');
+                if (r < height - 1) nextFrame += '\n';
+            }
+
+            setFrame(nextFrame);
             A += 0.05;
             B += 0.03;
         };
