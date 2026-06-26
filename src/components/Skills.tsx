@@ -93,8 +93,8 @@ const Skills = () => {
     }, [isModalOpen]);
 
     return (
-        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="skills">
-            <div className="w-full">
+        <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 h-full" id="skills">
+            <div className="w-full h-full">
                 {/* Software Skills - Green Card */}
                 <div className="bg-retro-green bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain h-full">
                     <div className="relative z-20 flex flex-col items-end h-full">

@@ -25,10 +25,10 @@ export default function Home() {
         </div>
 
         {/* Row 2: About + Skills */}
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-6 flex flex-col">
           <About />
         </div>
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-6 flex flex-col">
           <Skills />
         </div>
 
