@@ -156,11 +156,11 @@ const AsciiCube = () => {
             const sinB = Math.sin(B);
             
             const projected = vertices.map(([x, y, z]) => {
-                let y1 = y * cosA - z * sinA;
-                let z1 = y * sinA + z * cosA;
+                const y1 = y * cosA - z * sinA;
+                const z1 = y * sinA + z * cosA;
                 
-                let x2 = x * cosB + z1 * sinB;
-                let z2 = -x * sinB + z1 * cosB;
+                const x2 = x * cosB + z1 * sinB;
+                const z2 = -x * sinB + z1 * cosB;
                 
                 const distance = 3.5;
                 const ooz = 1 / (distance - z2);
