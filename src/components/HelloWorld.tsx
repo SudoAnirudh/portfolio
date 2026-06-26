@@ -91,16 +91,25 @@ const MatrixRain = () => {
         }));
 
         const interval = setInterval(() => {
-            const newGrid = Array(rows).fill('').map((_, rIndex) => {
-                return Array(cols).fill('').map((_, cIndex) => {
-                    const stream = streams[cIndex];
-                    const charIndex = Math.floor(rIndex - stream.y);
+            // ⚡ Bolt: Use direct string concatenation in a for loop to avoid intermediate array allocations and map calls.
+            // This eliminates overhead during high-frequency matrix rain animation rendering.
+            const newGrid = new Array(rows);
+            for (let r = 0; r < rows; r++) {
+                let rowStr = '';
+                for (let c = 0; c < cols; c++) {
+                    const stream = streams[c];
+                    const charIndex = Math.floor(r - stream.y);
                     if (charIndex >= 0 && charIndex < rows) {
-                        return stream.chars[charIndex];
+                        rowStr += stream.chars[charIndex];
+                    } else {
+                        rowStr += ' ';
                     }
-                    return ' ';
-                }).join(' ');
-            });
+                    if (c < cols - 1) {
+                        rowStr += ' ';
+                    }
+                }
+                newGrid[r] = rowStr;
+            }
 
             streams.forEach(s => {
                 s.y += s.speed * 0.4;
@@ -201,7 +210,18 @@ const AsciiCube = () => {
                 }
             });
             
-            setFrame(buffer.map(row => row.join('')).join('\n'));
+            // ⚡ Bolt: Use direct string concatenation instead of mapping and joining arrays
+            // to avoid garbage collection overhead in this high-frequency 3D render loop.
+            let frameStr = '';
+            for (let r = 0; r < height; r++) {
+                for (let c = 0; c < width; c++) {
+                    frameStr += buffer[r][c];
+                }
+                if (r < height - 1) {
+                    frameStr += '\n';
+                }
+            }
+            setFrame(frameStr);
             A += 0.05;
             B += 0.03;
         };
