@@ -91,16 +91,24 @@ const MatrixRain = () => {
         }));
 
         const interval = setInterval(() => {
-            const newGrid = Array(rows).fill('').map((_, rIndex) => {
-                return Array(cols).fill('').map((_, cIndex) => {
+            // ⚡ Bolt: Replaced Array.fill().map().join() with a nested for loop and string concatenation
+            // to significantly reduce garbage collection overhead and improve execution speed in this
+            // high-frequency animation loop.
+            const newGrid = [];
+            for (let rIndex = 0; rIndex < rows; rIndex++) {
+                let rowStr = '';
+                for (let cIndex = 0; cIndex < cols; cIndex++) {
                     const stream = streams[cIndex];
                     const charIndex = Math.floor(rIndex - stream.y);
                     if (charIndex >= 0 && charIndex < rows) {
-                        return stream.chars[charIndex];
+                        rowStr += stream.chars[charIndex];
+                    } else {
+                        rowStr += ' ';
                     }
-                    return ' ';
-                }).join(' ');
-            });
+                    if (cIndex < cols - 1) rowStr += ' ';
+                }
+                newGrid.push(rowStr);
+            }
 
             streams.forEach(s => {
                 s.y += s.speed * 0.4;
@@ -201,7 +209,17 @@ const AsciiCube = () => {
                 }
             });
             
-            setFrame(buffer.map(row => row.join('')).join('\n'));
+            // ⚡ Bolt: Replaced buffer.map().join() with a nested loop string builder to eliminate
+            // intermediate array allocations on every animation frame (every 80ms).
+            let frameStr = '';
+            for (let i = 0; i < height; i++) {
+                for (let j = 0; j < width; j++) {
+                    frameStr += buffer[i][j];
+                }
+                if (i < height - 1) frameStr += '\n';
+            }
+
+            setFrame(frameStr);
             A += 0.05;
             B += 0.03;
         };
