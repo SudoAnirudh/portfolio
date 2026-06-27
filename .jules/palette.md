@@ -1,0 +1,3 @@
+## 2026-06-27 - Text-based Icon Font Accessibility in Custom Retro UI
+**Learning:** When using text-based icon fonts like `material-symbols-outlined` within icon-only interactive controls (e.g., custom window controls or media players), screen readers may attempt to read the literal text (e.g., 'skip_previous') if it isn't explicitly hidden, confusing users.
+**Action:** Always add `aria-hidden="true"` to the internal icon span element and provide a clear, descriptive `aria-label` on the parent `<button>` or `<a>` tag to ensure screen readers announce the intended action rather than the icon's ligature text.
