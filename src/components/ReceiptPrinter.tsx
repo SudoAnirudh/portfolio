@@ -139,7 +139,8 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     }, []);
 
     const handleDownload = () => {
-        window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank");
+        // SECURITY: Prevents reverse tabnabbing by ensuring the new tab cannot access window.opener
+        window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank", "noopener,noreferrer");
     };
 
     const handleDiscard = () => {
