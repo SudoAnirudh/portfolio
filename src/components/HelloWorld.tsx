@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
+// ⚡ Bolt: Cache AudioContext and AudioBuffer at the module level
+// This avoids repeated AudioContext instantiation (which crashes the browser by hitting hardware limits)
+// and eliminates redundant array allocation and loop overhead for the static noise buffer.
+let cachedAudioCtx: AudioContext | null = null;
+let cachedNoiseBuffer: AudioBuffer | null = null;
+
+const getAudioContext = () => {
+    if (typeof window === 'undefined') return null;
+    if (!cachedAudioCtx) {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (!AudioCtx) return null;
+        cachedAudioCtx = new AudioCtx();
+    }
+    return cachedAudioCtx;
+};
+
 // Play mechanical click sound using Web Audio API
 const playClickSound = () => {
     try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
+        const audioCtx = getAudioContext();
+        if (!audioCtx) return;
         
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
@@ -42,19 +57,20 @@ const playClickSound = () => {
 // Play CRT static white noise fuzz sound
 const playStaticSound = () => {
     try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
+        const audioCtx = getAudioContext();
+        if (!audioCtx) return;
         
-        const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+        if (!cachedNoiseBuffer) {
+            const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
+            cachedNoiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = cachedNoiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
         }
         
         const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = cachedNoiseBuffer;
         
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'bandpass';
@@ -156,11 +172,11 @@ const AsciiCube = () => {
             const sinB = Math.sin(B);
             
             const projected = vertices.map(([x, y, z]) => {
-                let y1 = y * cosA - z * sinA;
-                let z1 = y * sinA + z * cosA;
+                const y1 = y * cosA - z * sinA;
+                const z1 = y * sinA + z * cosA;
                 
-                let x2 = x * cosB + z1 * sinB;
-                let z2 = -x * sinB + z1 * cosB;
+                const x2 = x * cosB + z1 * sinB;
+                const z2 = -x * sinB + z1 * cosB;
                 
                 const distance = 3.5;
                 const ooz = 1 / (distance - z2);
