@@ -139,7 +139,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     }, []);
 
     const handleDownload = () => {
-        window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank");
+        window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank", "noopener,noreferrer");
     };
 
     const handleDiscard = () => {
