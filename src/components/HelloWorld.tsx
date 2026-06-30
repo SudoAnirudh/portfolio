@@ -91,16 +91,23 @@ const MatrixRain = () => {
         }));
 
         const interval = setInterval(() => {
-            const newGrid = Array(rows).fill('').map((_, rIndex) => {
-                return Array(cols).fill('').map((_, cIndex) => {
+            // ⚡ Bolt: Replaced nested Array.map and join() with direct string concatenation in a for loop.
+            // This eliminates redundant array allocations on every tick, reducing memory pressure and GC overhead.
+            const newGrid = [];
+            for (let rIndex = 0; rIndex < rows; rIndex++) {
+                let rowStr = '';
+                for (let cIndex = 0; cIndex < cols; cIndex++) {
                     const stream = streams[cIndex];
                     const charIndex = Math.floor(rIndex - stream.y);
                     if (charIndex >= 0 && charIndex < rows) {
-                        return stream.chars[charIndex];
+                        rowStr += stream.chars[charIndex];
+                    } else {
+                        rowStr += ' ';
                     }
-                    return ' ';
-                }).join(' ');
-            });
+                    if (cIndex < cols - 1) rowStr += ' ';
+                }
+                newGrid.push(rowStr);
+            }
 
             streams.forEach(s => {
                 s.y += s.speed * 0.4;
@@ -201,7 +208,18 @@ const AsciiCube = () => {
                 }
             });
             
-            setFrame(buffer.map(row => row.join('')).join('\n'));
+            // ⚡ Bolt: Replaced buffer.map(row => row.join('')).join('\n') with direct string concatenation.
+            // This avoids creating numerous intermediate string arrays on every render tick (80ms),
+            // significantly reducing garbage collection and overhead for high-frequency render loops.
+            let frameStr = '';
+            for (let i = 0; i < height; i++) {
+                for (let j = 0; j < width; j++) {
+                    frameStr += buffer[i][j];
+                }
+                if (i < height - 1) frameStr += '\n';
+            }
+
+            setFrame(frameStr);
             A += 0.05;
             B += 0.03;
         };
