@@ -281,6 +281,20 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "Flutter + React" }
             ],
             techStack: ["Flutter", "React", "Firebase Auth", "Supabase", "PostgreSQL", "Riverpod"]
+        },
+        {
+            title: "Nimma-Guru",
+            icon: "diversity_3",
+            description: "A community-driven mentor directory connecting village experts and knowledge seekers using Google Gemini and offline SMS integration.",
+            image: "/projects/nimma_guru.png",
+            github: "https://github.com/SudoAnirudh/Nimma-Guru",
+            specs: [
+                { label: "Format", value: "Mobile Cartridge" },
+                { label: "Mode", value: "Offline + Voice" },
+                { label: "Engine", value: "Gemini Flash 2.0" },
+                { label: "Status", value: "Completed 🚀" }
+            ],
+            techStack: ["Kotlin", "Jetpack Compose", "Firebase", "Gemini API", "Android Studio"]
         }
     ],
     certifications: [

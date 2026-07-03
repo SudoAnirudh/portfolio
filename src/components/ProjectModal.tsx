@@ -1582,6 +1582,546 @@ const HirenixSimulator: React.FC = () => {
     );
 };
 
+const NimmaGuruSimulator: React.FC = () => {
+    const [language, setLanguage] = useState<'en' | 'kn'>('en');
+    const [tab, setTab] = useState<'directory' | 'gemini' | 'kudos' | 'bookings'>('directory');
+    const [selectedMentor, setSelectedMentor] = useState<any | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [bookings, setBookings] = useState<any[]>([
+        { id: 1, mentorName: 'Ramesh Kumar', mentorNameKn: 'ರಮೇಶ್ ಕುಮಾರ್', date: '2026-07-05', time: '10:00 AM', status: 'Confirmed' }
+    ]);
+    const [newKudos, setNewKudos] = useState({ name: '', mentor: 'Ramesh Kumar', message: '' });
+    const [kudosList, setKudosList] = useState<any[]>([
+        { id: 1, sender: 'Anand S.', senderKn: 'ಆನಂದ್ ಎಸ್.', mentor: 'Ramesh Kumar', mentorKn: 'ರಮೇಶ್ ಕುಮಾರ್', text: 'Helped resolve my soil acidity issue in one visit!', textKn: 'ಕೇವಲ ಒಂದು ಭೇಟಿಯಲ್ಲಿ ನನ್ನ ಮಣ್ಣಿನ ಆಮ್ಲೀಯತೆಯ ಸಮಸ್ಯೆಯನ್ನು ಬಗೆಹರಿಸಲು ಸಹಾಯ ಮಾಡಿದರು!' },
+        { id: 2, sender: 'Meera K.', senderKn: 'ಮೀರಾ ಕೆ.', mentor: 'Gowri Amma', mentorKn: 'ಗೌರಿ ಅಮ್ಮ', text: 'Patient teacher. My kids loved learning pottery basics.', textKn: 'ಅತ್ಯಂತ ತಾಳ್ಮೆಯ ಶಿಕ್ಷಕಿ. ನನ್ನ ಮಕ್ಕಳಿಗೆ ಮಡಕೆ ತಯಾರಿಕೆಯ ಮೂಲಭೂತ ಅಂಶಗಳನ್ನು ಕಲಿಯಲು ತುಂಬಾ ಖುಷಿಯಾಯಿತು.' }
+    ]);
+
+    const [geminiQuery, setGeminiQuery] = useState('');
+    const [geminiLogs, setGeminiLogs] = useState<string[]>([]);
+    const [geminiResult, setGeminiResult] = useState<any | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const mentors = [
+        {
+            name: 'Ramesh Kumar',
+            nameKn: 'ರಮೇಶ್ ಕುಮಾರ್',
+            role: 'Agriculture Expert (Coconut & Arecanut)',
+            roleKn: 'ಕೃಷಿ ತಜ್ಞ (ತೆಂಗು ಮತ್ತು ಅಡಿಕೆ)',
+            ward: 'Ward 3',
+            wardKn: 'ವಾರ್ಡ್ 3',
+            rating: '4.9',
+            contact: '+91 94475 XXXXX',
+            bio: '30+ years of farming experience. Specializes in soil health, natural composting, and organic pest control.',
+            bioKn: '30+ ವರ್ಷಗಳ ಕೃಷಿ ಅನುಭವ. ಮಣ್ಣಿನ ಆರೋಗ್ಯ, ನೈಸರ್ಗಿಕ ಕಾಂಪೋಸ್ಟಿಂಗ್ ಮತ್ತು ಸಾವಯವ ಕೀಟ ನಿಯಂತ್ರಣದಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿದ್ದಾರೆ.'
+        },
+        {
+            name: 'Gowri Amma',
+            nameKn: 'ಗೌರಿ ಅಮ್ಮ',
+            role: 'Traditional Pottery Art',
+            roleKn: 'ಸಾಂಪ್ರದಾಯಿಕ ಮಣ್ಣಿನ ಮಡಕೆ ಕಲೆ',
+            ward: 'Ward 5',
+            wardKn: 'ವಾರ್ಡ್ 5',
+            rating: '4.8',
+            contact: '+91 98451 XXXXX',
+            bio: 'Master artisan creating terracotta cookware and traditional clay artifacts for local festivals.',
+            bioKn: 'ಸ್ಥಳೀಯ ಹಬ್ಬಗಳಿಗೆ ಟೆರಾಕೋಟಾ ಅಡುಗೆ ಪಾತ್ರೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಜೇಡಿಮಣ್ಣಿನ ಕಲಾಕೃತಿಗಳನ್ನು ರಚಿಸುವ ಪ್ರಮುಖ ಕುಶಲಕರ್ಮಿ.'
+        },
+        {
+            name: 'Shankarappa Gowda',
+            nameKn: 'ಶಂಕರಪ್ಪ ಗೌಡ',
+            role: 'Master Wood Carver',
+            roleKn: 'ಮರ ಕೆತ್ತನೆ ತಜ್ಞ',
+            ward: 'Ward 2',
+            wardKn: 'ವಾರ್ಡ್ 2',
+            rating: '4.9',
+            contact: '+91 95391 XXXXX',
+            bio: 'Preserving the heritage of wooden temple carvings and traditional furniture design.',
+            bioKn: 'ಮರದ ದೇವಸ್ಥಾನದ ಕೆತ್ತನೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಪೀಠೋಪಕರಣಗಳ ವಿನ್ಯಾಸದ ಪರಂಪರೆಯನ್ನು ಸಂರಕ್ಷಿಸುತ್ತಿದ್ದಾರೆ.'
+        },
+        {
+            name: 'Dr. Leela Raju',
+            nameKn: 'ಡಾ. ಲೀಲಾ ರಾಜು',
+            role: 'Ayurveda & Herbal Practitioner',
+            roleKn: 'ಆಯುರ್ವೇದ ಮತ್ತು ಗಿಡಮೂಲಿಕೆ ವೈದ್ಯರು',
+            ward: 'Ward 4',
+            wardKn: 'ವಾರ್ಡ್ 4',
+            rating: '4.7',
+            contact: '+91 96521 XXXXX',
+            bio: 'Expertise in native medicinal plants and traditional wellness remedies for seasonal ailments.',
+            bioKn: 'ಸ್ಥಳೀಯ ಔಷಧೀಯ ಸಸ್ಯಗಳು ಮತ್ತು ಕಾಲೋಚಿತ ಕಾಯಿಲೆಗಳಿಗೆ ಸಾಂಪ್ರದಾಯಿಕ ಕ್ಷೇಮ ಪರಿಹಾರಗಳಲ್ಲಿ ಪರಿಣತಿ.'
+        }
+    ];
+
+    const handleGeminiAsk = () => {
+        if (!geminiQuery) return;
+        setIsProcessing(true);
+        setGeminiLogs([]);
+        setGeminiResult(null);
+
+        const logs = [
+            language === 'kn' 
+                ? "[Gemini 2.0] ಧ್ವನಿ/ಪಠ್ಯ ಇನ್‌ಪುಟ್ ಸ್ವೀಕರಿಸಲಾಗಿದೆ..." 
+                : "[Gemini 2.0] Voice/Text Query received...",
+            language === 'kn'
+                ? "[Gemini 2.0] ಮೃದುವಾದ ಪ್ರಾಂಪ್ಟ್ ಟೆಂಪ್ಲೇಟ್ ಅನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
+                : "[Gemini 2.0] Loading soft prompt template for rural expert mapping...",
+            language === 'kn'
+                ? "[Gemini 2.0] ತಜ್ಞರ ವೆಕ್ಟರ್ ಪ್ರೊಫೈಲ್ ಡೇಟಾಬೇಸ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
+                : "[Gemini 2.0] Scanning expert vector profiles database...",
+            language === 'kn'
+                ? "[Gemini 2.0] ಮ್ಯಾಪಿಂಗ್ ಪೂರ್ಣಗೊಂಡಿದೆ. ನಿಕಟ ಹೊಂದಾಣಿಕೆಯನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ."
+                : "[Gemini 2.0] Matching index computed. Nearest neighbor selected."
+        ];
+
+        let idx = 0;
+        const interval = setInterval(() => {
+            if (idx < logs.length) {
+                setGeminiLogs(prev => [...prev, logs[idx]]);
+                idx++;
+            } else {
+                clearInterval(interval);
+                setIsProcessing(false);
+
+                const queryLower = geminiQuery.toLowerCase();
+                let matched = mentors[0];
+                if (queryLower.includes('pottery') || queryLower.includes('clay') || queryLower.includes('ಮಡಕೆ') || queryLower.includes('ಜೇಡಿಮಣ್ಣು')) {
+                    matched = mentors[1];
+                } else if (queryLower.includes('wood') || queryLower.includes('carving') || queryLower.includes('ಮರ') || queryLower.includes('ಕೆತ್ತನೆ')) {
+                    matched = mentors[2];
+                } else if (queryLower.includes('ayurveda') || queryLower.includes('medicine') || queryLower.includes('ಆಯುರ್ವೇದ') || queryLower.includes('ಔಷಧ') || queryLower.includes('herbal')) {
+                    matched = mentors[3];
+                }
+                setGeminiResult(matched);
+            }
+        }, 400);
+    };
+
+    const handleBookSession = (mentor: any) => {
+        const newBooking = {
+            id: Date.now(),
+            mentorName: mentor.name,
+            mentorNameKn: mentor.nameKn,
+            date: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
+            time: '11:00 AM',
+            status: 'Pending Sync'
+        };
+
+        setBookings(prev => [...prev, newBooking]);
+        
+        setTimeout(() => {
+            setBookings(curr => curr.map(b => b.id === newBooking.id ? { ...b, status: 'Confirmed' } : b));
+        }, 1500);
+    };
+
+    const handleAddKudos = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newKudos.name || !newKudos.message) return;
+
+        const entry = {
+            id: Date.now(),
+            sender: newKudos.name,
+            senderKn: newKudos.name,
+            mentor: newKudos.mentor,
+            mentorKn: mentors.find(m => m.name === newKudos.mentor)?.nameKn || newKudos.mentor,
+            text: newKudos.message,
+            textKn: newKudos.message
+        };
+
+        setKudosList(prev => [entry, ...prev]);
+        setNewKudos({ name: '', mentor: 'Ramesh Kumar', message: '' });
+    };
+
+    const t = {
+        en: {
+            title: "Nimma-Guru",
+            subtitle: "Village Expert Directory",
+            searchPlaceholder: "Search expertise (e.g. soil, clay)...",
+            tabGurus: "Gurus",
+            tabGemini: "Gemini AI",
+            tabKudos: "Kudos Wall",
+            tabBookings: "Bookings",
+            ward: "Ward",
+            rating: "Rating",
+            contact: "Call/SMS",
+            bookBtn: "Schedule Session",
+            bookingConfirmed: "Synced with Firebase",
+            bookingPending: "Syncing...",
+            askGeminiTitle: "AI Mentor Recommendations",
+            askGeminiDesc: "Describe what skill or issue you want to learn/solve, and our Gemini model will find the perfect mentor.",
+            askGeminiBtn: "Ask Gemini Assistant",
+            askGeminiPlaceholder: "I want to learn soil conditioning or pottery...",
+            kudosTitle: "Thank You Wall",
+            kudosDesc: "Show appreciation to your local gurus for sharing their knowledge.",
+            kudosFormName: "Your Name",
+            kudosFormMentor: "Select Mentor",
+            kudosFormMsg: "Your message of thanks...",
+            kudosFormBtn: "Post Thank You Note"
+        },
+        kn: {
+            title: "ನಿಮ್ಮ ಗುರು",
+            subtitle: "ಗ್ರಾಮೀಣ ತಜ್ಞರ ಡೈರೆಕ್ಟರಿ",
+            searchPlaceholder: "ವಿಷಯ ಹುಡುಕಿ (ಉದಾ: ಮಣ್ಣು, ಕೃಷಿ)...",
+            tabGurus: "ಗುರುಗಳು",
+            tabGemini: "ಗೇಮಿನಿ ಸಹಾಯಕ",
+            tabKudos: "ಧನ್ಯವಾದ ಗೋಡೆ",
+            tabBookings: "ಬುಕಿಂಗ್ಗಳು",
+            ward: "ವಾರ್ಡ್",
+            rating: "ರೇಟಿಂಗ್",
+            contact: "ಕರೆ/ಸಂದೇಶ",
+            bookBtn: "ತರಗತಿ ನಿಗದಿಪಡಿಸಿ",
+            bookingConfirmed: "ಫೈರ್ಬೇಸ್ಗೆ ಸಿಂಕ್ ಆಗಿದೆ",
+            bookingPending: "ಸಿಂಕ್ ಆಗುತ್ತಿದೆ...",
+            askGeminiTitle: "AI ಶಿಫಾರಸು ಎಂಜಿನ್",
+            askGeminiDesc: "ನೀವು ಯಾವ ಕೌಶಲ್ಯವನ್ನು ಕಲಿಯಲು ಬಯಸುತ್ತೀರಿ ಎಂದು ಬರೆಯಿರಿ, ನಮ್ಮ ಗೇಮಿನಿ ಮಾದರಿಯು ಸೂಕ್ತ ಮಾರ್ಗದರ್ಶಕರನ್ನು ಹುಡುಕುತ್ತದೆ.",
+            askGeminiBtn: "ಗೇಮಿನಿಗೆ ಕೇಳಿ",
+            askGeminiPlaceholder: "ಉದಾಹರಣೆಗೆ: ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಅಥವಾ ಮಡಕೆ ತಯಾರಿಕೆ...",
+            kudosTitle: "ಧನ್ಯವಾದ ಗೋಡೆ",
+            kudosDesc: "ಜ್ಞಾನವನ್ನು ಹಂಚಿಕೊಂಡಿದ್ದಕ್ಕಾಗಿ ನಿಮ್ಮ ಸ್ಥಳೀಯ ಗುರುಗಳಿಗೆ ಧನ್ಯವಾದ ತಿಳಿಸಿ.",
+            kudosFormName: "ನಿಮ್ಮ ಹೆಸರು",
+            kudosFormMentor: "ಗುರುವನ್ನು ಆರಿಸಿ",
+            kudosFormMsg: "ನಿಮ್ಮ ಧನ್ಯವಾದ ಸಂದೇಶ...",
+            kudosFormBtn: "ಧನ್ಯವಾದ ಪೋಸ್ಟ್ ಮಾಡಿ"
+        }
+    };
+
+    const activeT = t[language];
+
+    const filteredMentors = mentors.filter(m => {
+        const term = searchQuery.toLowerCase();
+        return (
+            m.name.toLowerCase().includes(term) ||
+            m.nameKn.includes(term) ||
+            m.role.toLowerCase().includes(term) ||
+            m.roleKn.includes(term) ||
+            m.bio.toLowerCase().includes(term) ||
+            m.bioKn.includes(term)
+        );
+    });
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            {/* Bilingual Header Toggle */}
+            <div className="bg-orange-600 text-white p-2.5 text-[10px] uppercase tracking-wider font-pixel flex justify-between items-center border-b-2 border-black rounded shadow-[0_4px_12px_rgba(234,88,12,0.15)]">
+                <div className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-xs animate-pulse text-yellow-300">spa</span>
+                    <span>{language === 'kn' ? "ನಿಮ್ಮ ಗುರು: ಗ್ರಾಮೀಣ ಸಂಪರ್ಕ" : "NIMMA-GURU: VILLAGE CONNECT"}</span>
+                </div>
+                <div className="flex border border-white/40 rounded overflow-hidden">
+                    <button
+                        onClick={() => setLanguage('en')}
+                        className={`px-2 py-0.5 text-[8px] font-bold ${language === 'en' ? 'bg-yellow-400 text-black' : 'bg-transparent text-white'}`}
+                    >
+                        EN
+                    </button>
+                    <button
+                        onClick={() => setLanguage('kn')}
+                        className={`px-2 py-0.5 text-[8px] font-bold ${language === 'kn' ? 'bg-yellow-400 text-black' : 'bg-transparent text-white'}`}
+                    >
+                        ಕನ್ನಡ
+                    </button>
+                </div>
+            </div>
+
+            {/* Simulated Android Device Wrapper */}
+            <div className="border-4 border-amber-800 bg-amber-50 rounded-xl overflow-hidden p-2 shadow-[inset_0px_0px_10px_rgba(139,92,26,0.2)]">
+                {/* Status Bar */}
+                <div className="flex justify-between items-center px-2 py-0.5 text-[8px] text-amber-900/60 uppercase border-b border-amber-900/10 mb-2">
+                    <span>9:41 AM</span>
+                    <span className="flex items-center gap-1">
+                        <span>bilingual 📶</span>
+                        <span>100% 🔋</span>
+                    </span>
+                </div>
+
+                {/* Sub-navigation tabs */}
+                <div className="grid grid-cols-4 gap-1 text-[8px] mb-3">
+                    {(['directory', 'gemini', 'kudos', 'bookings'] as const).map(tabKey => {
+                        const active = tab === tabKey;
+                        let label = "";
+                        if (tabKey === 'directory') label = activeT.tabGurus;
+                        if (tabKey === 'gemini') label = activeT.tabGemini;
+                        if (tabKey === 'kudos') label = activeT.tabKudos;
+                        if (tabKey === 'bookings') label = activeT.tabBookings;
+
+                        return (
+                            <button
+                                key={tabKey}
+                                onClick={() => { setTab(tabKey); setSelectedMentor(null); }}
+                                className={`py-1.5 border border-black rounded uppercase text-center font-bold transition-all ${active ? 'bg-orange-500 text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'bg-white text-zinc-600'}`}
+                            >
+                                {label}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Directory Tab */}
+                {tab === 'directory' && !selectedMentor && (
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                        {/* Search Input */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder={activeT.searchPlaceholder}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full text-[9px] font-pixel border border-black rounded p-1.5 bg-white text-black outline-none placeholder:text-zinc-400"
+                            />
+                        </div>
+
+                        {/* List */}
+                        {filteredMentors.map((m, idx) => (
+                            <div
+                                key={idx}
+                                onClick={() => setSelectedMentor(m)}
+                                className="bg-white border-2 border-black rounded p-2.5 flex justify-between items-start cursor-pointer hover:bg-orange-50/50 hover:border-orange-500 transition-colors"
+                            >
+                                <div className="space-y-1 text-left min-w-0">
+                                    <div className="text-[10px] font-bold text-zinc-800 uppercase flex items-center gap-1.5">
+                                        <span className="material-symbols-outlined text-[10px] text-orange-600">account_circle</span>
+                                        {language === 'kn' ? m.nameKn : m.name}
+                                    </div>
+                                    <div className="text-[8px] text-zinc-500 leading-tight uppercase truncate">
+                                        {language === 'kn' ? m.roleKn : m.role}
+                                    </div>
+                                    <div className="text-[7px] font-pixel bg-green-100 text-green-800 border border-green-200 inline-block px-1 rounded uppercase">
+                                        {language === 'kn' ? m.wardKn : m.ward}
+                                    </div>
+                                </div>
+                                <div className="text-right shrink-0">
+                                    <div className="text-[9px] text-yellow-600 font-bold flex items-center justify-end gap-0.5">
+                                        ★ {m.rating}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Directory Details Screen */}
+                {tab === 'directory' && selectedMentor && (
+                    <div className="bg-white border-2 border-black rounded p-3 text-left space-y-3">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h4 className="text-xs font-bold text-zinc-800 uppercase flex items-center gap-1">
+                                    <span className="material-symbols-outlined text-xs text-orange-600">account_circle</span>
+                                    {language === 'kn' ? selectedMentor.nameKn : selectedMentor.name}
+                                </h4>
+                                <p className="text-[8px] text-zinc-500 uppercase mt-0.5">
+                                    {language === 'kn' ? selectedMentor.roleKn : selectedMentor.role}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setSelectedMentor(null)}
+                                className="px-1.5 py-0.5 border border-black rounded text-[8px] uppercase bg-zinc-100 font-pixel"
+                            >
+                                {language === 'kn' ? "ಹಿಂದಕ್ಕೆ" : "Back"}
+                            </button>
+                        </div>
+
+                        <div className="h-0.5 border-t border-dashed border-black/10" />
+
+                        <div className="space-y-1.5">
+                            <div className="text-[8px] text-zinc-400 uppercase">Bio / ಪರಿಚಯ</div>
+                            <p className="text-[9px] text-zinc-700 leading-normal font-body uppercase font-bold">
+                                {language === 'kn' ? selectedMentor.bioKn : selectedMentor.bio}
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 text-[8px]">
+                            <div className="bg-zinc-50 border border-black/10 p-1.5 rounded">
+                                <div className="text-zinc-400 uppercase text-[7px]">{activeT.ward}</div>
+                                <div className="font-bold text-zinc-700 uppercase">{language === 'kn' ? selectedMentor.wardKn : selectedMentor.ward}</div>
+                            </div>
+                            <div className="bg-zinc-50 border border-black/10 p-1.5 rounded">
+                                <div className="text-zinc-400 uppercase text-[7px]">{activeT.rating}</div>
+                                <div className="font-bold text-yellow-600 uppercase">★ {selectedMentor.rating}</div>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+                            <button
+                                onClick={() => handleBookSession(selectedMentor)}
+                                className="flex-1 py-1.5 bg-orange-500 text-white border border-black rounded text-[8px] uppercase font-bold shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                            >
+                                {activeT.bookBtn}
+                            </button>
+                            <a
+                                href={`tel:${selectedMentor.contact}`}
+                                className="px-3 py-1.5 bg-green-600 text-white border border-black rounded text-[8px] uppercase font-bold shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 justify-center"
+                            >
+                                <span className="material-symbols-outlined text-[10px]">call</span>
+                                {activeT.contact}
+                            </a>
+                        </div>
+                    </div>
+                )}
+
+                {/* Gemini AI tab */}
+                {tab === 'gemini' && (
+                    <div className="space-y-3">
+                        <div className="bg-white border-2 border-black rounded p-3 text-left space-y-2">
+                            <h4 className="text-[10px] font-bold text-zinc-800 uppercase flex items-center gap-1.5">
+                                <span className="material-symbols-outlined text-xs text-sky-500 animate-pulse">model_training</span>
+                                {activeT.askGeminiTitle}
+                            </h4>
+                            <p className="text-[8px] text-zinc-500 leading-normal uppercase">
+                                {activeT.askGeminiDesc}
+                            </p>
+
+                            <div className="flex gap-1.5 mt-2">
+                                <input
+                                    type="text"
+                                    placeholder={activeT.askGeminiPlaceholder}
+                                    value={geminiQuery}
+                                    onChange={(e) => setGeminiQuery(e.target.value)}
+                                    disabled={isProcessing}
+                                    className="flex-grow text-[9px] font-pixel border border-black rounded p-1.5 bg-white text-black outline-none placeholder:text-zinc-400"
+                                />
+                                <button
+                                    onClick={handleGeminiAsk}
+                                    disabled={isProcessing}
+                                    className="px-2.5 bg-sky-500 text-white border border-black rounded text-[8px] uppercase font-bold disabled:opacity-50"
+                                >
+                                    {activeT.askGeminiBtn.split(' ')[0]}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Processing terminal logs */}
+                        {(geminiLogs.length > 0 || isProcessing) && (
+                            <div className="h-24 border-2 border-black bg-zinc-900 text-green-400 p-2 text-[8px] uppercase leading-tight overflow-y-auto space-y-0.5 font-pixel rounded text-left shadow-[inset_0px_0px_6px_rgba(0,255,0,0.25)]">
+                                {geminiLogs.map((log, index) => <div key={index}>&gt; {log}</div>)}
+                                {isProcessing && <div className="animate-pulse">&gt; Processing prompt tokens...</div>}
+                            </div>
+                        )}
+
+                        {/* Gemini result matched mentor */}
+                        {geminiResult && (
+                            <div className="bg-green-50 border-2 border-green-600 rounded p-2.5 text-left flex justify-between items-center animate-fade-in">
+                                <div className="space-y-1 min-w-0">
+                                    <div className="text-[7px] text-green-700 font-pixel uppercase font-bold">Recommended Mentor matched</div>
+                                    <div className="text-[9px] font-bold text-zinc-800 uppercase">
+                                        {language === 'kn' ? geminiResult.nameKn : geminiResult.name}
+                                    </div>
+                                    <div className="text-[7px] text-zinc-500 uppercase truncate">
+                                        {language === 'kn' ? geminiResult.roleKn : geminiResult.role}
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => { setSelectedMentor(geminiResult); setTab('directory'); }}
+                                    className="px-2 py-1 bg-green-600 text-white border border-black rounded text-[8px] uppercase font-bold"
+                                >
+                                    {language === 'kn' ? "ವಿವರ ನೋಡಿ" : "View"}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Kudos Wall tab */}
+                {tab === 'kudos' && (
+                    <div className="space-y-3">
+                        {/* Kudos post form */}
+                        <form onSubmit={handleAddKudos} className="bg-white border-2 border-black rounded p-3 text-left space-y-2">
+                            <h4 className="text-[9px] font-bold text-zinc-800 uppercase">{activeT.kudosTitle}</h4>
+                            <p className="text-[7px] text-zinc-400 uppercase leading-snug">{activeT.kudosDesc}</p>
+                            
+                            <div className="grid grid-cols-2 gap-2">
+                                <div className="space-y-0.5">
+                                    <label className="text-[7px] text-zinc-400 uppercase">{activeT.kudosFormName}</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. Anand"
+                                        value={newKudos.name}
+                                        onChange={(e) => setNewKudos({ ...newKudos, name: e.target.value })}
+                                        className="w-full text-[8px] font-pixel border border-black rounded p-1 bg-zinc-50 text-black outline-none"
+                                    />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <label className="text-[7px] text-zinc-400 uppercase">{activeT.kudosFormMentor}</label>
+                                    <select
+                                        value={newKudos.mentor}
+                                        onChange={(e) => setNewKudos({ ...newKudos, mentor: e.target.value })}
+                                        className="w-full text-[8px] font-pixel border border-black rounded p-1 bg-zinc-50 text-black outline-none h-6 uppercase"
+                                    >
+                                        {mentors.map((m, idx) => (
+                                            <option key={idx} value={m.name}>{language === 'kn' ? m.nameKn : m.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-0.5">
+                                <label className="text-[7px] text-zinc-400 uppercase">{activeT.kudosFormMsg}</label>
+                                <input
+                                    type="text"
+                                    placeholder="Thank you for..."
+                                    value={newKudos.message}
+                                    onChange={(e) => setNewKudos({ ...newKudos, message: e.target.value })}
+                                    className="w-full text-[8px] font-pixel border border-black rounded p-1 bg-zinc-50 text-black outline-none"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full py-1.5 bg-orange-500 text-white border border-black rounded text-[8px] uppercase font-bold shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                            >
+                                {activeT.kudosFormBtn}
+                            </button>
+                        </form>
+
+                        {/* List of thank-you cards */}
+                        <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                            {kudosList.map((k, idx) => (
+                                <div key={idx} className="bg-yellow-50 border border-yellow-300 rounded p-2 text-left space-y-1 relative shadow-sm">
+                                    <div className="flex justify-between text-[7px] font-bold text-orange-800 uppercase">
+                                        <span>From: {language === 'kn' ? k.senderKn : k.sender}</span>
+                                        <span>To: {language === 'kn' ? k.mentorKn : k.mentor}</span>
+                                    </div>
+                                    <p className="text-[8px] text-zinc-700 leading-snug italic font-body font-bold">
+                                        "{language === 'kn' ? k.textKn : k.text}"
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Scheduled Bookings Tab */}
+                {tab === 'bookings' && (
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                        {bookings.map((b, idx) => (
+                            <div key={idx} className="bg-white border border-black rounded p-2.5 text-left flex justify-between items-center shadow-sm">
+                                <div className="space-y-1 min-w-0">
+                                    <div className="text-[9px] font-bold text-zinc-800 uppercase">
+                                        {language === 'kn' ? b.mentorNameKn : b.mentorName}
+                                    </div>
+                                    <div className="text-[7px] text-zinc-500 uppercase">
+                                        {b.date} @ {b.time}
+                                    </div>
+                                </div>
+                                <div className="shrink-0 text-right">
+                                    <span className={`px-2 py-0.5 border text-[7px] rounded uppercase font-bold ${b.status === 'Confirmed' ? 'bg-green-100 text-green-800 border-green-300' : 'bg-yellow-100 text-yellow-800 border-yellow-300'}`}>
+                                        {b.status === 'Confirmed' ? activeT.bookingConfirmed : activeT.bookingPending}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* Bilingual Footer */}
+            <div className="text-[7px] uppercase tracking-widest text-zinc-500 bg-white p-2 border-2 border-dashed border-black/15 text-center">
+                {language === 'kn' 
+                    ? "* ಸ್ಥಳীয় ಜಿಪಿಎಸ್ ಆಧಾರಿತ ಮಾರ್ಗದರ್ಶನ | ಆಫ್ಲೈನ್ ಎಸ್ಎಂಎಸ್ ಅಲರ್ಟ್ ಹಬ್ ಸಂಯೋಜಿತವಾಗಿದೆ" 
+                    : "* Offline-First SMS alert sync enabled | Local GPS-indexed mentors directory"}
+            </div>
+        </div>
+    );
+};
+
 // --- END OF SUB-SIMULATORS ---
 
 interface ProjectModalProps {
@@ -1607,7 +2147,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         "CNN Visualizer",
         "Hirenix",
         "MessyData",
-        "Community Connect"
+        "Community Connect",
+        "Nimma-Guru"
     ].includes(project.title) : false;
 
     // Reset simulator tab when project changes
@@ -1627,6 +2168,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <MessyDataSimulator />;
             case "Community Connect":
                 return <CommunityConnectSimulator />;
+            case "Nimma-Guru":
+                return <NimmaGuruSimulator />;
             default:
                 return <div className="text-center py-8 font-pixel text-zinc-500">Simulator not found.</div>;
         }
