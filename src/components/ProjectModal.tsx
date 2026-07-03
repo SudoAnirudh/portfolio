@@ -602,6 +602,315 @@ const IdsSimulator: React.FC = () => {
     );
 };
 
+const MessyDataSimulator: React.FC = () => {
+    const [step, setStep] = useState<'idle' | 'ingesting' | 'fuzzy' | 'reconciliation' | 'done'>('idle');
+    const [ingestLogs, setIngestLogs] = useState<string[]>([]);
+    const [activeSource, setActiveSource] = useState<'none' | 'pg' | 'api' | 'csv'>('none');
+    const [progress, setProgress] = useState(0);
+    const [reconciliationDecision, setReconciliationDecision] = useState<'none' | 'merge' | 'split'>('none');
+
+    const runPipeline = () => {
+        setStep('ingesting');
+        setIngestLogs([]);
+        setProgress(0);
+    };
+
+    useEffect(() => {
+        if (step !== 'ingesting') return;
+
+        const timeline = [
+            { source: 'pg', time: 300, log: "Initializing Multi-Source ETL Pipeline Engine..." },
+            { source: 'pg', time: 800, log: "[Legacy DB] Connecting to PostgreSQL datastore..." },
+            { source: 'pg', time: 1300, log: "[Legacy DB] Executing query: SELECT id, name, email, phone, location FROM customer_profiles..." },
+            { source: 'pg', time: 1800, log: "[Legacy DB] Successfully fetched 500 legacy records." },
+            
+            { source: 'api', time: 2400, log: "[SaaS API] Initializing dynamic SaaS API connector..." },
+            { source: 'api', time: 2900, log: "[SaaS API] GET https://api.saas-client.com/v1/users?limit=100" },
+            { source: 'api', time: 3400, log: "[SaaS API] WARNING: HTTP 429 Too Many Requests detected!" },
+            { source: 'api', time: 3900, log: "[SaaS API] BACKOFF: Inspecting 'Retry-After: 2s' header. Waiting before retry..." },
+            { source: 'api', time: 6000, log: "[SaaS API] RETRY: (Attempt 1) with jitter (tenacity block)..." },
+            { source: 'api', time: 6500, log: "[SaaS API] WARNING: HTTP 503 Service Unavailable!" },
+            { source: 'api', time: 7000, log: "[SaaS API] BACKOFF: Exponential retry (Attempt 2)..." },
+            { source: 'api', time: 9200, log: "[SaaS API] RETRY: (Attempt 2) GET https://api.saas-client.com/v1/users..." },
+            { source: 'api', time: 9700, log: "[SaaS API] SUCCESS: HTTP 200 OK. Ingested 350 profiles." },
+
+            { source: 'csv', time: 10400, log: "[CSV Export] Scanning regional directory for CSV exports..." },
+            { source: 'csv', time: 10900, log: "[CSV Export] Found 'regional_export_2026_07.csv'. Normalizing malformed columns..." },
+            { source: 'csv', time: 11400, log: "[CSV Export] Cleaned 380 profiles (mapped phone format + lowercased emails)." },
+            { source: 'none', time: 12000, log: "ETL INGESTION PHASE COMPLETE: 1,230 raw records cached in staging." }
+        ];
+
+        let index = 0;
+        const start = Date.now();
+
+        const timer = setInterval(() => {
+            const elapsed = Date.now() - start;
+            while (index < timeline.length && timeline[index].time <= elapsed) {
+                const item = timeline[index];
+                setIngestLogs(prev => [...prev, item.log]);
+                setActiveSource(item.source as any);
+                setProgress(Math.min(100, Math.round((index / timeline.length) * 100)));
+                index++;
+            }
+
+            if (index >= timeline.length) {
+                clearInterval(timer);
+                setProgress(100);
+                setTimeout(() => {
+                    setStep('fuzzy');
+                }, 1000);
+            }
+        }, 100);
+
+        return () => clearInterval(timer);
+    }, [step]);
+
+    const [fuzzyLogs, setFuzzyLogs] = useState<string[]>([]);
+    useEffect(() => {
+        if (step !== 'fuzzy') return;
+
+        const fuzzyTimeline = [
+            "Initializing Fuzzy Matching Reconciliation Engine (RapidFuzz v3.4.0)...",
+            "Mapping cross-record similarity comparison grid...",
+            "COMPARE: 'John Doe' (Legacy DB) vs 'Jon Doe' (SaaS API) -> Token Sort Ratio: 92%",
+            "DECISION: Auto-Merge [John Doe] (Confidence 92% >= 85% threshold)",
+            "COMPARE: 'Alice Smith' (Legacy DB) vs 'Bob Smith' (CSV) -> Token Sort Ratio: 32%",
+            "DECISION: Keep Separate [Bob Smith] (Confidence 32% < 60% threshold)",
+            "COMPARE: 'Anirudh Sudheer' (SaaS API) vs 'Sudheer Anirudh' (CSV) -> Token Sort Ratio: 78%",
+            "DECISION: Suspect Duplicate! Routing to Operator Review Queue (78% in 60%-85% window)",
+            "Fuzzy processing complete. 1 matching task requires operator review."
+        ];
+
+        let index = 0;
+        const timer = setInterval(() => {
+            if (index < fuzzyTimeline.length) {
+                setFuzzyLogs(prev => [...prev, fuzzyTimeline[index]]);
+                index++;
+            } else {
+                clearInterval(timer);
+                setTimeout(() => {
+                    setStep('reconciliation');
+                }, 1500);
+            }
+        }, 500);
+
+        return () => clearInterval(timer);
+    }, [step]);
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            <div className="bg-black text-green-500 p-2 text-[10px] uppercase tracking-wider font-pixel flex justify-between">
+                <span>System: MessyData ETL v1.0.0</span>
+                {step !== 'idle' && step !== 'done' && <span className="animate-pulse">Processing...</span>}
+            </div>
+
+            {step === 'idle' && (
+                <div className="border-4 border-black bg-white aspect-video p-6 flex flex-col justify-between items-center text-center">
+                    <div className="space-y-2 mt-4">
+                        <span className="material-symbols-outlined text-6xl text-retro-charcoal animate-bounce">database</span>
+                        <div className="text-sm font-bold uppercase">MessyData Reconciliation Pipeline</div>
+                        <div className="text-[10px] text-zinc-500 max-w-sm uppercase leading-relaxed font-body">
+                            Resolve duplicate customer entries across multiple flaky and mismatched systems using fuzzy matching and a Streamlit manual review queue.
+                        </div>
+                    </div>
+                    <button
+                        onClick={runPipeline}
+                        className="w-full py-2 bg-retro-orange border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                    >
+                        Load & Run ETL Pipeline
+                    </button>
+                </div>
+            )}
+
+            {step === 'ingesting' && (
+                <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-2">
+                        <div className={`border-2 p-2 text-center text-[10px] uppercase ${activeSource === 'pg' ? 'bg-retro-yellow border-black text-black font-bold animate-pulse' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            <span className="material-symbols-outlined text-sm block">storage</span>
+                            Legacy DB
+                        </div>
+                        <div className={`border-2 p-2 text-center text-[10px] uppercase ${activeSource === 'api' ? 'bg-retro-yellow border-black text-black font-bold animate-pulse' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            <span className="material-symbols-outlined text-sm block">cloud_sync</span>
+                            Flaky API
+                        </div>
+                        <div className={`border-2 p-2 text-center text-[10px] uppercase ${activeSource === 'csv' ? 'bg-retro-yellow border-black text-black font-bold animate-pulse' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            <span className="material-symbols-outlined text-sm block">description</span>
+                            CSV Exports
+                        </div>
+                    </div>
+
+                    <div className="h-32 border-4 border-black bg-zinc-900 text-green-400 p-2 text-[9px] uppercase leading-tight overflow-y-auto space-y-1 font-pixel shadow-[inset_0px_0px_6px_rgba(0,255,0,0.3)]">
+                        {ingestLogs.map((log, i) => {
+                            let color = "text-green-400";
+                            if (log.includes("WARNING")) color = "text-yellow-400";
+                            if (log.includes("BACKOFF")) color = "text-retro-orange font-bold";
+                            if (log.includes("SUCCESS") || log.includes("COMPLETE")) color = "text-sky-400 font-bold";
+                            return <div key={i} className={color}>&gt; {log}</div>;
+                        })}
+                    </div>
+
+                    <div className="w-full bg-zinc-200 h-4 border-2 border-black overflow-hidden relative">
+                        <div className="bg-retro-orange h-full transition-all duration-100" style={{ width: `${progress}%` }} />
+                        <div className="absolute inset-0 flex items-center justify-center text-[9px] font-pixel text-black font-bold">
+                            INGESTION PROGRESS: {progress}%
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {step === 'fuzzy' && (
+                <div className="space-y-3">
+                    <div className="border-4 border-black bg-zinc-900 text-green-400 p-4 aspect-video flex flex-col justify-between overflow-hidden shadow-[inset_0px_0px_8px_rgba(0,255,0,0.3)]">
+                        <div className="space-y-1 overflow-y-auto h-full text-[9px] font-pixel uppercase leading-snug">
+                            {fuzzyLogs.map((log, i) => {
+                                let color = "text-green-400";
+                                if (log.includes("AUTO-MERGE") || log.includes("Score: 92%")) color = "text-sky-400 font-bold";
+                                if (log.includes("SUSPECT") || log.includes("Score: 78%")) color = "text-yellow-400 font-bold animate-pulse";
+                                if (log.includes("SEPARATE")) color = "text-zinc-400";
+                                return <div key={i} className={color}>&gt;&gt; {log}</div>;
+                            })}
+                        </div>
+                        <div className="border-t border-green-800/40 pt-2 text-[9px] text-green-500 font-pixel animate-pulse">
+                            COMPUTING RAPIDFUZZ MATRIX EMBEDDINGS...
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {step === 'reconciliation' && (
+                <div className="space-y-3">
+                    <div className="bg-retro-orange/20 border-2 border-retro-orange p-2 text-center text-[9px] uppercase font-bold text-retro-orange">
+                        ⚠️ 1 Suspect Duplicate Record in Manual Review Queue (Streamlit UI)
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-[10px]">
+                        <div className="border-2 border-black p-3 bg-white space-y-2 relative">
+                            <div className="absolute top-1 right-2 bg-retro-charcoal text-white text-[8px] px-1 font-pixel uppercase">Record A (API)</div>
+                            <div className="font-pixel border-b pb-1 font-bold text-zinc-800 uppercase mt-2">SaaS API Entry</div>
+                            <div className="space-y-1 font-body text-[11px]">
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Name</span> Anirudh Sudheer</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Email</span> anirudhsudheer@gmail.com</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Phone</span> +91 95391 02851</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Location</span> Kozhikode, India</div>
+                            </div>
+                        </div>
+
+                        <div className="border-2 border-black p-3 bg-white space-y-2 relative">
+                            <div className="absolute top-1 right-2 bg-retro-charcoal text-white text-[8px] px-1 font-pixel uppercase">Record B (CSV)</div>
+                            <div className="font-pixel border-b pb-1 font-bold text-zinc-800 uppercase mt-2">CSV Export Entry</div>
+                            <div className="space-y-1 font-body text-[11px]">
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Name</span> Sudheer Anirudh</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Email</span> anirudhsudheer@outlook.com</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Phone</span> 9539102851</div>
+                                <div><span className="font-pixel text-[8px] text-zinc-400 block uppercase">Location</span> Calicut, Kerala</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {reconciliationDecision === 'none' ? (
+                        <div className="flex gap-2 pt-2">
+                            <button
+                                onClick={() => setReconciliationDecision('merge')}
+                                className="flex-1 py-2 bg-retro-green border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                            >
+                                Merge & Enrich
+                            </button>
+                            <button
+                                onClick={() => setReconciliationDecision('split')}
+                                className="flex-1 py-2 bg-white border-2 border-zinc-400 text-zinc-600 text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] active:translate-x-[2px] active:translate-y-[2px]"
+                            >
+                                Keep Separate
+                            </button>
+                        </div>
+                    ) : reconciliationDecision === 'merge' ? (
+                        <div className="space-y-3">
+                            <div className="bg-green-100 border-2 border-retro-green p-2 text-[10px] text-green-700 font-bold uppercase text-center rounded">
+                                ✔️ profiles merged successfully! target lineage updated.
+                            </div>
+                            <div className="bg-black text-sky-400 p-2.5 rounded border border-zinc-700 font-pixel text-[8px] overflow-x-auto whitespace-pre-wrap leading-tight shadow-[0px_0px_8px_rgba(56,189,248,0.25)]">
+{`PROVENANCE AUDIT TRAIL LOG:
+{
+  "merged_id": "usr_94a8f",
+  "primary_name": "Anirudh Sudheer",
+  "contacts": [
+    "anirudhsudheer@gmail.com",
+    "anirudhsudheer@outlook.com"
+  ],
+  "lineage": [
+    { "source": "SaaS_API", "record_id": "api_402", "confidence": "78%" },
+    { "source": "CSV_Export", "record_id": "csv_109", "confidence": "100%" }
+  ]
+}`}
+                            </div>
+                            <button
+                                onClick={() => setStep('done')}
+                                className="w-full py-2 bg-retro-charcoal text-white border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                View Final Pipeline Audit
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            <div className="bg-zinc-100 border-2 border-zinc-400 p-2 text-[10px] text-zinc-600 font-bold uppercase text-center rounded">
+                                ❌ profiles separated. new profile 'usr_94a90' registered.
+                            </div>
+                            <button
+                                onClick={() => setStep('done')}
+                                className="w-full py-2 bg-retro-charcoal text-white border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                View Final Pipeline Audit
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {step === 'done' && (
+                <div className="border-4 border-black bg-retro-cream p-4 space-y-4">
+                    <div className="font-pixel text-[10px] uppercase text-zinc-500 border-b pb-1 border-black/10">Pipeline Execution Report Card</div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-pixel">
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">Ingested Raw</div>
+                            <div className="text-base font-bold text-retro-charcoal">1,230</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">Clean/Unified</div>
+                            <div className="text-base font-bold text-retro-green">1,017</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">Auto-Merged</div>
+                            <div className="text-base font-bold text-sky-500">212</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">Manual Matches</div>
+                            <div className="text-base font-bold text-retro-orange">1</div>
+                        </div>
+                    </div>
+
+                    <div className="text-[9px] uppercase leading-relaxed text-zinc-500 bg-white p-2 border-2 border-dashed border-black/15">
+                        * Ingested SaaS Rest API navigated 2 server failures & 1 rate limit using tenacity backoff.
+                        <br/>
+                        * Normalized phone format drift & lowercased emails before fuzzy indexing.
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setStep('idle');
+                            setIngestLogs([]);
+                            setFuzzyLogs([]);
+                            setReconciliationDecision('none');
+                        }}
+                        className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                    >
+                        Restart Simulator
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
 const HirenixSimulator: React.FC = () => {
     const [selectedRole, setSelectedRole] = useState<'aiml' | 'frontend'>('aiml');
     const [selectedResume, setSelectedResume] = useState<'anirudh' | 'generic' | 'marketing'>('anirudh');
@@ -911,7 +1220,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         "Stock Price Predictor",
         "Image Enhancement Toolkit",
         "Intrusion Detection System",
-        "Hirenix"
+        "Hirenix",
+        "MessyData"
     ].includes(project.title) : false;
 
     // Reset simulator tab when project changes
@@ -933,6 +1243,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <IdsSimulator />;
             case "Hirenix":
                 return <HirenixSimulator />;
+            case "MessyData":
+                return <MessyDataSimulator />;
             default:
                 return <div className="text-center py-8 font-pixel text-zinc-500">Simulator not found.</div>;
         }

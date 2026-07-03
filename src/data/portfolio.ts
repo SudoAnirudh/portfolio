@@ -255,6 +255,20 @@ export const portfolioData: PortfolioData = {
             techStack: ["Next.js", "FastAPI", "Supabase", "OpenAI", "pgvector", "Python"]
         },
         {
+            title: "MessyData",
+            icon: "dataset",
+            description: "Resilient multi-source ETL pipeline and fuzzy matching identity resolution engine to ingest, clean, and reconcile customer profiles across disconnected systems.",
+            image: "/projects/messy_data.png",
+            github: "https://github.com/SudoAnirudh/MessyData",
+            specs: [
+                { label: "Format", value: "Data Pipeline Cartridge" },
+                { label: "Mode", value: "Identity Resolution" },
+                { label: "Engine", value: "RapidFuzz + Tenacity" },
+                { label: "Status", value: "Completed 🚀" }
+            ],
+            techStack: ["Python", "PostgreSQL", "Streamlit", "Docker", "RapidFuzz", "Tenacity"]
+        },
+        {
             title: "Stock Price Predictor",
             icon: "trending_up",
             description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",
