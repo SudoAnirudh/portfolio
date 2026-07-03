@@ -1605,9 +1605,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     const hasSimulator = project ? [
         "PashuSwasthya",
         "CNN Visualizer",
-        "Stock Price Predictor",
-        "Image Enhancement Toolkit",
-        "Intrusion Detection System",
         "Hirenix",
         "MessyData",
         "Community Connect"
@@ -1624,12 +1621,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <CattleScannerSimulator />;
             case "CNN Visualizer":
                 return <CnnVisualizerSimulator />;
-            case "Stock Price Predictor":
-                return <StockPredictorSimulator />;
-            case "Image Enhancement Toolkit":
-                return <ImageEnhancementSimulator />;
-            case "Intrusion Detection System":
-                return <IdsSimulator />;
             case "Hirenix":
                 return <HirenixSimulator />;
             case "MessyData":

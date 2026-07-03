@@ -277,52 +277,10 @@ export const portfolioData: PortfolioData = {
             specs: [
                 { label: "Format", value: "Mobile/Web Cartridge" },
                 { label: "Arch", value: "Firebase + Supabase" },
-                { label: "State", value: "Beta / Ongoing 🛠️" },
+                { label: "Status", value: "Ongoing (Beta) 🛠️" },
                 { label: "Engine", value: "Flutter + React" }
             ],
             techStack: ["Flutter", "React", "Firebase Auth", "Supabase", "PostgreSQL", "Riverpod"]
-        },
-        {
-            title: "Stock Price Predictor",
-            icon: "trending_up",
-            description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",
-            image: "/projects/stock_predictor.png",
-            github: "https://github.com/SudoAnirudh/Stock_Price_Predictor",
-            specs: [
-                { label: "Format", value: "Sequence Cartridge" },
-                { label: "Core Model", value: "LSTM" },
-                { label: "Output", value: "Time-Series Forecast" },
-                { label: "Status", value: "Iterating" }
-            ],
-            techStack: ["Python", "LSTM", "Keras", "Pandas"]
-        },
-        {
-            title: "Image Enhancement Toolkit",
-            icon: "auto_fix",
-            description: "ML/DL-based enhancement models with a Streamlit dashboard for interaction.",
-            image: "/projects/image_enhancement.png",
-            github: "https://github.com/SudoAnirudh/Image-Enhancement-Toolkit",
-            specs: [
-                { label: "Format", value: "Vision Cartridge" },
-                { label: "Mode", value: "Interactive Dashboard" },
-                { label: "Input", value: "Image Streams" },
-                { label: "Status", value: "Open Source" }
-            ],
-            techStack: ["Python", "OpenCV", "Streamlit", "TensorFlow"]
-        },
-        {
-            title: "Intrusion Detection System",
-            icon: "security",
-            description: "Network intrusion detection using ML with Flask-based real-time monitoring UI.",
-            image: "/projects/intrusion_detection.png",
-            github: "https://github.com/SudoAnirudh/Intrusion-Detection-System-Using-ML",
-            specs: [
-                { label: "Format", value: "Security Cartridge" },
-                { label: "Mode", value: "Realtime Monitoring" },
-                { label: "Surface", value: "Network Packets" },
-                { label: "Status", value: "Demo Ready" }
-            ],
-            techStack: ["Python", "Flask", "Scikit-learn", "Pandas"]
         }
     ],
     certifications: [
