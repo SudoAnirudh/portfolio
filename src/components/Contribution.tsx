@@ -10,6 +10,19 @@ interface ContributionDay {
     intensity: number;
 }
 
+// ⚡ Bolt: Use a module-level cached AudioContext to avoid instantiating
+// a new context on every playback, preventing memory leaks and browser crashes
+// from exceeding hardware limits (instead of using useState which triggers re-renders).
+let cachedContributionAudioCtx: AudioContext | null = null;
+const getContributionAudioCtx = () => {
+    if (typeof window === 'undefined') return null;
+    if (!cachedContributionAudioCtx) {
+        const AudioCtor = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioCtor) cachedContributionAudioCtx = new AudioCtor();
+    }
+    return cachedContributionAudioCtx;
+};
+
 const Contribution = () => {
     const [squaresData, setSquaresData] = useState<ContributionDay[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -76,11 +89,11 @@ const Contribution = () => {
 
     const playSound = (freq = 600, duration = 0.08) => {
         try {
-            const AudioCtor = window.AudioContext || (window as any).webkitAudioContext;
-            if (!AudioCtor) return;
-            const ctx = new AudioCtor();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            const audioCtx = getContributionAudioCtx();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
             
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, ctx.currentTime);

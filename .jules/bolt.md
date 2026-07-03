@@ -5,3 +5,7 @@
 ## 2026-07-01 - [Optimize High-Frequency Render Loops]
 **Learning:** For high-frequency render loops (e.g., ASCII animations running every 50-80ms), generating strings via nested array methods (`.map().join()`) creates significant garbage collection overhead and memory thrashing due to continuous allocation of intermediate arrays. In micro-benchmarks, building frames using direct string concatenation in a double `for` loop reduced execution time by approximately 50-60%.
 **Action:** When implementing high-frequency programmatic text/ASCII animations in React, generate the final frame string using standard `for` loops and string concatenation instead of array map/reduce/join operations.
+
+## 2026-07-03 - [Web Audio API Optimization]
+**Learning:** Repeatedly instantiating `AudioContext` without closing the previous instances leads to memory leaks and can cause the browser to crash when hitting the hardware limit (~6 active contexts). Generating `AudioBuffer` programmatically in a loop for every playback creates significant redundant processing.
+**Action:** Lazily initialize and cache the `AudioContext` globally (e.g., as a module-level singleton or via a ref/state) to prevent exceeding active context limits, and cache `AudioBuffer`s intended for repeated use.

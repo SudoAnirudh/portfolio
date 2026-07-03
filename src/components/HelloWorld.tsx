@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
+// ⚡ Bolt: Cache AudioContext as a singleton to prevent memory leaks and exceeding
+// the browser's hardware limit of ~6 active AudioContexts.
+let cachedAudioCtx: AudioContext | null = null;
+const getAudioCtx = () => {
+    if (typeof window === 'undefined') return null;
+    if (!cachedAudioCtx) {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioCtx) cachedAudioCtx = new AudioCtx();
+    }
+    return cachedAudioCtx;
+};
+
 // Play mechanical click sound using Web Audio API
 const playClickSound = () => {
     try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
+        const audioCtx = getAudioCtx();
+        if (!audioCtx) return;
         
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
@@ -39,22 +50,27 @@ const playClickSound = () => {
     }
 };
 
+// ⚡ Bolt: Cache the generated white noise buffer to avoid redundant O(n) array
+// allocations and Math.random() loop overhead on every playback (approx. 12000 iterations).
+let cachedNoiseBuffer: AudioBuffer | null = null;
+
 // Play CRT static white noise fuzz sound
 const playStaticSound = () => {
     try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioCtx) return;
-        const audioCtx = new AudioCtx();
+        const audioCtx = getAudioCtx();
+        if (!audioCtx) return;
         
-        const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+        if (!cachedNoiseBuffer) {
+            const bufferSize = audioCtx.sampleRate * 0.25; // 250ms
+            cachedNoiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = cachedNoiseBuffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
         }
         
         const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
+        noise.buffer = cachedNoiseBuffer;
         
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'bandpass';
