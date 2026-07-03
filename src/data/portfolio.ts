@@ -269,6 +269,20 @@ export const portfolioData: PortfolioData = {
             techStack: ["Python", "PostgreSQL", "Streamlit", "Docker", "RapidFuzz", "Tenacity"]
         },
         {
+            title: "Community Connect",
+            icon: "groups",
+            description: "Premium community management platform for local wards and panchayats, leveraging custom OIDC claims to connect Firebase Auth with Supabase RLS.",
+            image: "/projects/community_connect.png",
+            github: "https://github.com/SudoAnirudh/Community_Connect",
+            specs: [
+                { label: "Format", value: "Mobile/Web Cartridge" },
+                { label: "Arch", value: "Firebase + Supabase" },
+                { label: "State", value: "Beta / Ongoing 🛠️" },
+                { label: "Engine", value: "Flutter + React" }
+            ],
+            techStack: ["Flutter", "React", "Firebase Auth", "Supabase", "PostgreSQL", "Riverpod"]
+        },
+        {
             title: "Stock Price Predictor",
             icon: "trending_up",
             description: "Forecasting models using LSTMs with strong emphasis on prediction accuracy.",

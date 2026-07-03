@@ -911,6 +911,394 @@ const MessyDataSimulator: React.FC = () => {
     );
 };
 
+const CommunityConnectSimulator: React.FC = () => {
+    const [step, setStep] = useState<'idle' | 'auth' | 'claims' | 'supabase_rls' | 'realtime' | 'done'>('idle');
+    
+    // Auth Step State
+    const [phoneNumber, setPhoneNumber] = useState('+91 95391 02851');
+    const [authLogs, setAuthLogs] = useState<string[]>([]);
+    const [otpSent, setOtpSent] = useState(false);
+    const [otpCode, setOtpCode] = useState('');
+    const [otpError, setOtpError] = useState(false);
+
+    // Claims Step State
+    const [claimsLogs, setClaimsLogs] = useState<string[]>([]);
+
+    // Supabase RLS Step State
+    const [rlsLogs, setRlsLogs] = useState<string[]>([]);
+
+    // Realtime Broadcast Step State
+    const [announcementText, setAnnouncementText] = useState('Urgent: Panchayat ward assembly meeting rescheduled to Sunday 9 AM.');
+    const [broadcastLogs, setBroadcastLogs] = useState<string[]>([]);
+    const [isBroadcasting, setIsBroadcasting] = useState(false);
+    const [phoneScreenOn, setPhoneScreenOn] = useState(false);
+    const [notificationReceived, setNotificationReceived] = useState(false);
+
+    // Run auth flow
+    const triggerSendOtp = () => {
+        if (!phoneNumber) return;
+        setAuthLogs(prev => [...prev, `[Firebase Auth] Sending verification SMS OTP to ${phoneNumber}...`]);
+        setTimeout(() => {
+            setAuthLogs(prev => [...prev, `[Firebase Auth] SMS OTP delivered successfully. Code: 481029`]);
+            setOtpSent(true);
+        }, 1200);
+    };
+
+    const verifyOtp = () => {
+        if (otpCode === '481029') {
+            setAuthLogs(prev => [...prev, `[Firebase Auth] Code verified. Session ID fb_sess_x918 created.`]);
+            setTimeout(() => {
+                setStep('claims');
+            }, 1000);
+        } else {
+            setOtpError(true);
+            setAuthLogs(prev => [...prev, `[Firebase Auth] ERROR: Invalid OTP verification code. Try again.`]);
+        }
+    };
+
+    // Firebase custom claims injection trigger simulation
+    useEffect(() => {
+        if (step !== 'claims') return;
+        setClaimsLogs([]);
+        
+        const claimsTimeline = [
+            { time: 200, log: "Initializing Firebase Cloud Function triggers..." },
+            { time: 800, log: "[Cloud Function] user_created_trigger.js: New sign-up detected for uid 'fb_usr_881b2'." },
+            { time: 1400, log: "[Cloud Function] Fetching Supabase target schema specifications..." },
+            { time: 2000, log: "[Cloud Function] Injecting custom claims: { role: 'authenticated', provider: 'firebase' }" },
+            { time: 2600, log: "[Cloud Function] Syncing session token claims. Metadata validation complete." },
+            { time: 3200, log: "SUCCESS: Custom claims injected into Firebase Auth JWT." }
+        ];
+
+        let index = 0;
+        const timer = setInterval(() => {
+            if (index < claimsTimeline.length) {
+                setClaimsLogs(prev => [...prev, claimsTimeline[index].log]);
+                index++;
+            } else {
+                clearInterval(timer);
+                setTimeout(() => {
+                    setStep('supabase_rls');
+                }, 1200);
+            }
+        }, 600);
+
+        return () => clearInterval(timer);
+    }, [step]);
+
+    // Supabase RLS verification simulation
+    useEffect(() => {
+        if (step !== 'supabase_rls') return;
+        setRlsLogs([]);
+
+        const rlsTimeline = [
+            "Initializing Supabase Client...",
+            "Passing Firebase JWT Token to session cache...",
+            "supabase.auth.setSession({ access_token: Firebase_OIDC_JWT })",
+            "Supabase DB: Decoded JWT claims headers...",
+            "Checking claims -> auth.jwt() ->> 'role' = 'authenticated'",
+            "Evaluating policy 'select_announcements' on table 'announcements'...",
+            "RLS rule: USING (auth.jwt() ->> 'role' = 'authenticated' AND auth.jwt() ->> 'provider' = 'firebase')",
+            "Result: TRUE -> Access GRANTED.",
+            "Supabase RLS evaluation PASSED! Data fetched successfully."
+        ];
+
+        let index = 0;
+        const timer = setInterval(() => {
+            if (index < rlsTimeline.length) {
+                setRlsLogs(prev => [...prev, rlsTimeline[index]]);
+                index++;
+            } else {
+                clearInterval(timer);
+                setTimeout(() => {
+                    setStep('realtime');
+                }, 1500);
+            }
+        }, 500);
+
+        return () => clearInterval(timer);
+    }, [step]);
+
+    // Broadcast FCM Push & Real-time Channel simulation
+    const runBroadcast = () => {
+        if (!announcementText) return;
+        setIsBroadcasting(true);
+        setBroadcastLogs([`[Supabase Realtime] Initiating announcement broadcast...`]);
+
+        setTimeout(() => {
+            setBroadcastLogs(prev => [...prev, `[Supabase Realtime] Payload pushed to channel 'ward_9_announcements'.`]);
+        }, 800);
+
+        setTimeout(() => {
+            setBroadcastLogs(prev => [...prev, `[Firebase Admin SDK] Triggered FCM push request for ward 9 family devices.`]);
+            setPhoneScreenOn(true);
+        }, 1500);
+
+        setTimeout(() => {
+            setBroadcastLogs(prev => [...prev, `[FCM Engine] Broadcast complete. Pushed alerts to 125 active app instances.`]);
+            setNotificationReceived(true);
+            setIsBroadcasting(false);
+        }, 2500);
+    };
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            <div className="bg-black text-green-500 p-2 text-[10px] uppercase tracking-wider font-pixel flex justify-between">
+                <span>System: CommunityConnect Staging Sandbox v0.1.0-beta</span>
+                {step !== 'idle' && step !== 'done' && <span className="animate-pulse">Active Sandbox</span>}
+            </div>
+
+            {step === 'idle' && (
+                <div className="border-4 border-black bg-white aspect-video p-6 flex flex-col justify-between items-center text-center">
+                    <div className="space-y-2 mt-4">
+                        <span className="material-symbols-outlined text-6xl text-retro-charcoal animate-bounce">groups</span>
+                        <div className="text-sm font-bold uppercase">CommunityConnect Beta Sandbox</div>
+                        <div className="text-[10px] text-zinc-500 max-w-sm uppercase leading-relaxed font-body">
+                            Simulate the hybrid auth flow connecting Firebase Auth to Supabase database, and test real-time push notification broadcasts.
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => setStep('auth')}
+                        className="w-full py-2 bg-retro-orange border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                    >
+                        Initialize Beta Sandbox
+                    </button>
+                </div>
+            )}
+
+            {step === 'auth' && (
+                <div className="space-y-3">
+                    <div className="border-2 border-black p-3 bg-white space-y-3">
+                        <div className="text-[10px] uppercase font-bold text-zinc-500">Firebase OTP Signup Simulator</div>
+                        
+                        <div className="space-y-1">
+                            <label className="text-[9px] text-zinc-400 block uppercase">Mobile Number</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    disabled={otpSent}
+                                    className="flex-grow border-2 border-black px-2 py-1 text-xs font-pixel bg-retro-cream text-black"
+                                />
+                                <button
+                                    onClick={triggerSendOtp}
+                                    disabled={otpSent}
+                                    className="px-3 bg-retro-yellow border-2 border-black text-[10px] uppercase font-bold disabled:opacity-50"
+                                >
+                                    Send OTP
+                                </button>
+                            </div>
+                        </div>
+
+                        {otpSent && (
+                            <div className="space-y-1 animate-fade-in">
+                                <label className="text-[9px] text-zinc-400 block uppercase">Enter SMS OTP Code (Delivered: 481029)</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter code"
+                                        value={otpCode}
+                                        onChange={(e) => {
+                                            setOtpCode(e.target.value);
+                                            setOtpError(false);
+                                        }}
+                                        className={`flex-grow border-2 px-2 py-1 text-xs font-pixel bg-retro-cream text-black ${otpError ? 'border-red-500' : 'border-black'}`}
+                                    />
+                                    <button
+                                        onClick={verifyOtp}
+                                        className="px-3 bg-retro-green border-2 border-black text-[10px] uppercase font-bold"
+                                    >
+                                        Verify
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="h-28 border-4 border-black bg-zinc-900 text-green-400 p-2 text-[9px] uppercase leading-tight overflow-y-auto space-y-1 font-pixel shadow-[inset_0px_0px_6px_rgba(0,255,0,0.3)]">
+                        {authLogs.length === 0 ? (
+                            <div className="text-zinc-500">&gt; Waiting to start OTP flow...</div>
+                        ) : (
+                            authLogs.map((log, i) => <div key={i}>&gt; {log}</div>)
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {step === 'claims' && (
+                <div className="space-y-3">
+                    <div className="border-4 border-black bg-zinc-900 text-green-400 p-4 aspect-video flex flex-col justify-between overflow-hidden shadow-[inset_0px_0px_8px_rgba(0,255,0,0.3)]">
+                        <div className="space-y-1 overflow-y-auto h-full text-[9px] font-pixel uppercase leading-snug">
+                            {claimsLogs.map((log, i) => {
+                                let color = "text-green-400";
+                                if (log.includes("Injecting") || log.includes("claims:")) color = "text-yellow-400 font-bold";
+                                if (log.includes("SUCCESS")) color = "text-sky-400 font-bold animate-pulse";
+                                return <div key={i} className={color}>&gt; {log}</div>;
+                            })}
+                        </div>
+                        <div className="border-t border-green-800/40 pt-2 text-[9px] text-green-500 font-pixel animate-pulse">
+                            FIREBASE AUTH TRIGGERS RUNNING...
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {step === 'supabase_rls' && (
+                <div className="space-y-3">
+                    <div className="border-4 border-black bg-zinc-900 text-green-400 p-4 aspect-video flex flex-col justify-between overflow-hidden shadow-[inset_0px_0px_8px_rgba(0,255,0,0.3)]">
+                        <div className="space-y-1 overflow-y-auto h-full text-[9px] font-pixel uppercase leading-snug">
+                            {rlsLogs.map((log, i) => {
+                                let color = "text-green-400";
+                                if (log.includes("auth.jwt()")) color = "text-yellow-400";
+                                if (log.includes("GRANTED") || log.includes("PASSED")) color = "text-sky-400 font-bold animate-pulse";
+                                return <div key={i} className={color}>&gt; {log}</div>;
+                            })}
+                        </div>
+                        <div className="border-t border-green-800/40 pt-2 text-[9px] text-green-500 font-pixel animate-pulse">
+                            SUPABASE ROW-LEVEL SECURITY POLICY ENGINE...
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {step === 'realtime' && (
+                <div className="space-y-3">
+                    <div className="bg-retro-green/20 border-2 border-retro-green p-2 text-center text-[9px] uppercase font-bold text-retro-green">
+                        ✔️ Firebase/Supabase Session Synced. Broadcaster Ready.
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-3 text-[10px]">
+                        <div className="col-span-3 border-2 border-black p-3 bg-white space-y-3 flex flex-col justify-between">
+                            <div>
+                                <div className="font-pixel border-b pb-1 font-bold text-zinc-800 uppercase text-[9px]">Admin Panel Console</div>
+                                <div className="space-y-2 mt-2">
+                                    <label className="font-pixel text-[8px] text-zinc-400 block uppercase">Announcement Text</label>
+                                    <textarea
+                                        value={announcementText}
+                                        onChange={(e) => setAnnouncementText(e.target.value)}
+                                        disabled={isBroadcasting}
+                                        rows={3}
+                                        className="w-full border-2 border-black p-1 text-[9px] font-pixel bg-retro-cream text-black resize-none uppercase leading-snug"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <button
+                                onClick={runBroadcast}
+                                disabled={isBroadcasting}
+                                className="w-full py-1.5 bg-retro-orange border-2 border-black text-[9px] uppercase font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] disabled:opacity-50 text-black"
+                            >
+                                {isBroadcasting ? "Broadcasting..." : "Broadcast Alert"}
+                            </button>
+                        </div>
+
+                        <div className="col-span-2 flex flex-col items-center justify-center">
+                            <div className={`w-28 h-48 border-4 border-black rounded-lg bg-zinc-950 p-1 flex flex-col justify-between relative transition-all duration-300 ${phoneScreenOn ? 'shadow-[0px_0px_12px_rgba(251,191,36,0.3)]' : ''}`}>
+                                <div className="w-8 h-1 bg-black rounded-full mx-auto" />
+                                
+                                <div className={`flex-grow border-2 border-black rounded mt-1 bg-zinc-900 overflow-hidden relative flex flex-col justify-between p-1.5 transition-colors duration-300 ${phoneScreenOn ? 'bg-sky-900/45' : 'bg-black'}`}>
+                                    {phoneScreenOn ? (
+                                        <>
+                                            <div className="flex justify-between text-[6px] text-white/60 font-pixel uppercase">
+                                                <span>12:00</span>
+                                                <span>fcm 📶</span>
+                                            </div>
+                                            
+                                            {notificationReceived && (
+                                                <div className="bg-white border border-black p-1 rounded space-y-1 shadow-md animate-bounce mt-2 text-black">
+                                                    <div className="flex items-center gap-0.5 text-black">
+                                                        <span className="material-symbols-outlined text-[8px]">groups</span>
+                                                        <span className="text-[6px] font-bold font-pixel uppercase tracking-tight">CommunityConnect</span>
+                                                    </div>
+                                                    <div className="text-[6px] font-body text-zinc-700 leading-tight uppercase font-bold">
+                                                        {announcementText.length > 50 ? announcementText.substring(0, 47) + '...' : announcementText}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="text-center text-[7px] text-white/40 uppercase mt-auto mb-1">
+                                                Beta Mobile Client
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="m-auto text-[7px] text-zinc-700 uppercase">OFFLINE</div>
+                                    )}
+                                </div>
+
+                                <div className="w-3 h-3 border border-zinc-700 rounded-full mx-auto mt-1 cursor-pointer" />
+                            </div>
+                            <span className="text-[8px] text-zinc-500 uppercase mt-1">Mock Mobile App</span>
+                        </div>
+                    </div>
+
+                    <div className="h-16 border-2 border-black bg-zinc-900 text-green-400 p-1 text-[8px] uppercase leading-tight overflow-y-auto space-y-0.5 font-pixel">
+                        {broadcastLogs.map((log, i) => <div key={i}>&gt; {log}</div>)}
+                    </div>
+
+                    {notificationReceived && (
+                        <button
+                            onClick={() => setStep('done')}
+                            className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-black"
+                        >
+                            Verify & Finish Testing
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {step === 'done' && (
+                <div className="border-4 border-black bg-retro-cream p-4 space-y-4">
+                    <div className="font-pixel text-[10px] uppercase text-zinc-500 border-b pb-1 border-black/10">Staging Sandbox Verification Card</div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-[10px] font-pixel">
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">OIDC Provider</div>
+                            <div className="text-xs font-bold text-retro-charcoal">Firebase</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">Target Database</div>
+                            <div className="text-xs font-bold text-retro-green">Supabase DB</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">RLS Policies</div>
+                            <div className="text-xs font-bold text-sky-500">Verified</div>
+                        </div>
+                        <div className="border border-black/15 bg-white p-2 text-center">
+                            <div className="text-zinc-400 uppercase text-[8px]">FCM Channels</div>
+                            <div className="text-xs font-bold text-retro-orange">Broadcasting</div>
+                        </div>
+                    </div>
+
+                    <div className="text-[9px] uppercase leading-relaxed text-zinc-500 bg-white p-2 border-2 border-dashed border-black/15">
+                        * Custom OIDC claim injection prevents unauthorized Supabase table mutations.
+                        <br/>
+                        * Staging environment configured for real-time Firebase OTP verification loops.
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            setStep('idle');
+                            setOtpSent(false);
+                            setOtpCode('');
+                            setOtpError(false);
+                            setAuthLogs([]);
+                            setClaimsLogs([]);
+                            setRlsLogs([]);
+                            setBroadcastLogs([]);
+                            setPhoneScreenOn(false);
+                            setNotificationReceived(false);
+                        }}
+                        className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] text-black"
+                    >
+                        Restart Sandbox Simulator
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
 const HirenixSimulator: React.FC = () => {
     const [selectedRole, setSelectedRole] = useState<'aiml' | 'frontend'>('aiml');
     const [selectedResume, setSelectedResume] = useState<'anirudh' | 'generic' | 'marketing'>('anirudh');
@@ -1221,7 +1609,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         "Image Enhancement Toolkit",
         "Intrusion Detection System",
         "Hirenix",
-        "MessyData"
+        "MessyData",
+        "Community Connect"
     ].includes(project.title) : false;
 
     // Reset simulator tab when project changes
@@ -1245,6 +1634,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <HirenixSimulator />;
             case "MessyData":
                 return <MessyDataSimulator />;
+            case "Community Connect":
+                return <CommunityConnectSimulator />;
             default:
                 return <div className="text-center py-8 font-pixel text-zinc-500">Simulator not found.</div>;
         }
