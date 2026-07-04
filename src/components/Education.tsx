@@ -23,11 +23,13 @@ const Education = () => {
 
                 {/* Decorative Pixel Art Image */}
                 <div className="absolute right-0 top-0 w-36 sm:w-52 md:w-64 opacity-20 pointer-events-none h-64">
+                    {/* ⚡ Bolt: Provide sizes to prevent fetching full viewport width (100vw) defaults when using fill */}
                     <Image
                         alt="Retro Pixel Art PC - Education Theme"
                         className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated object-contain"
                         src="/education_overlay.png"
                         fill
+                        sizes="(max-width: 640px) 144px, (max-width: 768px) 208px, 256px"
                     />
                 </div>
             </div>

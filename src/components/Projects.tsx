@@ -67,10 +67,12 @@ const Projects = () => {
                                     )}
                                     {project.image ? (
                                         <div className="relative w-full aspect-video border border-black overflow-hidden">
+                                            {/* ⚡ Bolt: Added sizes attribute to Next.js Image with 'fill' for better performance */}
                                             <Image
                                                 src={project.image}
                                                 alt={`Project Thumbnail: ${project.title} - ${project.description.slice(0, 50)}...`}
                                                 fill
+                                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                                 className="object-cover grayscale group-hover:grayscale-0 transition-all"
                                             />
                                         </div>
