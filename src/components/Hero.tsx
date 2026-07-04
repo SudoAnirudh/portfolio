@@ -36,11 +36,13 @@ const Hero = () => {
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="w-full md:w-1/3 space-y-4">
                             <div className="aspect-square bg-zinc-300 rounded-xl overflow-hidden border-4 border-zinc-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
+                                {/* ⚡ Bolt: Added sizes attribute to prevent loading unnecessarily large images since fill layout requires explicit sizes for optimization */}
                                 <Image
                                     alt={`${portfolioData.personal.name} - ${portfolioData.personal.role}`}
                                     className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
                                     src={portfolioData.about.image}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 33vw"
                                     priority
                                 />
                             </div>
