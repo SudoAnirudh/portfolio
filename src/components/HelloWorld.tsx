@@ -444,18 +444,20 @@ const HelloWorld = () => {
                         <button 
                             onClick={handleNextChannel}
                             title="Change Channel"
-                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus:outline-none"
+                            aria-label="Next Channel"
+                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow"
                             style={{ transform: `rotate(${(channel - 3) * 90}deg)` }}
                         >
-                            <div className="w-full h-1 bg-zinc-950"></div>
+                            <div className="w-full h-1 bg-zinc-950" aria-hidden="true"></div>
                         </button>
                         <button 
                             onClick={handlePrevChannel}
                             title="Fine Tune"
-                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus:outline-none"
+                            aria-label="Previous Channel"
+                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow"
                             style={{ transform: `rotate(${-((channel - 3) * 45)}deg)` }}
                         >
-                            <div className="w-full h-1 bg-zinc-950"></div>
+                            <div className="w-full h-1 bg-zinc-950" aria-hidden="true"></div>
                         </button>
                     </div>
                 </div>
