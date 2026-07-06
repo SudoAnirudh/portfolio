@@ -2213,9 +2213,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                     </div>
                     <button
                         onClick={onClose}
-                        className="hover:bg-red-500 p-1 rounded-none transition-colors"
+                        aria-label="Close project modal"
+                        className="hover:bg-red-500 focus-visible:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white p-1 rounded-none transition-colors"
                     >
-                        <span className="material-symbols-outlined text-sm block">close</span>
+                        <span className="material-symbols-outlined text-sm block" aria-hidden="true">close</span>
                     </button>
                 </div>
 
