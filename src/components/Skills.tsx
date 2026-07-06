@@ -186,10 +186,10 @@ const Skills = () => {
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
-                                    className="hover:bg-red-500 p-1 rounded-none transition-colors flex items-center justify-center cursor-pointer"
-                                    aria-label="Close modal"
+                                    className="hover:bg-red-500 focus-visible:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white p-1 rounded-none transition-colors flex items-center justify-center cursor-pointer"
+                                    aria-label="Close skill details modal"
                                 >
-                                    <span className="material-symbols-outlined text-sm block">close</span>
+                                    <span className="material-symbols-outlined text-sm block" aria-hidden="true">close</span>
                                 </button>
                             </div>
 
