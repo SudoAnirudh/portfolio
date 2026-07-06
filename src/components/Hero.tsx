@@ -41,6 +41,7 @@ const Hero = () => {
                                     className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
                                     src={portfolioData.about.image}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 33vw"
                                     priority
                                 />
                             </div>
