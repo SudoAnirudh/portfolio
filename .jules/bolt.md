@@ -8,3 +8,6 @@
 ## 2026-07-02 - [Cache AudioContext and AudioBuffer to Prevent Crashes and Overhead]
 **Learning:** Browsers enforce a strict limit on the number of concurrently active \`AudioContext\` instances (~6). Repeatedly instantiating \`new window.AudioContext()\` on events like clicks or hover will quickly lead to hardware limit crashes ("Failed to construct 'AudioContext': The number of hardware contexts provided..."). Additionally, repeatedly allocating \`AudioBuffer\` and looping through \`getChannelData\` for white noise on every play triggers garbage collection overhead and drops frames in high-frequency triggers.
 **Action:** When implementing sound effects using the Web Audio API, always lazily initialize and cache a single module-level or global \`AudioContext\` singleton. For static or algorithmically generated sound buffers (like white noise), compute and cache the \`AudioBuffer\` once rather than re-allocating and re-calculating the buffer on every invocation.
+## 2026-07-07 - AudioContext Initialization
+**Learning:** Repeatedly instantiating AudioContext in components like Contribution hits browser hardware limits (~6 max) and causes crashes/errors.
+**Action:** Lazily initialize and cache AudioContext as a module-level singleton to eliminate redundant allocations and avoid SSR/hardware errors.
