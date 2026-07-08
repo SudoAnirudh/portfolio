@@ -72,6 +72,8 @@ const Projects = () => {
                                                 alt={`Project Thumbnail: ${project.title} - ${project.description.slice(0, 50)}...`}
                                                 fill
                                                 className="object-cover grayscale group-hover:grayscale-0 transition-all"
+                                                // ⚡ Bolt: Added sizes attribute to prevent serving unoptimized full-size images to smaller devices in grid layout
+                                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                             />
                                         </div>
                                     ) : (

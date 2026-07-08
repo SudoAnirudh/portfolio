@@ -42,6 +42,8 @@ const Hero = () => {
                                     src={portfolioData.about.image}
                                     fill
                                     priority
+                                    // ⚡ Bolt: Added sizes attribute to prevent serving unoptimized full-size images to smaller devices
+                                    sizes="(max-width: 768px) 100vw, 33vw"
                                 />
                             </div>
                             <div className="bg-primary text-black font-display text-center py-2 rounded-full text-sm border-2 border-black font-bold uppercase tracking-widest hover:bg-retro-yellow transition-colors">
