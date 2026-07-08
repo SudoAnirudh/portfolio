@@ -28,6 +28,8 @@ const Education = () => {
                         className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated object-contain"
                         src="/education_overlay.png"
                         fill
+                        // ⚡ Bolt: Added sizes attribute to prevent serving unoptimized full-size images to smaller devices
+                        sizes="(max-width: 640px) 144px, (max-width: 768px) 208px, 256px"
                     />
                 </div>
             </div>

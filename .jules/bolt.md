@@ -8,3 +8,7 @@
 ## 2026-07-02 - [Cache AudioContext and AudioBuffer to Prevent Crashes and Overhead]
 **Learning:** Browsers enforce a strict limit on the number of concurrently active \`AudioContext\` instances (~6). Repeatedly instantiating \`new window.AudioContext()\` on events like clicks or hover will quickly lead to hardware limit crashes ("Failed to construct 'AudioContext': The number of hardware contexts provided..."). Additionally, repeatedly allocating \`AudioBuffer\` and looping through \`getChannelData\` for white noise on every play triggers garbage collection overhead and drops frames in high-frequency triggers.
 **Action:** When implementing sound effects using the Web Audio API, always lazily initialize and cache a single module-level or global \`AudioContext\` singleton. For static or algorithmically generated sound buffers (like white noise), compute and cache the \`AudioBuffer\` once rather than re-allocating and re-calculating the buffer on every invocation.
+
+## 2026-07-08 - [Optimize Next.js Images with `fill` property]
+**Learning:** When using the Next.js `<Image>` component with the `fill` property, omitting the `sizes` attribute causes the browser to download unnecessarily large, unoptimized images for smaller viewports, severely impacting performance on mobile devices.
+**Action:** Always provide a `sizes` attribute (e.g., `sizes="(max-width: 768px) 100vw, 33vw"`) when using `fill` to ensure responsive and optimized image delivery based on the container's responsive CSS layout.
