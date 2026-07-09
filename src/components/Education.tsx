@@ -28,6 +28,7 @@ const Education = () => {
                         className="w-full grayscale brightness-110 drop-shadow-2xl rendering-pixelated object-contain"
                         src="/education_overlay.png"
                         fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
                     />
                 </div>
             </div>
