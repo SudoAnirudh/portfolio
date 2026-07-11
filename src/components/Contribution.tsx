@@ -10,6 +10,53 @@ interface ContributionDay {
     intensity: number;
 }
 
+// ⚡ Bolt: Cache AudioContext singleton to bypass the strict browser hardware limit (~6 contexts).
+// This prevents crashes and overhead from repeated instantiation on every button click.
+let sharedAudioCtx: AudioContext | null = null;
+
+const getAudioContext = () => {
+    if (typeof window === 'undefined') return null;
+    if (!sharedAudioCtx) {
+        const AudioCtor = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioCtor) sharedAudioCtx = new AudioCtor();
+    }
+    // Handle the promise returned by resume() to prevent unhandled rejection warnings
+    if (sharedAudioCtx?.state === 'suspended') sharedAudioCtx.resume().catch(() => {});
+    return sharedAudioCtx;
+};
+
+// ⚡ Bolt: Hoist static configuration object to prevent re-allocation on every render cycle.
+const themePalettes: Record<string, string[]> = {
+    green: [
+        'bg-zinc-800 border-zinc-900',
+        'bg-emerald-950 border-emerald-900/60',
+        'bg-emerald-800 border-emerald-700/60',
+        'bg-emerald-600 border-emerald-500/60',
+        'bg-emerald-400 border-emerald-300 shadow-[0_0_8px_rgba(52,211,153,0.3)]'
+    ],
+    amber: [
+        'bg-zinc-800 border-zinc-900',
+        'bg-amber-950 border-amber-900/60',
+        'bg-amber-800 border-amber-700/60',
+        'bg-amber-600 border-amber-550/60',
+        'bg-amber-400 border-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
+    ],
+    cyan: [
+        'bg-zinc-800 border-zinc-900',
+        'bg-cyan-950 border-cyan-900/60',
+        'bg-cyan-800 border-cyan-700/60',
+        'bg-cyan-600 border-cyan-500/60',
+        'bg-cyan-400 border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.3)]'
+    ],
+    vapor: [
+        'bg-zinc-800 border-zinc-900',
+        'bg-fuchsia-950 border-fuchsia-900/60',
+        'bg-fuchsia-850 border-fuchsia-750/60',
+        'bg-fuchsia-600 border-fuchsia-500/60',
+        'bg-fuchsia-400 border-fuchsia-300 shadow-[0_0_8px_rgba(232,121,249,0.3)]'
+    ]
+};
+
 const Contribution = () => {
     const [squaresData, setSquaresData] = useState<ContributionDay[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -76,9 +123,9 @@ const Contribution = () => {
 
     const playSound = (freq = 600, duration = 0.08) => {
         try {
-            const AudioCtor = window.AudioContext || (window as any).webkitAudioContext;
-            if (!AudioCtor) return;
-            const ctx = new AudioCtor();
+            const ctx = getAudioContext();
+            if (!ctx) return;
+
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             
@@ -96,37 +143,6 @@ const Contribution = () => {
         } catch (e) {
             console.error(e);
         }
-    };
-
-    const themePalettes: Record<string, string[]> = {
-        green: [
-            'bg-zinc-800 border-zinc-900',
-            'bg-emerald-950 border-emerald-900/60',
-            'bg-emerald-800 border-emerald-700/60',
-            'bg-emerald-600 border-emerald-500/60',
-            'bg-emerald-400 border-emerald-300 shadow-[0_0_8px_rgba(52,211,153,0.3)]'
-        ],
-        amber: [
-            'bg-zinc-800 border-zinc-900',
-            'bg-amber-950 border-amber-900/60',
-            'bg-amber-800 border-amber-700/60',
-            'bg-amber-600 border-amber-550/60',
-            'bg-amber-400 border-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.3)]'
-        ],
-        cyan: [
-            'bg-zinc-800 border-zinc-900',
-            'bg-cyan-950 border-cyan-900/60',
-            'bg-cyan-800 border-cyan-700/60',
-            'bg-cyan-600 border-cyan-500/60',
-            'bg-cyan-400 border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.3)]'
-        ],
-        vapor: [
-            'bg-zinc-800 border-zinc-900',
-            'bg-fuchsia-950 border-fuchsia-900/60',
-            'bg-fuchsia-850 border-fuchsia-750/60',
-            'bg-fuchsia-600 border-fuchsia-500/60',
-            'bg-fuchsia-400 border-fuchsia-300 shadow-[0_0_8px_rgba(232,121,249,0.3)]'
-        ]
     };
 
     return (
