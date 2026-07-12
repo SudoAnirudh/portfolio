@@ -12,3 +12,7 @@
 ## 2026-07-09 - [Optimize Next.js Images with sizes attribute]
 **Learning:** When using Next.js <Image> with the `fill` property, omitting the `sizes` attribute causes Next.js to serve unnecessarily large, unoptimized images to smaller viewports because it assumes the image will take up the full width of the screen. This increases bandwidth usage and slows down page load times, especially on mobile devices.
 **Action:** Always provide a `sizes` attribute (e.g., `sizes="(max-width: 768px) 100vw, 33vw"`) when using the `fill` property on the Next.js <Image> component to ensure the browser requests the correctly sized image based on the current viewport.
+
+## 2026-07-20 - [Safe Code Extraction vs LLM Generation for Large Objects]
+**Learning:** When attempting to hoist large static objects (like mock data arrays or nested configurations) out of React components for performance, replacing the entire block using LLM-generated strings via Python scripts is highly prone to hallucinating data, altering translations, or modifying mock states, resulting in severe regressions.
+**Action:** When extracting or hoisting large static data structures, always programmatically capture and move the *exact* string contents from the original file (e.g., using regex capture groups in Python) rather than attempting to generate the replacement block from memory or context.
