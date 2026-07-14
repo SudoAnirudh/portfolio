@@ -12,3 +12,6 @@
 ## 2026-07-09 - [Optimize Next.js Images with sizes attribute]
 **Learning:** When using Next.js <Image> with the `fill` property, omitting the `sizes` attribute causes Next.js to serve unnecessarily large, unoptimized images to smaller viewports because it assumes the image will take up the full width of the screen. This increases bandwidth usage and slows down page load times, especially on mobile devices.
 **Action:** Always provide a `sizes` attribute (e.g., `sizes="(max-width: 768px) 100vw, 33vw"`) when using the `fill` property on the Next.js <Image> component to ensure the browser requests the correctly sized image based on the current viewport.
+## $(date +%Y-%m-%d) - Component Re-rendering Performance with Static Objects
+**Learning:** Found multiple large static maps/arrays (cows, patterns, resumes, mentors, etc.) defined inside sub-simulator functional components in `ProjectModal.tsx`. These objects were being unnecessarily re-created on every render cycle.
+**Action:** Hoisted these static object configurations outside the component scopes to prevent redundant memory allocation and object recreation on every re-render. Always extract constant large objects outside of functional components if they don't depend on component props or state.
