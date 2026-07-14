@@ -4,17 +4,218 @@ import { Project } from '@/data/portfolio';
 import { motion } from 'framer-motion';
 
 // --- SUB-SIMULATORS FOR PORTFOLIO PROJECTS ---
+// ⚡ Bolt: Hoisted static configurations (cows, patterns, etc.) outside components
+// to prevent redundant memory allocation and object recreation on every render cycle.
+
+
+const cows = {
+        cow1: { name: "Holstein Friesian #402", status: "Lumpy Skin Disease detected", confidence: "94.2%", breed: "Holstein Friesian", action: "Isolate herd and contact local vet immediately." },
+        cow2: { name: "Gir Cow #108", status: "Healthy cattle", confidence: "98.7%", breed: "Gir", action: "Routine feed and health checks." },
+        cow3: { name: "Jersey #099", status: "Foot and Mouth Disease suspected", confidence: "88.1%", breed: "Jersey", action: "Quarantine cattle. Apply foot bath antiseptics." },
+    };
+
+const patterns = {
+        noise: [
+            [1, 0, 1, 0, 1],
+            [0, 1, 0, 1, 0],
+            [1, 0, 1, 0, 1],
+            [0, 1, 0, 1, 0],
+            [1, 0, 1, 0, 1],
+        ],
+        vertical: [
+            [1, 1, 0, 0, 0],
+            [1, 1, 0, 0, 0],
+            [1, 1, 0, 0, 0],
+            [1, 1, 0, 0, 0],
+            [1, 1, 0, 0, 0],
+        ],
+        horizontal: [
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+    };
+
+const kernels = {
+        edge: [
+            [-1, -1, -1],
+            [-1,  8, -1],
+            [-1, -1, -1],
+        ],
+        sharpen: [
+            [ 0, -1,  0],
+            [-1,  5, -1],
+            [ 0, -1,  0],
+        ],
+        blur: [
+            [0.1, 0.1, 0.1],
+            [0.1, 0.2, 0.1],
+            [0.1, 0.1, 0.1],
+        ],
+    };
+
+const logHistory = [
+        "192.168.1.100 -> GATEWAY:80 - HTTP GET /index.html (PASS)",
+        "192.168.1.104 -> DNS_SERVER:53 - UDP QUERY repo.pack (PASS)",
+        "10.0.0.12 -> FIREWALL:443 - SSL HANDSHAKE OK (PASS)",
+        "192.168.1.100 -> GATEWAY:80 - HTTP POST /login (PASS)",
+        "SYSTEM STATUS: NETWORK LOAD NORMAL. STACK SECURE.",
+        "ALERT PRE-CHECK: DETECTING METRIC ANOMALIES...",
+        "WARNING: INCOMING TCP STREAM RAPID SEQUENCE FROM IP 185.12.44.9",
+        "185.12.44.9 -> HOST:22 - TCP SYN PACKET RECEIVED",
+        "185.12.44.9 -> HOST:23 - TCP SYN PACKET RECEIVED",
+        "185.12.44.9 -> HOST:80 - TCP SYN PACKET RECEIVED",
+        "185.12.44.9 -> HOST:443 - TCP SYN PACKET RECEIVED",
+        "WARNING: PORT SCAN SCANNING SIGNATURE MATCHED (CONF 98.4%)",
+        "CRITICAL: INTRUSION VECTOR DETECTED from 185.12.44.9!",
+        "ACTION REQUIRED: ACTIVATE NETWORK SHIELD BAN PROTOCOL",
+        "PROTOCOL ACTIVE: IP 185.12.44.9 IS DROPPED AT FIREWALL LEVEL.",
+        "SYSTEM RECOVERY: RESTORING ROUTING PACKET FLOWS...",
+        "SYSTEM HEALTH: 100% STABLE. FIREWALL SHIELDS: ARMED.",
+    ];
+
+const roles = {
+        aiml: {
+            title: "AI/ML Engineer",
+            keywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+        },
+        frontend: {
+            title: "Frontend Developer",
+            keywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion", "HTML/CSS"]
+        }
+    };
+
+const resumes = {
+        anirudh: {
+            name: "Anirudh S. Resume (AI & ML Focus)",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 100,
+                    keywordDensity: 95,
+                    measurableAchievements: 90,
+                    formatting: 100,
+                    semanticSimilarity: 92,
+                    matchedKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning"],
+                    missingKeywords: ["Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 100,
+                    keywordDensity: 80,
+                    measurableAchievements: 85,
+                    formatting: 100,
+                    semanticSimilarity: 78,
+                    matchedKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "HTML/CSS"],
+                    missingKeywords: ["Vite", "Framer Motion"]
+                }
+            }
+        },
+        generic: {
+            name: "Generic IT Resume",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 90,
+                    keywordDensity: 40,
+                    measurableAchievements: 50,
+                    formatting: 85,
+                    semanticSimilarity: 48,
+                    matchedKeywords: ["Python"],
+                    missingKeywords: ["PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 90,
+                    keywordDensity: 60,
+                    measurableAchievements: 50,
+                    formatting: 85,
+                    semanticSimilarity: 58,
+                    matchedKeywords: ["React", "HTML/CSS"],
+                    missingKeywords: ["TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
+                }
+            }
+        },
+        marketing: {
+            name: "Creative Marketing Resume",
+            metrics: {
+                aiml: {
+                    sectionCompleteness: 70,
+                    keywordDensity: 10,
+                    measurableAchievements: 40,
+                    formatting: 90,
+                    semanticSimilarity: 18,
+                    matchedKeywords: [],
+                    missingKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
+                },
+                frontend: {
+                    sectionCompleteness: 70,
+                    keywordDensity: 15,
+                    measurableAchievements: 40,
+                    formatting: 90,
+                    semanticSimilarity: 22,
+                    matchedKeywords: ["HTML/CSS"],
+                    missingKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
+                }
+            }
+        }
+    };
+
+const mentors = [
+        {
+            name: 'Ramesh Kumar',
+            nameKn: 'ರಮೇಶ್ ಕುಮಾರ್',
+            role: 'Agriculture Expert (Coconut & Arecanut)',
+            roleKn: 'ಕೃಷಿ ತಜ್ಞ (ತೆಂಗು ಮತ್ತು ಅಡಿಕೆ)',
+            ward: 'Ward 3',
+            wardKn: 'ವಾರ್ಡ್ 3',
+            rating: '4.9',
+            contact: '+91 94475 XXXXX',
+            bio: '30+ years of farming experience. Specializes in soil health, natural composting, and organic pest control.',
+            bioKn: '30+ ವರ್ಷಗಳ ಕೃಷಿ ಅನುಭವ. ಮಣ್ಣಿನ ಆರೋಗ್ಯ, ನೈಸರ್ಗಿಕ ಕಾಂಪೋಸ್ಟಿಂಗ್ ಮತ್ತು ಸಾವಯವ ಕೀಟ ನಿಯಂತ್ರಣದಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿದ್ದಾರೆ.'
+        },
+        {
+            name: 'Gowri Amma',
+            nameKn: 'ಗೌರಿ ಅಮ್ಮ',
+            role: 'Traditional Pottery Art',
+            roleKn: 'ಸಾಂಪ್ರದಾಯಿಕ ಮಣ್ಣಿನ ಮಡಕೆ ಕಲೆ',
+            ward: 'Ward 5',
+            wardKn: 'ವಾರ್ಡ್ 5',
+            rating: '4.8',
+            contact: '+91 98451 XXXXX',
+            bio: 'Master artisan creating terracotta cookware and traditional clay artifacts for local festivals.',
+            bioKn: 'ಸ್ಥಳೀಯ ಹಬ್ಬಗಳಿಗೆ ಟೆರಾಕೋಟಾ ಅಡುಗೆ ಪಾತ್ರೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಜೇಡಿಮಣ್ಣಿನ ಕಲಾಕೃತಿಗಳನ್ನು ರಚಿಸುವ ಪ್ರಮುಖ ಕುಶಲಕರ್ಮಿ.'
+        },
+        {
+            name: 'Shankarappa Gowda',
+            nameKn: 'ಶಂಕರಪ್ಪ ಗೌಡ',
+            role: 'Master Wood Carver',
+            roleKn: 'ಮರ ಕೆತ್ತನೆ ತಜ್ಞ',
+            ward: 'Ward 2',
+            wardKn: 'ವಾರ್ಡ್ 2',
+            rating: '4.9',
+            contact: '+91 95391 XXXXX',
+            bio: 'Preserving the heritage of wooden temple carvings and traditional furniture design.',
+            bioKn: 'ಮರದ ದೇವಸ್ಥಾನದ ಕೆತ್ತನೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಪೀಠೋಪಕರಣಗಳ ವಿನ್ಯಾಸದ ಪರಂಪರೆಯನ್ನು ಸಂರಕ್ಷಿಸುತ್ತಿದ್ದಾರೆ.'
+        },
+        {
+            name: 'Dr. Leela Raju',
+            nameKn: 'ಡಾ. ಲೀಲಾ ರಾಜು',
+            role: 'Ayurveda & Herbal Practitioner',
+            roleKn: 'ಆಯುರ್ವೇದ ಮತ್ತು ಗಿಡಮೂಲಿಕೆ ವೈದ್ಯರು',
+            ward: 'Ward 4',
+            wardKn: 'ವಾರ್ಡ್ 4',
+            rating: '4.7',
+            contact: '+91 96521 XXXXX',
+            bio: 'Expertise in native medicinal plants and traditional wellness remedies for seasonal ailments.',
+            bioKn: 'ಸ್ಥಳೀಯ ಔಷಧೀಯ ಸಸ್ಯಗಳು ಮತ್ತು ಕಾಲೋಚಿತ ಕಾಯಿಲೆಗಳಿಗೆ ಸಾಂಪ್ರದಾಯಿಕ ಕ್ಷೇಮ ಪರಿಹಾರಗಳಲ್ಲಿ ಪರಿಣತಿ.'
+        }
+    ];
+
 
 const CattleScannerSimulator: React.FC = () => {
     const [selectedCow, setSelectedCow] = useState<'cow1' | 'cow2' | 'cow3'>('cow1');
     const [scanState, setScanState] = useState<'idle' | 'scanning' | 'done'>('idle');
     const [progress, setProgress] = useState(0);
 
-    const cows = {
-        cow1: { name: "Holstein Friesian #402", status: "Lumpy Skin Disease detected", confidence: "94.2%", breed: "Holstein Friesian", action: "Isolate herd and contact local vet immediately." },
-        cow2: { name: "Gir Cow #108", status: "Healthy cattle", confidence: "98.7%", breed: "Gir", action: "Routine feed and health checks." },
-        cow3: { name: "Jersey #099", status: "Foot and Mouth Disease suspected", confidence: "88.1%", breed: "Jersey", action: "Quarantine cattle. Apply foot bath antiseptics." },
-    };
 
     const runInference = () => {
         setScanState('scanning');
@@ -109,47 +310,7 @@ const CnnVisualizerSimulator: React.FC = () => {
     const [selectedPattern, setSelectedPattern] = useState<'noise' | 'vertical' | 'horizontal'>('vertical');
     const [selectedFilter, setSelectedFilter] = useState<'edge' | 'sharpen' | 'blur'>('edge');
 
-    const patterns = {
-        noise: [
-            [1, 0, 1, 0, 1],
-            [0, 1, 0, 1, 0],
-            [1, 0, 1, 0, 1],
-            [0, 1, 0, 1, 0],
-            [1, 0, 1, 0, 1],
-        ],
-        vertical: [
-            [1, 1, 0, 0, 0],
-            [1, 1, 0, 0, 0],
-            [1, 1, 0, 0, 0],
-            [1, 1, 0, 0, 0],
-            [1, 1, 0, 0, 0],
-        ],
-        horizontal: [
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-        ],
-    };
 
-    const kernels = {
-        edge: [
-            [-1, -1, -1],
-            [-1,  8, -1],
-            [-1, -1, -1],
-        ],
-        sharpen: [
-            [ 0, -1,  0],
-            [-1,  5, -1],
-            [ 0, -1,  0],
-        ],
-        blur: [
-            [0.1, 0.1, 0.1],
-            [0.1, 0.2, 0.1],
-            [0.1, 0.1, 0.1],
-        ],
-    };
 
     const computeConvolutions = (pat: number[][], ker: number[][]) => {
         const result: number[][] = [];
@@ -490,25 +651,6 @@ const IdsSimulator: React.FC = () => {
     const [logs, setLogs] = useState<string[]>([]);
     const logContainerRef = useRef<HTMLDivElement>(null);
 
-    const logHistory = [
-        "192.168.1.100 -> GATEWAY:80 - HTTP GET /index.html (PASS)",
-        "192.168.1.104 -> DNS_SERVER:53 - UDP QUERY repo.pack (PASS)",
-        "10.0.0.12 -> FIREWALL:443 - SSL HANDSHAKE OK (PASS)",
-        "192.168.1.100 -> GATEWAY:80 - HTTP POST /login (PASS)",
-        "SYSTEM STATUS: NETWORK LOAD NORMAL. STACK SECURE.",
-        "ALERT PRE-CHECK: DETECTING METRIC ANOMALIES...",
-        "WARNING: INCOMING TCP STREAM RAPID SEQUENCE FROM IP 185.12.44.9",
-        "185.12.44.9 -> HOST:22 - TCP SYN PACKET RECEIVED",
-        "185.12.44.9 -> HOST:23 - TCP SYN PACKET RECEIVED",
-        "185.12.44.9 -> HOST:80 - TCP SYN PACKET RECEIVED",
-        "185.12.44.9 -> HOST:443 - TCP SYN PACKET RECEIVED",
-        "WARNING: PORT SCAN SCANNING SIGNATURE MATCHED (CONF 98.4%)",
-        "CRITICAL: INTRUSION VECTOR DETECTED from 185.12.44.9!",
-        "ACTION REQUIRED: ACTIVATE NETWORK SHIELD BAN PROTOCOL",
-        "PROTOCOL ACTIVE: IP 185.12.44.9 IS DROPPED AT FIREWALL LEVEL.",
-        "SYSTEM RECOVERY: RESTORING ROUTING PACKET FLOWS...",
-        "SYSTEM HEALTH: 100% STABLE. FIREWALL SHIELDS: ARMED.",
-    ];
 
     useEffect(() => {
         if (logContainerRef.current) {
@@ -1306,88 +1448,7 @@ const HirenixSimulator: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [statusText, setStatusText] = useState('');
 
-    const roles = {
-        aiml: {
-            title: "AI/ML Engineer",
-            keywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
-        },
-        frontend: {
-            title: "Frontend Developer",
-            keywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion", "HTML/CSS"]
-        }
-    };
 
-    const resumes = {
-        anirudh: {
-            name: "Anirudh S. Resume (AI & ML Focus)",
-            metrics: {
-                aiml: {
-                    sectionCompleteness: 100,
-                    keywordDensity: 95,
-                    measurableAchievements: 90,
-                    formatting: 100,
-                    semanticSimilarity: 92,
-                    matchedKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning"],
-                    missingKeywords: ["Transformers"]
-                },
-                frontend: {
-                    sectionCompleteness: 100,
-                    keywordDensity: 80,
-                    measurableAchievements: 85,
-                    formatting: 100,
-                    semanticSimilarity: 78,
-                    matchedKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "HTML/CSS"],
-                    missingKeywords: ["Vite", "Framer Motion"]
-                }
-            }
-        },
-        generic: {
-            name: "Generic IT Resume",
-            metrics: {
-                aiml: {
-                    sectionCompleteness: 90,
-                    keywordDensity: 40,
-                    measurableAchievements: 50,
-                    formatting: 85,
-                    semanticSimilarity: 48,
-                    matchedKeywords: ["Python"],
-                    missingKeywords: ["PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
-                },
-                frontend: {
-                    sectionCompleteness: 90,
-                    keywordDensity: 60,
-                    measurableAchievements: 50,
-                    formatting: 85,
-                    semanticSimilarity: 58,
-                    matchedKeywords: ["React", "HTML/CSS"],
-                    missingKeywords: ["TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
-                }
-            }
-        },
-        marketing: {
-            name: "Creative Marketing Resume",
-            metrics: {
-                aiml: {
-                    sectionCompleteness: 70,
-                    keywordDensity: 10,
-                    measurableAchievements: 40,
-                    formatting: 90,
-                    semanticSimilarity: 18,
-                    matchedKeywords: [],
-                    missingKeywords: ["Python", "PyTorch", "TensorFlow", "NLP", "CNN", "Deep Learning", "Transformers"]
-                },
-                frontend: {
-                    sectionCompleteness: 70,
-                    keywordDensity: 15,
-                    measurableAchievements: 40,
-                    formatting: 90,
-                    semanticSimilarity: 22,
-                    matchedKeywords: ["HTML/CSS"],
-                    missingKeywords: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Vite", "Framer Motion"]
-                }
-            }
-        }
-    };
 
     const currentMetrics = resumes[selectedResume].metrics[selectedRole];
 
@@ -1601,56 +1662,6 @@ const NimmaGuruSimulator: React.FC = () => {
     const [geminiResult, setGeminiResult] = useState<any | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const mentors = [
-        {
-            name: 'Ramesh Kumar',
-            nameKn: 'ರಮೇಶ್ ಕುಮಾರ್',
-            role: 'Agriculture Expert (Coconut & Arecanut)',
-            roleKn: 'ಕೃಷಿ ತಜ್ಞ (ತೆಂಗು ಮತ್ತು ಅಡಿಕೆ)',
-            ward: 'Ward 3',
-            wardKn: 'ವಾರ್ಡ್ 3',
-            rating: '4.9',
-            contact: '+91 94475 XXXXX',
-            bio: '30+ years of farming experience. Specializes in soil health, natural composting, and organic pest control.',
-            bioKn: '30+ ವರ್ಷಗಳ ಕೃಷಿ ಅನುಭವ. ಮಣ್ಣಿನ ಆರೋಗ್ಯ, ನೈಸರ್ಗಿಕ ಕಾಂಪೋಸ್ಟಿಂಗ್ ಮತ್ತು ಸಾವಯವ ಕೀಟ ನಿಯಂತ್ರಣದಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿದ್ದಾರೆ.'
-        },
-        {
-            name: 'Gowri Amma',
-            nameKn: 'ಗೌರಿ ಅಮ್ಮ',
-            role: 'Traditional Pottery Art',
-            roleKn: 'ಸಾಂಪ್ರದಾಯಿಕ ಮಣ್ಣಿನ ಮಡಕೆ ಕಲೆ',
-            ward: 'Ward 5',
-            wardKn: 'ವಾರ್ಡ್ 5',
-            rating: '4.8',
-            contact: '+91 98451 XXXXX',
-            bio: 'Master artisan creating terracotta cookware and traditional clay artifacts for local festivals.',
-            bioKn: 'ಸ್ಥಳೀಯ ಹಬ್ಬಗಳಿಗೆ ಟೆರಾಕೋಟಾ ಅಡುಗೆ ಪಾತ್ರೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಜೇಡಿಮಣ್ಣಿನ ಕಲಾಕೃತಿಗಳನ್ನು ರಚಿಸುವ ಪ್ರಮುಖ ಕುಶಲಕರ್ಮಿ.'
-        },
-        {
-            name: 'Shankarappa Gowda',
-            nameKn: 'ಶಂಕರಪ್ಪ ಗೌಡ',
-            role: 'Master Wood Carver',
-            roleKn: 'ಮರ ಕೆತ್ತನೆ ತಜ್ಞ',
-            ward: 'Ward 2',
-            wardKn: 'ವಾರ್ಡ್ 2',
-            rating: '4.9',
-            contact: '+91 95391 XXXXX',
-            bio: 'Preserving the heritage of wooden temple carvings and traditional furniture design.',
-            bioKn: 'ಮರದ ದೇವಸ್ಥಾನದ ಕೆತ್ತನೆಗಳು ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಪೀಠೋಪಕರಣಗಳ ವಿನ್ಯಾಸದ ಪರಂಪರೆಯನ್ನು ಸಂರಕ್ಷಿಸುತ್ತಿದ್ದಾರೆ.'
-        },
-        {
-            name: 'Dr. Leela Raju',
-            nameKn: 'ಡಾ. ಲೀಲಾ ರಾಜು',
-            role: 'Ayurveda & Herbal Practitioner',
-            roleKn: 'ಆಯುರ್ವೇದ ಮತ್ತು ಗಿಡಮೂಲಿಕೆ ವೈದ್ಯರು',
-            ward: 'Ward 4',
-            wardKn: 'ವಾರ್ಡ್ 4',
-            rating: '4.7',
-            contact: '+91 96521 XXXXX',
-            bio: 'Expertise in native medicinal plants and traditional wellness remedies for seasonal ailments.',
-            bioKn: 'ಸ್ಥಳೀಯ ಔಷಧೀಯ ಸಸ್ಯಗಳು ಮತ್ತು ಕಾಲೋಚಿತ ಕಾಯಿಲೆಗಳಿಗೆ ಸಾಂಪ್ರದಾಯಿಕ ಕ್ಷೇಮ ಪರಿಹಾರಗಳಲ್ಲಿ ಪರಿಣತಿ.'
-        }
-    ];
 
     const handleGeminiAsk = () => {
         if (!geminiQuery) return;
