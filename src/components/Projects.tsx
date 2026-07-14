@@ -56,10 +56,19 @@ const Projects = () => {
                         return (
                             <div
                                 key={index}
-                                className="group cursor-pointer"
+                                role="button"
+                                tabIndex={0}
+                                aria-label={`View details for ${project.title}`}
+                                className="group cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-retro-orange focus-visible:ring-offset-2"
                                 onClick={() => handleOpenProject(project, index)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleOpenProject(project, index);
+                                    }
+                                }}
                             >
-                                <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow group-focus-visible:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-focus-visible:translate-x-[2px] group-focus-visible:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-focus-visible:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                     {isOngoing && (
                                         <div className="absolute top-4 right-4 z-10 bg-retro-orange border-2 border-black px-2 py-0.5 text-[8px] font-pixel uppercase tracking-wider text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] select-none">
                                             Ongoing
@@ -72,12 +81,12 @@ const Projects = () => {
                                                 alt={`Project Thumbnail: ${project.title} - ${project.description.slice(0, 50)}...`}
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                                className="object-cover grayscale group-hover:grayscale-0 transition-all"
+                                                className="object-cover grayscale group-hover:grayscale-0 group-focus-visible:grayscale-0 transition-all"
                                             />
                                         </div>
                                     ) : (
                                         <div className="w-full aspect-video flex items-center justify-center bg-retro-charcoal/5 border border-black">
-                                            <span className="material-symbols-outlined text-6xl text-retro-charcoal/20 group-hover:text-retro-charcoal transition-colors">{project.icon}</span>
+                                            <span className="material-symbols-outlined text-6xl text-retro-charcoal/20 group-hover:text-retro-charcoal group-focus-visible:text-retro-charcoal transition-colors">{project.icon}</span>
                                         </div>
                                     )}
                                 </div>
@@ -89,10 +98,10 @@ const Projects = () => {
                                     <div className="text-xs font-body text-zinc-500 truncate px-2">
                                         {project.title.toLowerCase()}.exe
                                     </div>
-                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+                                        <span className="text-xs font-bold uppercase underline group-hover:text-retro-orange group-focus-visible:text-retro-orange">
                                             Load Cartridge
-                                        </button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
