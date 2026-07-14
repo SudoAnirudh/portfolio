@@ -269,7 +269,7 @@ const Contact = () => {
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
+                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus-visible:border-black transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
                                                 required
@@ -282,7 +282,7 @@ const Contact = () => {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus-visible:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
                                                 aria-invalid={!!emailError}
@@ -298,7 +298,7 @@ const Contact = () => {
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
+                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus-visible:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
                                                 required
                                             ></textarea>

@@ -124,7 +124,7 @@ const Skills = () => {
                                                 setSelectedSkill(skill);
                                                 setIsModalOpen(true);
                                             }}
-                                            className="flex flex-col items-center justify-center gap-1 group focus:outline-none cursor-pointer relative z-20"
+                                            className="flex flex-col items-center justify-center gap-1 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow cursor-pointer relative z-20"
                                             aria-label={`Inspect details for ${skill}`}
                                         >
                                             <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-zinc-800 border-2 border-zinc-600 rounded p-1.5 group-hover:scale-110 group-hover:border-retro-yellow group-hover:shadow-[0_0_12px_rgba(253,224,71,0.4)] transition-all cursor-help relative" title={skill}>
