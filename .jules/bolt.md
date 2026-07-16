@@ -12,3 +12,7 @@
 ## 2026-07-09 - [Optimize Next.js Images with sizes attribute]
 **Learning:** When using Next.js <Image> with the `fill` property, omitting the `sizes` attribute causes Next.js to serve unnecessarily large, unoptimized images to smaller viewports because it assumes the image will take up the full width of the screen. This increases bandwidth usage and slows down page load times, especially on mobile devices.
 **Action:** Always provide a `sizes` attribute (e.g., `sizes="(max-width: 768px) 100vw, 33vw"`) when using the `fill` property on the Next.js <Image> component to ensure the browser requests the correctly sized image based on the current viewport.
+
+## 2024-11-21 - Cache e.target in high-frequency mousemove events
+**Learning:** Evaluating `target.closest()` and `getComputedStyle` on every pixel movement causes layout thrashing and high CPU overhead, even when the cursor is over the same element.
+**Action:** Always cache the current DOM element (`e.target`) and short-circuit expensive DOM traversal/style lookups if the target hasn't changed.
