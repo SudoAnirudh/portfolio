@@ -272,7 +272,7 @@ const Contact = () => {
                                                 className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
-                                                required
+                                                required maxLength={100}
                                             />
                                         </div>
                                         <div>
@@ -287,7 +287,7 @@ const Contact = () => {
                                                 type="email"
                                                 aria-invalid={!!emailError}
                                                 aria-describedby={emailError ? "email-error" : undefined}
-                                                required
+                                                required maxLength={255}
                                             />
                                             {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                         </div>
@@ -300,7 +300,7 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
-                                                required
+                                                required maxLength={5000}
                                             ></textarea>
                                         </div>
                                         <button
