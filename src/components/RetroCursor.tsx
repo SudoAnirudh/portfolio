@@ -27,20 +27,28 @@ const RetroCursor = () => {
             angle: 0
         }));
 
+        // ⚡ Bolt: Cache DOM target to prevent expensive layout thrashing on every pixel move.
+        let lastTarget: EventTarget | null = null;
+        let lastIsClickable = false;
+
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
 
             // Interaction Check for clickable items
             const target = e.target as HTMLElement;
-            const isClickable =
-                target.tagName === 'A' ||
-                target.tagName === 'BUTTON' ||
-                target.closest('a') ||
-                target.closest('button') ||
-                target.getAttribute('role') === 'button' ||
-                getComputedStyle(target).cursor === 'pointer';
+            if (target !== lastTarget) {
+                lastTarget = target;
+                const isClickable =
+                    target.tagName === 'A' ||
+                    target.tagName === 'BUTTON' ||
+                    target.closest('a') ||
+                    target.closest('button') ||
+                    target.getAttribute('role') === 'button' ||
+                    getComputedStyle(target).cursor === 'pointer';
+                lastIsClickable = !!isClickable;
+            }
 
-            setIsHovering(!!isClickable);
+            setIsHovering(lastIsClickable);
         };
 
         const handleMouseDown = () => setIsClicking(true);
