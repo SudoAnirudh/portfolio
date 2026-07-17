@@ -27,20 +27,29 @@ const RetroCursor = () => {
             angle: 0
         }));
 
+        let lastTarget: EventTarget | null = null;
+
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
 
             // Interaction Check for clickable items
             const target = e.target as HTMLElement;
-            const isClickable =
-                target.tagName === 'A' ||
-                target.tagName === 'BUTTON' ||
-                target.closest('a') ||
-                target.closest('button') ||
-                target.getAttribute('role') === 'button' ||
-                getComputedStyle(target).cursor === 'pointer';
 
-            setIsHovering(!!isClickable);
+            // ⚡ Bolt Performance Optimization:
+            // Cache the DOM target to avoid running expensive DOM traversals (.closest())
+            // and style recalculations (getComputedStyle()) on every single mousemove pixel.
+            if (target !== lastTarget) {
+                lastTarget = target;
+                const isClickable =
+                    target.tagName === 'A' ||
+                    target.tagName === 'BUTTON' ||
+                    target.closest('a') ||
+                    target.closest('button') ||
+                    target.getAttribute('role') === 'button' ||
+                    getComputedStyle(target).cursor === 'pointer';
+
+                setIsHovering(!!isClickable);
+            }
         };
 
         const handleMouseDown = () => setIsClicking(true);
