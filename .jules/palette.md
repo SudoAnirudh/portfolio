@@ -1,3 +1,9 @@
 ## 2026-07-07 - Add ARIA Labels to Custom OS Components
 **Learning:** Icon-only interactive controls and text-based icon fonts (like material-symbols-outlined) in custom retro UI components must explicitly implement `aria-label` and `aria-hidden='true'` to prevent screen readers from reading literal icon text, and custom form inputs must be linked to labels via `id`/`htmlFor`.
 **Action:** Always add descriptive `aria-label` to icon buttons, apply `aria-hidden='true'` to their internal text-based icon spans, and associate form inputs correctly.
+## 2025-05-15 - Focus Styles and Clickable Divs
+**Learning:** When making cards or large elements clickable to open modals (like in `Projects.tsx`), using `<div onClick={...}>` breaks keyboard navigation because it cannot receive focus natively, and screen readers will not announce it as a button. In addition, using an internal `<button>` for the visual "Load Cartridge" text while the entire card is clickable creates confusing focus management.
+**Action:** Convert clickable `div`s functioning as cards/triggers into semantic `<button>` elements with `text-left block w-full` to maintain visual layout. Add appropriate `aria-label` for screen readers. Make sure to remove any nested `<button>` tags within it to prevent invalid HTML (interactive content cannot be nested), replacing them with visual `<span>` elements if necessary. Always add clear visible focus rings (e.g. `focus-visible:outline-none focus-visible:ring-4`) for keyboard accessibility.
+## 2025-05-15 - Contact Form Focus Management
+**Learning:** Form inputs often have `focus:outline-none` which removes accessibility for keyboard users.
+**Action:** When touching forms, always ensure labels have `htmlFor` matching the input `id`, and replace `outline:none` with `focus-visible:ring-2` (using `focus-visible:ring-accent`).

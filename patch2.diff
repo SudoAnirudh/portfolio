@@ -1,0 +1,15 @@
+--- src/components/Projects.tsx
++++ src/components/Projects.tsx
+@@ -93,9 +93,9 @@
+                                         {project.title.toLowerCase()}.exe
+                                     </div>
+-                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+-                                        <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
++                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity">
++                                        <span className="text-xs font-bold uppercase underline group-hover:text-retro-orange">
+                                             Load Cartridge
+-                                        </button>
++                                        </span>
+                                     </div>
+                                 </div>
+                             </div>
