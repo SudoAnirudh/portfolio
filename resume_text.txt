@@ -89,6 +89,24 @@ project impact across a candidate’s full repository history.
 interaction, delivering personalized feedback under 2s latency.
 • Integrated NVIDIA NIM embeddings with pgvector for Job Compatibility Matching and Predictive
 Career Roadmap generation across 50+ skill nodes.
+
+AI Career CoPilot | GitHub
+
+FastAPI, Celery, Redis, Beautiful Soup, Google Gemini API, ChromaDB
+
+• Built a multi-agent system automating job discovery, ATS resume tailoring, and tracking.
+• Implemented an asynchronous background scraper using Celery and Redis to continuously aggregate job opportunities from multiple platforms.
+• Integrated Google Gemini API to parse job requirements, align candidate profiles, and generate customized resume bullet points.
+• Designed a vector search retrieval pipeline using ChromaDB to match candidate skills with job descriptions via cosine similarity.
+
+Self-Correcting Agent | GitHub
+
+Python, LangChain, Tavily API, Groq API, Gemini API, ReAct Framework
+
+• Engineered an autonomous ReAct loop agent that dynamically recovers from API rate limits and model failures.
+• Implemented real-time self-evaluation metrics to analyze LLM responses for hallucinations, factuality, and completeness.
+• Designed a fallback router that transparently shifts inference workloads between Groq (LLaMA 3) and Google Gemini when rate limits or execution errors are detected.
+
 PashuSwasthya | Link
 Python, Flutter, NLP, Deep Learning, CNN
 • Developed a multilingual, offline-capable mobile application for cattle breed and disease identification.

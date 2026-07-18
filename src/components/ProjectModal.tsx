@@ -2111,13 +2111,347 @@ const NimmaGuruSimulator: React.FC = () => {
                     </div>
                 )}
             </div>
+        </div>
+    );
+};
 
-            {/* Bilingual Footer */}
-            <div className="text-[7px] uppercase tracking-widest text-zinc-500 bg-white p-2 border-2 border-dashed border-black/15 text-center">
-                {language === 'kn' 
-                    ? "* ಸ್ಥಳীয় ಜಿಪಿಎಸ್ ಆಧಾರಿತ ಮಾರ್ಗದರ್ಶನ | ಆಫ್ಲೈನ್ ಎಸ್ಎಂಎಸ್ ಅಲರ್ಟ್ ಹಬ್ ಸಂಯೋಜಿತವಾಗಿದೆ" 
-                    : "* Offline-First SMS alert sync enabled | Local GPS-indexed mentors directory"}
+const AiCareerCoPilotSimulator: React.FC = () => {
+    const [step, setStep] = useState<'idle' | 'discovering' | 'tailoring' | 'tracking' | 'done'>('idle');
+    const [query, setQuery] = useState('AI Engineer');
+    const [logs, setLogs] = useState<string[]>([]);
+    const [atsScore, setAtsScore] = useState(0);
+    const [kanbanCol, setKanbanCol] = useState<'discovered' | 'tailored' | 'applied' | 'interviewing'>('discovered');
+    const logsContainerRef = useRef<HTMLDivElement>(null);
+
+    const presetQueries = ["AI Engineer", "Full Stack Developer", "Machine Learning Intern"];
+
+    useEffect(() => {
+        if (logsContainerRef.current) {
+            logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+        }
+    }, [logs]);
+
+    const runPipeline = () => {
+        setStep('discovering');
+        setLogs([]);
+        setAtsScore(0);
+        setKanbanCol('discovered');
+    };
+
+    useEffect(() => {
+        if (step === 'idle') return;
+
+        let active = true;
+        const timeline = [
+            { time: 200, step: 'discovering', log: "🚀 Dispatching Job Discovery Multi-Agent System..." },
+            { time: 600, step: 'discovering', log: "🔍 WebScraperAgent scanning LinkedIn, Indeed, and Google Jobs..." },
+            { time: 1000, step: 'discovering', log: `📦 Found 3 matches matching criteria: '${query}'.` },
+            { time: 1400, step: 'discovering', log: "📋 Job details parsed: 'AI Engineer at NeuralCorp' (Salary: $120k, Kozhikode/Remote)." },
+            { time: 1800, step: 'discovering', log: "💾 Storing job description embeddings in ChromaDB vector space..." },
+            
+            { time: 2200, step: 'tailoring', log: "📝 Initializing ResumeTailorAgent..." },
+            { time: 2600, step: 'tailoring', log: "📊 Comparing resume keywords with job requirements..." },
+            { time: 3000, step: 'tailoring', log: "⚠️ Found gaps: missing 'Celery asynchronous task queue' and 'ChromaDB' experiences." },
+            { time: 3400, step: 'tailoring', log: "⚡ Tailoring resume bullet points using Gemini 2.0 Flash..." },
+            { time: 3800, step: 'tailoring', log: "✅ Generated tailored bullet: 'Integrated Celery & Redis to manage continuous background scraping pipeline.'" },
+            { time: 4200, step: 'tailoring', log: "📈 ATS Compatibility Score computed: 94.2%!" },
+            
+            { time: 4600, step: 'tracking', log: "🎯 ApplicationTrackerAgent active." },
+            { time: 5000, step: 'tracking', log: "📨 Simulating application submit to NeuralCorp applicant portal..." },
+            { time: 5400, step: 'tracking', log: "🔄 Updating Kanban pipeline stage from 'Tailored' to 'Applied'..." },
+            { time: 5800, step: 'tracking', log: "📅 Scheduling follow-up reminders in Redis task scheduler..." },
+            
+            { time: 6200, step: 'done', log: "🎉 CoPilot Pipeline completed successfully. 1 Application sent!" }
+        ];
+
+        let index = 0;
+        const startTime = Date.now();
+
+        const timer = setInterval(() => {
+            if (!active) return;
+            const elapsed = Date.now() - startTime;
+            while (index < timeline.length && timeline[index].time <= elapsed) {
+                const current = timeline[index];
+                setLogs(prev => [...prev, current.log]);
+                
+                if (current.step === 'tailoring') {
+                    setStep('tailoring');
+                    setKanbanCol('tailored');
+                    setAtsScore(78);
+                } else if (current.step === 'tracking') {
+                    setStep('tracking');
+                    setKanbanCol('applied');
+                    setAtsScore(94);
+                } else if (current.step === 'done') {
+                    setStep('done');
+                    setKanbanCol('interviewing');
+                }
+                index++;
+            }
+
+            if (index >= timeline.length) {
+                clearInterval(timer);
+            }
+        }, 100);
+
+        return () => {
+            active = false;
+            clearInterval(timer);
+        };
+    }, [step, query]);
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            <div className="bg-black text-green-500 p-2 text-[10px] uppercase tracking-wider font-pixel flex justify-between">
+                <span>CoPilot Runner // CELERY_WORKER_01</span>
+                {step !== 'idle' && step !== 'done' && <span className="animate-pulse">Active Pipeline</span>}
             </div>
+
+            {step === 'idle' && (
+                <div className="border-4 border-black bg-white aspect-video p-4 flex flex-col justify-between">
+                    <div className="space-y-2 mt-2">
+                        <div className="text-xs uppercase text-zinc-500 font-pixel">Select Target Job Title:</div>
+                        <div className="flex gap-2">
+                            {presetQueries.map(q => (
+                                <button
+                                    key={q}
+                                    onClick={() => setQuery(q)}
+                                    className={`px-2 py-1 border-2 text-[9px] uppercase transition-all ${query === q ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white text-zinc-600 border-zinc-200'}`}
+                                >
+                                    {q}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="text-[10px] text-zinc-600 font-body leading-relaxed pt-2">
+                            This simulator models the autonomous career assistant: scraping job postings, calculating resume-to-job similarity using cosine similarity embeddings, adapting resumes, and updating a local Kanban database.
+                        </div>
+                    </div>
+                    <button
+                        onClick={runPipeline}
+                        className="w-full py-2 bg-retro-orange border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                    >
+                        Execute Agent Pipeline
+                    </button>
+                </div>
+            )}
+
+            {step !== 'idle' && (
+                <div className="space-y-3">
+                    <div className="grid grid-cols-4 gap-1 text-[9px] text-center">
+                        <div className={`border-2 p-1.5 uppercase ${kanbanCol === 'discovered' ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            Discovered
+                        </div>
+                        <div className={`border-2 p-1.5 uppercase ${kanbanCol === 'tailored' ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            Tailored ({atsScore}%)
+                        </div>
+                        <div className={`border-2 p-1.5 uppercase ${kanbanCol === 'applied' ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            Applied
+                        </div>
+                        <div className={`border-2 p-1.5 uppercase ${kanbanCol === 'interviewing' ? 'bg-retro-green border-black font-bold text-black' : 'bg-white border-zinc-200 text-zinc-400'}`}>
+                            Interview
+                        </div>
+                    </div>
+
+                    <div 
+                        ref={logsContainerRef}
+                        className="h-32 border-4 border-black bg-zinc-900 text-green-400 p-2 text-[9px] uppercase leading-tight overflow-y-auto space-y-1 font-pixel shadow-[inset_0px_0px_6px_rgba(0,255,0,0.3)]"
+                    >
+                        {logs.map((log, i) => {
+                            let color = "text-green-400";
+                            if (log.includes("🔍") || log.includes("🚀")) color = "text-yellow-400";
+                            if (log.includes("⚠️") || log.includes("gaps")) color = "text-retro-orange";
+                            if (log.includes("🎉") || log.includes("ATS")) color = "text-sky-400 font-bold";
+                            return <div key={i} className={color}>&gt; {log}</div>;
+                        })}
+                    </div>
+
+                    {step === 'done' ? (
+                        <button
+                            onClick={() => setStep('idle')}
+                            className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                        >
+                            Reset Pipeline
+                        </button>
+                    ) : (
+                        <div className="w-full bg-zinc-200 h-4 border-2 border-black overflow-hidden relative">
+                            <div className="bg-retro-orange h-full animate-pulse" style={{ width: step === 'discovering' ? '33%' : step === 'tailoring' ? '66%' : '90%' }} />
+                            <div className="absolute inset-0 flex items-center justify-center text-[9px] font-pixel text-black font-bold">
+                                Pipeline State: {step.toUpperCase()}...
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
+
+const SelfCorrectingAgentSimulator: React.FC = () => {
+    const [step, setStep] = useState<'idle' | 'running' | 'correcting' | 'verifying' | 'done'>('idle');
+    const [query, setQuery] = useState('NVIDIA NIM Release Date');
+    const [logs, setLogs] = useState<string[]>([]);
+    const [budget, setBudget] = useState(1.00);
+    const [engine, setEngine] = useState('Groq (Llama3)');
+    const logsContainerRef = useRef<HTMLDivElement>(null);
+
+    const presetQueries = [
+        "NVIDIA NIM Release Date",
+        "Self-Correcting LLM Architecture",
+        "Recent AI Regulation Specs"
+    ];
+
+    useEffect(() => {
+        if (logsContainerRef.current) {
+            logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+        }
+    }, [logs]);
+
+    const runAgent = () => {
+        setStep('running');
+        setLogs([]);
+        setBudget(1.00);
+        setEngine('Groq (Llama3)');
+    };
+
+    useEffect(() => {
+        if (step === 'idle') return;
+
+        let active = true;
+        const timeline = [
+            { time: 200, step: 'running', budget: 0.98, engine: 'Groq (Llama3)', log: `[REACT LOOP] Init query: '${query}'` },
+            { time: 600, step: 'running', budget: 0.96, engine: 'Groq (Llama3)', log: `💭 THOUGHT: I need to search the web for recent announcements regarding ${query}.` },
+            { time: 1000, step: 'running', budget: 0.95, engine: 'Groq (Llama3)', log: `🔧 ACTION: WebSearchTool(query='${query}')` },
+            { time: 1400, step: 'running', budget: 0.95, engine: 'Groq (Llama3)', log: "📥 OBSERVATION: Call failed. Groq API 429 Too Many Requests (Rate limit hit)." },
+            { time: 1800, step: 'running', budget: 0.95, engine: 'Groq (Llama3)', log: "🔍 EVALUATION: Agent runner detected execution fault (API_FAILURE_429). Code: 429." },
+            
+            { time: 2200, step: 'correcting', budget: 0.85, engine: 'NVIDIA NIM (Gemini)', log: "⚡ TRIGGERING FALLBACK ROUTER: Budget: $0.95. Max retries left: 2." },
+            { time: 2600, step: 'correcting', budget: 0.82, engine: 'NVIDIA NIM (Gemini)', log: "🛠️ SELF-CORRECTION: Switching model engine to NIM Llama3-70B backup server." },
+            { time: 3000, step: 'correcting', budget: 0.80, engine: 'NVIDIA NIM (Gemini)', log: "💭 THOUGHT: Resubmitting request to search tool with backup API credentials..." },
+            { time: 3400, step: 'correcting', budget: 0.79, engine: 'NVIDIA NIM (Gemini)', log: `🔧 ACTION: WebSearchTool(query='${query}')` },
+            { time: 3800, step: 'correcting', budget: 0.79, engine: 'NVIDIA NIM (Gemini)', log: "📥 OBSERVATION: Success! Found article: 'NVIDIA NIM released on May 15, 2026, offering optimized inference microservices.'" },
+            
+            { time: 4200, step: 'verifying', budget: 0.70, engine: 'NVIDIA NIM (Gemini)', log: "💭 THOUGHT: I need to verify that the retrieved info matches the user query." },
+            { time: 4600, step: 'verifying', budget: 0.68, engine: 'NVIDIA NIM (Gemini)', log: "🔍 EVALUATION: Factuality validator compared output with context: No hallucination (Rating 9.8/10)." },
+            { time: 5000, step: 'verifying', budget: 0.68, engine: 'NVIDIA NIM (Gemini)', log: "✅ VERIFICATION SUCCESS: Query answered. Budget consumed: $0.32." },
+            
+            { time: 5400, step: 'done', budget: 0.68, engine: 'NVIDIA NIM (Gemini)', log: "🎉 ANSWER: NVIDIA NIM was released on May 15, 2026, providing scalable AI container workflows." }
+        ];
+
+        let index = 0;
+        const startTime = Date.now();
+
+        const timer = setInterval(() => {
+            if (!active) return;
+            const elapsed = Date.now() - startTime;
+            while (index < timeline.length && timeline[index].time <= elapsed) {
+                const current = timeline[index];
+                setLogs(prev => [...prev, current.log]);
+                setBudget(current.budget);
+                setEngine(current.engine);
+                
+                if (current.step === 'correcting') {
+                    setStep('correcting');
+                } else if (current.step === 'verifying') {
+                    setStep('verifying');
+                } else if (current.step === 'done') {
+                    setStep('done');
+                }
+                index++;
+            }
+
+            if (index >= timeline.length) {
+                clearInterval(timer);
+            }
+        }, 100);
+
+        return () => {
+            active = false;
+            clearInterval(timer);
+        };
+    }, [step, query]);
+
+    return (
+        <div className="space-y-4 text-retro-charcoal font-pixel">
+            <div className="bg-black text-green-500 p-2 text-[10px] uppercase tracking-wider font-pixel flex justify-between">
+                <span>Agent CLI // ReAct Loop</span>
+                <span>Active engine: {engine}</span>
+            </div>
+
+            {step === 'idle' && (
+                <div className="border-4 border-black bg-white aspect-video p-4 flex flex-col justify-between">
+                    <div className="space-y-2 mt-2">
+                        <div className="text-xs uppercase text-zinc-500 font-pixel">Choose Search Query:</div>
+                        <div className="flex flex-wrap gap-2">
+                            {presetQueries.map(q => (
+                                <button
+                                    key={q}
+                                    onClick={() => setQuery(q)}
+                                    className={`px-2 py-1 border-2 text-[9px] uppercase transition-all ${query === q ? 'bg-retro-yellow border-black text-black font-bold' : 'bg-white text-zinc-600 border-zinc-200'}`}
+                                >
+                                    {q}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="text-[10px] text-zinc-600 font-body leading-relaxed pt-2">
+                            This simulator models an autonomous ReAct loop built from scratch. When an API call rate-limit error is encountered on the Groq client, the agent automatically evaluates the execution path and falls back to a different LLM engine to resolve the task.
+                        </div>
+                    </div>
+                    <button
+                        onClick={runAgent}
+                        className="w-full py-2 bg-retro-orange border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                    >
+                        Launch ReAct Agent Loop
+                    </button>
+                </div>
+            )}
+
+            {step !== 'idle' && (
+                <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-2 text-[10px]">
+                        <div className="border-2 border-black p-2 bg-white text-center">
+                            <span className="text-[8px] text-zinc-400 block uppercase font-pixel">Current Engine</span>
+                            <span className="font-bold">{engine}</span>
+                        </div>
+                        <div className="border-2 border-black p-2 bg-white text-center">
+                            <span className="text-[8px] text-zinc-400 block uppercase font-pixel">Task Budget</span>
+                            <span className="font-bold">${budget.toFixed(2)}</span>
+                        </div>
+                        <div className={`border-2 border-black p-2 text-center uppercase font-bold ${step === 'correcting' ? 'bg-retro-orange text-white animate-pulse' : step === 'verifying' ? 'bg-retro-yellow text-black' : step === 'done' ? 'bg-retro-green text-black' : 'bg-white text-zinc-600'}`}>
+                            {step}
+                        </div>
+                    </div>
+
+                    <div 
+                        ref={logsContainerRef}
+                        className="h-32 border-4 border-black bg-zinc-900 text-green-400 p-2 text-[9px] uppercase leading-tight overflow-y-auto space-y-1 font-pixel shadow-[inset_0px_0px_6px_rgba(0,255,0,0.3)]"
+                    >
+                        {logs.map((log, i) => {
+                            let color = "text-green-400";
+                            if (log.includes("💭 THOUGHT")) color = "text-yellow-400";
+                            if (log.includes("🔧 ACTION")) color = "text-sky-400";
+                            if (log.includes("TRIGGERING") || log.includes("SELF-CORRECTION") || log.includes("Switching")) color = "text-retro-orange font-bold animate-pulse";
+                            if (log.includes("🎉") || log.includes("VERIFICATION SUCCESS")) color = "text-green-400 font-bold";
+                            return <div key={i} className={color}>&gt; {log}</div>;
+                        })}
+                    </div>
+
+                    {step === 'done' ? (
+                        <button
+                            onClick={() => setStep('idle')}
+                            className="w-full py-2 bg-retro-green border-2 border-black text-xs uppercase font-pixel shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px]"
+                        >
+                            Reset Agent
+                        </button>
+                    ) : (
+                        <div className="w-full bg-zinc-200 h-4 border-2 border-black overflow-hidden relative">
+                            <div className="bg-retro-orange h-full animate-pulse" style={{ width: step === 'running' ? '30%' : step === 'correcting' ? '65%' : '85%' }} />
+                            <div className="absolute inset-0 flex items-center justify-center text-[9px] font-pixel text-black font-bold">
+                                Running Agent Loop...
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
@@ -2148,7 +2482,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         "Hirenix",
         "MessyData",
         "Community Connect",
-        "Nimma-Guru"
+        "Nimma-Guru",
+        "AI Career CoPilot",
+        "Self-Correcting Agent"
     ].includes(project.title) : false;
 
     // Reset simulator tab when project changes
@@ -2170,6 +2506,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 return <CommunityConnectSimulator />;
             case "Nimma-Guru":
                 return <NimmaGuruSimulator />;
+            case "AI Career CoPilot":
+                return <AiCareerCoPilotSimulator />;
+            case "Self-Correcting Agent":
+                return <SelfCorrectingAgentSimulator />;
             default:
                 return <div className="text-center py-8 font-pixel text-zinc-500">Simulator not found.</div>;
         }

@@ -295,6 +295,34 @@ export const portfolioData: PortfolioData = {
                 { label: "Status", value: "Completed 🚀" }
             ],
             techStack: ["Kotlin", "Jetpack Compose", "Firebase", "Gemini API", "Android Studio"]
+        },
+        {
+            title: "AI Career CoPilot",
+            icon: "work_history",
+            description: "Agentic job search assistant automating job discovery, resume intelligence tailoring, and application tracking via a Kanban board pipeline.",
+            image: "/projects/ai_career_copilot.png",
+            github: "https://github.com/SudoAnirudh/AI_Career_CoPilot",
+            specs: [
+                { label: "Format", value: "AI Agentic SaaS" },
+                { label: "Mode", value: "Multi-Agent System" },
+                { label: "Engine", value: "Gemini + Celery" },
+                { label: "Status", value: "Completed 🚀" }
+            ],
+            techStack: ["Next.js", "FastAPI", "Celery", "PostgreSQL", "ChromaDB", "Redis", "Gemini API", "NVIDIA NIM"]
+        },
+        {
+            title: "Self-Correcting Agent",
+            icon: "auto_fix_high",
+            description: "Autonomous ReAct loop web research agent built from scratch with self-evaluation, fallback LLM routing, and budget-controlled recovery.",
+            image: "/projects/self_correcting_agent.png",
+            github: "https://github.com/SudoAnirudh/Self_Correcting_Agent",
+            specs: [
+                { label: "Format", value: "AI Agentic Framework" },
+                { label: "Mode", value: "ReAct + Correction" },
+                { label: "Engine", value: "NVIDIA + Groq" },
+                { label: "Status", value: "Completed 🚀" }
+            ],
+            techStack: ["Python", "NVIDIA NIM", "Groq API", "Pytest"]
         }
     ],
     certifications: [
