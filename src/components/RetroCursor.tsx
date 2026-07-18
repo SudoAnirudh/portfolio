@@ -10,6 +10,7 @@ const RetroCursor = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     const mousePos = useRef({ x: 0, y: 0 });
+    const lastTargetRef = useRef<EventTarget | null>(null);
 
     useEffect(() => {
         // Only run on client and non-touch devices
@@ -29,6 +30,12 @@ const RetroCursor = () => {
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
+
+            // Optimization: Skip expensive DOM/style checks if target hasn't changed
+            if (e.target === lastTargetRef.current) {
+                return;
+            }
+            lastTargetRef.current = e.target;
 
             // Interaction Check for clickable items
             const target = e.target as HTMLElement;
