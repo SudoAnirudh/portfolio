@@ -6,3 +6,7 @@
 **Vulnerability:** The application was missing a Content-Security-Policy (CSP) header, which is a critical defense-in-depth mechanism against Cross-Site Scripting (XSS). Additionally, a programmatic call to `window.open` in `src/components/ReceiptPrinter.tsx` lacked the `"noopener,noreferrer"` parameters, making it susceptible to reverse tabnabbing (where the opened window can manipulate the `window.opener` object).
 **Learning:** Next.js global headers should always include a CSP configuration. While static HTML links might often have `target="_blank" rel="noopener noreferrer"`, it is easy to overlook these protections in programmatic JavaScript API calls like `window.open`.
 **Prevention:** Always verify that `window.open(..., '_blank')` calls include `"noopener,noreferrer"` as the third argument. Ensure standard security headers, specifically CSP, are explicitly defined in Next.js configuration or middleware.
+## 2024-05-24 - Add Client-Side Input Limits
+**Vulnerability:** Missing client-side length constraints on form inputs, creating a risk for rudimentary application-layer DoS via oversized payloads.
+**Learning:** Client-side validation must always explicitly align with server-side validation limits (e.g. maxLength) to provide defense in depth and reject unnecessarily large data before it's processed or sent.
+**Prevention:** Enforce `maxLength` attributes on all `<input>` and `<textarea>` elements to match server-side validation constraints.
