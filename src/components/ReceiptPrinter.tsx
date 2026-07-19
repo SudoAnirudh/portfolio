@@ -7,60 +7,67 @@ interface ReceiptPrinterProps {
     onClose: () => void;
 }
 
+// ⚡ Bolt: Cache AudioContext and AudioBuffer to prevent hardware limit crashes (~6 contexts)
+// and eliminate redundant array allocation/loop overhead on repeated sound playback.
+let sharedAudioCtx: AudioContext | null = null;
+let cachedNoiseBuffer: AudioBuffer | null = null;
+
+const getAudioContext = () => {
+    if (typeof window === 'undefined') return null;
+    if (!sharedAudioCtx) {
+        const AudioCtor = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtor) sharedAudioCtx = new AudioCtor();
+    }
+    // Handle the promise returned by resume() to prevent unhandled rejection warnings
+    if (sharedAudioCtx?.state === 'suspended') sharedAudioCtx.resume().catch(() => {});
+    return sharedAudioCtx;
+};
+
 const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     const [visibleLines, setVisibleLines] = useState<React.ReactNode[]>([]);
     const [isPrinting, setIsPrinting] = useState(true);
     const [isTorn, setIsTorn] = useState(false);
     const [isDiscarding, setIsDiscarding] = useState(false);
-    const audioContextRef = useRef<AudioContext | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Initialize Audio Context on mount
-    useEffect(() => {
-        const AudioCtor =
-            window.AudioContext ||
-            (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-        if (AudioCtor) {
-            audioContextRef.current = new AudioCtor();
-        }
-        return () => {
-            if (audioContextRef.current) {
-                audioContextRef.current.close();
-            }
-        };
-    }, []);
-
     const playPrintSound = () => {
-        if (!audioContextRef.current) return;
-        const ctx = audioContextRef.current;
-        const gainNode = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
+        try {
+            const ctx = getAudioContext();
+            if (!ctx) return;
 
-        // White noise buffer for "paper friction" sound
-        const bufferSize = ctx.sampleRate * 0.1; // 100ms
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+            const gainNode = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+
+            if (!cachedNoiseBuffer) {
+                // White noise buffer for "paper friction" sound
+                const bufferSize = ctx.sampleRate * 0.1; // 100ms
+                cachedNoiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = cachedNoiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+            }
+
+            const noise = ctx.createBufferSource();
+            noise.buffer = cachedNoiseBuffer;
+
+            // Filter to make it sound more mechanical/low-fi
+            filter.type = 'bandpass';
+            filter.frequency.value = 800;
+            filter.Q.value = 1;
+
+            noise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+            noise.start();
+            noise.stop(ctx.currentTime + 0.1);
+        } catch (e) {
+            // Fallback silently if audio context is blocked/unsupported
         }
-
-        const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
-
-        // Filter to make it sound more mechanical/low-fi
-        filter.type = 'bandpass';
-        filter.frequency.value = 800;
-        filter.Q.value = 1;
-
-        noise.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(ctx.destination);
-
-        gainNode.gain.setValueAtTime(0.05, ctx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-
-        noise.start();
-        noise.stop(ctx.currentTime + 0.1);
     };
 
     // Construct the full receipt content relative to data

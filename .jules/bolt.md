@@ -16,3 +16,6 @@
 ## 2026-07-17 - [Cache DOM target in high-frequency event listeners]
 **Learning:** In high-frequency event listeners like `mousemove`, constantly re-evaluating expensive DOM traversals (e.g., `.closest()`) and recalculating styles (e.g., `getComputedStyle()`) on every pixel movement causes significant layout thrashing and CPU overhead.
 **Action:** Always cache the current DOM target (`e.target`) and only perform expensive checks when the target element actually changes.
+## 2026-07-20 - [Reverting Lockfile modifications]
+**Learning:** When executing `pnpm install` during tasks or verification steps, pnpm can sometimes unintentionally update dependencies and heavily modify `pnpm-lock.yaml`. This leaves the lockfile out-of-sync and violates the directive against adding dependencies.
+**Action:** Always check `git status` after installing dependencies or running verifications, and strictly use `git restore --staged pnpm-lock.yaml && git checkout pnpm-lock.yaml` to discard unapproved lockfile changes before submitting a PR.
