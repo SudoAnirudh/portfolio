@@ -4,6 +4,7 @@
   --font-display: "Archivo Black", sans-serif;
   --font-body: "Space Grotesk", sans-serif;
   --font-pixel: "VT323", monospace;
+  --font-cursive: var(--font-cursive), cursive;
 
   --color-primary: #eab308;
   --color-retro-yellow: #facc15;
@@ -18,6 +19,10 @@
 }
 
 /* Custom Utilities */
+.font-cursive {
+  font-family: var(--font-cursive), cursive !important;
+}
+
 .text-stroke-black {
   -webkit-text-stroke: 2px black;
   color: transparent;

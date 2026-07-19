@@ -88,9 +88,7 @@ const playStaticSound = () => {
     } catch (e) {
         // Fallback silently
     }
-};
-
-// Channel 04: Matrix Rain Animation
+};// Channel 04: Matrix Rain Animation
 const MatrixRain = () => {
     const [gridStr, setGridStr] = useState<string>('');
     const cols = 16;
@@ -138,7 +136,7 @@ const MatrixRain = () => {
     }, []);
 
     return (
-        <div className="font-mono text-[9px] md:text-xs text-green-500 leading-tight select-none whitespace-pre text-center">
+        <div className="font-mono text-[9px] md:text-xs text-zinc-800/80 leading-tight select-none whitespace-pre text-center">
             {gridStr}
         </div>
     );
@@ -239,7 +237,7 @@ const AsciiCube = () => {
     }, []);
     
     return (
-        <pre className="font-mono text-[9px] md:text-[10px] text-green-500 leading-tight whitespace-pre select-none tracking-widest text-shadow-glow">
+        <pre className="font-mono text-[9px] md:text-[10px] text-zinc-800 leading-tight whitespace-pre select-none tracking-widest">
             {frame}
         </pre>
     );
@@ -274,15 +272,15 @@ const AsciiPet = () => {
 
     return (
         <div 
-            className="flex flex-col items-center justify-center font-mono text-xs text-green-500 select-none cursor-pointer p-2 relative"
+            className="flex flex-col items-center justify-center font-mono text-xs text-zinc-800 select-none cursor-pointer p-2 relative"
             onMouseEnter={() => setBubble("HI HUMAN! *PURR*")}
             onMouseLeave={() => setBubble("FEED ME DATA!")}
             onClick={handleClick}
         >
-            <div className="border border-green-500/30 px-2 py-0.5 rounded mb-2 text-[9px] animate-pulse bg-black/40 text-center max-w-[150px] min-h-[20px] flex items-center justify-center">
+            <div className="bg-white border border-zinc-800 px-2 py-0.5 rounded-sm mb-2 text-[9px] text-zinc-800 text-center max-w-[150px] min-h-[20px] flex items-center justify-center shadow-[1px_1px_0px_rgba(0,0,0,1)]">
                 "{bubble}"
             </div>
-            <pre className="text-center font-bold text-shadow-glow leading-none text-xs md:text-sm">
+            <pre className="text-center font-bold leading-none text-xs md:text-sm">
 {blink ? `  /\\___/\\
  ( - . - )
   (") (")` : `  /\\___/\\
@@ -314,19 +312,44 @@ const StaticChannel = () => {
     }, []);
 
     return (
-        <div className="font-mono text-[10px] md:text-xs text-green-500/50 leading-none select-none tracking-widest text-center">
-            <div className="text-[9px] uppercase tracking-widest text-green-500 mb-2 opacity-50">NO SIGNAL</div>
+        <div className="font-mono text-[10px] md:text-xs text-zinc-800/40 leading-none select-none tracking-widest text-center">
+            <div className="text-[9px] uppercase tracking-widest text-zinc-800 mb-2 opacity-50">NO SIGNAL</div>
             <div className="whitespace-pre">{noiseStr}</div>
         </div>
     );
 };
 
+// SVG Assets
+const AppleRainbowLogo = () => (
+    <svg viewBox="0 0 16 16" className="w-5 h-5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)] select-none">
+        <defs>
+            <linearGradient id="apple-rainbow" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#5EBD3E" />
+                <stop offset="17%" stopColor="#FFB900" />
+                <stop offset="34%" stopColor="#F78200" />
+                <stop offset="50%" stopColor="#E23838" />
+                <stop offset="67%" stopColor="#973999" />
+                <stop offset="83%" stopColor="#009CDF" />
+            </linearGradient>
+        </defs>
+        <path fill="url(#apple-rainbow)" d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+    </svg>
+);
+
+const AppleMonochromeLogo = () => (
+    <svg viewBox="0 0 16 16" className="w-3 h-3 fill-black mr-2 select-none">
+        <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282"/>
+    </svg>
+);
+
 const HelloWorld = () => {
     const [channel, setChannel] = useState(3);
     const [text, setText] = useState('');
-    const fullText = 'HELLO WORLD';
+    const fullText = 'hello world';
     const [isTyping, setIsTyping] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [ledFlash, setLedFlash] = useState(false);
 
     // Channel 03 Typing text effect
     useEffect(() => {
@@ -338,7 +361,7 @@ const HelloWorld = () => {
             if (index < fullText.length) {
                 setText(fullText.slice(0, index + 1));
                 index++;
-                timeoutId = setTimeout(type, 300);
+                timeoutId = setTimeout(type, 250);
             } else {
                 setIsTyping(false);
                 timeoutId = setTimeout(() => {
@@ -358,13 +381,15 @@ const HelloWorld = () => {
     const changeChannel = (nextChannel: number) => {
         playClickSound();
         playStaticSound();
+        setLedFlash(true);
         setIsTransitioning(true);
         setTimeout(() => {
             setChannel(nextChannel);
         }, 120);
         setTimeout(() => {
             setIsTransitioning(false);
-        }, 250);
+            setLedFlash(false);
+        }, 400);
     };
 
     const handleNextChannel = () => {
@@ -380,98 +405,167 @@ const HelloWorld = () => {
     };
 
     return (
-        <div className="w-full h-full flex items-center justify-center p-2 bg-zinc-800 rounded-xl border-4 border-zinc-900 shadow-2xl relative">
-            {/* TV Antenna (Decorative) */}
-            <div className="absolute -top-12 right-1/4 w-1 h-12 bg-zinc-400 -rotate-12 z-0 origin-bottom"></div>
-            <div className="absolute -top-12 left-1/4 w-1 h-12 bg-zinc-400 rotate-12 z-0 origin-bottom"></div>
+        <div className="w-full h-full flex flex-col bg-[#ded9cd] border-[4px] border-[#c0bba9] rounded-xl shadow-[inset_0_2px_4px_rgba(255,255,255,0.8),_5px_5px_15px_rgba(0,0,0,0.3)] p-3 relative select-none justify-between">
+            {/* Bezel housing for the CRT Screen */}
+            <div className="bg-[#d3cebe] rounded-lg p-3 flex flex-col border border-[#b4aea0] shadow-[inset_1px_1px_3px_rgba(0,0,0,0.15)] flex-1 relative">
+                {/* The Recessed CRT Screen Box */}
+                <div className="relative w-full h-full bg-[#f4efe3] border-[6px] border-[#2c2925] rounded-[1.2rem] overflow-hidden shadow-[inset_0_0_12px_rgba(0,0,0,0.4)] flex flex-col flex-1">
+                    
+                    {/* CRT Screen Scanline Mask */}
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.04)_50%,rgba(0,0,0,0.1)_50%)] z-20 bg-[length:100%_3px] pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-black/2 z-10 pointer-events-none"></div>
+                    
+                    {/* Static Noise Overlay during transitions */}
+                    {isTransitioning && (
+                        <div className="absolute inset-0 bg-[#f4efe3] z-50 flex flex-col items-center justify-center pointer-events-none">
+                            <div className="tv-static !opacity-25 absolute inset-0 bg-white"></div>
+                            <div className="text-[12px] text-zinc-900 font-pixel uppercase tracking-widest animate-pulse border-2 border-zinc-900 px-3 py-1.5 bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                                SYS BOOT...
+                            </div>
+                        </div>
+                    )}
 
-            {/* TV Housing */}
-            <div className="relative w-full h-full bg-[#2a2a2a] rounded-lg p-3 shadow-[inset_0_0_20px_rgba(0,0,0,1)] flex flex-col">
-                {/* Brand Logo */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 text-[8px] font-bold text-zinc-500 tracking-[0.2em] uppercase z-10">
-                    RETRO_VISION
-                </div>
+                    {/* Vintage Mac Top Menu Bar */}
+                    <div className="w-full h-5 bg-white border-b border-black flex items-center justify-between px-2 text-[9px] font-pixel text-black z-30 select-none">
+                        <div className="flex items-center">
+                            <AppleMonochromeLogo />
+                            <span className="font-bold mr-3 cursor-pointer hover:bg-black/10 px-1 rounded-sm">File</span>
+                            <span className="font-bold mr-3 cursor-pointer hover:bg-black/10 px-1 rounded-sm">Edit</span>
+                            <span className="font-bold mr-3 cursor-pointer hover:bg-black/10 px-1 rounded-sm">Special</span>
+                            
+                            {/* Interactive Dropdown for changing channels */}
+                            <div className="relative">
+                                <span 
+                                    onClick={() => setMenuOpen(!menuOpen)}
+                                    className={`font-bold px-1.5 py-0.5 cursor-pointer rounded-sm ${menuOpen ? 'bg-black text-white' : 'hover:bg-black/10'}`}
+                                >
+                                    DevMenu
+                                </span>
+                                {menuOpen && (
+                                    <>
+                                        <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)}></div>
+                                        <div className="absolute top-[15px] left-0 w-32 bg-white border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] z-50 py-0.5 text-[9px] font-pixel">
+                                            {[
+                                                { ch: 3, label: 'Ch 3: Greeting' },
+                                                { ch: 4, label: 'Ch 4: Matrix' },
+                                                { ch: 5, label: 'Ch 5: 3D Cube' },
+                                                { ch: 6, label: 'Ch 6: retroPet' },
+                                                { ch: 7, label: 'Ch 7: Static' }
+                                            ].map((item) => (
+                                                <div
+                                                    key={item.ch}
+                                                    onClick={() => {
+                                                        changeChannel(item.ch);
+                                                        setMenuOpen(false);
+                                                    }}
+                                                    className={`px-2 py-1 cursor-pointer select-none transition-colors ${
+                                                        channel === item.ch 
+                                                            ? 'bg-black/10 font-bold' 
+                                                            : 'hover:bg-black hover:text-white'
+                                                    }`}
+                                                >
+                                                    {item.label}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <span className="opacity-75 uppercase">CH 0{channel}</span>
+                            <span className="w-[1px] h-2.5 bg-black/20"></span>
+                            <span className="opacity-75">1984</span>
+                        </div>
+                    </div>
 
-                {/* Screen Bezel */}
-                <div className="relative flex-1 bg-black rounded-[2rem] overflow-hidden border-b-2 border-zinc-700 shadow-[inset_0_0_10px_rgba(0,0,0,1)]">
-                    {/* The Screen Content */}
-                    <div className="absolute inset-0 bg-[#111] opacity-100 flex flex-col items-center justify-center overflow-hidden">
-                        {/* CRT Screen Effects */}
-                        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-20 bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
-                        <div className="absolute inset-0 bg-green-500/5 z-10 animate-pulse pointer-events-none"></div>
-                        
-                        {/* Static Noise */}
-                        <div className="tv-static pointer-events-none"></div>
-
-                        {/* Static Noise Overlay during transitions */}
-                        {isTransitioning && (
-                            <div className="absolute inset-0 bg-[#151515] z-50 flex flex-col items-center justify-center pointer-events-none">
-                                <div className="tv-static !opacity-95 absolute inset-0"></div>
-                                <div className="text-[14px] text-green-500 font-pixel uppercase tracking-widest text-shadow-glow animate-pulse">
-                                    TUNING...
-                                </div>
+                    {/* Active Channel Display Workspace */}
+                    <div className="flex-1 flex flex-col items-center justify-center p-2 relative z-10 w-full overflow-hidden">
+                        {channel === 3 && (
+                            <div className="font-cursive text-2xl md:text-3xl text-zinc-900 text-center tracking-normal leading-normal whitespace-pre-wrap select-text p-4">
+                                {text}
+                                <span className="animate-blink inline-block w-[2.5px] h-5 align-middle bg-zinc-900 ml-1"></span>
                             </div>
                         )}
+                        {channel === 4 && <MatrixRain />}
+                        {channel === 5 && <AsciiCube />}
+                        {channel === 6 && <AsciiPet />}
+                        {channel === 7 && <StaticChannel />}
+                    </div>
 
-                        {/* On-Screen Display */}
-                        <div className="w-full flex justify-between items-center mb-4 z-30 opacity-70 absolute top-4 px-4">
-                            <div className="text-[10px] text-green-500 font-pixel uppercase tracking-widest text-shadow-glow">
-                                CH 0{channel}
-                            </div>
-                            <div className="text-[10px] text-green-500 font-pixel uppercase tracking-widest text-shadow-glow">
-                                AV-1
-                            </div>
-                        </div>
+                    {/* Scanline Overlay */}
+                    <div className="absolute inset-0 pointer-events-none z-40 bg-gradient-to-b from-transparent via-black/5 to-transparent h-4 animate-scanline opacity-20"></div>
+                    
+                    {/* Screen Curvature Vignette */}
+                    <div className="absolute inset-0 pointer-events-none z-50 bg-[radial-gradient(circle,transparent_65%,rgba(0,0,0,0.18)_100%)]"></div>
+                </div>
+            </div>
 
-                        {/* Channel rendering */}
-                        <div className="relative z-30 flex flex-col items-center justify-center w-full">
-                            {channel === 3 && (
-                                <div className="text-3xl md:text-4xl font-pixel tracking-widest text-green-500 text-shadow-glow text-center leading-tight">
-                                    {text}
-                                    <span className="animate-blink inline-block w-3 h-8 align-middle bg-green-500 ml-1 box-shadow-[0_0_10px_rgba(34,197,94,0.8)]"></span>
-                                </div>
-                            )}
-                            {channel === 4 && <MatrixRain />}
-                            {channel === 5 && <AsciiCube />}
-                            {channel === 6 && <AsciiPet />}
-                            {channel === 7 && <StaticChannel />}
-                        </div>
-
-                        {/* Scanline Overlay */}
-                        <div className="absolute inset-0 pointer-events-none z-40 bg-gradient-to-b from-transparent via-green-500/5 to-transparent h-4 animate-scanline opacity-30"></div>
-                        
-                        {/* Screen Curvature Vignette */}
-                        <div className="absolute inset-0 pointer-events-none z-50 bg-[radial-gradient(circle,transparent_60%,rgba(0,0,0,0.4)_100%)]"></div>
+            {/* Bottom Grooved Bezel with Logo, Keypad Jack & Floppy Slot */}
+            <div className="w-full h-[1.5px] bg-[#beb7a6] shadow-[0_0.5px_0_rgba(255,255,255,0.4)] mt-3 mb-2.5"></div>
+            
+            <div className="flex items-center justify-between px-1 h-7">
+                {/* Left: Apple Rainbow Logo */}
+                <div className="flex items-center gap-1.5 select-none">
+                    <AppleRainbowLogo />
+                    <div className="text-[8px] font-bold text-zinc-500/80 tracking-widest font-mono uppercase">
+                        Mac 128k
                     </div>
                 </div>
 
-                {/* TV Controls */}
-                <div className="h-8 flex items-center justify-between px-2 mt-1">
-                    <div className="flex gap-2">
-                        <div className="w-2 h-2 rounded-full bg-red-900 border border-red-700 shadow-[0_0_5px_rgba(255,0,0,0.5)] animate-pulse"></div> {/* Power Light */}
-                        <div className="w-8 h-full flex gap-1 items-center">
-                            <div className="w-[2px] h-3 bg-zinc-600"></div>
-                            <div className="w-[2px] h-3 bg-zinc-600"></div>
-                            <div className="w-[2px] h-3 bg-zinc-600"></div>
-                        </div> {/* Speaker Grille */}
+                {/* Center: Recessed Keyboard RJ11 Port socket */}
+                <div className="flex items-center gap-1.5 select-none">
+                    <div className="text-[6.5px] text-zinc-500 font-bold uppercase font-mono mr-0.5">Keypad</div>
+                    <div 
+                        title="Keyboard Input Port"
+                        className="w-4 h-4 bg-[#2b2722] rounded-[3px] border border-[#a29b8c] flex flex-col gap-[2px] items-center justify-center p-[2px] shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)]"
+                    >
+                        <div className="w-2.5 h-[1.5px] bg-zinc-600 rounded-sm"></div>
+                        <div className="w-2.5 h-[2px] bg-zinc-700/80 flex gap-[2px] justify-center">
+                            <div className="w-[1px] h-full bg-yellow-600/60"></div>
+                            <div className="w-[1px] h-full bg-yellow-600/60"></div>
+                            <div className="w-[1px] h-full bg-yellow-600/60"></div>
+                        </div>
                     </div>
-                    <div className="flex gap-2 items-center">
-                        <button 
-                            onClick={handleNextChannel}
-                            title="Change Channel"
-                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus:outline-none"
-                            style={{ transform: `rotate(${(channel - 3) * 90}deg)` }}
-                        >
-                            <div className="w-full h-1 bg-zinc-950"></div>
-                        </button>
-                        <button 
+                </div>
+
+                {/* Right: Programmer push buttons and Floppy Drive Slot */}
+                <div className="flex items-center gap-2">
+                    {/* Tactical Reset/Dev Programmer buttons */}
+                    <div className="flex gap-1 mr-0.5">
+                        <button
                             onClick={handlePrevChannel}
-                            title="Fine Tune"
-                            className="w-6 h-6 rounded-full bg-zinc-800 border-2 border-zinc-600 flex items-center justify-center shadow-lg transition-all duration-300 active:scale-95 cursor-pointer hover:border-retro-yellow focus:outline-none"
-                            style={{ transform: `rotate(${-((channel - 3) * 45)}deg)` }}
+                            title="System Reset (Prev Channel)"
+                            className="px-1.5 py-0.5 text-[7px] font-mono font-bold text-zinc-600 bg-[#e0dacd] border border-[#beb7a6] rounded shadow-[0_1px_1px_rgba(0,0,0,0.15),_inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-[#d6d0c2] active:scale-95 active:shadow-inner cursor-pointer transition-all"
                         >
-                            <div className="w-full h-1 bg-zinc-950"></div>
+                            RST
                         </button>
+                        <button
+                            onClick={handleNextChannel}
+                            title="Developer Interrupt (Next Channel)"
+                            className="px-1.5 py-0.5 text-[7px] font-mono font-bold text-zinc-600 bg-[#e0dacd] border border-[#beb7a6] rounded shadow-[0_1px_1px_rgba(0,0,0,0.15),_inset_0_1px_0_rgba(255,255,255,0.8)] hover:bg-[#d6d0c2] active:scale-95 active:shadow-inner cursor-pointer transition-all"
+                        >
+                            INT
+                        </button>
+                    </div>
+
+                    {/* Floppy Slot */}
+                    <div 
+                        onClick={handleNextChannel}
+                        title="Floppy Drive: Click to switch program disk"
+                        className="w-20 h-2 bg-[#201d19] rounded-[2px] border border-[#a29b8c] shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] relative cursor-pointer flex items-center justify-between px-1 group hover:border-zinc-500 transition-colors select-none"
+                    >
+                        {/* Shutter simulation */}
+                        <div className="absolute inset-y-[1px] left-1 w-3 bg-zinc-600/30 rounded-sm"></div>
+                        
+                        {/* Disk activity LED */}
+                        <div className="absolute right-1 -top-[3px] flex items-center">
+                            <div className={`w-1 h-1 rounded-full border border-black/40 transition-all duration-300 ${
+                                ledFlash 
+                                    ? 'bg-green-500 shadow-[0_0_3.5px_#22c55e]' 
+                                    : 'bg-zinc-800'
+                            }`}></div>
+                        </div>
                     </div>
                 </div>
             </div>

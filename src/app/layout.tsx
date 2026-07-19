@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Space_Grotesk, VT323 } from "next/font/google"; // Import fonts
+import { Archivo_Black, Space_Grotesk, VT323, Pacifico } from "next/font/google"; // Import fonts
 import "./globals.css";
 import RetroCursor from "@/components/RetroCursor";
 
@@ -18,6 +18,12 @@ const spaceGrotesk = Space_Grotesk({
 const vt323 = VT323({
   weight: "400",
   variable: "--font-pixel",
+  subsets: ["latin"],
+});
+
+const pacifico = Pacifico({
+  weight: "400",
+  variable: "--font-cursive",
   subsets: ["latin"],
 });
 
@@ -97,7 +103,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
       </head>
       <body
-        className={`${archivoBlack.variable} ${spaceGrotesk.variable} ${vt323.variable} bg-retro-charcoal font-body text-zinc-900 overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-10`}
+        className={`${archivoBlack.variable} ${spaceGrotesk.variable} ${vt323.variable} ${pacifico.variable} bg-retro-charcoal font-body text-zinc-900 overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-10`}
         suppressHydrationWarning
       >
         <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-50"></div>
