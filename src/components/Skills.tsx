@@ -96,7 +96,7 @@ const Skills = () => {
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 h-full" id="skills">
             <div className="w-full h-full">
                 {/* Software Skills - Green Card */}
-                <div className="bg-retro-green bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain h-full">
+                <div className="bg-retro-green bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain border-4 border-black/10 h-full">
                     <div className="relative z-20 flex flex-col items-end h-full">
                         <div className="w-full flex justify-between items-start gap-3 mb-8 sm:mb-12">
                             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 border-2 border-black flex items-center justify-center shrink-0">
