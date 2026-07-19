@@ -131,17 +131,18 @@ export const portfolioData: PortfolioData = {
     },
     about: {
         title: "About / Identity",
-        bio: "I am a B.E. student in Artificial Intelligence & Machine Learning (2022–2026) experienced in building production-grade AI applications, Android solutions, and machine learning systems. I have hands-on experience delivering real-world projects through internships in Generative AI and student analytics.",
+        bio: "A freshly minted B.E. in AI & ML (CGPA: 7.77—lucky number 7, right?) from Srinivas Institute of Technology (Class of 2026). Currently broadcasting from Kozhikode, Kerala, and ready to relocate to whichever Indian city has the lowest latency connection to your servers. I'm in active, high-volume job search mode (which is corporate speak for 'please hire me so I can stop coding for free'). While I tell people I build 'autonomous agents,' let's be real: they are mostly fancy LLM orchestration pipelines held together by duct tape and API keys. I don't know PyTorch yet (TensorFlow only, please don't judge), and my MCP and LoRA skills are practically non-existent. But if you need embeddings, vector databases, RAG pipelines, or someone who can pair-program with AI tools like Antigravity and Cursor at 1000 WPM, I'm your human compiler. I also do Android, Next.js, and FastAPI when the AI lets me.",
         pythonClass: {
             className: "AnirudhS",
             attributes: [
-                { name: "role", value: "\"AI/ML Engineer\"" },
-                { name: "stack", value: "[\"Python\", \"Kotlin\", \"FastAPI\", \"Gemini API\", \"Deep Learning\"]" },
-                { name: "location", value: "\"Kozhikode, India\"" },
-                { name: "email", value: "\"anirudhsudheer@gmail.com\"" }
+                { name: "status", value: "\"High-volume job hunting\"" },
+                { name: "lucky_cgpa", value: "7.77" },
+                { name: "specialty", value: "\"RAG & Vector DBs (the good stuff)\"" },
+                { name: "weak_spots", value: "[\"PyTorch (soon™)\", \"Autonomous Agents (mostly pipelines)\"]" },
+                { name: "location", value: "\"Kozhikode (relocatable to any city with caffeine)\"" }
             ],
             methods: [
-                { name: "goal", return: "\"Building production-grade AI & mobile systems\"" }
+                { name: "compile", return: "\"Code held together by API keys & luck\"" }
             ]
         },
         image: "/profile_pixel.png"
