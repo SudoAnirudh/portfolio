@@ -131,7 +131,7 @@ export const portfolioData: PortfolioData = {
     },
     about: {
         title: "About / Identity",
-        bio: "A freshly minted B.E. in AI & ML (CGPA: 7.77—lucky number 7, right?) from Srinivas Institute of Technology (Class of 2026). Currently broadcasting from Kozhikode, Kerala, and ready to relocate to whichever Indian city has the lowest latency connection to your servers. I'm in active, high-volume job search mode (which is corporate speak for 'please hire me so I can stop coding for free'). While I tell people I build 'autonomous agents,' let's be real: they are mostly fancy LLM orchestration pipelines held together by duct tape and API keys. I don't know PyTorch yet (TensorFlow only, please don't judge), and my MCP and LoRA skills are practically non-existent. But if you need embeddings, vector databases, RAG pipelines, or someone who can pair-program with AI tools like Antigravity and Cursor at 1000 WPM, I'm your human compiler. I also do Android, Next.js, and FastAPI when the AI lets me.",
+        bio: "Recent B.E. graduate in AI & ML (CGPA: 7.77—lucky number 7, right?) from Srinivas Institute of Technology (Class of 2026), broadcasting from Kozhikode, Kerala, and ready to relocate to any city in India. I'm in active, high-volume job hunt mode (please hire me so I can stop coding for free). Let's be real: my 'autonomous agents' are mostly fancy LLM pipelines held together by duct tape and API keys. I don't know PyTorch yet, but if you need embeddings, vector databases, RAG systems, or a human compiler who pair-programs with AI tools at 1000 WPM, I'm your dev.",
         pythonClass: {
             className: "AnirudhS",
             attributes: [
