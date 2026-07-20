@@ -48,6 +48,15 @@ const playMacChime = () => {
     }
 };
 
+const SARCASTIC_SUBTITLES = [
+    "(Now 99.9% bug-free!)",
+    "(Compiling excuses...)",
+    "(Optimized for dial-up connection)",
+    "(AI-powered, whatever that means...)",
+    "(Yes, another developer portfolio)",
+    "(Loading brain cells...)"
+];
+
 const RetroLoader = () => {
     const [showLoader, setShowLoader] = useState(false);
     const [step, setStep] = useState(1);
@@ -55,6 +64,8 @@ const RetroLoader = () => {
     const [helloOffset, setHelloOffset] = useState(400);
     const [helloFilled, setHelloFilled] = useState(false);
     const [isFading, setIsFading] = useState(false);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [subtitle, setSubtitle] = useState("");
 
     useEffect(() => {
         // Only run on the very first page load of the session
@@ -64,9 +75,23 @@ const RetroLoader = () => {
             return;
         }
 
+        // Pick a random sarcastic subtitle
+        const randomSubtitle = SARCASTIC_SUBTITLES[Math.floor(Math.random() * SARCASTIC_SUBTITLES.length)];
+        setSubtitle(randomSubtitle);
+
         // Show the loader and disable scrolling on page body during boot
         setShowLoader(true);
         document.body.classList.add('overflow-hidden');
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const { innerWidth, innerHeight } = window;
+            // Calculate mouse position relative to center of screen, bounded between -1 and 1
+            const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+            const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+            setMousePos({ x, y });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
 
         // Timing flow:
         // Step 1 (Blinking Floppy Disk): 0s - 0.8s
@@ -110,15 +135,27 @@ const RetroLoader = () => {
             clearTimeout(t3);
             clearTimeout(t4);
             clearTimeout(t5);
+            window.removeEventListener('mousemove', handleMouseMove);
             document.body.classList.remove('overflow-hidden');
         };
     }, []);
+
+    // Get dynamic 3D tilt transform style
+    const getTiltStyle = (strength = 1) => {
+        const rotateX = -mousePos.y * 15 * strength;
+        const rotateY = mousePos.x * 15 * strength;
+        return {
+            transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`,
+            transition: 'transform 0.1s ease-out',
+            transformStyle: 'preserve-3d' as const,
+        };
+    };
 
     if (!showLoader) return null;
 
     return (
         <div
-            className={`fixed inset-0 z-50 bg-[#e0dbcd] flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${
+            className={`fixed inset-0 z-50 bg-retro-charcoal flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${
                 isFading ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
             }`}
         >
@@ -126,16 +163,25 @@ const RetroLoader = () => {
             <div className="absolute inset-0 pointer-events-none z-40 bg-[linear-gradient(rgba(0,0,0,0.03)_50%,rgba(0,0,0,0.08)_50%)] bg-[length:100%_3px]"></div>
             <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle,transparent_60%,rgba(0,0,0,0.12)_100%)]"></div>
 
-            {/* Screen Content Window */}
-            <div className="relative flex flex-col items-center justify-center w-full h-full select-none">
+            {/* Screen Content Window with 3D perspective setup */}
+            <div 
+                className="relative flex flex-col items-center justify-center w-full h-full select-none"
+                style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+            >
                 {step === 1 && (
-                    <div className="flex flex-col items-center gap-4 animate-[fadeIn_0.2s_ease-out]">
+                    <div 
+                        style={getTiltStyle(0.8)}
+                        className="flex flex-col items-center gap-4 animate-[fadeIn_0.2s_ease-out]"
+                    >
                         {/* Neubrutalist Pixel Floppy Disk */}
-                        <div className="w-24 h-24 border-4 border-black bg-[#f4efe3] rounded-lg p-2.5 flex flex-col justify-between shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-                            <div className="w-full h-5 border-b-2 border-black flex justify-end px-1">
-                                <div className="w-6 h-full bg-black rounded-b"></div>
+                        <div 
+                            className="w-24 h-24 border-4 border-black bg-retro-white rounded-lg p-2.5 flex flex-col justify-between shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
+                            style={{ transformStyle: 'preserve-3d' }}
+                        >
+                            <div className="w-full h-5 border-b-2 border-black flex justify-end px-1" style={{ transform: 'translateZ(10px)' }}>
+                                <div className="w-6 h-full bg-retro-yellow rounded-b border-l-2 border-r-2 border-black"></div>
                             </div>
-                            <div className="flex-1 flex items-center justify-center">
+                            <div className="flex-1 flex items-center justify-center" style={{ transform: 'translateZ(20px)' }}>
                                 <span className="font-pixel text-4xl font-bold text-black animate-blink">?</span>
                             </div>
                         </div>
@@ -143,11 +189,20 @@ const RetroLoader = () => {
                 )}
 
                 {step === 2 && (
-                    <div className="flex flex-col items-center gap-4 animate-[bounce_0.8s_infinite]">
+                    <div 
+                        style={getTiltStyle(0.9)}
+                        className="flex flex-col items-center gap-4 animate-[bounce_0.8s_infinite]"
+                    >
                         {/* Neubrutalist Smiling Happy Mac */}
-                        <div className="w-28 h-32 border-4 border-black bg-[#ded9cd] rounded-lg p-2 flex flex-col items-center justify-between shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-                            <div className="w-full h-16 border-4 border-black bg-[#f4efe3] rounded flex items-center justify-center p-1.5 relative overflow-hidden shadow-[inset_1px_1px_3px_rgba(0,0,0,0.15)]">
-                                <div className="flex flex-col items-center justify-center gap-1 text-black">
+                        <div 
+                            className="w-28 h-32 border-4 border-black bg-retro-white rounded-lg p-2 flex flex-col items-center justify-between shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
+                            style={{ transformStyle: 'preserve-3d' }}
+                        >
+                            <div 
+                                className="w-full h-16 border-4 border-black bg-retro-cream rounded flex items-center justify-center p-1.5 relative overflow-hidden shadow-[inset_1px_1px_3px_rgba(0,0,0,0.15)]"
+                                style={{ transform: 'translateZ(15px)', transformStyle: 'preserve-3d' }}
+                            >
+                                <div className="flex flex-col items-center justify-center gap-1 text-black" style={{ transform: 'translateZ(10px)' }}>
                                     <div className="flex gap-3">
                                         <div className="w-2 h-2 bg-black rounded-full"></div>
                                         <div className="w-2 h-2 bg-black rounded-full"></div>
@@ -155,8 +210,8 @@ const RetroLoader = () => {
                                     <div className="w-5 h-2 border-b-2 border-black rounded-b-full"></div>
                                 </div>
                             </div>
-                            <div className="w-14 h-1.5 bg-black rounded"></div>
-                            <div className="text-[7.5px] font-mono font-bold tracking-widest text-black/75 uppercase">
+                            <div className="w-14 h-1.5 bg-black rounded" style={{ transform: 'translateZ(10px)' }}></div>
+                            <div className="text-[7.5px] font-mono font-bold tracking-widest text-black/75 uppercase" style={{ transform: 'translateZ(5px)' }}>
                                 Mac 128k
                             </div>
                         </div>
@@ -164,14 +219,32 @@ const RetroLoader = () => {
                 )}
 
                 {step === 3 && (
-                    <div className="border-4 border-black p-1 bg-[#ded9cd] shadow-[6px_6px_0_0_rgba(0,0,0,1)] animate-[scaleUp_0.25s_cubic-bezier(0.34,1.56,0.64,1)] max-w-sm w-11/12">
-                        <div className="border-2 border-black p-6 sm:p-8 flex flex-col items-center gap-6 bg-[#ded9cd]">
-                            <h1 className="font-pixel text-3xl sm:text-4xl text-black tracking-tight text-center leading-none">
-                                Welcome to Macintosh.
+                    <div 
+                        style={getTiltStyle(1.2)}
+                        className="border-4 border-black p-1 bg-retro-white shadow-[6px_6px_0_0_rgba(0,0,0,1)] animate-[scaleUp_0.25s_cubic-bezier(0.34,1.56,0.64,1)] max-w-sm w-11/12"
+                    >
+                        <div 
+                            className="border-2 border-black p-6 sm:p-8 flex flex-col items-center gap-6 bg-retro-white"
+                            style={{ transformStyle: 'preserve-3d' }}
+                        >
+                            <h1 
+                                className="font-display text-xl sm:text-2xl text-black tracking-tight text-center leading-none uppercase"
+                                style={{ transform: 'translateZ(20px)' }}
+                            >
+                                Welcome to Anirudh S.
                             </h1>
-                            <div className="w-full h-6 border-4 border-black bg-white p-0.5 relative overflow-hidden">
+                            <p 
+                                className="font-pixel text-lg text-black/60 -mt-3 text-center select-none"
+                                style={{ transform: 'translateZ(15px)' }}
+                            >
+                                {subtitle}
+                            </p>
+                            <div 
+                                className="w-full h-6 border-4 border-black bg-retro-cream p-0.5 relative overflow-hidden"
+                                style={{ transform: 'translateZ(10px)' }}
+                            >
                                 <div
-                                    className="h-full bg-black transition-all duration-[1100ms] ease-out"
+                                    className="h-full bg-primary transition-all duration-[1100ms] ease-out"
                                     style={{ width: `${progress}%` }}
                                 ></div>
                             </div>
@@ -180,8 +253,11 @@ const RetroLoader = () => {
                 )}
 
                 {step === 4 && (
-                    <div className="flex flex-col items-center justify-center w-full max-w-md px-6 animate-[fadeIn_0.3s_ease-out]">
-                        <svg viewBox="0 0 300 120" className="w-full text-black overflow-visible font-cursive">
+                    <div 
+                        style={getTiltStyle(1.0)}
+                        className="flex flex-col items-center justify-center w-full max-w-md px-6 animate-[fadeIn_0.3s_ease-out]"
+                    >
+                        <svg viewBox="0 0 300 120" className="w-full text-retro-yellow overflow-visible font-cursive">
                             <text
                                 x="50%"
                                 y="60%"
@@ -195,6 +271,7 @@ const RetroLoader = () => {
                                 className="transition-all duration-[1100ms] ease-in-out"
                                 style={{
                                     transitionProperty: "stroke-dashoffset, fill",
+                                    transform: 'translateZ(15px)',
                                 }}
                             >
                                 hello
