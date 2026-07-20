@@ -9,20 +9,27 @@ const RetroGame = () => {
     const [isRunning, setIsRunning] = useState(true);
     const [generation, setGeneration] = useState(0);
     const gridRef = useRef<boolean[][]>([]); // Ref for performant access in interval
+    const nextGridRef = useRef<boolean[][]>([]); // ⚡ Bolt: Double buffer to prevent array reallocation
 
     // Initialize Grid
     const initGrid = useCallback(() => {
         const newGrid = [];
+        const nextGrid = [];
         for (let y = 0; y < GRID_SIZE; y++) {
             const row = [];
+            const nextRow = [];
             for (let x = 0; x < GRID_SIZE; x++) {
                 // Random start state approx 20% alive
-                row.push(Math.random() > 0.8);
+                const isAlive = Math.random() > 0.8;
+                row.push(isAlive);
+                nextRow.push(false);
             }
             newGrid.push(row);
+            nextGrid.push(nextRow);
         }
         setGrid(newGrid);
         gridRef.current = newGrid;
+        nextGridRef.current = nextGrid;
         setGeneration(0);
     }, []);
 
@@ -34,37 +41,60 @@ const RetroGame = () => {
     const runSimulation = useCallback(() => {
         if (!gridRef.current.length) return;
 
+        // ⚡ Bolt: Use double buffering and unroll loops to avoid array reallocation and modulo overhead
         const currentGrid = gridRef.current;
-        const newGrid = currentGrid.map(row => [...row]);
+        const newGrid = nextGridRef.current;
         let changes = 0;
 
         for (let y = 0; y < GRID_SIZE; y++) {
-            for (let x = 0; x < GRID_SIZE; x++) {
-                let neighbors = 0;
-                // Check all 8 neighbors
-                for (let dy = -1; dy <= 1; dy++) {
-                    for (let dx = -1; dx <= 1; dx++) {
-                        if (dy === 0 && dx === 0) continue;
-                        const ny = (y + dy + GRID_SIZE) % GRID_SIZE; // Wrap around Y
-                        const nx = (x + dx + GRID_SIZE) % GRID_SIZE; // Wrap around X
-                        if (currentGrid[ny][nx]) neighbors++;
-                    }
-                }
+            const yPrev = y === 0 ? GRID_SIZE - 1 : y - 1;
+            const yNext = y === GRID_SIZE - 1 ? 0 : y + 1;
 
-                const isAlive = currentGrid[y][x];
-                if (isAlive && (neighbors < 2 || neighbors > 3)) {
-                    newGrid[y][x] = false; // Dies
-                    changes++;
-                } else if (!isAlive && neighbors === 3) {
-                    newGrid[y][x] = true; // Born
-                    changes++;
+            const rowPrev = currentGrid[yPrev];
+            const rowCurr = currentGrid[y];
+            const rowNext = currentGrid[yNext];
+            const newRowCurr = newGrid[y];
+
+            for (let x = 0; x < GRID_SIZE; x++) {
+                const xPrev = x === 0 ? GRID_SIZE - 1 : x - 1;
+                const xNext = x === GRID_SIZE - 1 ? 0 : x + 1;
+
+                let neighbors = 0;
+                if (rowPrev[xPrev]) neighbors++;
+                if (rowPrev[x]) neighbors++;
+                if (rowPrev[xNext]) neighbors++;
+                if (rowCurr[xPrev]) neighbors++;
+                if (rowCurr[xNext]) neighbors++;
+                if (rowNext[xPrev]) neighbors++;
+                if (rowNext[x]) neighbors++;
+                if (rowNext[xNext]) neighbors++;
+
+                const isAlive = rowCurr[x];
+                if (isAlive) {
+                    if (neighbors < 2 || neighbors > 3) {
+                        newRowCurr[x] = false; // Dies
+                        changes++;
+                    } else {
+                        newRowCurr[x] = true; // Stays alive
+                    }
+                } else {
+                    if (neighbors === 3) {
+                        newRowCurr[x] = true; // Born
+                        changes++;
+                    } else {
+                        newRowCurr[x] = false; // Stays dead
+                    }
                 }
             }
         }
 
         if (changes > 0) {
+            // Swap buffers
             gridRef.current = newGrid;
-            setGrid(newGrid);
+            nextGridRef.current = currentGrid;
+
+            // Trigger render with a new array reference for React to detect changes
+            setGrid([...newGrid]);
             setGeneration(g => g + 1);
         } else {
             // If static, restart chaos
@@ -83,7 +113,7 @@ const RetroGame = () => {
 
     // Interaction
     const handleInteract = (x: number, y: number) => {
-        const newGrid = [...grid];
+        const newGrid = grid.map(row => [...row]); // Must deep copy for interaction to not mutate state directly
         newGrid[y][x] = !newGrid[y][x]; // Toggle cell
         // Add some "splash" life around it
         if (y > 0) newGrid[y - 1][x] = true;
@@ -93,6 +123,8 @@ const RetroGame = () => {
 
         setGrid(newGrid);
         gridRef.current = newGrid;
+        // Make sure nextGridRef also has the correct dimensions if interacted
+        nextGridRef.current = newGrid.map(row => [...row]);
     };
 
     return (
