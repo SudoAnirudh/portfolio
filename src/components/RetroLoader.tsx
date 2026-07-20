@@ -29,19 +29,24 @@ const playMacChime = () => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
-            // Mix wave types to get a rich, slightly organ-like retro tone
-            osc.type = index % 2 === 0 ? 'sine' : 'triangle';
+            // Mix wave types to get a rich, warm retro tone
+            osc.type = index % 2 === 0 ? 'triangle' : 'sine';
             osc.frequency.setValueAtTime(freq, now);
 
-            // Decay envelope
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+            // Stagger start times slightly for an arpeggiated strum effect (30ms per note)
+            const noteStart = now + index * 0.03;
+
+            gain.gain.setValueAtTime(0, now);
+            // Linear fade-in to prevent harsh start clicks
+            gain.gain.linearRampToValueAtTime(0.08, noteStart + 0.02);
+            // Smooth exponential decay
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 2.0);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
-            osc.start(now);
-            osc.stop(now + 1.8);
+            osc.start(noteStart);
+            osc.stop(noteStart + 2.0);
         });
     } catch (e) {
         // Fallback silently if audio context is blocked
@@ -102,11 +107,11 @@ const RetroLoader = () => {
 
         const t1 = setTimeout(() => {
             setStep(2);
-            playMacChime();
         }, 800);
 
         const t2 = setTimeout(() => {
             setStep(3);
+            playMacChime();
             // Trigger progressive bar filling
             setTimeout(() => setProgress(100), 50);
         }, 1600);
