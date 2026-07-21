@@ -59,15 +59,20 @@ const RetroCursor = () => {
         let animationFrameId: number;
 
         const loop = () => {
+            let hasMoved = false;
+
             // 1. Head (index 0) eases toward mouse position
             const head = segs[0];
             const dxHead = mousePos.current.x - head.x;
             const dyHead = mousePos.current.y - head.y;
 
             let headAngle = head.angle;
-            if (Math.hypot(dxHead, dyHead) > 0.5) {
-                // Calculate rotation angle. Add 90 deg because default SVG faces UP
-                headAngle = Math.atan2(dyHead, dxHead) * (180 / Math.PI) + 90;
+            if (Math.hypot(dxHead, dyHead) > 0.1) {
+                hasMoved = true;
+                if (Math.hypot(dxHead, dyHead) > 0.5) {
+                    // Calculate rotation angle. Add 90 deg because default SVG faces UP
+                    headAngle = Math.atan2(dyHead, dxHead) * (180 / Math.PI) + 90;
+                }
             }
 
             head.x += dxHead * 0.25; // Easing speed
@@ -83,8 +88,11 @@ const RetroCursor = () => {
                 const dy = prev.y - current.y;
 
                 let angle = current.angle;
-                if (Math.hypot(dx, dy) > 0.5) {
-                    angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                if (Math.hypot(dx, dy) > 0.1) {
+                    hasMoved = true;
+                    if (Math.hypot(dx, dy) > 0.5) {
+                        angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                    }
                 }
 
                 // Smoothly pull segment toward the one in front of it
@@ -93,8 +101,12 @@ const RetroCursor = () => {
                 current.angle = angle;
             }
 
-            // Sync updated positions to component state
-            setTrail(segs.map(s => ({ ...s })));
+            // ⚡ Bolt: Prevent unnecessary React state updates (and ~60 re-renders/sec)
+            // when the mouse is idle by only calling setTrail if actual movement occurred.
+            if (hasMoved) {
+                // Sync updated positions to component state
+                setTrail(segs.map(s => ({ ...s })));
+            }
             animationFrameId = requestAnimationFrame(loop);
         };
 

@@ -16,3 +16,7 @@
 ## 2026-07-17 - [Cache DOM target in high-frequency event listeners]
 **Learning:** In high-frequency event listeners like `mousemove`, constantly re-evaluating expensive DOM traversals (e.g., `.closest()`) and recalculating styles (e.g., `getComputedStyle()`) on every pixel movement causes significant layout thrashing and CPU overhead.
 **Action:** Always cache the current DOM target (`e.target`) and only perform expensive checks when the target element actually changes.
+
+## 2026-07-21 - [Prevent Unnecessary State Updates in RequestAnimationFrame]
+**Learning:** Calling React state setters like `setTrail` inside a continuous `requestAnimationFrame` loop causes ~60 re-renders per second even when there is no actual state change (e.g., when the mouse is idle). This constant re-rendering of complex SVG elements causes significant CPU overhead and drains battery on laptops.
+**Action:** Always track actual value changes (e.g., using a `hasMoved` flag with a small epsilon check like `> 0.1`) and wrap React state setters in conditional checks to bypass re-renders entirely during idle states.
