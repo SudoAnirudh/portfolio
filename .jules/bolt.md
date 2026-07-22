@@ -16,3 +16,6 @@
 ## 2026-07-17 - [Cache DOM target in high-frequency event listeners]
 **Learning:** In high-frequency event listeners like `mousemove`, constantly re-evaluating expensive DOM traversals (e.g., `.closest()`) and recalculating styles (e.g., `getComputedStyle()`) on every pixel movement causes significant layout thrashing and CPU overhead.
 **Action:** Always cache the current DOM target (`e.target`) and only perform expensive checks when the target element actually changes.
+## 2026-07-22 - [Hoist Static Large Objects]
+**Learning:** [Hoisting static datasets and configuration maps from React components drastically improves layout / GC thrashing by preventing re-allocation on every render cycle]
+**Action:** [Always hoist static objects, arrays, and maps outside of React component definitions when they don't depend on component state or props]
