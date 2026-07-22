@@ -54,10 +54,11 @@ const Projects = () => {
                         );
 
                         return (
-                            <div
+                            <button
                                 key={index}
-                                className="group cursor-pointer"
+                                className="group cursor-pointer text-left block w-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-retro-yellow focus-visible:ring-offset-2"
                                 onClick={() => handleOpenProject(project, index)}
+                                aria-label={`View details for ${project.title}`}
                             >
                                 <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                     {isOngoing && (
@@ -89,13 +90,13 @@ const Projects = () => {
                                     <div className="text-xs font-body text-zinc-500 truncate px-2">
                                         {project.title.toLowerCase()}.exe
                                     </div>
-                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                    <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+                                        <span className="text-xs font-bold uppercase underline group-hover:text-retro-orange">
                                             Load Cartridge
-                                        </button>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
+                            </button>
                         );
                     })}
                 </div>
