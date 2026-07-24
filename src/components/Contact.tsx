@@ -45,7 +45,7 @@ const Contact = () => {
         message: ''
     });
     const [selectedSubjectId, setSelectedSubjectId] = React.useState<string>('');
-    const [status, setStatus] = React.useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'error'>('idle');
+    const [status, setStatus] = React.useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'unfolding' | 'error'>('idle');
     const [emailError, setEmailError] = React.useState('');
     const nameInputRef = React.useRef<HTMLInputElement>(null);
     const [shouldFocus, setShouldFocus] = React.useState(false);
@@ -67,8 +67,11 @@ const Contact = () => {
     }, [status, shouldFocus]);
 
     const handleReset = () => {
-        setShouldFocus(true);
-        setStatus('idle');
+        setStatus('unfolding');
+        setTimeout(() => {
+            setStatus('idle');
+            setShouldFocus(true);
+        }, 1400);
     };
 
     const handleSubjectSelect = (option: typeof SUBJECT_OPTIONS[number]) => {
@@ -139,8 +142,8 @@ const Contact = () => {
                     setStatus('success');
                     setFormData({ name: '', email: '', subject: '', message: '' });
                     setSelectedSubjectId('');
-                }, 1000); // Increased wait for fly away
-            }, 1400); // Increased wait for fold
+                }, 1000); // Wait for airplane flight
+            }, 1500); // Wait for origami fold animation
 
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -152,32 +155,123 @@ const Contact = () => {
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 min-h-[520px] sm:min-h-[600px] flex items-center justify-center perspective-[2000px]" id="contact">
             <AnimatePresence mode="wait">
-                {status === 'success' ? (
+                {status === 'unfolding' ? (
                     <motion.div
-                        className="bg-retro-cream bento-card rounded-3xl p-6 sm:p-10 md:p-12 border-4 border-black text-center max-w-2xl w-full"
+                        className="bg-retro-cream bento-card rounded-3xl p-6 sm:p-10 border-4 border-black text-center max-w-xl w-full relative overflow-hidden flex flex-col items-center justify-center min-h-[420px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] perspective-[1000px]"
+                        initial={{ opacity: 0, scale: 0.85, y: 30 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                        key="unfolding-envelope"
+                    >
+                        {/* Air Mail Stripes Top & Bottom Border */}
+                        <div className="absolute top-0 left-0 right-0 h-3.5 bg-[repeating-linear-gradient(45deg,#ef4444,#ef4444_15px,#ffffff_15px,#ffffff_30px,#3b82f6_30px,#3b82f6_45px,#ffffff_45px,#ffffff_60px)] border-b-2 border-black"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-3.5 bg-[repeating-linear-gradient(45deg,#ef4444,#ef4444_15px,#ffffff_15px,#ffffff_30px,#3b82f6_30px,#3b82f6_45px,#ffffff_45px,#ffffff_60px)] border-t-2 border-black"></div>
+
+                        {/* Envelope Shell */}
+                        <div className="relative w-full max-w-md aspect-[1.6/1] bg-amber-50 border-4 border-black rounded-2xl flex flex-col justify-end shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden mt-4 mb-2">
+                            {/* Inner Envelope Pattern */}
+                            <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#ef4444,#ef4444_10px,#ffffff_10px,#ffffff_20px,#3b82f6_20px,#3b82f6_30px,#ffffff_30px,#ffffff_40px)] opacity-15 pointer-events-none"></div>
+
+                            {/* Stamp at Top-Right */}
+                            <div className="absolute top-3 right-3 w-11 h-13 bg-red-100 border-2 border-black flex flex-col items-center justify-center rotate-6 shadow-sm z-10">
+                                <span className="material-symbols-outlined text-xs text-red-600">local_post_office</span>
+                                <span className="font-pixel text-[6px] font-bold uppercase text-red-800">AIRMAIL</span>
+                            </div>
+
+                            {/* Postmark Seal in Top-Left */}
+                            <div className="absolute top-3 left-4 flex items-center gap-1.5 z-10">
+                                <div className="w-7 h-7 rounded-full bg-blue-600 border-2 border-black flex items-center justify-center text-white shadow-sm">
+                                    <span className="material-symbols-outlined text-[10px]">flight</span>
+                                </div>
+                                <span className="font-pixel text-[8px] font-bold uppercase tracking-wider text-black">PAR AVION</span>
+                            </div>
+
+                            {/* Envelope Top Flap (Opens UP 180 Degrees) */}
+                            <motion.div
+                                className="absolute top-0 left-0 right-0 h-1/2 bg-amber-100 border-b-4 border-black z-30 origin-top flex items-center justify-center shadow-md"
+                                style={{ clipPath: "polygon(0 0, 100% 0, 50% 100%)" }}
+                                initial={{ rotateX: 0 }}
+                                animate={{ rotateX: -180 }}
+                                transition={{ duration: 0.6, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                            >
+                                {/* Wax Seal Badge on Flap Tip */}
+                                <motion.div 
+                                    className="w-10 h-10 rounded-full bg-red-600 border-2 border-black shadow-md flex items-center justify-center text-white relative top-2"
+                                    animate={{ scale: [1, 1.25, 0.9, 1] }}
+                                    transition={{ duration: 0.4, delay: 0.25 }}
+                                >
+                                    <span className="material-symbols-outlined text-sm">lock_open</span>
+                                </motion.div>
+                            </motion.div>
+
+                            {/* Fresh Stationery Letter Sheet (Slides Up Out of Envelope) */}
+                            <motion.div
+                                className="w-[94%] mx-auto h-[90%] bg-retro-cream border-4 border-black rounded-t-xl p-4 flex flex-col justify-between shadow-2xl relative z-20"
+                                initial={{ y: 90, opacity: 0, scale: 0.8 }}
+                                animate={{ y: 0, opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.7, delay: 0.55, ease: [0.34, 1.56, 0.64, 1] }}
+                            >
+                                <div className="flex items-center justify-between border-b-2 border-black/20 pb-2">
+                                    <span className="font-pixel text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-black flex items-center gap-1.5">
+                                        <span className="w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
+                                        STATIONERY UNSEALED
+                                    </span>
+                                    <span className="font-mono text-[9px] uppercase text-zinc-500">READY</span>
+                                </div>
+
+                                <div className="my-3 space-y-2 text-center flex flex-col items-center">
+                                    <motion.div
+                                        className="w-12 h-12 rounded-full bg-yellow-100 border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] mb-1"
+                                        animate={{ rotate: [0, -12, 12, 0], scale: [1, 1.1, 1] }}
+                                        transition={{ repeat: Infinity, duration: 1.8 }}
+                                    >
+                                        <span className="material-symbols-outlined text-2xl text-yellow-800">edit_note</span>
+                                    </motion.div>
+                                    <span className="font-pixel text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                                        OPENING COMPOSE WINDOW...
+                                    </span>
+                                </div>
+
+                                {/* Simulated Paper Grid Lines */}
+                                <div className="space-y-1.5 w-full">
+                                    <div className="w-full h-1 bg-zinc-300 rounded-full animate-pulse"></div>
+                                    <div className="w-4/5 h-1 bg-zinc-300 rounded-full animate-pulse [animation-delay:150ms]"></div>
+                                    <div className="w-11/12 h-1 bg-zinc-300 rounded-full animate-pulse [animation-delay:300ms]"></div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                ) : status === 'success' ? (
+                    <motion.div
+                        className="bg-retro-cream bento-card rounded-3xl p-6 sm:p-10 md:p-12 border-4 border-black text-center max-w-2xl w-full relative overflow-hidden"
                         initial={{ opacity: 0, scale: 0.8, y: 50, rotateX: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
                         exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }} // Spring-like ease
+                        transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
                         key="success-message"
                     >
+                        {/* Air Mail Diagonal Stripes Border at Top */}
+                        <div className="absolute top-0 left-0 right-0 h-3 bg-[repeating-linear-gradient(45deg,#ef4444,#ef4444_15px,#ffffff_15px,#ffffff_30px,#3b82f6_30px,#3b82f6_45px,#ffffff_45px,#ffffff_60px)] border-b-2 border-black"></div>
+
                         <motion.div
-                            className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-green-100 text-green-600 mb-6 sm:mb-8 border-4 border-black"
+                            className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-600 mb-6 sm:mb-8 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
                         >
-                            <span className="material-symbols-outlined text-5xl">check</span>
+                            <span className="material-symbols-outlined text-5xl">mark_email_read</span>
                         </motion.div>
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Data Saved!</h3>
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Airmail Transmitted!</h3>
                         <p className="font-mono text-base sm:text-lg md:text-xl text-zinc-600 mb-8 sm:mb-10 leading-relaxed">
-                            Your message has been securely written to disk. I&apos;ll get back to you faster than a dial-up connection!
+                            Your paper airplane has safely landed in my inbox. I&apos;ll inspect your message and get back to you shortly!
                         </p>
                         <button
-                            onClick={() => setStatus('idle')}
-                            className="bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-xs sm:text-sm font-bold tracking-[0.18em] sm:tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                            onClick={handleReset}
+                            className="bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-xs sm:text-sm font-bold tracking-[0.18em] sm:tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-2 mx-auto"
                         >
-                            Write Another File
+                            <span className="material-symbols-outlined text-base">drafts</span>
+                            <span>Send Another Airmail</span>
                         </button>
                     </motion.div>
                 ) : (
@@ -198,48 +292,180 @@ const Contact = () => {
                             }
                         }}
                     >
-                        {/* Floppy Disk Animation (Visible only during saving) */}
+                        {/* Paper Airplane Launch Animation Overlay */}
                         <AnimatePresence>
                             {(status === 'folding' || status === 'sending') && (
                                 <motion.div
-                                    className="absolute inset-[-4px] bg-zinc-900 border-4 border-black z-50 rounded-3xl overflow-hidden flex items-center justify-center p-4 sm:p-8"
-                                    initial={{ y: "-100%" }}
-                                    animate={{ y: 0 }}
-                                    exit={{ y: "100%" }}
-                                    transition={{ duration: 0.7, ease: [0.32, 0, 0.67, 0] }}
+                                    className="absolute inset-[-4px] bg-retro-charcoal/95 border-4 border-black z-50 rounded-3xl overflow-hidden flex flex-col items-center justify-center p-4 sm:p-8 backdrop-blur-md"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ duration: 0.4 }}
                                 >
-                                    <div className="absolute inset-0 pattern-dots border-4 border-black opacity-10 pointer-events-none"></div>
+                                    <div className="absolute inset-0 pattern-dots border-4 border-black opacity-15 pointer-events-none"></div>
 
-                                    {/* Floppy Disk Drive Insert */}
-                                    <div className="w-full max-w-[280px] sm:max-w-xs aspect-square overflow-hidden bg-blue-600 border-[6px] sm:border-8 border-t-0 border-black rounded-b-xl sm:rounded-b-3xl flex flex-col items-center justify-between p-2 pt-0 sm:p-4 sm:pt-0 relative mb-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                                        
-                                        {/* Top metallic slider part */}
-                                        <div className="w-[70%] h-[35%] bg-zinc-300 border-x-[6px] sm:border-x-8 border-b-[6px] sm:border-b-8 border-black rounded-b-lg flex justify-end items-center px-2 sm:px-4 shadow-inner">
-                                            <div className="w-[30%] h-[60%] bg-zinc-800 rounded-sm shadow-inner relative left-[-10%] sm:left-[-20%]"></div>
+                                    <div className="relative flex flex-col items-center justify-center">
+                                        {/* Pixel Particle Trail */}
+                                        <AnimatePresence>
+                                            {status === 'sending' && (
+                                                <motion.div 
+                                                    className="absolute -bottom-10 -left-14 flex gap-2 pointer-events-none"
+                                                    initial={{ opacity: 0, scale: 0.5 }}
+                                                    animate={{ opacity: 1, scale: 1.2 }}
+                                                    exit={{ opacity: 0 }}
+                                                >
+                                                    <motion.span 
+                                                        animate={{ y: [0, 30, 60], x: [0, -10, -20], opacity: [1, 0.7, 0], scale: [1, 1.8, 2.5] }} 
+                                                        transition={{ repeat: Infinity, duration: 0.5, ease: "easeOut" }} 
+                                                        className="w-4 h-4 bg-retro-cream border-2 border-black rounded-full block" 
+                                                    />
+                                                    <motion.span 
+                                                        animate={{ y: [0, 35, 70], x: [0, -15, -30], opacity: [1, 0.6, 0], scale: [0.8, 1.5, 2.2] }} 
+                                                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.08, ease: "easeOut" }} 
+                                                        className="w-5 h-5 bg-retro-yellow border-2 border-black rounded-full block" 
+                                                    />
+                                                    <motion.span 
+                                                        animate={{ y: [0, 40, 80], x: [0, -20, -40], opacity: [1, 0.5, 0], scale: [0.6, 1.3, 2.0] }} 
+                                                        transition={{ repeat: Infinity, duration: 0.7, delay: 0.16, ease: "easeOut" }} 
+                                                        className="w-4 h-4 bg-red-400 border-2 border-black rounded-full block" 
+                                                    />
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        {/* 3D Origami Paper Airplane Folding & Launch Animation */}
+                                        <div className="relative w-52 h-52 sm:w-64 sm:h-64 flex items-center justify-center">
+                                            {status === 'folding' ? (
+                                                <motion.div
+                                                    className="w-full h-full flex items-center justify-center"
+                                                    initial={{ scale: 0.9, rotateX: 20 }}
+                                                    animate={{
+                                                        scale: [0.9, 1, 0.95, 1],
+                                                        rotateX: [20, 45, 15, 0],
+                                                        rotateZ: [0, -10, 5, 0]
+                                                    }}
+                                                    transition={{ duration: 1.5, ease: "easeInOut" }}
+                                                >
+                                                    <svg viewBox="0 0 200 200" className="w-full h-full filter drop-shadow-[8px_8px_0px_rgba(0,0,0,0.8)]" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        {/* Airmail Stripes near tail edge (fades in as paper folds) */}
+                                                        <motion.g
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: [0, 0, 1, 1] }}
+                                                            transition={{ duration: 1.5, times: [0, 0.5, 0.8, 1] }}
+                                                        >
+                                                            <path d="M 30 110 L 48 150 L 58 145 L 40 105 Z" fill="#EF4444" stroke="#000" strokeWidth="2" />
+                                                            <path d="M 40 105 L 58 145 L 68 140 L 50 100 Z" fill="#3B82F6" stroke="#000" strokeWidth="2" />
+                                                        </motion.g>
+                                                        
+                                                        {/* Shaded Left Wing Fold */}
+                                                        <motion.path 
+                                                            animate={{
+                                                                d: [
+                                                                    "M 30 30 L 30 170 L 170 170 L 170 30 Z", // Step 1: Flat Document Sheet
+                                                                    "M 100 25 L 30 100 L 100 170 L 170 30 Z", // Step 2: Top Corners Fold Inward
+                                                                    "M 175 40 L 25 105 L 90 140 Z"           // Step 3: Airplane Left Wing
+                                                                ]
+                                                            }}
+                                                            transition={{ duration: 1.5, times: [0, 0.45, 0.9], ease: "easeInOut" }}
+                                                            fill="#E5E0D8" 
+                                                            stroke="#000" 
+                                                            strokeWidth="5" 
+                                                            strokeLinejoin="round" 
+                                                        />
+                                                        
+                                                        {/* Center Keel / Body */}
+                                                        <motion.path 
+                                                            animate={{
+                                                                d: [
+                                                                    "M 100 30 L 100 170 L 100 170 L 100 30 Z",
+                                                                    "M 100 25 L 100 170 L 100 170 L 100 25 Z",
+                                                                    "M 175 40 L 90 140 L 105 175 L 125 130 Z"
+                                                                ]
+                                                            }}
+                                                            transition={{ duration: 1.5, times: [0, 0.45, 0.9], ease: "easeInOut" }}
+                                                            fill="#D4CEBF" 
+                                                            stroke="#000" 
+                                                            strokeWidth="5" 
+                                                            strokeLinejoin="round" 
+                                                        />
+
+                                                        {/* Highlighted Right Wing */}
+                                                        <motion.path 
+                                                            animate={{
+                                                                d: [
+                                                                    "M 100 30 L 170 30 L 170 170 L 100 170 Z",
+                                                                    "M 100 25 L 170 100 L 170 170 L 100 170 Z",
+                                                                    "M 175 40 L 125 130 L 170 110 Z"
+                                                                ]
+                                                            }}
+                                                            transition={{ duration: 1.5, times: [0, 0.45, 0.9], ease: "easeInOut" }}
+                                                            fill="#FFFDF5" 
+                                                            stroke="#000" 
+                                                            strokeWidth="5" 
+                                                            strokeLinejoin="round" 
+                                                        />
+
+                                                        {/* Center Crease Line */}
+                                                        <motion.path 
+                                                            d="M 175 40 L 90 140" 
+                                                            stroke="#000" 
+                                                            strokeWidth="4" 
+                                                            strokeLinecap="round"
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: [0, 0.4, 1] }}
+                                                            transition={{ duration: 1.5 }}
+                                                        />
+
+                                                        {/* Text lines on initial flat letter sheet */}
+                                                        <motion.g
+                                                            initial={{ opacity: 1 }}
+                                                            animate={{ opacity: [1, 0.5, 0, 0] }}
+                                                            transition={{ duration: 1.5, times: [0, 0.35, 0.6, 1] }}
+                                                        >
+                                                            <line x1="50" y1="65" x2="150" y2="65" stroke="#71717A" strokeWidth="4" strokeDasharray="6 4" strokeLinecap="round" />
+                                                            <line x1="50" y1="90" x2="135" y2="90" stroke="#71717A" strokeWidth="4" strokeDasharray="6 4" strokeLinecap="round" />
+                                                            <line x1="50" y1="115" x2="155" y2="115" stroke="#71717A" strokeWidth="4" strokeDasharray="6 4" strokeLinecap="round" />
+                                                            <line x1="50" y1="140" x2="110" y2="140" stroke="#71717A" strokeWidth="4" strokeDasharray="6 4" strokeLinecap="round" />
+                                                        </motion.g>
+                                                    </svg>
+                                                </motion.div>
+                                            ) : (
+                                                <motion.div
+                                                    className="w-full h-full flex items-center justify-center"
+                                                    animate={{
+                                                        x: [0, -40, 650],
+                                                        y: [0, 30, -550],
+                                                        rotateZ: [-10, -30, 35],
+                                                        scale: [1, 1.15, 0.4],
+                                                        opacity: [1, 1, 0]
+                                                    }}
+                                                    transition={{ duration: 0.85, ease: [0.4, 0, 0.2, 1] }}
+                                                >
+                                                    <svg viewBox="0 0 200 200" className="w-full h-full filter drop-shadow-[8px_8px_0px_rgba(0,0,0,0.8)]" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M 30 110 L 48 150 L 58 145 L 40 105 Z" fill="#EF4444" stroke="#000" strokeWidth="2" />
+                                                        <path d="M 40 105 L 58 145 L 68 140 L 50 100 Z" fill="#3B82F6" stroke="#000" strokeWidth="2" />
+                                                        <path d="M 175 40 L 25 105 L 90 140 Z" fill="#E5E0D8" stroke="#000" strokeWidth="5" strokeLinejoin="round" />
+                                                        <path d="M 175 40 L 90 140 L 105 175 L 125 130 Z" fill="#D4CEBF" stroke="#000" strokeWidth="5" strokeLinejoin="round" />
+                                                        <path d="M 175 40 L 125 130 L 170 110 Z" fill="#FFFDF5" stroke="#000" strokeWidth="5" strokeLinejoin="round" />
+                                                        <path d="M 175 40 L 90 140" stroke="#000" strokeWidth="4" strokeLinecap="round" />
+                                                    </svg>
+                                                </motion.div>
+                                            )}
                                         </div>
 
-                                        {/* Bottom Label area */}
-                                        <div className="w-[90%] h-[50%] bg-zinc-50 border-[6px] sm:border-8 border-b-0 border-black rounded-t-xl p-3 sm:p-5 flex flex-col justify-between shadow-inner relative top-[10px] sm:top-[20px]">
-                                            <div className="w-full flex justify-between items-start border-b-4 border-black pb-2 sm:pb-3">
-                                                <div className="flex flex-col">
-                                                    <span className="font-pixel text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-black">A:\CAPACITY 1.44MB</span>
-                                                    <span className="font-pixel text-[7px] sm:text-[8px] uppercase text-zinc-500 mt-1">HD DS DISKETTE</span>
-                                                </div>
-                                                <span className="w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded-full border-[3px] border-black"></span>
-                                            </div>
-
-                                            <div className="space-y-2 w-full mt-2 lg:mt-3">
-                                                <div className="w-full h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
-                                                <div className="w-4/5 h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
-                                                <div className="w-[90%] h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm"></div>
-                                                <div className="w-[85%] h-1 sm:h-2 bg-zinc-200 border border-black/10 rounded-sm hidden sm:block"></div>
-                                            </div>
-
-                                            <div className="absolute -top-7 -right-2 sm:-top-8 sm:-right-4 flex items-center justify-center bg-retro-yellow border-4 border-black p-2 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-10 w-[70px] sm:w-[90px]">
-                                                <span className="material-symbols-outlined text-black font-bold animate-spin text-sm sm:text-base mr-1">sync</span>
-                                                <span className="font-pixel text-[8px] sm:text-[10px] font-bold uppercase text-black tracking-[0.1em] animate-pulse">SAVING</span>
-                                            </div>
-                                        </div>
+                                        {/* Status Badge */}
+                                        <motion.div 
+                                            className="mt-6 bg-retro-cream border-4 border-black px-5 py-3 rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3 z-10"
+                                            initial={{ y: 20, opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                        >
+                                            <span className="material-symbols-outlined text-black font-bold animate-spin text-xl">
+                                                {status === 'sending' ? 'near_me' : 'flight_takeoff'}
+                                            </span>
+                                            <span className="font-pixel text-xs sm:text-sm font-bold uppercase tracking-wider text-black">
+                                                {status === 'sending' ? 'AIRMAIL IN FLIGHT...' : 'FOLDING PAPER AIRPLANE...'}
+                                            </span>
+                                        </motion.div>
                                     </div>
                                 </motion.div>
                             )}
@@ -390,9 +616,11 @@ const Contact = () => {
                                             disabled={isSaving}
                                         >
                                             <span className="flex items-center justify-center gap-2 sm:gap-3">
-                                                <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>save</span>
+                                                <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>
+                                                    {isSaving ? 'flight_takeoff' : 'near_me'}
+                                                </span>
                                                 <span>
-                                                    {status === 'error' ? 'Disk Error. Retry.' : isSaving ? 'Writing To Disk...' : 'Save to Disk'}
+                                                    {status === 'error' ? 'Transmission Error. Retry.' : isSaving ? 'Folding Airmail...' : 'Launch Airmail'}
                                                 </span>
                                                 {isSaving ? (
                                                     <span className="inline-flex items-end gap-[2px] h-3">
