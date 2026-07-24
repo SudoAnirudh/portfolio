@@ -4,12 +4,47 @@ import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { submitContactForm } from '@/app/actions/contact';
 
+const SUBJECT_OPTIONS = [
+    {
+        id: 'internship',
+        label: 'Job / Internship',
+        subject: 'Internship / Full-time Opportunity',
+        starter: "Hi Anirudh,\n\nI am reaching out regarding a Job / Internship opportunity at [Company Name] for the role of [Position]. We were impressed by your profile and would love to connect!\n\nBest regards,"
+    },
+    {
+        id: 'collaboration',
+        label: 'Collaboration',
+        subject: 'Project Collaboration',
+        starter: "Hi Anirudh,\n\nI saw your work and would love to collaborate with you on [Project Name / Topic]. Let's discuss how we can work together!\n\nBest regards,"
+    },
+    {
+        id: 'freelance',
+        label: 'Freelance',
+        subject: 'Freelance / Consulting Project',
+        starter: "Hi Anirudh,\n\nI have a project in mind involving [Brief Description] and would like to inquire about your availability and rates.\n\nBest regards,"
+    },
+    {
+        id: 'inquiry',
+        label: 'General Inquiry',
+        subject: 'General Inquiry',
+        starter: "Hi Anirudh,\n\nI wanted to get in touch with you regarding...\n\nBest regards,"
+    },
+    {
+        id: 'other',
+        label: 'Other',
+        subject: 'Other Inquiry',
+        starter: "Hi Anirudh,\n\n"
+    }
+];
+
 const Contact = () => {
     const [formData, setFormData] = React.useState({
         name: '',
         email: '',
+        subject: '',
         message: ''
     });
+    const [selectedSubjectId, setSelectedSubjectId] = React.useState<string>('');
     const [status, setStatus] = React.useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'error'>('idle');
     const [emailError, setEmailError] = React.useState('');
     const nameInputRef = React.useRef<HTMLInputElement>(null);
@@ -34,6 +69,21 @@ const Contact = () => {
     const handleReset = () => {
         setShouldFocus(true);
         setStatus('idle');
+    };
+
+    const handleSubjectSelect = (option: typeof SUBJECT_OPTIONS[number]) => {
+        setSelectedSubjectId(option.id);
+        setFormData(prev => {
+            const isStarterOrEmpty = prev.message === '' ||
+                SUBJECT_OPTIONS.some(opt => opt.starter === prev.message) ||
+                prev.message.startsWith('Hi Anirudh,');
+
+            return {
+                ...prev,
+                subject: option.subject,
+                message: isStarterOrEmpty ? option.starter : prev.message
+            };
+        });
     };
 
     const validateEmail = (email: string) => {
@@ -87,7 +137,8 @@ const Contact = () => {
                 setStatus('sending');
                 setTimeout(() => {
                     setStatus('success');
-                    setFormData({ name: '', email: '', message: '' });
+                    setFormData({ name: '', email: '', subject: '', message: '' });
+                    setSelectedSubjectId('');
                 }, 1000); // Increased wait for fly away
             }, 1400); // Increased wait for fold
 
@@ -290,6 +341,36 @@ const Contact = () => {
                                                 required
                                             />
                                             {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
+                                        </div>
+                                        <div>
+                                            <label className="block font-pixel text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-600 mb-2">
+                                                SELECT SUBJECT:
+                                            </label>
+                                            <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2">
+                                                {SUBJECT_OPTIONS.map((opt) => (
+                                                    <button
+                                                        key={opt.id}
+                                                        type="button"
+                                                        onClick={() => handleSubjectSelect(opt)}
+                                                        className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-mono font-bold border-2 transition-all rounded-sm ${
+                                                            selectedSubjectId === opt.id
+                                                                ? 'bg-black text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] scale-[1.02]'
+                                                                : 'bg-zinc-100 text-zinc-800 border-black/30 hover:border-black hover:bg-zinc-200'
+                                                        }`}
+                                                    >
+                                                        {opt.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                            <input
+                                                id="subject"
+                                                name="subject"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                className="w-full bg-transparent border-b-2 border-black/20 p-2.5 sm:p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 text-sm sm:text-base"
+                                                placeholder="ENTER SUBJECT (OR SELECT ABOVE)..."
+                                                type="text"
+                                            />
                                         </div>
                                         <div>
                                             <label htmlFor="message" className="sr-only">Message</label>

@@ -11,7 +11,7 @@ const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_to_prevent
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 const MY_EMAIL = portfolioData.personal.email;
 
-export async function submitContactForm(formData: { name: string; email: string; message: string }) {
+export async function submitContactForm(formData: { name: string; email: string; message: string; subject?: string }) {
     // SECURITY: Ensure input types are strictly strings to prevent TypeErrors from malicious payloads
     if (typeof formData.name !== 'string' || typeof formData.email !== 'string' || typeof formData.message !== 'string') {
         return { success: false, error: 'Invalid input format.' };
@@ -20,6 +20,7 @@ export async function submitContactForm(formData: { name: string; email: string;
     const name = formData.name.trim();
     const email = formData.email.trim();
     const message = formData.message.trim();
+    const subject = typeof formData.subject === 'string' ? formData.subject.trim() : '';
 
     if (!name || !email || !message) {
         return { success: false, error: 'All fields are required.' };
@@ -41,18 +42,20 @@ export async function submitContactForm(formData: { name: string; email: string;
     const safeName = escapeHTML(name);
     const safeEmail = escapeHTML(email);
     const safeMessage = escapeHTML(message);
+    const safeSubject = escapeHTML(subject);
 
     try {
         // 1. Send notification to YOU (the portfolio owner)
         await resend.emails.send({
             from: FROM_EMAIL,
             to: MY_EMAIL,
-            subject: `New Portfolio Message from ${name}`,
+            subject: subject ? `[Portfolio] ${subject} - from ${name}` : `New Portfolio Message from ${name}`,
             replyTo: email,
             html: `
                 <h3>New Message from Portfolio Contact Form</h3>
                 <p><strong>Name:</strong> ${safeName}</p>
                 <p><strong>Email:</strong> ${safeEmail}</p>
+                ${safeSubject ? `<p><strong>Subject:</strong> ${safeSubject}</p>` : ''}
                 <p><strong>Message:</strong></p>
                 <p>${safeMessage.replace(/\n/g, '<br>')}</p>
             `,
