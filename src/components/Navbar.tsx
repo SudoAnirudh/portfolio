@@ -6,14 +6,24 @@ const Navbar = () => {
     const [scrollProgress, setScrollProgress] = React.useState(0);
 
     React.useEffect(() => {
-        const handleScroll = () => {
-            const totalScroll = document.documentElement.scrollTop;
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scroll = `${totalScroll / windowHeight}`;
-            setScrollProgress(Number(scroll));
-        }
+        let ticking = false;
 
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const totalScroll = document.documentElement.scrollTop;
+                    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    // ⚡ Bolt: Prevent division by zero and unnecessary string conversions
+                    const scroll = windowHeight > 0 ? totalScroll / windowHeight : 0;
+                    setScrollProgress(scroll);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        // ⚡ Bolt: Add passive: true and throttle with requestAnimationFrame
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
