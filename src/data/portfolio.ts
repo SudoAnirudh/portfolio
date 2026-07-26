@@ -79,6 +79,7 @@ export interface Project {
         label: string;
         value: string;
     }[];
+    category?: string[];
     techStack: string[];
 }
 
@@ -224,6 +225,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Region", value: "Multilingual" },
                 { label: "Status", value: "Prototype Ready" }
             ],
+            category: ["Mobile", "AI & ML"],
             techStack: ["Flutter", "TensorFlow Lite", "Python"]
         },
         {
@@ -238,6 +240,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "Deep Learning" },
                 { label: "Status", value: "Open Source" }
             ],
+            category: ["AI & ML"],
             techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
@@ -253,6 +256,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "LLM + Vector Search" },
                 { label: "Status", value: "Ongoing 🚀" }
             ],
+            category: ["AI & ML", "Full-Stack"],
             techStack: ["Next.js", "FastAPI", "Supabase", "OpenAI", "pgvector", "Python"]
         },
         {
@@ -267,6 +271,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "RapidFuzz + Tenacity" },
                 { label: "Status", value: "Completed 🚀" }
             ],
+            category: ["Full-Stack"],
             techStack: ["Python", "PostgreSQL", "Streamlit", "Docker", "RapidFuzz", "Tenacity"]
         },
         {
@@ -281,6 +286,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Status", value: "Ongoing (Beta) 🛠️" },
                 { label: "Engine", value: "Flutter + React" }
             ],
+            category: ["Mobile", "Full-Stack"],
             techStack: ["Flutter", "React", "Firebase Auth", "Supabase", "PostgreSQL", "Riverpod"]
         },
         {
@@ -295,6 +301,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "Gemini Flash 2.0" },
                 { label: "Status", value: "Completed 🚀" }
             ],
+            category: ["Mobile", "AI & ML"],
             techStack: ["Kotlin", "Jetpack Compose", "Firebase", "Gemini API", "Android Studio"]
         },
         {
@@ -309,6 +316,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "Gemini + Celery" },
                 { label: "Status", value: "Completed 🚀" }
             ],
+            category: ["AI & ML", "Full-Stack"],
             techStack: ["Next.js", "FastAPI", "Celery", "PostgreSQL", "ChromaDB", "Redis", "Gemini API", "NVIDIA NIM"]
         },
         {
@@ -323,6 +331,7 @@ export const portfolioData: PortfolioData = {
                 { label: "Engine", value: "NVIDIA + Groq" },
                 { label: "Status", value: "Completed 🚀" }
             ],
+            category: ["AI & ML"],
             techStack: ["Python", "NVIDIA NIM", "Groq API", "Pytest"]
         }
     ],

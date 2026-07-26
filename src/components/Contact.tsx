@@ -47,9 +47,25 @@ const Contact = () => {
     const [selectedSubjectId, setSelectedSubjectId] = React.useState<string>('');
     const [status, setStatus] = React.useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'unfolding' | 'error'>('idle');
     const [emailError, setEmailError] = React.useState('');
+    const [toastData, setToastData] = React.useState<{ title: string; text: string } | null>(null);
     const nameInputRef = React.useRef<HTMLInputElement>(null);
     const [shouldFocus, setShouldFocus] = React.useState(false);
     const isSaving = status === 'submitting' || status === 'folding' || status === 'sending';
+
+    const handleCopy = (text: string, label: string) => {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text);
+        } else {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+        }
+        setToastData({ title: `${label} COPIED TO CLIPBOARD!`, text });
+        setTimeout(() => setToastData(null), 2500);
+    };
 
     const disposableDomains = [
         'tempmail.com', 'throwawaymail.com', 'mailinator.com', 'guerrillamail.com', 'yopmail.com',
@@ -495,42 +511,106 @@ const Contact = () => {
                             <div className="grid lg:grid-cols-2">
                                 {/* Information Sidebar */}
                                 <div className="bg-zinc-200 p-5 sm:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-black border-dashed flex flex-col z-0">
-                                    <div className="mb-8">
-                                        <h4 className="font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                                            <span className="material-symbols-outlined">schedule</span>
-                                            Availability
-                                        </h4>
-                                        <div className="bg-retro-cream border-2 border-black p-3 space-y-2 text-[11px] sm:text-xs font-pixel uppercase tracking-wider">
-                                            <div className="flex justify-between gap-2">
-                                                <span className="text-zinc-600">Status</span>
-                                                <span className="text-retro-charcoal text-right">Open for Internships</span>
-                                            </div>
-                                            <div className="flex justify-between gap-2">
-                                                <span className="text-zinc-600">Preferred Role</span>
-                                                <span className="text-retro-charcoal text-right">AI/ML Intern</span>
-                                            </div>
-                                            <div className="flex justify-between gap-2">
-                                                <span className="text-zinc-600">Timezone</span>
-                                                <span className="text-retro-charcoal text-right">IST (UTC+5:30)</span>
+                                    <div className="space-y-6">
+                                        {/* Availability & Telemetry */}
+                                        <div>
+                                            <h4 className="font-bold uppercase tracking-widest mb-3 flex items-center gap-2 text-xs sm:text-sm">
+                                                <span className="material-symbols-outlined text-base">schedule</span>
+                                                Availability & Signals
+                                            </h4>
+                                            <div className="bg-retro-cream border-2 border-black p-3.5 space-y-2 text-[11px] sm:text-xs font-pixel uppercase tracking-wider shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                                <div className="flex justify-between gap-2 border-b border-black/10 pb-1.5">
+                                                    <span className="text-zinc-600">Status</span>
+                                                    <span className="text-retro-charcoal font-bold text-right flex items-center gap-1">
+                                                        <span className="w-2 h-2 rounded-full bg-retro-green animate-pulse inline-block"></span>
+                                                        Open for Internships
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between gap-2 border-b border-black/10 pb-1.5">
+                                                    <span className="text-zinc-600">Preferred Role</span>
+                                                    <span className="text-retro-charcoal text-right font-bold">AI/ML Intern</span>
+                                                </div>
+                                                <div className="flex justify-between gap-2 border-b border-black/10 pb-1.5">
+                                                    <span className="text-zinc-600">Location</span>
+                                                    <span className="text-retro-charcoal text-right">Kozhikode, KL 🇮🇳</span>
+                                                </div>
+                                                <div className="flex justify-between gap-2">
+                                                    <span className="text-zinc-600">Response Rate</span>
+                                                    <span className="text-retro-charcoal text-right">&lt; 24 Hours</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <h4 className="font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                                            <span className="material-symbols-outlined">alternate_email</span>
-                                            Connect
-                                        </h4>
-                                        <div className="flex flex-wrap gap-3 sm:gap-4">
-                                            <a href={portfolioData.personal.social.github} aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined" aria-hidden="true">code</span>
-                                            </a>
-                                            <a href={portfolioData.personal.social.linkedin} aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined" aria-hidden="true">work</span>
-                                            </a>
-                                            <a href={`mailto:${portfolioData.personal.email}`} aria-label="Send an Email" className="w-12 h-12 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                                                <span className="material-symbols-outlined" aria-hidden="true">send</span>
-                                            </a>
+                                        {/* Connect & Socials */}
+                                        <div>
+                                            <h4 className="font-bold uppercase tracking-widest mb-3 flex items-center gap-2 text-xs sm:text-sm">
+                                                <span className="material-symbols-outlined text-base">alternate_email</span>
+                                                Connect & Channels
+                                            </h4>
+                                            <div className="flex flex-wrap gap-2.5 mb-3">
+                                                <a href={portfolioData.personal.social.github} aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border-2 border-black flex items-center justify-center bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" title="GitHub">
+                                                    <span className="material-symbols-outlined text-lg" aria-hidden="true">code</span>
+                                                </a>
+                                                <a href={portfolioData.personal.social.linkedin} aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer" className="w-10 h-10 border-2 border-black flex items-center justify-center bg-white hover:bg-blue-700 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" title="LinkedIn">
+                                                    <span className="material-symbols-outlined text-lg" aria-hidden="true">work</span>
+                                                </a>
+                                                <a href={`mailto:${portfolioData.personal.email}`} aria-label="Send an Email" className="w-10 h-10 border-2 border-black flex items-center justify-center bg-white hover:bg-red-500 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" title="Direct Email">
+                                                    <span className="material-symbols-outlined text-lg" aria-hidden="true">send</span>
+                                                </a>
+                                                {portfolioData.personal.social.buyMeACoffee && (
+                                                    <a href={portfolioData.personal.social.buyMeACoffee} aria-label="Buy Me A Coffee" target="_blank" rel="noopener noreferrer" className="h-10 px-3 border-2 border-black flex items-center gap-1.5 bg-retro-yellow hover:bg-yellow-400 transition-all font-pixel text-[10px] uppercase font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" title="Buy Me A Coffee">
+                                                        <span className="material-symbols-outlined text-base">local_cafe</span>
+                                                        <span>Fuel Code</span>
+                                                    </a>
+                                                )}
+                                            </div>
+                                            
+                                            {/* Quick Action Buttons */}
+                                            <div className="space-y-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleCopy(portfolioData.personal.email, "EMAIL")}
+                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group"
+                                                >
+                                                    <span className="truncate mr-2 font-mono text-[11px] text-zinc-700 font-bold group-hover:text-black">
+                                                        {portfolioData.personal.email}
+                                                    </span>
+                                                    <span className="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-xs text-[9px] shrink-0">
+                                                        <span className="material-symbols-outlined text-xs">content_copy</span>
+                                                        COPY
+                                                    </span>
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleCopy(portfolioData.personal.phone, "PHONE")}
+                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group"
+                                                >
+                                                    <span className="truncate mr-2 font-mono text-[11px] text-zinc-700 font-bold group-hover:text-black">
+                                                        {portfolioData.personal.phone}
+                                                    </span>
+                                                    <span className="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-xs text-[9px] shrink-0">
+                                                        <span className="material-symbols-outlined text-xs">call</span>
+                                                        COPY
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Vintage Airmail Stamp & Badge */}
+                                        <div className="pt-2 border-t-2 border-black/10 flex items-center justify-between gap-3">
+                                            <div className="text-[10px] font-pixel text-zinc-500 uppercase tracking-wider leading-relaxed">
+                                                <div className="text-black font-bold flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-sm text-retro-orange">mark_email_read</span>
+                                                    AIRMAIL SYSTEM v2.0
+                                                </div>
+                                                <div>SECURE RSA DIRECT FORM</div>
+                                            </div>
+                                            <div className="w-16 h-20 border-2 border-dashed border-black/40 bg-retro-white p-1.5 flex flex-col items-center justify-between text-center select-none rotate-2 hover:rotate-0 transition-transform shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)]">
+                                                <span className="material-symbols-outlined text-retro-orange text-lg">flight_takeoff</span>
+                                                <span className="font-pixel text-[7px] text-zinc-600 uppercase leading-tight font-bold">AIRMAIL<br/>CERTIFIED</span>
+                                                <span className="font-mono text-[8px] font-bold text-black border-t border-black/30 w-full pt-0.5">673001</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -635,6 +715,25 @@ const Contact = () => {
                                 </div>
                             </div>
                         </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Retro Copy Toast Alert */}
+            <AnimatePresence>
+                {toastData && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed bottom-6 right-6 z-50 bg-retro-yellow border-4 border-black px-4 py-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex items-center gap-3"
+                    >
+                        <span className="material-symbols-outlined text-black font-bold text-xl">content_paste_check</span>
+                        <div>
+                            <p className="font-pixel text-xs font-bold uppercase text-black">{toastData.title}</p>
+                            <p className="font-mono text-[11px] text-zinc-800">{toastData.text}</p>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
