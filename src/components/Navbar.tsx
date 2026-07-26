@@ -6,15 +6,32 @@ const Navbar = () => {
     const [scrollProgress, setScrollProgress] = React.useState(0);
 
     React.useEffect(() => {
-        const handleScroll = () => {
-            const totalScroll = document.documentElement.scrollTop;
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scroll = `${totalScroll / windowHeight}`;
-            setScrollProgress(Number(scroll));
-        }
+        let ticking = false;
+        let rafId: number;
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            if (!ticking) {
+                rafId = window.requestAnimationFrame(() => {
+                    const totalScroll = document.documentElement.scrollTop;
+                    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    // Prevent division by zero if windowHeight is 0
+                    const scrollProgressValue = windowHeight > 0 ? totalScroll / windowHeight : 0;
+                    setScrollProgress(scrollProgressValue);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        // ⚡ Bolt Performance Optimization:
+        // Added { passive: true } to the scroll listener to prevent it from blocking the main thread,
+        // and throttled the state updates using requestAnimationFrame to synchronize with screen refreshes
+        // and avoid layout thrashing on high-frequency scroll events.
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            cancelAnimationFrame(rafId);
+        };
     }, []);
 
     return (

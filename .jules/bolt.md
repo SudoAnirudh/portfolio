@@ -16,3 +16,6 @@
 ## 2026-07-17 - [Cache DOM target in high-frequency event listeners]
 **Learning:** In high-frequency event listeners like `mousemove`, constantly re-evaluating expensive DOM traversals (e.g., `.closest()`) and recalculating styles (e.g., `getComputedStyle()`) on every pixel movement causes significant layout thrashing and CPU overhead.
 **Action:** Always cache the current DOM target (`e.target`) and only perform expensive checks when the target element actually changes.
+## 2026-07-26 - Optimize scroll listener in Navbar with requestAnimationFrame
+**Learning:** High-frequency event listeners like 'scroll' that trigger React state updates can cause layout thrashing and performance issues.
+**Action:** Always throttle the updates using requestAnimationFrame to synchronize with screen refreshes, and use { passive: true } on the event listener to avoid blocking the main thread, remembering to cancelAnimationFrame on unmount.
