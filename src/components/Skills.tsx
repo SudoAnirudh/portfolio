@@ -232,12 +232,26 @@ const Skills = () => {
                                     {/* Footer Info */}
                                     <div className="flex items-center justify-between text-[9px] font-pixel text-zinc-500 uppercase pt-2 border-t border-black/10">
                                         <span>BUILD: STABLE</span>
-                                        <span>SLOT: B2</span>
+                                        <span>MATCHING PROJECTS: {portfolioData.projects.filter(p => p.techStack?.some(t => t.toLowerCase().includes(selectedSkill.toLowerCase()) || selectedSkill.toLowerCase().includes(t.toLowerCase()))).length}</span>
                                     </div>
                                 </div>
 
-                                {/* Close Eject Button */}
-                                <div className="mt-5 flex justify-end">
+                                {/* Modal Actions */}
+                                <div className="mt-5 flex justify-between items-center gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setIsModalOpen(false);
+                                            const projectsEl = document.getElementById('projects');
+                                            if (projectsEl) {
+                                                projectsEl.scrollIntoView({ behavior: 'smooth' });
+                                            }
+                                            window.dispatchEvent(new CustomEvent('filter-by-skill', { detail: { skill: selectedSkill } }));
+                                        }}
+                                        className="px-3.5 py-2 bg-black text-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-retro-charcoal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all flex items-center gap-1.5 cursor-pointer"
+                                    >
+                                        <span className="material-symbols-outlined text-sm">filter_alt</span>
+                                        Filter Projects
+                                    </button>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
                                         className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all text-black cursor-pointer"

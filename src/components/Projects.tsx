@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioData, Project } from '@/data/portfolio';
@@ -14,17 +14,48 @@ const CATEGORIES = [
 
 const Projects = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+    const [activeSkillFilter, setActiveSkillFilter] = useState<string | null>(null);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+    useEffect(() => {
+        const handleFilterEvent = (e: Event) => {
+            const customEvent = e as CustomEvent<{ skill: string }>;
+            if (customEvent.detail && customEvent.detail.skill) {
+                setActiveSkillFilter(customEvent.detail.skill);
+            }
+        };
+        window.addEventListener('filter-by-skill', handleFilterEvent);
+        return () => window.removeEventListener('filter-by-skill', handleFilterEvent);
+    }, []);
+
+    const isSkillMatch = (project: Project, skill: string) => {
+        const query = skill.toLowerCase().trim();
+        return project.techStack?.some(tech => {
+            const t = tech.toLowerCase().trim();
+            return t === query || t.includes(query) || query.includes(t);
+        });
+    };
+
     const filteredProjects = portfolioData.projects.filter(project => {
-        if (selectedCategory === 'ALL') return true;
-        return project.category?.includes(selectedCategory);
+        const matchesCategory = selectedCategory === 'ALL' || project.category?.includes(selectedCategory);
+        const matchesSkill = !activeSkillFilter || isSkillMatch(project, activeSkillFilter);
+        return matchesCategory && matchesSkill;
     });
 
     const getCategoryCount = (catId: string) => {
-        if (catId === 'ALL') return portfolioData.projects.length;
-        return portfolioData.projects.filter(p => p.category?.includes(catId)).length;
+        const projectsInCat = portfolioData.projects.filter(p => catId === 'ALL' || p.category?.includes(catId));
+        if (!activeSkillFilter) return projectsInCat.length;
+        return projectsInCat.filter(p => isSkillMatch(p, activeSkillFilter)).length;
+    };
+
+    const handleSkillTagClick = (e: React.MouseEvent, tech: string) => {
+        e.stopPropagation();
+        if (activeSkillFilter?.toLowerCase() === tech.toLowerCase()) {
+            setActiveSkillFilter(null);
+        } else {
+            setActiveSkillFilter(tech);
+        }
     };
 
     const handleOpenProject = (project: Project) => {
@@ -92,6 +123,22 @@ const Projects = () => {
                             </button>
                         );
                     })}
+
+                    {/* Active Skill Filter Banner */}
+                    {activeSkillFilter && (
+                        <div className="ml-auto flex items-center gap-2 bg-retro-yellow border-2 border-black px-3 py-1 text-black font-pixel text-xs shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] animate-bounce-short">
+                            <span className="material-symbols-outlined text-sm">code</span>
+                            <span>SKILL FILTER: <strong className="uppercase">{activeSkillFilter}</strong></span>
+                            <button
+                                onClick={() => setActiveSkillFilter(null)}
+                                className="ml-1 hover:bg-black hover:text-white px-1 text-[10px] border border-black transition-colors"
+                                aria-label="Clear active skill filter"
+                                title="Clear skill filter"
+                            >
+                                ✕ CLEAR
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
@@ -144,6 +191,32 @@ const Projects = () => {
                                         <div className="text-xs font-body text-zinc-500 truncate px-2">
                                             {project.title.toLowerCase()}.exe
                                         </div>
+
+                                        {/* Tech Stack Pills */}
+                                        <div className="flex flex-wrap justify-center gap-1 mt-2 px-1">
+                                            {project.techStack?.map(tech => {
+                                                const isHighlighted = activeSkillFilter && (
+                                                    tech.toLowerCase().includes(activeSkillFilter.toLowerCase()) ||
+                                                    activeSkillFilter.toLowerCase().includes(tech.toLowerCase())
+                                                );
+
+                                                return (
+                                                    <span
+                                                        key={tech}
+                                                        onClick={(e) => handleSkillTagClick(e, tech)}
+                                                        className={`text-[9px] font-pixel px-1.5 py-0.5 border uppercase transition-all cursor-pointer ${
+                                                            isHighlighted
+                                                                ? 'bg-retro-yellow text-black border-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] scale-105'
+                                                                : 'bg-zinc-100 text-zinc-700 border-black/30 hover:border-black hover:bg-black hover:text-white'
+                                                        }`}
+                                                        title={`Filter by ${tech}`}
+                                                    >
+                                                        {tech}
+                                                    </span>
+                                                );
+                                            })}
+                                        </div>
+
                                         <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
                                                 Load Cartridge

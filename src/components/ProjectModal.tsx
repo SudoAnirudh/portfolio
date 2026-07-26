@@ -2691,6 +2691,32 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                                             </motion.p>
 
                                             <div className="mb-5">
+                                                <h3 className="font-pixel text-sm uppercase mb-2 border-b-2 border-black inline-block">Stack</h3>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {project.techStack?.map((tech, index) => (
+                                                        <motion.button
+                                                            key={tech}
+                                                            onClick={() => {
+                                                                onClose();
+                                                                const projectsEl = document.getElementById('projects');
+                                                                if (projectsEl) {
+                                                                    projectsEl.scrollIntoView({ behavior: 'smooth' });
+                                                                }
+                                                                window.dispatchEvent(new CustomEvent('filter-by-skill', { detail: { skill: tech } }));
+                                                            }}
+                                                            className="px-2 py-1 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-black hover:text-white transition-colors cursor-pointer"
+                                                            title={`Filter projects by ${tech}`}
+                                                            initial={{ opacity: 0, scale: 0.9 }}
+                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            transition={{ duration: 0.18, delay: 0.22 + index * 0.04 }}
+                                                        >
+                                                            {tech}
+                                                        </motion.button>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-5">
                                                 <h3 className="font-pixel text-sm uppercase mb-2 border-b-2 border-black inline-block">Specs</h3>
                                                 <div className="grid sm:grid-cols-2 gap-2 text-xs">
                                                     {project.specs.map((spec, index) => (
