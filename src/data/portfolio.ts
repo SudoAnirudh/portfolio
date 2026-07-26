@@ -132,18 +132,18 @@ export const portfolioData: PortfolioData = {
     },
     about: {
         title: "About / Identity",
-        bio: "Recent B.E. graduate in AI & ML (CGPA: 7.77—lucky number 7, right?) from Srinivas Institute of Technology (Class of 2026), broadcasting from Kozhikode, Kerala, and ready to relocate to any city in India. I'm in active, high-volume job hunt mode (please hire me so I can stop coding for free). Let's be real: my 'autonomous agents' are mostly fancy LLM pipelines held together by duct tape and API keys. I don't know PyTorch yet, but if you need embeddings, vector databases, RAG systems, or a human compiler who pair-programs with AI tools at 1000 WPM, I'm your dev.",
+        bio: "B.E. graduate in Artificial Intelligence & Machine Learning (Class of 2026, Srinivas Institute of Technology) with hands-on experience engineering production-grade GenAI pipelines, RAG architectures, and on-device ML applications. From building sub-200ms semantic search backends with FastAPI & pgvector to deploying offline TensorFlow Lite models for agriculture, I translate AI capabilities into real-world software. Leveraging AI-assisted pair-programming workflows at 1000+ WPM velocity, I learn, build, and ship code at exceptional speed. Based in Kozhikode, Kerala — actively seeking AI/ML & Software Engineering roles and ready to relocate to any city in India immediately.",
         pythonClass: {
             className: "AnirudhS",
             attributes: [
-                { name: "status", value: "\"High-volume job hunting\"" },
-                { name: "lucky_cgpa", value: "7.77" },
-                { name: "specialty", value: "\"RAG & Vector DBs (the good stuff)\"" },
-                { name: "weak_spots", value: "[\"PyTorch (soon™)\", \"Autonomous Agents (mostly pipelines)\"]" },
-                { name: "location", value: "\"Kozhikode (relocatable to any city with caffeine)\"" }
+                { name: "status", value: "\"Open for Immediate Relocation & Hire\"" },
+                { name: "degree", value: "\"B.E. AI & ML (CGPA: 7.77)\"" },
+                { name: "core_domain", value: "\"GenAI, RAG, Vector Search & Fast APIs\"" },
+                { name: "superpower", value: "\"AI-Assisted Pair-Programming at 1000+ WPM\"" },
+                { name: "location", value: "\"Kozhikode, KL (Relocating Pan-India)\"" }
             ],
             methods: [
-                { name: "compile", return: "\"Code held together by API keys & luck\"" }
+                { name: "ship_product", return: "\"Production-ready AI microservices & web apps\"" }
             ]
         },
         image: "/profile_pixel.png"
