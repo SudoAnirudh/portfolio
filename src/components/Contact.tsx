@@ -626,11 +626,13 @@ const Contact = () => {
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
+                                                maxLength={100}
                                                 className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
                                                 required
                                             />
+                                            {/* SECURITY: Enforce client-side length limits matching server validation to prevent DoS via oversized payloads */}
                                         </div>
                                         <div>
                                             <label htmlFor="email" className="sr-only">Email</label>
@@ -639,6 +641,7 @@ const Contact = () => {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
+                                                maxLength={255}
                                                 className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
@@ -646,6 +649,7 @@ const Contact = () => {
                                                 aria-describedby={emailError ? "email-error" : undefined}
                                                 required
                                             />
+                                            {/* SECURITY: Enforce client-side length limits matching server validation to prevent DoS via oversized payloads */}
                                             {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                         </div>
                                         <div>
@@ -685,10 +689,12 @@ const Contact = () => {
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
+                                                maxLength={5000}
                                                 className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
                                                 required
                                             ></textarea>
+                                            {/* SECURITY: Enforce client-side length limits matching server validation to prevent DoS via oversized payloads */}
                                         </div>
                                         <button
                                             className={`w-full sm:w-auto bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
