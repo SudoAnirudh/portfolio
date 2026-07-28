@@ -104,15 +104,16 @@ const Projects = () => {
                             );
 
                             return (
-                                <motion.div
+                                <motion.button
                                     key={project.title}
                                     layout
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.9 }}
                                     transition={{ duration: 0.25 }}
-                                    className="group cursor-pointer"
+                                    className="group cursor-pointer text-left block w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus-visible:ring-offset-2"
                                     onClick={() => handleOpenProject(project)}
+                                    aria-label={`View project details for ${project.title}`}
                                 >
                                     <div className="bg-zinc-100 border-2 border-black p-2 mb-2 group-hover:bg-retro-yellow transition-colors relative shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                         {isOngoing && (
@@ -145,12 +146,12 @@ const Projects = () => {
                                             {project.title.toLowerCase()}.exe
                                         </div>
                                         <div className="flex justify-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button className="text-xs font-bold uppercase underline hover:text-retro-orange">
+                                            <span className="text-xs font-bold uppercase underline hover:text-retro-orange">
                                                 Load Cartridge
-                                            </button>
+                                            </span>
                                         </div>
                                     </div>
-                                </motion.div>
+                                </motion.button>
                             );
                         })}
                     </AnimatePresence>
