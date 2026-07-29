@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { portfolioData, Project } from '@/data/portfolio';
 import ProjectModal from './ProjectModal';
@@ -117,7 +118,7 @@ const Projects = () => {
                                     className="bg-zinc-50 border-3 border-black rounded-2xl p-5 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center"
                                 >
                                     {/* Preview Image */}
-                                    <div className="lg:col-span-5 relative w-full aspect-video border-2 border-black rounded-xl overflow-hidden bg-zinc-200 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] group cursor-pointer" onClick={() => handleOpenProject(project)}>
+                                    <Link href={`/projects/${project.slug}`} className="lg:col-span-5 relative w-full aspect-video border-2 border-black rounded-xl overflow-hidden bg-zinc-200 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] group block cursor-pointer">
                                         {project.image ? (
                                             <Image
                                                 src={project.image}
@@ -134,14 +135,16 @@ const Projects = () => {
                                         <div className="absolute top-3 left-3 bg-black text-white px-2.5 py-1 rounded-md text-[9px] font-pixel uppercase tracking-wider font-bold">
                                             FEATURED FLAGSHIP
                                         </div>
-                                    </div>
+                                    </Link>
 
                                     {/* Project Technical Narrative */}
                                     <div className="lg:col-span-7 space-y-4">
                                         <div className="flex flex-wrap items-center justify-between gap-2">
-                                            <h4 className="text-2xl sm:text-3xl font-display uppercase tracking-tight text-retro-charcoal">
-                                                {project.title}
-                                            </h4>
+                                            <Link href={`/projects/${project.slug}`}>
+                                                <h4 className="text-2xl sm:text-3xl font-display uppercase tracking-tight text-retro-charcoal hover:text-retro-orange transition-colors">
+                                                    {project.title}
+                                                </h4>
+                                            </Link>
                                             <div className="flex flex-wrap gap-1.5">
                                                 {project.techStack.map((tech, i) => (
                                                     <span key={i} className="text-[10px] font-pixel bg-zinc-200 text-zinc-800 px-2 py-0.5 border border-black/20 rounded font-bold uppercase">
@@ -171,13 +174,13 @@ const Projects = () => {
 
                                         {/* Action CTAs */}
                                         <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-black/10">
-                                            <button
-                                                onClick={() => handleOpenProject(project)}
+                                            <Link
+                                                href={`/projects/${project.slug}`}
                                                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-black text-white rounded-lg border-2 border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-retro-yellow hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
                                             >
-                                                <span>View Case Study</span>
-                                                <span className="material-symbols-outlined text-sm">visibility</span>
-                                            </button>
+                                                <span>View Full Case Study</span>
+                                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                            </Link>
 
                                             {project.demo && (
                                                 <a
@@ -227,58 +230,57 @@ const Projects = () => {
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
-                                        className="bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col justify-between group cursor-pointer"
-                                        onClick={() => handleOpenProject(project)}
                                     >
-                                        <div>
-                                            <div className="flex justify-between items-center mb-3">
-                                                <div className="w-9 h-9 bg-zinc-200 border border-black rounded-lg flex items-center justify-center">
-                                                    <span className="material-symbols-outlined text-xl text-retro-charcoal">{project.icon}</span>
+                                        <Link
+                                            href={`/projects/${project.slug}`}
+                                            className="bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col justify-between group cursor-pointer h-full"
+                                        >
+                                            <div>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <div className="w-9 h-9 bg-zinc-200 border border-black rounded-lg flex items-center justify-center">
+                                                        <span className="material-symbols-outlined text-xl text-retro-charcoal">{project.icon}</span>
+                                                    </div>
+                                                    <div className="flex gap-1">
+                                                        {project.category?.map((cat, i) => (
+                                                            <span key={i} className="text-[9px] font-pixel bg-black/5 text-zinc-600 px-1.5 py-0.5 rounded font-bold uppercase">
+                                                                {cat}
+                                                            </span>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                                <div className="flex gap-1">
-                                                    {project.category?.map((cat, i) => (
-                                                        <span key={i} className="text-[9px] font-pixel bg-black/5 text-zinc-600 px-1.5 py-0.5 rounded font-bold uppercase">
-                                                            {cat}
+
+                                                <h4 className="font-display text-lg uppercase tracking-tight text-retro-charcoal mb-1 group-hover:text-retro-orange transition-colors">
+                                                    {project.title}
+                                                </h4>
+
+                                                <p className="font-body text-xs text-zinc-600 line-clamp-2 leading-relaxed mb-4">
+                                                    {project.description}
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <div className="flex flex-wrap gap-1 mb-3">
+                                                    {project.techStack.map((tech, i) => (
+                                                        <span key={i} className="text-[9px] font-mono text-zinc-500 bg-white border border-black/10 px-1.5 py-0.2 rounded">
+                                                            {tech}
                                                         </span>
                                                     ))}
                                                 </div>
-                                            </div>
 
-                                            <h4 className="font-display text-lg uppercase tracking-tight text-retro-charcoal mb-1 group-hover:text-retro-orange transition-colors">
-                                                {project.title}
-                                            </h4>
-
-                                            <p className="font-body text-xs text-zinc-600 line-clamp-2 leading-relaxed mb-4">
-                                                {project.description}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <div className="flex flex-wrap gap-1 mb-3">
-                                                {project.techStack.map((tech, i) => (
-                                                    <span key={i} className="text-[9px] font-mono text-zinc-500 bg-white border border-black/10 px-1.5 py-0.2 rounded">
-                                                        {tech}
+                                                <div className="flex items-center justify-between text-xs font-body font-bold pt-2 border-t border-black/10">
+                                                    <span className="text-zinc-800 group-hover:underline flex items-center gap-1">
+                                                        View Case Study
+                                                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
                                                     </span>
-                                                ))}
+                                                    <span
+                                                        className="text-zinc-500 hover:text-black"
+                                                        title="View Case Study"
+                                                    >
+                                                        <span className="material-symbols-outlined text-base">read_more</span>
+                                                    </span>
+                                                </div>
                                             </div>
-
-                                            <div className="flex items-center justify-between text-xs font-body font-bold pt-2 border-t border-black/10">
-                                                <span className="text-zinc-800 group-hover:underline flex items-center gap-1">
-                                                    View Details
-                                                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                                </span>
-                                                <a
-                                                    href={project.github}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="text-zinc-500 hover:text-black"
-                                                    title="View Repo"
-                                                >
-                                                    <span className="material-symbols-outlined text-base">code</span>
-                                                </a>
-                                            </div>
-                                        </div>
+                                        </Link>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>

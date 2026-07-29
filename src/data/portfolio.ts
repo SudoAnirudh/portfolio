@@ -64,6 +64,7 @@ export interface Skill {
 }
 
 export interface Project {
+    slug: string;
     title: string;
     icon: string;
     description: string;
@@ -191,6 +192,7 @@ export const portfolioData: PortfolioData = {
     ],
     projects: [
         {
+            slug: "hirenix",
             title: "Hirenix",
             icon: "psychology",
             featured: true,
@@ -211,6 +213,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Next.js", "FastAPI", "Supabase", "pgvector", "LangChain", "Python"]
         },
         {
+            slug: "pashu-swasthya",
             title: "PashuSwasthya",
             icon: "agriculture",
             featured: true,
@@ -230,6 +233,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Flutter", "TensorFlow Lite", "Python", "CNN"]
         },
         {
+            slug: "ai-career-copilot",
             title: "AI Career CoPilot",
             icon: "work_history",
             featured: true,
@@ -249,6 +253,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Next.js", "FastAPI", "Celery", "PostgreSQL", "ChromaDB", "Gemini API"]
         },
         {
+            slug: "nimma-guru",
             title: "Nimma-Guru",
             icon: "diversity_3",
             featured: false,
@@ -264,6 +269,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Kotlin", "Jetpack Compose", "Firebase", "Gemini API"]
         },
         {
+            slug: "cnn-visualizer",
             title: "CNN Visualizer",
             icon: "visibility",
             featured: false,
@@ -278,6 +284,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
+            slug: "self-correcting-agent",
             title: "Self-Correcting Agent",
             icon: "auto_fix_high",
             featured: false,
@@ -292,6 +299,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Python", "NVIDIA NIM", "Groq API", "Pytest"]
         },
         {
+            slug: "messydata",
             title: "MessyData",
             icon: "dataset",
             featured: false,
@@ -306,6 +314,7 @@ export const portfolioData: PortfolioData = {
             techStack: ["Python", "PostgreSQL", "Docker", "RapidFuzz"]
         },
         {
+            slug: "community-connect",
             title: "Community Connect",
             icon: "groups",
             featured: false,
