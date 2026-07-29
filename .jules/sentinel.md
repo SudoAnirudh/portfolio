@@ -6,3 +6,7 @@
 **Vulnerability:** The application was missing a Content-Security-Policy (CSP) header, which is a critical defense-in-depth mechanism against Cross-Site Scripting (XSS). Additionally, a programmatic call to `window.open` in `src/components/ReceiptPrinter.tsx` lacked the `"noopener,noreferrer"` parameters, making it susceptible to reverse tabnabbing (where the opened window can manipulate the `window.opener` object).
 **Learning:** Next.js global headers should always include a CSP configuration. While static HTML links might often have `target="_blank" rel="noopener noreferrer"`, it is easy to overlook these protections in programmatic JavaScript API calls like `window.open`.
 **Prevention:** Always verify that `window.open(..., '_blank')` calls include `"noopener,noreferrer"` as the third argument. Ensure standard security headers, specifically CSP, are explicitly defined in Next.js configuration or middleware.
+## 2025-02-24 - Missing Permissions-Policy Header
+**Vulnerability:** The application was missing a Permissions-Policy header in next.config.ts.
+**Learning:** While other security headers like CSP were present, defense-in-depth requires explicitly restricting access to sensitive browser features (camera, microphone, geolocation, browsing-topics) to mitigate potential exploitation if a vulnerability like XSS were to occur.
+**Prevention:** Always configure a global Permissions-Policy header alongside other standard security headers to ensure features are disabled by default.
