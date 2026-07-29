@@ -345,38 +345,45 @@ const AppleMonochromeLogo = () => (
 const HelloWorld = () => {
     const [channel, setChannel] = useState(3);
     const [text, setText] = useState('');
-    const fullText = 'hello world';
     const [isTyping, setIsTyping] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [ledFlash, setLedFlash] = useState(false);
 
-    // Channel 03 Typing text effect
+    const statusPhrases = [
+        'SudoAnirudh // READY_',
+        'AI/ML ENGINEER_',
+        'OPEN FOR ROLES_',
+        'SYSTEM OPERATIONAL_'
+    ];
+    const [phraseIndex, setPhraseIndex] = useState(0);
+
+    // Channel 03 Typing status ticker effect
     useEffect(() => {
         if (channel !== 3) return;
         let index = 0;
         let timeoutId: NodeJS.Timeout;
+        const currentText = statusPhrases[phraseIndex];
 
         const type = () => {
-            if (index < fullText.length) {
-                setText(fullText.slice(0, index + 1));
+            if (index <= currentText.length) {
+                setText(currentText.slice(0, index));
                 index++;
-                timeoutId = setTimeout(type, 250);
+                timeoutId = setTimeout(type, 120);
             } else {
                 setIsTyping(false);
                 timeoutId = setTimeout(() => {
-                    setText('');
+                    setPhraseIndex((prev) => (prev + 1) % statusPhrases.length);
                     index = 0;
                     setIsTyping(true);
-                    type();
-                }, 3000);
+                }, 2200);
             }
         };
 
         type();
 
         return () => clearTimeout(timeoutId);
-    }, [channel]);
+    }, [channel, phraseIndex]);
 
     const changeChannel = (nextChannel: number) => {
         playClickSound();
@@ -482,9 +489,9 @@ const HelloWorld = () => {
                     {/* Active Channel Display Workspace */}
                     <div className="flex-1 flex flex-col items-center justify-center p-2 relative z-10 w-full overflow-hidden">
                         {channel === 3 && (
-                            <div className="font-cursive text-2xl md:text-3xl text-zinc-900 text-center tracking-normal leading-normal whitespace-pre-wrap select-text p-4">
+                            <div className="font-pixel text-lg sm:text-xl md:text-2xl text-zinc-900 text-center tracking-widest font-bold uppercase whitespace-pre-wrap select-text p-3">
                                 {text}
-                                <span className="animate-blink inline-block w-[2.5px] h-5 align-middle bg-zinc-900 ml-1"></span>
+                                <span className="animate-pulse inline-block w-[3px] h-5 align-middle bg-zinc-900 ml-1"></span>
                             </div>
                         )}
                         {channel === 4 && <MatrixRain />}
