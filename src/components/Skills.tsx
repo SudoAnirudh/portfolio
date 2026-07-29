@@ -3,11 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// ⚡ Bolt: Hoisted static arrays and large configuration objects outside of the component.
-// This optimization eliminates redundant array allocations (flatMap, split) and the creation
-// of `skillDetails` and `iconMap` objects on every render cycle.
-const skillsList = portfolioData.skills.flatMap(s => s.items.split(', '));
-
 const skillDetails: Record<string, string> = {
     "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
     "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
@@ -76,6 +71,10 @@ const iconMap: Record<string, string> = {
     "VS Code": "visualstudiocode"
 };
 
+const TOP_SKILLS = new Set([
+    "Python", "FastAPI", "LangChain", "pgvector", "TensorFlow Lite", "Kotlin", "Next.js", "Docker"
+]);
+
 const Skills = () => {
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -95,71 +94,82 @@ const Skills = () => {
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0 h-full" id="skills">
             <div className="w-full h-full">
-                {/* Software Skills - Green Card */}
-                <div className="bg-retro-green bento-card rounded-3xl p-5 sm:p-8 relative overflow-hidden retro-grain border-4 border-black/10 h-full">
-                    <div className="relative z-20 flex flex-col items-end h-full">
-                        <div className="w-full flex justify-between items-start gap-3 mb-8 sm:mb-12">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 border-2 border-black flex items-center justify-center shrink-0">
-                                <span className="material-symbols-outlined text-3xl sm:text-4xl text-retro-charcoal">terminal</span>
+                <div className="bg-retro-green bento-card rounded-3xl p-6 sm:p-8 relative overflow-hidden retro-grain border-4 border-black/10 h-full flex flex-col justify-between">
+                    <div>
+                        <div className="flex justify-between items-start gap-3 mb-6">
+                            <div>
+                                <div className="flex items-center gap-2 text-zinc-800/70 font-pixel text-xs uppercase tracking-widest mb-1">
+                                    <span>02 // CAPABILITIES & STACK</span>
+                                </div>
+                                <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter text-retro-charcoal">
+                                    Technical Stack
+                                </h2>
                             </div>
-                            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display leading-[0.9] text-right uppercase tracking-tighter text-retro-charcoal">
-                                Tech<br />Stack
-                            </h2>
-                        </div>
-
-                        {/* Fake Retro UI for Skills */}
-                        <div className="w-full bg-zinc-300 border-4 border-black p-3 sm:p-4 shadow-[6px_6px_0px_#000] sm:shadow-[10px_10px_0px_#000] relative">
-                            <div className="bg-blue-900 min-h-[220px] sm:aspect-video border-4 border-zinc-800 p-3 sm:p-4 grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4 overflow-y-auto custom-scrollbar content-start relative overflow-hidden">
-                                {/* CRT Screen scanlines */}
-                                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none z-10 opacity-60"></div>
-
-                                {skillsList.map((skill, i) => {
-                                    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
-                                    const iconUrl = `https://cdn.simpleicons.org/${slug}/white`;
-
-                                    return (
-                                        <button
-                                            key={i}
-                                            onClick={() => {
-                                                setSelectedSkill(skill);
-                                                setIsModalOpen(true);
-                                            }}
-                                            className="flex flex-col items-center justify-center gap-1 group focus:outline-none cursor-pointer relative z-20"
-                                            aria-label={`Inspect details for ${skill}`}
-                                        >
-                                            <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-zinc-800 border-2 border-zinc-600 rounded p-1.5 group-hover:scale-110 group-hover:border-retro-yellow group-hover:shadow-[0_0_12px_rgba(253,224,71,0.4)] transition-all cursor-help relative" title={skill}>
-                                                <img
-                                                    src={iconUrl}
-                                                    alt={skill}
-                                                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-                                                    onError={(e) => {
-                                                        // Fallback to text if icon fails
-                                                        (e.target as HTMLImageElement).style.display = 'none';
-                                                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                                                    }}
-                                                />
-                                                <span className="hidden text-[8px] text-white font-bold leading-none">{skill.substring(0, 2)}</span>
-                                            </div>
-                                            <span className="text-[8px] font-pixel text-zinc-300 uppercase tracking-wider text-center hidden md:block group-hover:text-retro-yellow transition-colors">{skill}</span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="h-6 mt-2 flex items-center justify-end gap-2">
-                                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                <div className="w-12 h-1 bg-zinc-400"></div>
+                            <div className="w-10 h-10 bg-white border-2 border-black flex items-center justify-center rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                                <span className="material-symbols-outlined text-xl text-retro-charcoal">terminal</span>
                             </div>
                         </div>
 
-                        <div className="mt-8 text-right w-full">
-                            <p className="text-[10px] font-pixel text-black tracking-widest uppercase">System Operational // Ready</p>
+                        {/* Grouped Skills by Category */}
+                        <div className="space-y-4">
+                            {portfolioData.skills.map((skillCategory, idx) => {
+                                const items = skillCategory.items.split(', ');
+
+                                return (
+                                    <div key={idx} className="bg-white/80 border-2 border-black p-3.5 rounded-2xl shadow-[3px_3px_0px_0px_rgba(0,0,0,0.15)]">
+                                        <h3 className="font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-2.5 flex items-center justify-between">
+                                            <span>{skillCategory.category}</span>
+                                            <span className="text-[9px] bg-black/10 text-zinc-700 px-1.5 py-0.5 rounded font-mono font-bold">
+                                                {items.length}
+                                            </span>
+                                        </h3>
+
+                                        <div className="flex flex-wrap gap-2">
+                                            {items.map((skill, i) => {
+                                                const isTop = TOP_SKILLS.has(skill);
+                                                const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
+
+                                                return (
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => {
+                                                            setSelectedSkill(skill);
+                                                            setIsModalOpen(true);
+                                                        }}
+                                                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl border text-xs font-body font-bold transition-all cursor-pointer ${
+                                                            isTop
+                                                                ? 'bg-black text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.4)] hover:bg-retro-yellow hover:text-black'
+                                                                : 'bg-zinc-100 text-zinc-800 border-black/30 hover:border-black hover:bg-zinc-200'
+                                                        }`}
+                                                        title={`Inspect ${skill}`}
+                                                    >
+                                                        <img
+                                                            src={`https://cdn.simpleicons.org/${slug}/white`}
+                                                            alt={skill}
+                                                            className={`w-3.5 h-3.5 object-contain ${isTop ? 'opacity-100' : 'opacity-70'}`}
+                                                            onError={(e) => {
+                                                                (e.target as HTMLImageElement).style.display = 'none';
+                                                            }}
+                                                        />
+                                                        <span>{skill}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-black/10 flex items-center justify-between text-[10px] font-pixel text-retro-charcoal/70 uppercase">
+                        <span>Click any skill to view project usage</span>
+                        <span>Categorized Stack</span>
                     </div>
                 </div>
             </div>
 
-            {/* Refined Retro Skill Modal */}
+            {/* Skill Inspector Modal */}
             <AnimatePresence>
                 {isModalOpen && selectedSkill && (
                     <motion.div
@@ -171,7 +181,7 @@ const Skills = () => {
                         transition={{ duration: 0.2 }}
                     >
                         <motion.div
-                            className="bg-retro-white border-4 border-black p-0 max-w-md w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative flex flex-col overflow-hidden"
+                            className="bg-retro-white border-4 border-black p-0 max-w-md w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative flex flex-col overflow-hidden rounded-2xl"
                             onClick={(e) => e.stopPropagation()}
                             initial={{ scale: 0.96, y: 14, opacity: 0 }}
                             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -179,14 +189,14 @@ const Skills = () => {
                             transition={{ duration: 0.25, ease: "easeOut" }}
                         >
                             {/* Header */}
-                            <div className="bg-retro-charcoal text-white p-2 flex justify-between items-center gap-2 border-b-4 border-black">
+                            <div className="bg-retro-charcoal text-white p-3 flex justify-between items-center gap-2 border-b-4 border-black">
                                 <div className="flex items-center gap-2 min-w-0">
                                     <span className="material-symbols-outlined text-sm">terminal</span>
-                                    <span className="font-pixel text-[10px] sm:text-xs tracking-wider truncate uppercase">SKILL_INSPECTOR://{selectedSkill.toUpperCase().replace(/\s+/g, "_")}</span>
+                                    <span className="font-pixel text-xs tracking-wider truncate uppercase">SKILL_INSPECTOR://{selectedSkill.toUpperCase().replace(/\s+/g, "_")}</span>
                                 </div>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
-                                    className="hover:bg-red-500 p-1 rounded-none transition-colors flex items-center justify-center cursor-pointer"
+                                    className="hover:bg-red-500 p-1 transition-colors flex items-center justify-center cursor-pointer rounded-xs"
                                     aria-label="Close modal"
                                 >
                                     <span className="material-symbols-outlined text-sm block">close</span>
@@ -194,55 +204,43 @@ const Skills = () => {
                             </div>
 
                             {/* Body content */}
-                            <div className="p-4 sm:p-6 bg-retro-cream overflow-y-auto font-body">
-                                <div className="border-4 border-black bg-white p-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4">
-                                    {/* Skill Header */}
+                            <div className="p-5 bg-retro-cream overflow-y-auto font-body">
+                                <div className="border-3 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4 rounded-xl">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 bg-retro-charcoal border-2 border-black p-2 flex items-center justify-center shrink-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                        <div className="w-12 h-12 bg-retro-charcoal border-2 border-black p-2 flex items-center justify-center shrink-0 rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                             <img
                                                 src={`https://cdn.simpleicons.org/${iconMap[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
                                                 alt={selectedSkill}
                                                 className="w-full h-full object-contain"
                                                 onError={(e) => {
                                                     (e.target as HTMLImageElement).style.display = 'none';
-                                                    (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
                                                 }}
                                             />
-                                            <span className="hidden text-xs text-white font-pixel font-bold">{selectedSkill.substring(0, 2)}</span>
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="font-display text-xl sm:text-2xl text-retro-charcoal leading-none tracking-tight uppercase truncate">
+                                            <h3 className="font-display text-xl text-retro-charcoal leading-none tracking-tight uppercase truncate">
                                                 {selectedSkill}
                                             </h3>
                                             <div className="flex items-center gap-1.5 mt-1">
-                                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                                <p className="text-[9px] font-pixel text-zinc-500 tracking-wider uppercase">OPERATIONAL</p>
+                                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                <p className="text-[9px] font-pixel text-zinc-500 tracking-wider uppercase">ACTIVE IN PRODUCTION</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Divider */}
-                                    <div className="h-0.5 border-t-2 border-dashed border-black/15 my-1" />
+                                    <div className="h-0.5 border-t border-dashed border-black/15 my-0.5" />
 
-                                    {/* Skill Description */}
                                     <div className="text-zinc-700 font-body text-sm leading-relaxed text-left">
-                                        {skillDetails[selectedSkill]}
-                                    </div>
-
-                                    {/* Footer Info */}
-                                    <div className="flex items-center justify-between text-[9px] font-pixel text-zinc-500 uppercase pt-2 border-t border-black/10">
-                                        <span>BUILD: STABLE</span>
-                                        <span>SLOT: B2</span>
+                                        {skillDetails[selectedSkill] || `${selectedSkill} is part of Anirudh's active software engineering toolchain across AI models, backend services, and user interfaces.`}
                                     </div>
                                 </div>
 
-                                {/* Close Eject Button */}
                                 <div className="mt-5 flex justify-end">
                                     <button
                                         onClick={() => setIsModalOpen(false)}
-                                        className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all text-black cursor-pointer"
+                                        className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all text-black cursor-pointer rounded-lg font-bold"
                                     >
-                                        Eject
+                                        Close Inspector
                                     </button>
                                 </div>
                             </div>
@@ -255,3 +253,4 @@ const Skills = () => {
 };
 
 export default Skills;
+

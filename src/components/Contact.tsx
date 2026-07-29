@@ -619,28 +619,28 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
-                                            <label htmlFor="name" className="sr-only">Name</label>
+                                            <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name</label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
-                                                placeholder="ENTER NAME..."
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
+                                                placeholder="e.g. Sarah Jenkins"
                                                 type="text"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="email" className="sr-only">Email</label>
+                                            <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email</label>
                                             <input
                                                 id="email"
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
-                                                placeholder="ENTER EMAIL..."
+                                                className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                placeholder="e.g. sarah@company.com"
                                                 type="email"
                                                 aria-invalid={!!emailError}
                                                 aria-describedby={emailError ? "email-error" : undefined}
@@ -658,7 +658,7 @@ const Contact = () => {
                                                         key={opt.id}
                                                         type="button"
                                                         onClick={() => handleSubjectSelect(opt)}
-                                                        className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-mono font-bold border-2 transition-all rounded-sm ${
+                                                        className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[11px] sm:text-xs font-mono font-bold border-2 transition-all rounded-lg cursor-pointer ${
                                                             selectedSubjectId === opt.id
                                                                 ? 'bg-black text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] scale-[1.02]'
                                                                 : 'bg-zinc-100 text-zinc-800 border-black/30 hover:border-black hover:bg-zinc-200'
@@ -673,42 +673,35 @@ const Contact = () => {
                                                 name="subject"
                                                 value={formData.subject}
                                                 onChange={handleChange}
-                                                className="w-full bg-transparent border-b-2 border-black/20 p-2.5 sm:p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 text-sm sm:text-base"
-                                                placeholder="ENTER SUBJECT (OR SELECT ABOVE)..."
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
+                                                placeholder="Subject details..."
                                                 type="text"
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="message" className="sr-only">Message</label>
+                                            <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message</label>
                                             <textarea
                                                 id="message"
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
-                                                placeholder="TYPE YOUR MESSAGE HERE..."
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
+                                                placeholder="Write your message..."
                                                 required
                                             ></textarea>
                                         </div>
                                         <button
-                                            className={`w-full sm:w-auto bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-[10px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.2em] uppercase hover:bg-accent transition-colors rounded-sm disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent focus-visible:outline-none`}
+                                            className={`w-full sm:w-auto bg-black text-white px-8 py-4 text-xs font-body font-bold tracking-wider uppercase hover:bg-retro-yellow hover:text-black transition-all rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none cursor-pointer`}
                                             type="submit"
                                             disabled={isSaving}
                                         >
-                                            <span className="flex items-center justify-center gap-2 sm:gap-3">
+                                            <span className="flex items-center justify-center gap-2">
                                                 <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>
-                                                    {isSaving ? 'flight_takeoff' : 'near_me'}
+                                                    {isSaving ? 'flight_takeoff' : 'send'}
                                                 </span>
                                                 <span>
-                                                    {status === 'error' ? 'Transmission Error. Retry.' : isSaving ? 'Folding Airmail...' : 'Launch Airmail'}
+                                                    {status === 'error' ? 'Transmission Error. Retry.' : isSaving ? 'Folding Airmail...' : 'Send Message'}
                                                 </span>
-                                                {isSaving ? (
-                                                    <span className="inline-flex items-end gap-[2px] h-3">
-                                                        <span className="w-[3px] h-[4px] bg-retro-green animate-pulse"></span>
-                                                        <span className="w-[3px] h-[7px] bg-retro-green animate-pulse [animation-delay:120ms]"></span>
-                                                        <span className="w-[3px] h-[10px] bg-retro-green animate-pulse [animation-delay:240ms]"></span>
-                                                    </span>
-                                                ) : null}
                                             </span>
                                         </button>
                                     </form>
