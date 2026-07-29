@@ -629,6 +629,7 @@ const Contact = () => {
                                                 className="w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400"
                                                 placeholder="ENTER NAME..."
                                                 type="text"
+                                                maxLength={100}
                                                 required
                                             />
                                         </div>
@@ -642,6 +643,7 @@ const Contact = () => {
                                                 className={`w-full bg-transparent border-b-2 border-black/20 p-3 font-body focus:outline-none focus:border-black transition-colors placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="ENTER EMAIL..."
                                                 type="email"
+                                                maxLength={255}
                                                 aria-invalid={!!emailError}
                                                 aria-describedby={emailError ? "email-error" : undefined}
                                                 required
@@ -687,6 +689,7 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 className="w-full bg-zinc-50 border-2 border-black p-4 font-mono text-sm focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow resize-none h-40 sm:h-48"
                                                 placeholder="TYPE YOUR MESSAGE HERE..."
+                                                maxLength={5000}
                                                 required
                                             ></textarea>
                                         </div>
