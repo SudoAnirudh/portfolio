@@ -28,3 +28,7 @@
 ## 2024-05-18 - Form and Social Links Accessibility Improvements
 **Learning:** In the `Contact.tsx` component, form inputs were relying solely on placeholders without `<label>` elements, which breaks screen reader support. Social icons were missing `aria-label`s, and text inside `span` with `material-symbols-outlined` was being read by screen readers.
 **Action:** Always provide `<label>` elements (using `sr-only` class if they should be visually hidden) for inputs, associate error states using `aria-invalid` and `aria-describedby`, add `aria-label` to icon-only links, and use `aria-hidden="true"` on the internal icon elements to prevent redundant reading. Also ensure external links include `target="_blank" rel="noopener noreferrer"` for security.
+
+## 2025-06-15 - Missing ARIA Labels on Modal Close Buttons
+**Learning:** Icon-only close buttons in modal components often lack `aria-label` attributes, and their inner text-based icons lack `aria-hidden="true"`, causing screen readers to incorrectly read the icon text.
+**Action:** When adding or reviewing modals, ensure the close button has an `aria-label` (e.g., `aria-label="Close modal"`) and any inner text-based icons (like `material-symbols-outlined`) have `aria-hidden="true"`.
