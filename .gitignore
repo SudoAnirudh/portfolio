@@ -11,6 +11,7 @@ node_modules
 
 .env
 dist
+.agents
 dist-ssr
 *.local
 

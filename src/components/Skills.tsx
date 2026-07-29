@@ -33,8 +33,8 @@ const skillDetails: Record<string, string> = {
     "Google Cloud": "MindMatrix: Utilized Google Cloud Labs and Google AI Studio platforms for training models and API configurations.",
     "Android Studio": "MindMatrix: Primary IDE for building and debugging Nimma-Guru Android client application with Jetpack Compose.",
     "Jupyter": "Used for exploratory data analysis, plotting training loss curves, and testing cluster algorithms (K-Means).",
-    "Power BI": "HeproAI: Built interactive analytical dashboards for student wellness, productivity, and academic metrics.",
-    "VS Code": "Primary text editor and workspace environment for Python backend and web projects."
+    "Power BI": "HeproAI: Engineered interactive analytical dashboards for student wellness, productivity, and academic metrics across 200+ profiles with real-time risk indicators.",
+    "VS Code": "Primary workspace environment & IDE for Python backend, Next.js frontend, Docker orchestration, and Git version control across all production projects."
 };
 
 const iconMap: Record<string, string> = {
@@ -47,7 +47,7 @@ const iconMap: Record<string, string> = {
     "TensorFlow": "tensorflow",
     "TensorFlow Lite": "tensorflow",
     "LangChain": "langchain",
-    "ChromaDB": "chromadb",
+    "ChromaDB": "postgresql",
     "pgvector": "postgresql",
     "NVIDIA NIM": "nvidia",
     "Gemini API": "googlegemini",
@@ -60,7 +60,7 @@ const iconMap: Record<string, string> = {
     "PostgreSQL": "postgresql",
     "React": "react",
     "Next.js": "nextdotjs",
-    "Jetpack Compose": "jetpackcompose",
+    "Jetpack Compose": "android",
     "Flutter": "flutter",
     "Git": "git",
     "Docker": "docker",
@@ -71,9 +71,241 @@ const iconMap: Record<string, string> = {
     "VS Code": "visualstudiocode"
 };
 
+const CUSTOM_ICONS: Record<string, (props: { className?: string; isWhite?: boolean }) => React.ReactNode> = {
+    "VS Code": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#007ACC"}>
+            <path d="M23.15 2.587L17.21.213a1.44 1.44 0 0 0-1.72.39L.85 13.413a.72.72 0 0 0 0 1.174l14.64 12.81a1.44 1.44 0 0 0 1.72.39l5.94-2.374a.72.72 0 0 0 .45-.668V3.255a.72.72 0 0 0-.45-.668zm-6.35 15.34L6.96 14 16.8 6.07v11.85z"/>
+        </svg>
+    ),
+    "Power BI": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#F2C811"}>
+            <path d="M18 20V8h4v12h-4zm-7 0V4h4v16h-4zM4 20v-8h4v8H4z" />
+        </svg>
+    )
+};
+
 const TOP_SKILLS = new Set([
     "Python", "FastAPI", "LangChain", "pgvector", "TensorFlow Lite", "Kotlin", "Next.js", "Docker"
 ]);
+
+const SkillIcon = ({ skill, isTop }: { skill: string; isTop: boolean }) => {
+    const [failed, setFailed] = useState(false);
+    
+    if (CUSTOM_ICONS[skill]) {
+        const CustomIcon = CUSTOM_ICONS[skill];
+        return <CustomIcon className="w-3.5 h-3.5" isWhite={isTop} />;
+    }
+
+    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "").replace(/[^a-z0-9]/g, "");
+    const color = isTop ? 'white' : '18181b';
+
+    if (failed) {
+        return <span className="material-symbols-outlined text-[13px] opacity-70">code</span>;
+    }
+
+    return (
+        <img
+            src={`https://cdn.simpleicons.org/${slug}/${color}`}
+            alt={skill}
+            className={`w-3.5 h-3.5 object-contain ${isTop ? 'opacity-100' : 'opacity-80'}`}
+            onError={() => setFailed(true)}
+        />
+    );
+};
+
+const SkillModalIcon = ({ skill }: { skill: string }) => {
+    const [failed, setFailed] = useState(false);
+    
+    if (CUSTOM_ICONS[skill]) {
+        const CustomIcon = CUSTOM_ICONS[skill];
+        return <CustomIcon className="w-full h-full object-contain" isWhite={true} />;
+    }
+
+    const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "").replace(/[^a-z0-9]/g, "");
+
+    if (failed) {
+        return <span className="material-symbols-outlined text-2xl text-white">terminal</span>;
+    }
+
+    return (
+        <img
+            src={`https://cdn.simpleicons.org/${slug}/white`}
+            alt={skill}
+            className="w-full h-full object-contain"
+            onError={() => setFailed(true)}
+        />
+    );
+};
+
+{/* VS Code Architectural Environment Diagram */}
+const VsCodeDiagram = () => (
+    <div className="mt-4 border-2 border-black bg-zinc-900 rounded-xl p-3.5 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono text-xs">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-3">
+            <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span>
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
+                <span className="text-[10px] text-zinc-400 font-sans font-bold ml-2">VS CODE // WORKSPACE REPRESENTATION</span>
+            </div>
+            <span className="text-[10px] bg-blue-600/30 text-blue-300 px-2 py-0.5 rounded border border-blue-500/40">DEV_ENV_ACTIVE</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-3">
+            <div className="bg-zinc-800/80 p-2 rounded border border-zinc-700">
+                <div className="text-[10px] text-zinc-400 uppercase font-bold mb-1">Explorer Tree</div>
+                <div className="space-y-1 text-[11px] text-zinc-300">
+                    <div className="flex items-center gap-1 text-yellow-400 font-bold">📁 backend/</div>
+                    <div className="pl-3 text-emerald-400">📄 main.py (FastAPI)</div>
+                    <div className="pl-3 text-blue-400">📄 models.py (pgvector)</div>
+                    <div className="flex items-center gap-1 text-yellow-400 font-bold">📁 frontend/</div>
+                    <div className="pl-3 text-cyan-400">📄 page.tsx (Next.js)</div>
+                </div>
+            </div>
+
+            <div className="bg-zinc-800/80 p-2 rounded border border-zinc-700 sm:col-span-2">
+                <div className="flex justify-between items-center text-[10px] text-zinc-400 uppercase font-bold mb-1 border-b border-zinc-700 pb-1">
+                    <span>Active Editor: main.py</span>
+                    <span className="text-emerald-400">● Python 3.11</span>
+                </div>
+                <div className="text-[11px] text-zinc-300 space-y-0.5 leading-snug">
+                    <div><span className="text-purple-400">from</span> fastapi <span className="text-purple-400">import</span> FastAPI</div>
+                    <div><span className="text-purple-400">from</span> langchain <span className="text-purple-400">import</span> OpenAIEmbeddings</div>
+                    <div className="text-zinc-500"># Async candidate matching endpoint</div>
+                    <div><span className="text-blue-400">@app.post</span>(<span className="text-emerald-300">"/api/score"</span>)</div>
+                    <div><span className="text-purple-400">async def</span> <span className="text-yellow-300">score_candidate</span>(payload):</div>
+                    <div className="pl-3 text-zinc-400"><span className="text-purple-400">return await</span> compute_similarity(payload)</div>
+                </div>
+            </div>
+        </div>
+
+        {/* Extensions & Tooling Row */}
+        <div className="border-t border-zinc-800 pt-2.5">
+            <div className="text-[10px] text-zinc-400 uppercase font-bold mb-1.5">Configured Workspace Extensions</div>
+            <div className="flex flex-wrap gap-1.5">
+                {['Pylance', 'Tailwind CSS', 'Prettier', 'GitLens', 'Docker', 'ESLint', 'Jupyter'].map((ext, idx) => (
+                    <span key={idx} className="bg-zinc-800 text-zinc-300 border border-zinc-700 text-[10px] px-2 py-0.5 rounded-full font-sans">
+                        ⚡ {ext}
+                    </span>
+                ))}
+            </div>
+        </div>
+
+        {/* Terminal output */}
+        <div className="mt-2.5 bg-black/60 p-2 rounded border border-zinc-800 text-[10px] text-emerald-400 flex items-center justify-between">
+            <span className="truncate">➜ portfolio git:(main) uvicorn main:app --reload --port 8000</span>
+            <span className="text-zinc-500 text-[9px] shrink-0 font-sans">200 OK (84ms)</span>
+        </div>
+    </div>
+);
+
+{/* Power BI Dashboard Interactive Representation */}
+const PowerBiDiagram = () => (
+    <div className="mt-4 border-2 border-black bg-slate-900 rounded-xl p-3.5 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-sans text-xs">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+            <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-amber-400 text-black font-bold flex items-center justify-center text-[10px] rounded">BI</div>
+                <span className="text-[10px] text-amber-300 font-bold tracking-wider uppercase">HeproAI // Student Wellness & Risk Analytics Dashboard</span>
+            </div>
+            <span className="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">POWER BI REPORT</span>
+        </div>
+
+        {/* KPI Cards Grid */}
+        <div className="grid grid-cols-3 gap-2 mb-3">
+            <div className="bg-slate-800/90 p-2 rounded-lg border border-slate-700 text-center">
+                <div className="text-[9px] text-slate-400 uppercase font-bold">Total Profiles</div>
+                <div className="text-base font-extrabold text-amber-400">200+</div>
+                <div className="text-[8px] text-emerald-400">↑ 12% Cohort Growth</div>
+            </div>
+            <div className="bg-slate-800/90 p-2 rounded-lg border border-slate-700 text-center">
+                <div className="text-[9px] text-slate-400 uppercase font-bold">Inference Speed</div>
+                <div className="text-base font-extrabold text-cyan-400">&lt; 100ms</div>
+                <div className="text-[8px] text-slate-400">Real-time K-Means</div>
+            </div>
+            <div className="bg-slate-800/90 p-2 rounded-lg border border-slate-700 text-center">
+                <div className="text-[9px] text-slate-400 uppercase font-bold">Risk Model Acc.</div>
+                <div className="text-base font-extrabold text-emerald-400">94.2%</div>
+                <div className="text-[8px] text-emerald-400">Validated Dataset</div>
+            </div>
+        </div>
+
+        {/* Charts Representation */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-2.5">
+            {/* Cohort Performance Bar Chart */}
+            <div className="bg-slate-800/70 p-2.5 rounded-lg border border-slate-700">
+                <div className="text-[10px] font-bold text-slate-300 mb-2 flex justify-between">
+                    <span>Academic vs Wellness Score</span>
+                    <span className="text-[9px] text-amber-400 font-mono">Cohort Clusters</span>
+                </div>
+                <div className="space-y-2">
+                    <div>
+                        <div className="flex justify-between text-[9px] text-slate-400 mb-0.5">
+                            <span>High Performers (Cluster 1)</span>
+                            <span>92%</span>
+                        </div>
+                        <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div className="bg-gradient-to-r from-amber-400 to-yellow-300 h-full rounded-full w-[92%]"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex justify-between text-[9px] text-slate-400 mb-0.5">
+                            <span>Balanced Learners (Cluster 2)</span>
+                            <span>78%</span>
+                        </div>
+                        <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div className="bg-gradient-to-r from-cyan-400 to-blue-400 h-full rounded-full w-[78%]"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex justify-between text-[9px] text-slate-400 mb-0.5">
+                            <span>Intervention Needed (Cluster 3)</span>
+                            <span>41%</span>
+                        </div>
+                        <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div className="bg-gradient-to-r from-rose-500 to-amber-500 h-full rounded-full w-[41%]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Risk Indicator Breakdown */}
+            <div className="bg-slate-800/70 p-2.5 rounded-lg border border-slate-700 flex flex-col justify-between">
+                <div className="text-[10px] font-bold text-slate-300 mb-1 flex justify-between">
+                    <span>Behavioral Risk Distribution</span>
+                    <span className="text-[9px] text-emerald-400 font-mono">K-Means Output</span>
+                </div>
+                <div className="flex items-center justify-around my-1">
+                    <div className="text-center">
+                        <div className="w-10 h-10 rounded-full border-4 border-emerald-400 flex items-center justify-center font-bold text-xs text-emerald-400">
+                            65%
+                        </div>
+                        <span className="text-[9px] text-slate-400 mt-1 block">Low Risk</span>
+                    </div>
+                    <div className="text-center">
+                        <div className="w-10 h-10 rounded-full border-4 border-amber-400 flex items-center justify-center font-bold text-xs text-amber-400">
+                            25%
+                        </div>
+                        <span className="text-[9px] text-slate-400 mt-1 block">Moderate</span>
+                    </div>
+                    <div className="text-center">
+                        <div className="w-10 h-10 rounded-full border-4 border-rose-500 flex items-center justify-center font-bold text-xs text-rose-400">
+                            10%
+                        </div>
+                        <span className="text-[9px] text-slate-400 mt-1 block">Action Req.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* Live Automated Intervention Alert Footer */}
+        <div className="bg-slate-800/90 p-2 rounded border border-slate-700 flex items-center justify-between text-[10px]">
+            <div className="flex items-center gap-1.5 text-amber-300">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span>Automated Trigger: 14 Mentor Notifications Dispatched</span>
+            </div>
+            <span className="text-slate-500 text-[9px]">HeproAI Analytics Engine v2.4</span>
+        </div>
+    </div>
+);
 
 const Skills = () => {
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
@@ -127,7 +359,6 @@ const Skills = () => {
                                         <div className="flex flex-wrap gap-2">
                                             {items.map((skill, i) => {
                                                 const isTop = TOP_SKILLS.has(skill);
-                                                const slug = iconMap[skill] || skill.toLowerCase().replace(/ /g, "");
 
                                                 return (
                                                     <button
@@ -143,14 +374,7 @@ const Skills = () => {
                                                         }`}
                                                         title={`Inspect ${skill}`}
                                                     >
-                                                        <img
-                                                            src={`https://cdn.simpleicons.org/${slug}/white`}
-                                                            alt={skill}
-                                                            className={`w-3.5 h-3.5 object-contain ${isTop ? 'opacity-100' : 'opacity-70'}`}
-                                                            onError={(e) => {
-                                                                (e.target as HTMLImageElement).style.display = 'none';
-                                                            }}
-                                                        />
+                                                        <SkillIcon skill={skill} isTop={isTop} />
                                                         <span>{skill}</span>
                                                     </button>
                                                 );
@@ -163,7 +387,7 @@ const Skills = () => {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-black/10 flex items-center justify-between text-[10px] font-pixel text-retro-charcoal/70 uppercase">
-                        <span>Click any skill to view project usage</span>
+                        <span>Click any skill to view project usage & representations</span>
                         <span>Categorized Stack</span>
                     </div>
                 </div>
@@ -181,7 +405,9 @@ const Skills = () => {
                         transition={{ duration: 0.2 }}
                     >
                         <motion.div
-                            className="bg-retro-white border-4 border-black p-0 max-w-md w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative flex flex-col overflow-hidden rounded-2xl"
+                            className={`bg-retro-white border-4 border-black p-0 w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative flex flex-col overflow-hidden rounded-2xl max-h-[90vh] ${
+                                selectedSkill === 'VS Code' || selectedSkill === 'Power BI' ? 'max-w-xl' : 'max-w-md'
+                            }`}
                             onClick={(e) => e.stopPropagation()}
                             initial={{ scale: 0.96, y: 14, opacity: 0 }}
                             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -189,7 +415,7 @@ const Skills = () => {
                             transition={{ duration: 0.25, ease: "easeOut" }}
                         >
                             {/* Header */}
-                            <div className="bg-retro-charcoal text-white p-3 flex justify-between items-center gap-2 border-b-4 border-black">
+                            <div className="bg-retro-charcoal text-white p-3 flex justify-between items-center gap-2 border-b-4 border-black shrink-0">
                                 <div className="flex items-center gap-2 min-w-0">
                                     <span className="material-symbols-outlined text-sm">terminal</span>
                                     <span className="font-pixel text-xs tracking-wider truncate uppercase">SKILL_INSPECTOR://{selectedSkill.toUpperCase().replace(/\s+/g, "_")}</span>
@@ -208,14 +434,7 @@ const Skills = () => {
                                 <div className="border-3 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-4 rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-retro-charcoal border-2 border-black p-2 flex items-center justify-center shrink-0 rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                                            <img
-                                                src={`https://cdn.simpleicons.org/${iconMap[selectedSkill] || selectedSkill.toLowerCase().replace(/ /g, "")}/white`}
-                                                alt={selectedSkill}
-                                                className="w-full h-full object-contain"
-                                                onError={(e) => {
-                                                    (e.target as HTMLImageElement).style.display = 'none';
-                                                }}
-                                            />
+                                            <SkillModalIcon skill={selectedSkill} />
                                         </div>
                                         <div className="min-w-0">
                                             <h3 className="font-display text-xl text-retro-charcoal leading-none tracking-tight uppercase truncate">
@@ -235,6 +454,10 @@ const Skills = () => {
                                     </div>
                                 </div>
 
+                                {/* Custom Diagrams / Visual Representations for VS Code and Power BI */}
+                                {selectedSkill === 'VS Code' && <VsCodeDiagram />}
+                                {selectedSkill === 'Power BI' && <PowerBiDiagram />}
+
                                 <div className="mt-5 flex justify-end">
                                     <button
                                         onClick={() => setIsModalOpen(false)}
@@ -253,4 +476,3 @@ const Skills = () => {
 };
 
 export default Skills;
-
