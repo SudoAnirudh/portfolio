@@ -95,6 +95,7 @@
   font-feature-settings: "liga";
   -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
+  font-display: block;
 }
 
 /* Screen Shake Animation */
