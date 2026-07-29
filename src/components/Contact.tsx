@@ -620,7 +620,9 @@ const Contact = () => {
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
                                             <label htmlFor="name" className="sr-only">Name</label>
+                                            {/* SECURITY: Enforce maxLength to prevent rudimentary application-layer DoS via oversized payloads */}
                                             <input
+                                                maxLength={100}
                                                 id="name"
                                                 ref={nameInputRef}
                                                 name="name"
@@ -634,7 +636,9 @@ const Contact = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="email" className="sr-only">Email</label>
+                                            {/* SECURITY: Align client-side length limits with server-side validation */}
                                             <input
+                                                maxLength={255}
                                                 id="email"
                                                 name="email"
                                                 value={formData.email}
@@ -669,6 +673,8 @@ const Contact = () => {
                                                 ))}
                                             </div>
                                             <input
+
+                                                maxLength={200}
                                                 id="subject"
                                                 name="subject"
                                                 value={formData.subject}
@@ -680,7 +686,9 @@ const Contact = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="message" className="sr-only">Message</label>
+                                            {/* SECURITY: Enforce maxLength to prevent resource exhaustion from large message bodies */}
                                             <textarea
+                                                maxLength={5000}
                                                 id="message"
                                                 name="message"
                                                 value={formData.message}
