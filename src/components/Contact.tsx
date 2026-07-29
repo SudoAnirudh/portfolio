@@ -1,7 +1,7 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { portfolioData } from '@/data/portfolio';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { submitContactForm } from '@/app/actions/contact';
 
 const SUBJECT_OPTIONS = [
@@ -38,18 +38,20 @@ const SUBJECT_OPTIONS = [
 ];
 
 const Contact = () => {
-    const [formData, setFormData] = React.useState({
+    const prefersReducedMotion = useReducedMotion();
+    const [formData, setFormData] = useState({
         name: '',
         email: '',
         subject: '',
         message: ''
     });
-    const [selectedSubjectId, setSelectedSubjectId] = React.useState<string>('');
-    const [status, setStatus] = React.useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'unfolding' | 'error'>('idle');
-    const [emailError, setEmailError] = React.useState('');
-    const [toastData, setToastData] = React.useState<{ title: string; text: string } | null>(null);
-    const nameInputRef = React.useRef<HTMLInputElement>(null);
-    const [shouldFocus, setShouldFocus] = React.useState(false);
+    const [selectedSubjectId, setSelectedSubjectId] = useState<string>('');
+    const [status, setStatus] = useState<'idle' | 'submitting' | 'folding' | 'sending' | 'success' | 'error'>('idle');
+    const [emailError, setEmailError] = useState('');
+    const [toastData, setToastData] = useState<{ title: string; text: string } | null>(null);
+    const [hasSubmittedInSession, setHasSubmittedInSession] = useState(false);
+    const nameInputRef = useRef<HTMLInputElement>(null);
+    const [shouldFocus, setShouldFocus] = useState(false);
     const isSaving = status === 'submitting' || status === 'folding' || status === 'sending';
 
     const handleCopy = (text: string, label: string) => {
@@ -72,7 +74,7 @@ const Contact = () => {
         'sharklasers.com', 'getnada.com', 'dispostable.com', 'grr.la', 'temp-mail.org'
     ];
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (status === 'idle' && shouldFocus) {
             const timer = setTimeout(() => {
                 nameInputRef.current?.focus();
@@ -83,11 +85,10 @@ const Contact = () => {
     }, [status, shouldFocus]);
 
     const handleReset = () => {
-        setStatus('unfolding');
-        setTimeout(() => {
-            setStatus('idle');
-            setShouldFocus(true);
-        }, 1400);
+        setStatus('idle');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setSelectedSubjectId('');
+        setShouldFocus(true);
     };
 
     const handleSubjectSelect = (option: typeof SUBJECT_OPTIONS[number]) => {
@@ -149,22 +150,28 @@ const Contact = () => {
                 throw new Error(result.error || 'Failed to send message');
             }
 
-            // Start animation sequence
+            // Fast path for reduced motion or subsequent submissions in the same session
+            if (prefersReducedMotion || hasSubmittedInSession) {
+                setStatus('success');
+                setHasSubmittedInSession(true);
+                return;
+            }
+
+            // First submission per session: Ceremonial 3D origami sequence
+            setHasSubmittedInSession(true);
             setStatus('folding');
 
             setTimeout(() => {
                 setStatus('sending');
                 setTimeout(() => {
                     setStatus('success');
-                    setFormData({ name: '', email: '', subject: '', message: '' });
-                    setSelectedSubjectId('');
-                }, 1000); // Wait for airplane flight
-            }, 1500); // Wait for origami fold animation
+                }, 800); // Scaled flight duration
+            }, 1200); // Scaled fold duration
 
         } catch (error) {
             console.error('Error submitting form:', error);
             setStatus('error');
-            setTimeout(() => setStatus('idle'), 5000);
+            setTimeout(() => setStatus('idle'), 4000);
         }
     };
 
@@ -264,30 +271,30 @@ const Contact = () => {
                         initial={{ opacity: 0, scale: 0.8, y: 50, rotateX: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
                         exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+                        transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                         key="success-message"
                     >
                         {/* Air Mail Diagonal Stripes Border at Top */}
                         <div className="absolute top-0 left-0 right-0 h-3 bg-[repeating-linear-gradient(45deg,#ef4444,#ef4444_15px,#ffffff_15px,#ffffff_30px,#3b82f6_30px,#3b82f6_45px,#ffffff_45px,#ffffff_60px)] border-b-2 border-black"></div>
 
                         <motion.div
-                            className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-600 mb-6 sm:mb-8 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
+                            className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 text-emerald-700 mb-6 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mt-2"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.15, type: "spring", stiffness: 220, damping: 15 }}
                         >
-                            <span className="material-symbols-outlined text-5xl">mark_email_read</span>
+                            <span className="material-symbols-outlined text-4xl">mark_email_read</span>
                         </motion.div>
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-tighter mb-5 sm:mb-6">Airmail Transmitted!</h3>
-                        <p className="font-mono text-base sm:text-lg md:text-xl text-zinc-600 mb-8 sm:mb-10 leading-relaxed">
-                            Your paper airplane has safely landed in my inbox. I&apos;ll inspect your message and get back to you shortly!
+                        <h3 className="text-2xl sm:text-4xl md:text-5xl font-display uppercase tracking-tight mb-3">Message Sent — Airmail Transmitted!</h3>
+                        <p className="font-body font-medium text-sm sm:text-base md:text-lg text-zinc-700 mb-6 max-w-xl mx-auto leading-relaxed">
+                            Your message has landed in my inbox. I reply to all engineering and recruitment inquiries within <strong className="text-black">24 hours</strong>.
                         </p>
                         <button
                             onClick={handleReset}
-                            className="bg-black text-white px-6 sm:px-10 py-4 sm:py-5 text-xs sm:text-sm font-bold tracking-[0.18em] sm:tracking-[0.2em] uppercase hover:bg-accent hover:scale-105 transition-all rounded-sm border-2 border-transparent hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-2 mx-auto"
+                            className="bg-black text-white px-6 sm:px-8 py-3.5 sm:py-4 text-xs font-body font-bold tracking-wider uppercase hover:bg-retro-yellow hover:text-black transition-all rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center gap-2 mx-auto cursor-pointer"
                         >
                             <span className="material-symbols-outlined text-base">drafts</span>
-                            <span>Send Another Airmail</span>
+                            <span>Send Another Message</span>
                         </button>
                     </motion.div>
                 ) : (
@@ -296,15 +303,15 @@ const Contact = () => {
                         key="contact-form"
                         initial={{ opacity: 1, y: 0, scale: 1, rotateX: 0, rotateZ: 0 }}
                         exit={{
-                            x: 800,
-                            y: -600,
-                            scale: 0.4,
+                            x: typeof window !== 'undefined' && window.innerWidth < 640 ? 280 : 650,
+                            y: typeof window !== 'undefined' && window.innerWidth < 640 ? -350 : -550,
+                            scale: 0.35,
                             opacity: 0,
                             rotateX: 10,
                             rotateZ: 15,
                             transition: {
-                                duration: 0.8,
-                                ease: [0.32, 0, 0.67, 0] // easeInCubic for acceleration
+                                duration: 0.7,
+                                ease: [0.32, 0, 0.67, 0]
                             }
                         }}
                     >
@@ -690,20 +697,32 @@ const Contact = () => {
                                                 required
                                             ></textarea>
                                         </div>
-                                        <button
-                                            className={`w-full sm:w-auto bg-black text-white px-8 py-4 text-xs font-body font-bold tracking-wider uppercase hover:bg-retro-yellow hover:text-black transition-all rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none cursor-pointer`}
-                                            type="submit"
-                                            disabled={isSaving}
-                                        >
-                                            <span className="flex items-center justify-center gap-2">
-                                                <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>
-                                                    {isSaving ? 'flight_takeoff' : 'send'}
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
+                                            <button
+                                                className={`w-full sm:w-auto bg-black text-white px-8 py-4 text-xs font-body font-bold tracking-wider uppercase hover:bg-retro-yellow hover:text-black transition-all rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none cursor-pointer`}
+                                                type="submit"
+                                                disabled={isSaving}
+                                            >
+                                                <span className="flex items-center justify-center gap-2">
+                                                    <span className={`material-symbols-outlined text-base ${isSaving ? 'animate-pulse' : ''}`}>
+                                                        {isSaving ? 'flight_takeoff' : 'send'}
+                                                    </span>
+                                                    <span>
+                                                        {status === 'error' ? 'Transmission Error. Retry.' : isSaving ? 'Folding Airmail...' : 'Send Message'}
+                                                    </span>
                                                 </span>
-                                                <span>
-                                                    {status === 'error' ? 'Transmission Error. Retry.' : isSaving ? 'Folding Airmail...' : 'Send Message'}
-                                                </span>
-                                            </span>
-                                        </button>
+                                            </button>
+
+                                            <div className="text-xs font-body text-zinc-600">
+                                                Prefer direct email?{' '}
+                                                <a
+                                                    href={`mailto:${portfolioData.personal.email}`}
+                                                    className="font-bold text-zinc-900 underline hover:text-blue-600 transition-colors"
+                                                >
+                                                    {portfolioData.personal.email} ↗
+                                                </a>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
