@@ -61,7 +61,7 @@ const Contribution = () => {
                     date.setDate(date.getDate() - (363 - index));
                     const isWeekend = date.getDay() === 0 || date.getDay() === 6;
                     const randomVal = Math.random();
-                    const intensity = isWeekend ? (randomVal > 0.6 ? 1 : 0) : (randomVal > 0.7 ? 4 : randomVal > 0.4 ? 2 : 1);
+                    const intensity: number = isWeekend ? (randomVal > 0.6 ? 1 : 0) : (randomVal > 0.8 ? 4 : randomVal > 0.6 ? 3 : randomVal > 0.3 ? 2 : 1);
                     return {
                         color: '#ebedf0',
                         contributionCount: intensity > 0 ? intensity * 2 + 1 : 0,
