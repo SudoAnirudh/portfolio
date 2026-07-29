@@ -16,3 +16,7 @@
 ## 2026-07-17 - [Cache DOM target in high-frequency event listeners]
 **Learning:** In high-frequency event listeners like `mousemove`, constantly re-evaluating expensive DOM traversals (e.g., `.closest()`) and recalculating styles (e.g., `getComputedStyle()`) on every pixel movement causes significant layout thrashing and CPU overhead.
 **Action:** Always cache the current DOM target (`e.target`) and only perform expensive checks when the target element actually changes.
+
+## 2026-07-29 - Throttling High-Frequency Event Listeners
+**Learning:** High-frequency event listeners like `scroll` or `resize` that trigger React state updates can cause unnecessary re-renders, layout thrashing, and high CPU usage if not throttled.
+**Action:** Always throttle these updates using `requestAnimationFrame` to synchronize with screen refreshes, and use `{ passive: true }` on the event listener to avoid blocking the main thread.
