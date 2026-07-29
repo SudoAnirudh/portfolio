@@ -26,7 +26,7 @@ const Certifications = () => {
                                 {portfolioData.certifications.map((cert, index) => (
                                     <li key={index} className="flex items-start gap-2">
                                         <span className="text-retro-charcoal text-xs mt-1">▶</span>
-                                        {cert}
+                                        {typeof cert === 'string' ? cert : `${cert.title} — ${cert.issuer}`}
                                     </li>
                                 ))}
                             </ul>

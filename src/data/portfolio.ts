@@ -42,6 +42,13 @@ export interface Education {
     period: string;
     degree: string;
     institution: string;
+    cgpa?: string;
+}
+
+export interface CertificationItem {
+    title: string;
+    issuer: string;
+    featured?: boolean;
 }
 
 export interface Experience {
@@ -87,7 +94,7 @@ export interface PortfolioData {
     experience: Experience[];
     skills: Skill[];
     projects: Project[];
-    certifications: string[];
+    certifications: CertificationItem[];
     achievements: string[];
     footer: Footer;
 }
@@ -132,19 +139,10 @@ export const portfolioData: PortfolioData = {
     },
     education: [
         {
-            period: "Sep 2022 – 2026",
-            degree: "B.E. in Artificial Intelligence and Machine Learning (CGPA: 7.77)",
-            institution: "Srinivas Institute Of Technology, Mangalore"
-        },
-        {
-            period: "Jun 2020 – Mar 2022",
-            degree: "Bio Science Pre-University (85%)",
-            institution: "NHSS Vakayad, Kozhikode"
-        },
-        {
-            period: "Jun 2019 – Mar 2020",
-            degree: "Secondary School (95%)",
-            institution: "GHSS Naduvannur, Kozhikode"
+            period: "2022 – 2026",
+            degree: "B.E. in Artificial Intelligence & Machine Learning",
+            institution: "Srinivas Institute of Technology, Mangalore",
+            cgpa: "7.77"
         }
     ],
     experience: [
@@ -323,11 +321,11 @@ export const portfolioData: PortfolioData = {
         }
     ],
     certifications: [
-        "Deep Learning With TensorFlow - IBM",
-        "Machine Learning With Python - IBM",
-        "Introduction to Generative AI - Google Cloud",
-        "Artificial Intelligence - Certiport, Pearson",
-        "Neo4j Certified Professional - Neo4j"
+        { title: "Deep Learning With TensorFlow", issuer: "IBM", featured: true },
+        { title: "Machine Learning With Python", issuer: "IBM", featured: true },
+        { title: "Introduction to Generative AI", issuer: "Google Cloud", featured: true },
+        { title: "Artificial Intelligence", issuer: "Certiport, Pearson", featured: false },
+        { title: "Neo4j Certified Professional", issuer: "Neo4j", featured: false }
     ],
     achievements: [
         "Merged 5+ open-source pull requests across high-impact repositories during GSSoC ’25 and Hacktoberfest 2025",
@@ -337,4 +335,5 @@ export const portfolioData: PortfolioData = {
         copyright: "© 2026 Anirudh S · AI & ML Engineer"
     }
 };
+
 

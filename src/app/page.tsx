@@ -1,12 +1,10 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-
-import Education from "@/components/Education";
 import Skills from "@/components/Skills";
-import Contribution from "@/components/Contribution";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
-import Certifications from "@/components/Certifications";
+import Credentials from "@/components/Credentials";
+import Contribution from "@/components/Contribution";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollObserver from "@/components/ScrollObserver";
@@ -19,7 +17,7 @@ export default function Home() {
       {/* Grid container matches the HTML structure */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
 
-        {/* Row 1: Hero Section (Profile + Hello World) - Internal grid is 8+4 */}
+        {/* Row 1: Hero Section (Profile + Hello World) */}
         <div className="lg:col-span-12">
           <Hero />
         </div>
@@ -32,22 +30,19 @@ export default function Home() {
           <Skills />
         </div>
 
-        {/* Row 3: Experience (System Log) */}
-        <div className="lg:col-span-12">
-          <Experience />
-        </div>
-
-        {/* Row 4: Projects (File Explorer) */}
+        {/* Row 3: Projects (Headline Flagships) */}
         <div className="lg:col-span-12">
           <Projects />
         </div>
 
-        {/* Row 5: Education + Certifications */}
+        {/* Row 4: Experience (Career History) */}
         <div className="lg:col-span-12">
-          <Education />
+          <Experience />
         </div>
+
+        {/* Row 5: Consolidated Credentials (Education, Certifications, Achievements) */}
         <div className="lg:col-span-12">
-          <Certifications />
+          <Credentials />
         </div>
 
         {/* Row 6: Contribution Graph */}
@@ -65,3 +60,4 @@ export default function Home() {
     </main>
   );
 }
+
