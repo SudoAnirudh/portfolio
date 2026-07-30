@@ -539,6 +539,7 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
+                                            {/* SECURITY: Enforce maxLength to prevent rudimentary application-layer DoS via oversized payloads */}
                                             <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name</label>
                                             <input
                                                 id="name"
@@ -549,10 +550,12 @@ const Contact = () => {
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
                                                 placeholder="e.g. Sarah Jenkins"
                                                 type="text"
+                                                maxLength={100}
                                                 required
                                             />
                                         </div>
                                         <div>
+                                            {/* SECURITY: Enforce maxLength to prevent rudimentary application-layer DoS via oversized payloads */}
                                             <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email</label>
                                             <input
                                                 id="email"
@@ -562,6 +565,7 @@ const Contact = () => {
                                                 className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="e.g. sarah@company.com"
                                                 type="email"
+                                                maxLength={255}
                                                 aria-invalid={!!emailError}
                                                 aria-describedby={emailError ? "email-error" : undefined}
                                                 required
@@ -599,6 +603,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
+                                            {/* SECURITY: Enforce maxLength to prevent rudimentary application-layer DoS via oversized payloads */}
                                             <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message</label>
                                             <textarea
                                                 id="message"
@@ -607,6 +612,7 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
                                                 placeholder="Write your message..."
+                                                maxLength={5000}
                                                 required
                                             ></textarea>
                                         </div>
