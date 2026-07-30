@@ -148,6 +148,10 @@ const Footer = () => {
             {/* Bottom Terminal Footnote */}
             <div className="mt-4 flex flex-col sm:flex-row items-center justify-between text-[10px] font-pixel text-zinc-500 uppercase tracking-widest gap-2 text-center sm:text-left px-2">
                 <div>KOZHIKODE, INDIA · IST (UTC+5:30)</div>
+                <div className="flex items-center gap-1.5 hover:text-retro-green transition-colors cursor-help border border-transparent hover:border-black/20 rounded px-1.5 py-0.5" title="Snake Status: 2,847 pixels eaten today">
+                    <span className="inline-block animate-pulse">🐍</span>
+                    <span>PIXEL SNAKE: ATE 2,847 PIXELS TODAY</span>
+                </div>
                 <div>BUILT WITH NEXT.JS 16 & TAILWIND CSS</div>
             </div>
         </footer>

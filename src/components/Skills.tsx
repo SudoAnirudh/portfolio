@@ -5,6 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const skillDetails: Record<string, string> = {
     "Python": "Primary language for ML & backend. Developed PashuSwasthya offline DL disease models, engineered Hirenix FastAPI scoring backend, and built Flask-based Intrusion Detection Systems.",
+    "PyTorch": "Used for deep learning model training, tensor manipulations, CNN feature layer extraction, and custom loss optimization across computer vision pipelines.",
+    "Ollama": "Deployed for local LLM inference (Llama 3, Qwen, Mistral) in privacy-focused, zero-latency local development environments.",
+    "Cursor": "AI-native IDE used for agentic pair programming, multi-file code transformations, and rapid codebase exploration.",
+    "Claude Code": "Anthropic CLI agent used for autonomous terminal tasks, system debugging, automated refactoring, and code reviews.",
+    "Antigravity": "Google DeepMind agentic AI IDE used for multi-agent orchestration, pair programming, and structured task execution.",
+    "OpenAI Codex": "Utilized for AI-driven code generation, automated docstring synthesis, and function implementation.",
+    "Gemini CLI": "Google Gemini terminal tools used for quick LLM querying, multi-file code summarization, and prompt prototyping.",
+    "Hermes": "Nous Research Hermes agentic reasoning models and function-calling framework for complex tool-use workflows.",
+    "OpenClaw": "Autonomous AI agent and web intelligence automation tool for extracting structured web data.",
     "JavaScript": "Used in Next.js development. Built user interface components and client-side interactions for Hirenix career intelligence SaaS and portfolio widgets.",
     "TypeScript": "Utilized in building type-safe UI modules and page routing for the Hirenix candidate portal, ensuring code consistency and robust schema design.",
     "Kotlin": "Android Intern at MindMatrix. Developed 'Nimma-Guru' mentorship app connecting students with local mentors, retired teachers, and professionals.",
@@ -39,6 +48,15 @@ const skillDetails: Record<string, string> = {
 
 const iconMap: Record<string, string> = {
     "Python": "python",
+    "PyTorch": "pytorch",
+    "Ollama": "ollama",
+    "Cursor": "cursor",
+    "Claude Code": "anthropic",
+    "Antigravity": "googlegemini",
+    "OpenAI Codex": "openai",
+    "Gemini CLI": "googlegemini",
+    "Hermes": "openai",
+    "OpenClaw": "github",
     "JavaScript": "javascript",
     "TypeScript": "typescript",
     "Kotlin": "kotlin",
@@ -81,11 +99,37 @@ const CUSTOM_ICONS: Record<string, (props: { className?: string; isWhite?: boole
         <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#F2C811"}>
             <path d="M18 20V8h4v12h-4zm-7 0V4h4v16h-4zM4 20v-8h4v8H4z" />
         </svg>
+    ),
+    "Antigravity": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke={isWhite ? "#ffffff" : "#A855F7"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="12 2 2 22 22 22" fill={isWhite ? "#ffffff" : "#A855F7"} fillOpacity="0.3"/>
+            <circle cx="12" cy="12" r="3" fill={isWhite ? "#ffffff" : "#A855F7"} />
+        </svg>
+    ),
+    "Claude Code": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#D97706"}>
+            <path d="M12 2L9 9L2 12L9 15L12 22L15 15L22 12L15 9L12 2z"/>
+        </svg>
+    ),
+    "Cursor": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#3B82F6"}>
+            <path d="M3 3l7 18 3-7 7-3L3 3z"/>
+        </svg>
+    ),
+    "Hermes": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#EC4899"}>
+            <path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.8L18 8v8l-6 3.75L6 16V8l6-3.2z"/>
+        </svg>
+    ),
+    "OpenClaw": ({ className = "w-3.5 h-3.5", isWhite = false }) => (
+        <svg className={className} viewBox="0 0 24 24" fill={isWhite ? "#ffffff" : "#F97316"}>
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+        </svg>
     )
 };
 
 const TOP_SKILLS = new Set([
-    "Python", "FastAPI", "LangChain", "pgvector", "TensorFlow Lite", "Kotlin", "Next.js", "Docker"
+    "Python", "PyTorch", "FastAPI", "LangChain", "Antigravity", "Claude Code", "Cursor", "pgvector", "TensorFlow Lite", "Kotlin", "Next.js", "Docker"
 ]);
 
 const SkillIcon = ({ skill, isTop }: { skill: string; isTop: boolean }) => {

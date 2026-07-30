@@ -171,7 +171,11 @@ export const portfolioData: PortfolioData = {
     skills: [
         {
             category: "AI & Machine Learning",
-            items: "Python, scikit-learn, TensorFlow, TensorFlow Lite, LangChain, ChromaDB, pgvector, NVIDIA NIM, Gemini API"
+            items: "Python, PyTorch, scikit-learn, TensorFlow, TensorFlow Lite, LangChain, ChromaDB, pgvector, NVIDIA NIM, Gemini API, Ollama"
+        },
+        {
+            category: "AI Coding & Agent Tooling",
+            items: "Cursor, Claude Code, Antigravity, OpenAI Codex, Gemini CLI, Hermes, OpenClaw"
         },
         {
             category: "Languages",

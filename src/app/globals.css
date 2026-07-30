@@ -126,11 +126,23 @@
   animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-/* Hide default cursor when custom cursor is enabled */
+/* Hide default cursor when custom cursor is enabled, but restore native cursor for text inputs and text selection */
 body.custom-cursor,
-body.custom-cursor * {
+body.custom-cursor *:not(input):not(textarea):not(select):not([contenteditable]):not([data-native-cursor]):not(.native-cursor) {
   cursor: none !important;
 }
+
+body.custom-cursor input,
+body.custom-cursor textarea,
+body.custom-cursor select,
+body.custom-cursor [contenteditable],
+body.custom-cursor [data-native-cursor],
+body.custom-cursor .native-cursor,
+body.custom-cursor-text,
+body.custom-cursor-text * {
+  cursor: text !important;
+}
+
 
 @keyframes rainbow {
   0%,

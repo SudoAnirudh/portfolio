@@ -115,6 +115,7 @@ const Projects = () => {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
+                                    data-project-card="true"
                                     className="bg-zinc-50 border-3 border-black rounded-2xl p-5 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center"
                                 >
                                     {/* Preview Image */}
@@ -233,6 +234,7 @@ const Projects = () => {
                                     >
                                         <Link
                                             href={`/projects/${project.slug}`}
+                                            data-project-card="true"
                                             className="bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col justify-between group cursor-pointer h-full"
                                         >
                                             <div>
