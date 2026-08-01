@@ -537,6 +537,7 @@ const Contact = () => {
 
                                 {/* Contact Form */}
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
+                                    {/* SECURITY: Enforce maxLength on form inputs to prevent application-layer DoS via oversized payloads, aligning with server-side validation. */}
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
                                             <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name</label>
@@ -549,6 +550,7 @@ const Contact = () => {
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
                                                 placeholder="e.g. Sarah Jenkins"
                                                 type="text"
+                                                maxLength={100}
                                                 required
                                             />
                                         </div>
@@ -564,6 +566,7 @@ const Contact = () => {
                                                 type="email"
                                                 aria-invalid={!!emailError}
                                                 aria-describedby={emailError ? "email-error" : undefined}
+                                                maxLength={255}
                                                 required
                                             />
                                             {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
@@ -607,6 +610,7 @@ const Contact = () => {
                                                 onChange={handleChange}
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
                                                 placeholder="Write your message..."
+                                                maxLength={5000}
                                                 required
                                             ></textarea>
                                         </div>
