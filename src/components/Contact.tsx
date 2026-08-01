@@ -539,27 +539,27 @@ const Contact = () => {
                                 <div className="bg-retro-white p-5 sm:p-8 relative overflow-hidden flex flex-col justify-center min-h-[420px] sm:min-h-[500px]">
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
-                                            <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name</label>
+                                            <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
                                                 placeholder="e.g. Sarah Jenkins"
                                                 type="text"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email</label>
+                                            <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="email"
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="e.g. sarah@company.com"
                                                 type="email"
                                                 aria-invalid={!!emailError}
@@ -593,19 +593,19 @@ const Contact = () => {
                                                 name="subject"
                                                 value={formData.subject}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
                                                 placeholder="Subject details..."
                                                 type="text"
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message</label>
+                                            <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <textarea
                                                 id="message"
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-retro-yellow focus:border-black focus:bg-white transition-all resize-none h-36"
                                                 placeholder="Write your message..."
                                                 required
                                             ></textarea>
