@@ -231,7 +231,8 @@ const RetroCursor = () => {
             animationFrameId = requestAnimationFrame(loop);
         };
 
-        window.addEventListener('mousemove', updateMousePos);
+        // PERFORMANCE: Added { passive: true } to high-frequency mousemove event listener to prevent main thread blocking
+        window.addEventListener('mousemove', updateMousePos, { passive: true });
         window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('mouseup', handleMouseUp);
 
