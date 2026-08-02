@@ -96,7 +96,8 @@ const RetroLoader = () => {
             setMousePos({ x, y });
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        // PERFORMANCE: Added { passive: true } to high-frequency mousemove event listener to prevent main thread blocking
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
         // Timing flow:
         // Step 1 (Blinking Floppy Disk): 0s - 0.8s
