@@ -502,12 +502,25 @@ const Skills = () => {
                                 {selectedSkill === 'VS Code' && <VsCodeDiagram />}
                                 {selectedSkill === 'Power BI' && <PowerBiDiagram />}
 
-                                <div className="mt-5 flex justify-end">
+                                <div className="mt-5 flex items-center justify-between gap-2">
+                                    <button
+                                        onClick={() => {
+                                            const skillToFilter = selectedSkill;
+                                            setIsModalOpen(false);
+                                            window.dispatchEvent(new CustomEvent('filter-by-skill', { detail: { skill: skillToFilter } }));
+                                            const el = document.getElementById('projects');
+                                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                                        }}
+                                        className="px-4 py-2 bg-retro-orange text-black border-2 border-black font-pixel text-xs uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-amber-400 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer rounded-lg font-bold flex items-center gap-1.5"
+                                    >
+                                        <span>View {selectedSkill} Projects</span>
+                                        <span className="material-symbols-outlined text-sm">arrow_downward</span>
+                                    </button>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
                                         className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all text-black cursor-pointer rounded-lg font-bold"
                                     >
-                                        Close Inspector
+                                        Close
                                     </button>
                                 </div>
                             </div>

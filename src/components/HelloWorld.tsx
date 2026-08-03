@@ -319,6 +319,77 @@ const StaticChannel = () => {
     );
 };
 
+// Channel 08: Interactive CLI Shell Easter Egg
+const CliChannel = () => {
+    const [history, setHistory] = useState<Array<{ cmd: string; output: string }>>([
+        { cmd: 'sysboot', output: 'MAC OS SYSTEM SHELL v1.0.4\nType "help" to view available commands.' }
+    ]);
+    const [input, setInput] = useState('');
+    const endRef = React.useRef<HTMLDivElement>(null);
+
+    const handleCommand = (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmed = input.trim().toLowerCase();
+        if (!trimmed) return;
+
+        let output = '';
+        if (trimmed === 'clear') {
+            setHistory([]);
+            setInput('');
+            return;
+        } else if (trimmed === 'help') {
+            output = 'COMMANDS:\n • help     : List available commands\n • skills   : View core tech stack\n • projects : View top projects\n • contact  : Get contact details\n • resume   : Print resume summary\n • about    : Read bio summary\n • clear    : Clear terminal screen';
+        } else if (trimmed === 'skills') {
+            output = 'CORE STACK:\n[AI/ML] PyTorch, TensorFlow, LangChain, ChromaDB\n[Backend] FastAPI, Python, PostgreSQL, Supabase\n[Frontend] Next.js, React, TypeScript\n[Mobile] Flutter, Jetpack Compose, TFLite';
+        } else if (trimmed === 'projects') {
+            output = 'TOP PROJECTS:\n1. Hirenix (AI Resume & Candidate SaaS)\n2. PashuSwasthya (Offline TFLite Mobile App)\n3. AI Career CoPilot (Multi-Agent RAG System)';
+        } else if (trimmed === 'contact') {
+            output = 'CONTACT INFO:\nEmail: anirudhsudheer@gmail.com\nGitHub: github.com/SudoAnirudh\nLinkedIn: linkedin.com/in/sudoanirudh\nLocation: Kozhikode, Kerala, India';
+        } else if (trimmed === 'cat resume.txt' || trimmed === 'resume') {
+            output = 'RESUME SUMMARY:\nAnirudh S | B.E. AI & ML (CGPA 7.77)\n• Android & AI Intern @ MindMatrix\n• ML Intern @ HeproAI\n• Shipped 8+ AI/ML & Full-Stack Projects';
+        } else if (trimmed === 'about') {
+            output = 'ABOUT:\nAI/ML Engineer building production ML pipelines, RAG systems, and on-device vision models.';
+        } else {
+            output = `Command not found: "${trimmed}". Type "help" for options.`;
+        }
+
+        setHistory(prev => [...prev, { cmd: input, output }]);
+        setInput('');
+        setTimeout(() => endRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
+    };
+
+    return (
+        <div className="w-full h-full font-mono text-[9px] md:text-[10px] text-zinc-900 flex flex-col justify-between p-1 bg-[#f4efe3] overflow-y-auto">
+            <div className="space-y-1">
+                {history.map((item, idx) => (
+                    <div key={idx} className="space-y-0.5 text-left">
+                        {item.cmd !== 'sysboot' && (
+                            <div className="font-bold flex items-center gap-1 text-zinc-900">
+                                <span>&gt;</span>
+                                <span>{item.cmd}</span>
+                            </div>
+                        )}
+                        <pre className="text-zinc-700 whitespace-pre-wrap leading-tight font-mono">{item.output}</pre>
+                    </div>
+                ))}
+                <div ref={endRef} />
+            </div>
+
+            <form onSubmit={handleCommand} className="flex items-center gap-1 mt-1 border-t border-zinc-400 pt-1 shrink-0">
+                <span className="font-bold text-zinc-900">&gt;</span>
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="type 'help'..."
+                    className="flex-1 bg-transparent text-zinc-900 font-mono text-[9px] md:text-[10px] focus:outline-none placeholder-zinc-500"
+                    autoFocus
+                />
+            </form>
+        </div>
+    );
+};
+
 // SVG Assets
 const AppleRainbowLogo = () => (
     <svg viewBox="0 0 16 16" className="w-5 h-5 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)] select-none">
@@ -401,13 +472,13 @@ const HelloWorld = () => {
 
     const handleNextChannel = () => {
         if (isTransitioning) return;
-        const next = channel === 7 ? 3 : channel + 1;
+        const next = channel === 8 ? 3 : channel + 1;
         changeChannel(next);
     };
 
     const handlePrevChannel = () => {
         if (isTransitioning) return;
-        const prev = channel === 3 ? 7 : channel - 1;
+        const prev = channel === 3 ? 8 : channel - 1;
         changeChannel(prev);
     };
 
@@ -457,7 +528,8 @@ const HelloWorld = () => {
                                                 { ch: 4, label: 'Ch 4: Matrix' },
                                                 { ch: 5, label: 'Ch 5: 3D Cube' },
                                                 { ch: 6, label: 'Ch 6: retroPet' },
-                                                { ch: 7, label: 'Ch 7: Static' }
+                                                { ch: 7, label: 'Ch 7: Static' },
+                                                { ch: 8, label: 'Ch 8: CLI Shell 💻' }
                                             ].map((item) => (
                                                 <div
                                                     key={item.ch}
@@ -498,6 +570,7 @@ const HelloWorld = () => {
                         {channel === 5 && <AsciiCube />}
                         {channel === 6 && <AsciiPet />}
                         {channel === 7 && <StaticChannel />}
+                        {channel === 8 && <CliChannel />}
                     </div>
 
                     {/* Scanline Overlay */}

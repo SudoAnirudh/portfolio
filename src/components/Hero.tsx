@@ -5,9 +5,11 @@ import { portfolioData, HeroAction } from '@/data/portfolio';
 import { motion } from 'framer-motion';
 import HelloWorld from './HelloWorld';
 import ReceiptPrinter from './ReceiptPrinter';
+import ResumeModal from './ResumeModal';
 
 const Hero = () => {
     const [showReceipt, setShowReceipt] = useState(false);
+    const [showResumeModal, setShowResumeModal] = useState(false);
 
     useEffect(() => {
         const banner = `
@@ -105,6 +107,14 @@ const Hero = () => {
                                         <span className="material-symbols-outlined text-base">{action.icon}</span>
                                     </a>
                                 ))}
+                                <button
+                                    type="button"
+                                    onClick={() => setShowResumeModal(true)}
+                                    className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-black bg-retro-yellow text-black hover:bg-yellow-400 font-body text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                >
+                                    <span>Quick View PDF</span>
+                                    <span className="material-symbols-outlined text-base">visibility</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -118,6 +128,7 @@ const Hero = () => {
                 </div>
             </div>
             {showReceipt && <ReceiptPrinter onClose={() => setShowReceipt(false)} />}
+            <ResumeModal isOpen={showResumeModal} onClose={() => setShowResumeModal(false)} />
         </section>
     );
 };

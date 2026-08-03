@@ -125,7 +125,7 @@ export const portfolioData: PortfolioData = {
         subtext: "AI/ML Engineer specializing in production-grade machine learning pipelines, LLM orchestration (RAG/Agents), vector databases, and full-stack AI deployment.",
         actions: [
             { text: "View Selected Work", href: "#projects", icon: "arrow_forward", primary: true },
-            { text: "Download CV", href: "/Anirudh_S.pdf", icon: "north_east", primary: false }
+            { text: "Download CV", href: "https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link", icon: "north_east", primary: false }
         ]
     },
     about: {

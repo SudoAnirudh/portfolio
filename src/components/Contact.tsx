@@ -75,6 +75,14 @@ const Contact = () => {
     ];
 
     useEffect(() => {
+        const handleCopyEmailEvent = () => {
+            handleCopy(portfolioData.personal.email, "EMAIL");
+        };
+        window.addEventListener('copy-email', handleCopyEmailEvent);
+        return () => window.removeEventListener('copy-email', handleCopyEmailEvent);
+    }, []);
+
+    useEffect(() => {
         if (status === 'idle' && shouldFocus) {
             const timer = setTimeout(() => {
                 nameInputRef.current?.focus();
@@ -630,15 +638,23 @@ const Contact = () => {
                                                 </span>
                                             </button>
 
-                                            <div className="text-xs font-body text-zinc-600">
-                                                Prefer direct email?{' '}
-                                                <a
-                                                    href={`mailto:${portfolioData.personal.email}`}
-                                                    className="font-bold text-zinc-900 underline hover:text-blue-600 transition-colors"
-                                                >
-                                                    {portfolioData.personal.email} ↗
-                                                </a>
-                                            </div>
+                                            <div className="text-xs font-body text-zinc-600 flex flex-wrap items-center gap-2">
+                                                 <span>Prefer direct email?</span>
+                                                 <a
+                                                     href={`mailto:${portfolioData.personal.email}`}
+                                                     className="font-bold text-zinc-900 underline hover:text-blue-600 transition-colors"
+                                                 >
+                                                     {portfolioData.personal.email} ↗
+                                                 </a>
+                                                 <button
+                                                     type="button"
+                                                     onClick={() => handleCopy(portfolioData.personal.email, "EMAIL")}
+                                                     className="px-2 py-0.5 bg-black text-white hover:bg-retro-yellow hover:text-black border border-black rounded text-[10px] font-pixel uppercase tracking-wider font-bold transition-all flex items-center gap-1 cursor-pointer shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                                                 >
+                                                     <span className="material-symbols-outlined text-xs">content_copy</span>
+                                                     Copy Email
+                                                 </button>
+                                             </div>
                                         </div>
                                     </form>
                                 </div>

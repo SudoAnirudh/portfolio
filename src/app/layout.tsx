@@ -85,7 +85,7 @@ const jsonLd = {
   url: "https://portfolio-blue-five-10.vercel.app/",
   image: "https://portfolio-blue-five-10.vercel.app/profile_pixel.png",
   jobTitle: "AI & ML Engineer",
-  alumniOf": {
+  alumniOf: {
     "@type": "EducationalOrganization",
     name: "Srinivas Institute Of Technology"
   },

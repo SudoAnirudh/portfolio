@@ -15,12 +15,32 @@ const CATEGORIES = [
 
 const Projects = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+    const [selectedSkillFilter, setSelectedSkillFilter] = useState<string | null>(null);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+    React.useEffect(() => {
+        const handleFilterEvent = (e: Event) => {
+            const customEvent = e as CustomEvent<{ skill: string }>;
+            if (customEvent.detail?.skill) {
+                setSelectedSkillFilter(customEvent.detail.skill);
+                setSelectedCategory('ALL');
+            }
+        };
+
+        window.addEventListener('filter-by-skill', handleFilterEvent);
+        return () => {
+            window.removeEventListener('filter-by-skill', handleFilterEvent);
+        };
+    }, []);
+
     const filteredProjects = portfolioData.projects.filter(project => {
-        if (selectedCategory === 'ALL') return true;
-        return project.category?.includes(selectedCategory);
+        const matchesCategory = selectedCategory === 'ALL' || project.category?.includes(selectedCategory);
+        const matchesSkill = !selectedSkillFilter || project.techStack.some(tech => 
+            tech.toLowerCase().includes(selectedSkillFilter.toLowerCase()) || 
+            selectedSkillFilter.toLowerCase().includes(tech.toLowerCase())
+        );
+        return matchesCategory && matchesSkill;
     });
 
     const featuredProjects = filteredProjects.filter(p => p.featured);
@@ -69,7 +89,7 @@ const Projects = () => {
 
             <div className="bg-retro-white border-4 border-black p-5 sm:p-8 rounded-b-2xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 {/* Category Pill Filters */}
-                <div className="mb-8 flex flex-wrap items-center gap-2 border-b-2 border-black/10 pb-5">
+                <div className="mb-6 flex flex-wrap items-center gap-2 border-b-2 border-black/10 pb-5">
                     <span className="font-pixel text-xs text-zinc-500 uppercase tracking-wider mr-2 flex items-center gap-1">
                         <span className="material-symbols-outlined text-sm">filter_list</span>
                         FILTER BY:
@@ -96,6 +116,44 @@ const Projects = () => {
                         );
                     })}
                 </div>
+
+                {/* Active Skill Filter Banner */}
+                {selectedSkillFilter && (
+                    <div className="mb-8 bg-retro-yellow border-3 border-black p-3.5 rounded-xl flex items-center justify-between shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <div className="flex flex-wrap items-center gap-2 font-pixel text-xs sm:text-sm text-black font-bold uppercase">
+                            <span className="material-symbols-outlined text-lg text-black">psychology</span>
+                            <span>FILTERED BY SKILL:</span>
+                            <span className="bg-black text-white px-2.5 py-0.5 rounded-md font-mono text-xs">{selectedSkillFilter}</span>
+                            <span className="text-[10px] font-mono text-zinc-800 font-normal">
+                                ({filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} matched)
+                            </span>
+                        </div>
+                        <button
+                            onClick={() => setSelectedSkillFilter(null)}
+                            className="px-3 py-1 bg-black text-white hover:bg-red-600 border-2 border-black rounded-lg text-[10px] font-pixel uppercase tracking-wider font-bold cursor-pointer transition-colors flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                            <span className="material-symbols-outlined text-xs">close</span>
+                            Clear Skill Filter
+                        </button>
+                    </div>
+                )}
+
+                {/* Empty State */}
+                {filteredProjects.length === 0 && (
+                    <div className="text-center py-12 bg-zinc-100 border-2 border-dashed border-black/20 rounded-xl my-6">
+                        <span className="material-symbols-outlined text-4xl text-zinc-400 mb-2">search_off</span>
+                        <p className="font-pixel text-sm text-zinc-600 uppercase">No projects match the selected criteria</p>
+                        <button
+                            onClick={() => {
+                                setSelectedCategory('ALL');
+                                setSelectedSkillFilter(null);
+                            }}
+                            className="mt-4 px-4 py-2 bg-black text-white font-pixel text-xs uppercase rounded-lg border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-retro-yellow hover:text-black transition-all cursor-pointer font-bold"
+                        >
+                            Reset All Filters
+                        </button>
+                    </div>
+                )}
 
                 {/* Section 1: Featured Flagship Projects */}
                 {featuredProjects.length > 0 && (
@@ -148,9 +206,18 @@ const Projects = () => {
                                             </Link>
                                             <div className="flex flex-wrap gap-1.5">
                                                 {project.techStack.map((tech, i) => (
-                                                    <span key={i} className="text-[10px] font-pixel bg-zinc-200 text-zinc-800 px-2 py-0.5 border border-black/20 rounded font-bold uppercase">
+                                                    <button
+                                                        key={i}
+                                                        onClick={() => setSelectedSkillFilter(tech)}
+                                                        title={`Filter projects by ${tech}`}
+                                                        className={`text-[10px] font-pixel px-2 py-0.5 border border-black/20 rounded font-bold uppercase transition-all cursor-pointer ${
+                                                            selectedSkillFilter === tech
+                                                                ? 'bg-black text-white border-black'
+                                                                : 'bg-zinc-200 text-zinc-800 hover:bg-retro-yellow hover:text-black hover:border-black'
+                                                        }`}
+                                                    >
                                                         {tech}
-                                                    </span>
+                                                    </button>
                                                 ))}
                                             </div>
                                         </div>
@@ -201,7 +268,7 @@ const Projects = () => {
                                                 rel="noopener noreferrer"
                                                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-black rounded-lg border-2 border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                                             >
-                                                <span>GitHub Repository</span>
+                                                <span>GitHub Repo</span>
                                                 <span className="material-symbols-outlined text-sm">code</span>
                                             </a>
                                         </div>
@@ -232,10 +299,9 @@ const Projects = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
                                     >
-                                        <Link
-                                            href={`/projects/${project.slug}`}
+                                        <div
                                             data-project-card="true"
-                                            className="bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col justify-between group cursor-pointer h-full"
+                                            className="bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex flex-col justify-between group h-full"
                                         >
                                             <div>
                                                 <div className="flex justify-between items-center mb-3">
@@ -251,9 +317,11 @@ const Projects = () => {
                                                     </div>
                                                 </div>
 
-                                                <h4 className="font-display text-lg uppercase tracking-tight text-retro-charcoal mb-1 group-hover:text-retro-orange transition-colors">
-                                                    {project.title}
-                                                </h4>
+                                                <Link href={`/projects/${project.slug}`}>
+                                                    <h4 className="font-display text-lg uppercase tracking-tight text-retro-charcoal mb-1 group-hover:text-retro-orange transition-colors cursor-pointer">
+                                                        {project.title}
+                                                    </h4>
+                                                </Link>
 
                                                 <p className="font-body text-xs text-zinc-600 line-clamp-2 leading-relaxed mb-4">
                                                     {project.description}
@@ -263,26 +331,56 @@ const Projects = () => {
                                             <div>
                                                 <div className="flex flex-wrap gap-1 mb-3">
                                                     {project.techStack.map((tech, i) => (
-                                                        <span key={i} className="text-[9px] font-mono text-zinc-500 bg-white border border-black/10 px-1.5 py-0.2 rounded">
+                                                        <button
+                                                            key={i}
+                                                            onClick={() => setSelectedSkillFilter(tech)}
+                                                            title={`Filter projects by ${tech}`}
+                                                            className={`text-[9px] font-mono px-1.5 py-0.2 rounded border transition-colors cursor-pointer ${
+                                                                selectedSkillFilter === tech
+                                                                    ? 'bg-black text-white border-black font-bold'
+                                                                    : 'text-zinc-600 bg-white border-black/10 hover:border-black hover:bg-retro-yellow hover:text-black'
+                                                            }`}
+                                                        >
                                                             {tech}
-                                                        </span>
+                                                        </button>
                                                     ))}
                                                 </div>
 
-                                                <div className="flex items-center justify-between text-xs font-body font-bold pt-2 border-t border-black/10">
-                                                    <span className="text-zinc-800 group-hover:underline flex items-center gap-1">
-                                                        View Case Study
-                                                        <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                                    </span>
-                                                    <span
-                                                        className="text-zinc-500 hover:text-black"
-                                                        title="View Case Study"
+                                                <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-black/10">
+                                                    <Link
+                                                        href={`/projects/${project.slug}`}
+                                                        className="px-2.5 py-1 bg-black text-white text-[10px] font-pixel uppercase tracking-wider font-bold rounded border border-black hover:bg-retro-yellow hover:text-black transition-all flex items-center gap-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
                                                     >
-                                                        <span className="material-symbols-outlined text-base">read_more</span>
-                                                    </span>
+                                                        <span>Case Study</span>
+                                                        <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                                                    </Link>
+
+                                                    {project.demo && (
+                                                        <a
+                                                            href={project.demo}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="px-2 py-1 bg-retro-green text-black text-[10px] font-pixel uppercase tracking-wider font-bold rounded border border-black hover:bg-emerald-300 transition-all flex items-center gap-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                                                            title="View Live Demo"
+                                                        >
+                                                            <span>Live</span>
+                                                            <span className="material-symbols-outlined text-xs">open_in_new</span>
+                                                        </a>
+                                                    )}
+
+                                                    <a
+                                                        href={project.github}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="px-2 py-1 bg-white text-black text-[10px] font-pixel uppercase tracking-wider font-bold rounded border border-black hover:bg-zinc-200 transition-all flex items-center gap-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                                                        title="View Source Code on GitHub"
+                                                    >
+                                                        <span>Code</span>
+                                                        <span className="material-symbols-outlined text-xs">code</span>
+                                                    </a>
                                                 </div>
                                             </div>
-                                        </Link>
+                                        </div>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
