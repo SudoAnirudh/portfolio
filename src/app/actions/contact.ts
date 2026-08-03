@@ -34,9 +34,13 @@ export async function submitContactForm(formData: { name: string; email: string;
     if (email.length > 255 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
         return { success: false, error: 'Please enter a valid email address.' };
     }
-
     if (message.length < 10 || message.length > 5000) {
         return { success: false, error: 'Message must be between 10 and 5000 characters.' };
+    }
+
+    // SECURITY: Limit subject length to prevent DoS
+    if (subject.length > 200) {
+        return { success: false, error: 'Subject must be less than 200 characters.' };
     }
 
     const safeName = escapeHTML(name);
