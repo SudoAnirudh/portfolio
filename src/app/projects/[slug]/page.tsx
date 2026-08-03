@@ -43,8 +43,27 @@ export default async function CaseStudyPage({ params }: PageProps) {
     const prevStudy = caseStudies[prevSlug];
     const nextStudy = caseStudies[nextSlug];
 
+    const projectJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: study.title,
+        description: study.subtitle,
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Web",
+        author: {
+            "@type": "Person",
+            name: "Anirudh S",
+            url: "https://portfolio-blue-five-10.vercel.app/"
+        },
+        keywords: study.techStack.join(", ")
+    };
+
     return (
         <main className="min-h-screen bg-retro-cream dark:bg-zinc-900 py-10 px-4 sm:px-6 md:px-8">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd).replace(/</g, '\\u003c') }}
+            />
             <div className="max-w-5xl mx-auto space-y-8">
                 {/* Top Navigation Bar */}
                 <div className="flex items-center justify-between border-b-2 border-black/10 dark:border-white/10 pb-4">

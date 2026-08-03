@@ -85,11 +85,28 @@ const jsonLd = {
   url: "https://portfolio-blue-five-10.vercel.app/",
   image: "https://portfolio-blue-five-10.vercel.app/profile_pixel.png",
   jobTitle: "AI & ML Engineer",
+  alumniOf": {
+    "@type": "EducationalOrganization",
+    name: "Srinivas Institute Of Technology"
+  },
+  knowsAbout: [
+    "Machine Learning",
+    "Deep Learning",
+    "Natural Language Processing",
+    "Computer Vision",
+    "PyTorch",
+    "Retrieval-Augmented Generation",
+    "FastAPI",
+    "Next.js",
+    "TensorFlow",
+    "Kotlin",
+    "LLM Systems"
+  ],
   sameAs: [
     "https://github.com/SudoAnirudh",
     "https://linkedin.com/in/sudoanirudh"
   ],
-  description: "AI/ML Undergraduate specializing in Deep Learning, CNNs, and NLP."
+  description: "AI & ML Engineer specializing in Deep Learning, RAG Pipelines, Computer Vision, and FastAPI deployment."
 };
 
 export default function RootLayout({
@@ -100,6 +117,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
       </head>
       <body
