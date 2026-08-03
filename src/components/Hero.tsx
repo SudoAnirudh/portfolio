@@ -6,10 +6,12 @@ import { motion } from 'framer-motion';
 import HelloWorld from './HelloWorld';
 import ReceiptPrinter from './ReceiptPrinter';
 import ResumeModal from './ResumeModal';
+import FloppyDiskModal from './FloppyDiskModal';
 
 const Hero = () => {
     const [showReceipt, setShowReceipt] = useState(false);
     const [showResumeModal, setShowResumeModal] = useState(false);
+    const [showFloppyModal, setShowFloppyModal] = useState(false);
 
     useEffect(() => {
         const banner = `
@@ -27,7 +29,7 @@ const Hero = () => {
     const handleActionClick = (e: React.MouseEvent, action: HeroAction) => {
         if (action.text === "Download CV") {
             e.preventDefault();
-            setShowReceipt(true);
+            setShowFloppyModal(true);
         }
     };
 
@@ -73,7 +75,7 @@ const Hero = () => {
                             </p>
 
                             {/* Aligned Key-Value Strip */}
-                            <div className="grid grid-cols-3 gap-2 bg-zinc-100 border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 bg-zinc-100 border-2 border-black p-3 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                                 <div>
                                     <div className="font-pixel text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider">Location</div>
                                     <div className="font-body text-xs sm:text-sm font-bold text-zinc-900 truncate">Kozhikode, KL</div>
@@ -129,6 +131,11 @@ const Hero = () => {
             </div>
             {showReceipt && <ReceiptPrinter onClose={() => setShowReceipt(false)} />}
             <ResumeModal isOpen={showResumeModal} onClose={() => setShowResumeModal(false)} />
+            <FloppyDiskModal
+                isOpen={showFloppyModal}
+                onClose={() => setShowFloppyModal(false)}
+                onMountPdf={() => setShowResumeModal(true)}
+            />
         </section>
     );
 };
