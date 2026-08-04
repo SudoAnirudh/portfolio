@@ -39,6 +39,11 @@ export async function submitContactForm(formData: { name: string; email: string;
         return { success: false, error: 'Message must be between 10 and 5000 characters.' };
     }
 
+    // SECURITY: Enforce max length on the subject field to prevent DoS via oversized payloads.
+    if (subject.length > 200) {
+        return { success: false, error: 'Subject cannot exceed 200 characters.' };
+    }
+
     const safeName = escapeHTML(name);
     const safeEmail = escapeHTML(email);
     const safeMessage = escapeHTML(message);
