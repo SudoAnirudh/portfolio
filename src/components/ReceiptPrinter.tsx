@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { portfolioData } from '@/data/portfolio';
 
 interface ReceiptPrinterProps {
@@ -8,16 +8,17 @@ interface ReceiptPrinterProps {
 }
 
 const DISAPPOINTMENT_QUOTES = [
-    "FILE UNDER: 'NEVER GONNA HAPPEN.'",
-    "RECYCLED INTO OATMEAL CUP HOLDERS.",
-    "CANDIDACY STATUS: SENT TO THE SHADOW REALM.",
-    "YEET! CAREER STATUS: CANCELLED.",
-    "ERROR 404: INTEREST NOT FOUND.",
-    "ANOTHER EXCELLENT RESUME DESTROYED.",
-    "YOUR CAREER GOALS HAVE BEEN TRASHED."
+    "RECYCLED INTO OATMEAL CUP HOLDERS. HE'LL SURVIVE (PROBABLY).",
+    "DISCARDED! ANIRUDH IS NOW PRAYING TO THE ALGORITHM.",
+    "REJECTED! ADDING $1 TO THE THERAPY FUND.",
+    "TRASHED! TIME TO GO GRIND MORE LEETCODE.",
+    "DISCARDED. BACK TO THE CODING CAVE WE GO!",
+    "FILE UNDER: 'ANIRUDH WILL TRY HARDER NEXT TIME.'",
+    "RECYCLED. ANOTHER DRAFT SACRIFICED TO THE CODE GODS."
 ];
 
 const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
+    const prefersReducedMotion = useReducedMotion();
     const [visibleLines, setVisibleLines] = useState<React.ReactNode[]>([]);
     const [isPrinting, setIsPrinting] = useState(true);
     const [isTorn, setIsTorn] = useState(false);
@@ -26,6 +27,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     const [showTrashBin, setShowTrashBin] = useState(false);
     const [binLidOpen, setBinLidOpen] = useState(false);
     const [showQuote, setShowQuote] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
     const audioContextRef = useRef<AudioContext | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +47,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     }, []);
 
     const playPrintSound = () => {
-        if (!audioContextRef.current) return;
+        if (isMuted || !audioContextRef.current) return;
         const ctx = audioContextRef.current;
         if (ctx.state === 'suspended') ctx.resume();
         const gainNode = ctx.createGain();
@@ -80,13 +82,12 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
 
     // Synthesize realistic paper crumpling sound
     const playCrumpleSound = () => {
-        if (!audioContextRef.current) return;
+        if (isMuted || !audioContextRef.current) return;
         const ctx = audioContextRef.current;
         if (ctx.state === 'suspended') ctx.resume();
 
         const now = ctx.currentTime;
         
-        // Play 6 separate tiny crackle bursts to simulate paper folding/crushing
         for (let i = 0; i < 6; i++) {
             const timeOffset = now + i * 0.08 + Math.random() * 0.04;
             const duration = 0.05 + Math.random() * 0.05;
@@ -121,7 +122,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
 
     // Synthesize mechanical lid slam clonk sound
     const playLidSlamSound = () => {
-        if (!audioContextRef.current) return;
+        if (isMuted || !audioContextRef.current) return;
         const ctx = audioContextRef.current;
         if (ctx.state === 'suspended') ctx.resume();
 
@@ -219,31 +220,41 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
     ];
 
     useEffect(() => {
-        let currentLine = 0;
+        const hasPrintedInSession = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('receipt-printed') === 'true';
+        
+        // Fast print path if reduced motion or already printed in session
+        if (prefersReducedMotion || hasPrintedInSession) {
+            setVisibleLines(fullReceiptLines);
+            setIsPrinting(false);
+            setIsTorn(true);
+            return;
+        }
 
+        let currentLine = 0;
         const printInterval = setInterval(() => {
             if (currentLine < fullReceiptLines.length) {
                 setVisibleLines(prev => [...prev, fullReceiptLines[currentLine]]);
                 playPrintSound();
                 currentLine++;
 
-                // Auto scroll to bottom
                 if (scrollRef.current) {
                     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
                 }
             } else {
                 clearInterval(printInterval);
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionStorage.setItem('receipt-printed', 'true');
+                }
                 setTimeout(() => {
                     setIsPrinting(false);
-                    // Trigger tear off sound/animation
-                    playPrintSound(); // one last rip
-                    setTimeout(() => setIsTorn(true), 500);
-                }, 800);
+                    playPrintSound();
+                    setTimeout(() => setIsTorn(true), 400);
+                }, 600);
             }
-        }, 300); // Speed of printing
+        }, 220);
 
         return () => clearInterval(printInterval);
-    }, []);
+    }, [prefersReducedMotion]);
 
     const handleDownload = () => {
         window.open(portfolioData.hero.actions.find(a => !a.primary)?.href || "#", "_blank", "noopener,noreferrer");
@@ -290,7 +301,17 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                     <div className="w-3/4 h-2 bg-black rounded-full mb-2 shadow-inner"></div> {/* Ejection slot */}
                     <div className="flex justify-between w-full items-center px-4">
                         <div className="text-zinc-500 font-display text-[10px] tracking-widest uppercase">EPSON-ish</div>
-                        <div className={`w-2 h-2 rounded-full ${isPrinting ? 'bg-orange-500 animate-pulse' : 'bg-green-500 shadow-[0_0_10px_#22c55e]'}`}></div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setIsMuted(!isMuted)}
+                                className="text-[9px] font-pixel px-2 py-0.5 border border-zinc-600 rounded bg-zinc-700 text-zinc-200 hover:bg-zinc-600 flex items-center gap-1 cursor-pointer"
+                                title={isMuted ? "Click to unmute sound effects" : "Click to mute sound effects"}
+                            >
+                                <span>{isMuted ? '🔇 Muted' : '🔊 Sound On'}</span>
+                            </button>
+                            <div className={`w-2 h-2 rounded-full ${isPrinting ? 'bg-orange-500 animate-pulse' : 'bg-green-500 shadow-[0_0_10px_#22c55e]'}`}></div>
+                        </div>
                     </div>
                 </div>
 
@@ -386,7 +407,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                             <div className="bg-retro-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col items-center gap-3 max-w-xs text-center transform -rotate-1">
                                 <span className="material-symbols-outlined text-4xl text-retro-orange animate-bounce">delete</span>
                                 <h3 className="font-display font-bold text-sm uppercase tracking-tighter text-zinc-900 leading-none">
-                                    Candidacy Rejected
+                                    Receipt Recycled
                                 </h3>
                                 <p className="font-body text-xs font-semibold text-zinc-700">
                                     {selectedQuote}
