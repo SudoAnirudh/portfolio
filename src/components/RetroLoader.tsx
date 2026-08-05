@@ -88,15 +88,22 @@ const RetroLoader = () => {
         setShowLoader(true);
         document.body.classList.add('overflow-hidden');
 
+        let animationFrameId: number | null = null;
         const handleMouseMove = (e: MouseEvent) => {
-            const { innerWidth, innerHeight } = window;
-            // Calculate mouse position relative to center of screen, bounded between -1 and 1
-            const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-            const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-            setMousePos({ x, y });
+            if (animationFrameId === null) {
+                // PERFORMANCE: Throttle React state update in mousemove listener using requestAnimationFrame to prevent layout thrashing and main thread blocking.
+                animationFrameId = requestAnimationFrame(() => {
+                    const { innerWidth, innerHeight } = window;
+                    // Calculate mouse position relative to center of screen, bounded between -1 and 1
+                    const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+                    const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+                    setMousePos({ x, y });
+                    animationFrameId = null;
+                });
+            }
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
         // Timing flow:
         // Step 1 (Blinking Floppy Disk): 0s - 0.8s
@@ -141,6 +148,7 @@ const RetroLoader = () => {
             clearTimeout(t4);
             clearTimeout(t5);
             window.removeEventListener('mousemove', handleMouseMove);
+            if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
             document.body.classList.remove('overflow-hidden');
         };
     }, []);
