@@ -28,3 +28,7 @@
 ## 2024-05-18 - Form and Social Links Accessibility Improvements
 **Learning:** In the `Contact.tsx` component, form inputs were relying solely on placeholders without `<label>` elements, which breaks screen reader support. Social icons were missing `aria-label`s, and text inside `span` with `material-symbols-outlined` was being read by screen readers.
 **Action:** Always provide `<label>` elements (using `sr-only` class if they should be visually hidden) for inputs, associate error states using `aria-invalid` and `aria-describedby`, add `aria-label` to icon-only links, and use `aria-hidden="true"` on the internal icon elements to prevent redundant reading. Also ensure external links include `target="_blank" rel="noopener noreferrer"` for security.
+
+## $(date +%Y-%m-%d) - Required Indicator Accessibility Pattern
+**Learning:** While form fields had the `required` attribute and were validated by the browser, they lacked visual indications of being required.
+**Action:** Standardize adding a visual required indicator by appending `<span className="text-red-500 ml-1" aria-hidden="true">*</span>` directly inside the corresponding `<label>` element for all required fields to improve user understanding without disrupting screen readers.
