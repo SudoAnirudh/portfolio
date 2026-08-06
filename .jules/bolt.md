@@ -19,3 +19,7 @@
 ## 2026-07-30 - [Throttled Scroll Listeners]
 **Learning:** High-frequency event listeners like `scroll` or `resize` that trigger React state updates (e.g., in `Navbar.tsx`) can cause significant main thread blocking and jank if not properly managed.
 **Action:** Always throttle these updates using `requestAnimationFrame` to synchronize with screen refreshes, and use `{ passive: true }` on the event listener to avoid blocking the main thread.
+
+## 2026-08-06 - [Throttle MouseMove State Updates with rAF]
+**Learning:** Syncing `mousemove` event coordinates directly to React state (e.g., via `setMousePos`) on every event emission causes significant layout thrashing and blocks the main thread with excessive re-renders.
+**Action:** Always wrap the state update in `requestAnimationFrame` to synchronize with screen refreshes, and ensure `cancelAnimationFrame` is called in the `useEffect` cleanup function to prevent memory leaks on unmount.
