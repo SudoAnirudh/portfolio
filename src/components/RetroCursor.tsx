@@ -89,13 +89,20 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let staticPosRafId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                if (staticPosRafId !== null) {
+                    cancelAnimationFrame(staticPosRafId);
+                }
+                // BOLT OPTIMIZATION: Wrap state updates in requestAnimationFrame for high-frequency events
+                staticPosRafId = requestAnimationFrame(() => {
+                    setStaticPos({ x: e.clientX, y: e.clientY });
+                });
             }
 
             // Target context detection
@@ -244,6 +251,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (staticPosRafId !== null) {
+                cancelAnimationFrame(staticPosRafId);
+            }
         };
     }, [reducedMotion]);
 
