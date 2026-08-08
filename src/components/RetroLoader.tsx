@@ -88,12 +88,18 @@ const RetroLoader = () => {
         setShowLoader(true);
         document.body.classList.add('overflow-hidden');
 
+        let rafId: number;
+
         const handleMouseMove = (e: MouseEvent) => {
-            const { innerWidth, innerHeight } = window;
-            // Calculate mouse position relative to center of screen, bounded between -1 and 1
-            const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-            const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-            setMousePos({ x, y });
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                const { innerWidth, innerHeight } = window;
+                // Calculate mouse position relative to center of screen, bounded between -1 and 1
+                const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+                const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+                // PERFORMANCE: Wrap state update in requestAnimationFrame to prevent layout thrashing and main thread blocking
+                setMousePos({ x, y });
+            });
         };
 
         window.addEventListener('mousemove', handleMouseMove);
@@ -135,6 +141,7 @@ const RetroLoader = () => {
         }, 4800);
 
         return () => {
+            if (rafId) cancelAnimationFrame(rafId);
             clearTimeout(t1);
             clearTimeout(t2);
             clearTimeout(t3);
