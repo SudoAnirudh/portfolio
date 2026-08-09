@@ -88,12 +88,20 @@ const RetroLoader = () => {
         setShowLoader(true);
         document.body.classList.add('overflow-hidden');
 
+        let animationFrameId: number;
+
         const handleMouseMove = (e: MouseEvent) => {
-            const { innerWidth, innerHeight } = window;
-            // Calculate mouse position relative to center of screen, bounded between -1 and 1
-            const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-            const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-            setMousePos({ x, y });
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            // PERFORMANCE: Throttle mousemove state updates with requestAnimationFrame to prevent layout thrashing
+            animationFrameId = requestAnimationFrame(() => {
+                const { innerWidth, innerHeight } = window;
+                // Calculate mouse position relative to center of screen, bounded between -1 and 1
+                const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
+                const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
+                setMousePos({ x, y });
+            });
         };
 
         window.addEventListener('mousemove', handleMouseMove);
@@ -141,6 +149,9 @@ const RetroLoader = () => {
             clearTimeout(t4);
             clearTimeout(t5);
             window.removeEventListener('mousemove', handleMouseMove);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
             document.body.classList.remove('overflow-hidden');
         };
     }, []);
