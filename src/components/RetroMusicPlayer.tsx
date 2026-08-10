@@ -58,11 +58,18 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
         };
     };
 
+    // PERFORMANCE: Throttle React state updates from mousemove events using requestAnimationFrame to prevent layout thrashing and main thread blocking.
+    const rafId = useRef<number | null>(null);
     const handleMouseMove = (e: MouseEvent) => {
         if (isDragging && !embedded) {
-            setPosition({
-                x: e.clientX - dragOffset.current.x,
-                y: e.clientY - dragOffset.current.y
+            if (rafId.current !== null) {
+                cancelAnimationFrame(rafId.current);
+            }
+            rafId.current = requestAnimationFrame(() => {
+                setPosition({
+                    x: e.clientX - dragOffset.current.x,
+                    y: e.clientY - dragOffset.current.y
+                });
             });
         }
     };
@@ -82,6 +89,9 @@ const RetroMusicPlayer = ({ embedded = false, onClose }: { embedded?: boolean; o
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
+            if (rafId.current !== null) {
+                cancelAnimationFrame(rafId.current);
+            }
         };
     }, [isDragging]);
 
