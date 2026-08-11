@@ -555,7 +555,7 @@ const Contact = () => {
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400"
                                                 placeholder="e.g. Sarah Jenkins"
                                                 type="text"
                                                 maxLength={100}
@@ -569,7 +569,7 @@ const Contact = () => {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleChange}
-                                                className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
+                                                className={`w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 ${emailError ? 'border-red-500' : ''}`}
                                                 placeholder="e.g. sarah@company.com"
                                                 type="email"
                                                 aria-invalid={!!emailError}
@@ -604,7 +604,7 @@ const Contact = () => {
                                                 name="subject"
                                                 value={formData.subject}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
                                                 placeholder="Subject details..."
                                                 type="text"
                                             />
@@ -616,7 +616,7 @@ const Contact = () => {
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
-                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
+                                                className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3.5 font-body text-sm text-zinc-900 focus-visible:ring-2 focus-visible:ring-black focus-visible:outline-none focus:border-black focus:bg-white transition-all resize-none h-36"
                                                 placeholder="Write your message..."
                                                 maxLength={5000}
                                                 required
