@@ -89,13 +89,18 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let staticPosFrameId: number;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                // PERFORMANCE: Wrap high-frequency React state update in rAF to prevent layout thrashing
+                if (staticPosFrameId) cancelAnimationFrame(staticPosFrameId);
+                staticPosFrameId = requestAnimationFrame(() => {
+                    setStaticPos({ x: e.clientX, y: e.clientY });
+                });
             }
 
             // Target context detection
@@ -244,6 +249,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (staticPosFrameId) cancelAnimationFrame(staticPosFrameId);
         };
     }, [reducedMotion]);
 
