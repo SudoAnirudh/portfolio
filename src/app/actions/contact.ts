@@ -22,6 +22,11 @@ export async function submitContactForm(formData: { name: string; email: string;
     const message = formData.message.trim();
     const subject = typeof formData.subject === 'string' ? formData.subject.trim() : '';
 
+    // SECURITY: Enforce maxLength on optional subject field to prevent application-layer DoS via oversized payloads
+    if (subject && subject.length > 200) {
+        return { success: false, error: 'Subject must be under 200 characters.' };
+    }
+
     if (!name || !email || !message) {
         return { success: false, error: 'All fields are required.' };
     }
