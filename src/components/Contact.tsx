@@ -548,7 +548,7 @@ const Contact = () => {
                                     {/* SECURITY: Enforce maxLength on form inputs to prevent application-layer DoS via oversized payloads, aligning with server-side validation. */}
                                     <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
                                         <div>
-                                            <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name</label>
+                                            <label htmlFor="name" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Name<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="name"
                                                 ref={nameInputRef}
@@ -563,7 +563,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email</label>
+                                            <label htmlFor="email" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Email<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <input
                                                 id="email"
                                                 name="email"
@@ -610,7 +610,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message</label>
+                                            <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message<span className="text-red-500 ml-1" aria-hidden="true">*</span></label>
                                             <textarea
                                                 id="message"
                                                 name="message"
