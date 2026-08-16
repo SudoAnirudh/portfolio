@@ -56,18 +56,14 @@ const Contact = () => {
 
     const handleCopy = (text: string, label: string) => {
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(text);
-        } else {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
+            navigator.clipboard.writeText(text).catch(() => {
+                // Clipboard write failed silently — user sees no feedback, no crash
+            });
         }
         setToastData({ title: `${label} COPIED TO CLIPBOARD!`, text });
         setTimeout(() => setToastData(null), 2500);
     };
+
 
     const disposableDomains = [
         'tempmail.com', 'throwawaymail.com', 'mailinator.com', 'guerrillamail.com', 'yopmail.com',

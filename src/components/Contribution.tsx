@@ -28,7 +28,7 @@ const Contribution = () => {
     useEffect(() => {
         const fetchContributions = async () => {
             try {
-                const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json`);
+                const res = await fetch(`/api/contributions/${username}.json`);
                 if (!res.ok) throw new Error("Failed to fetch contribution data");
                 const data = await res.json();
                 

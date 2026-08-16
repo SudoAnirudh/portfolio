@@ -4,7 +4,10 @@ import { Resend } from 'resend';
 import { portfolioData } from '@/data/portfolio';
 import { escapeHTML } from '@/utils/escape';
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_to_prevent_crash');
+if (!process.env.RESEND_API_KEY) {
+    console.error('[contact] RESEND_API_KEY is not set — email delivery disabled.');
+}
+const resend = new Resend(process.env.RESEND_API_KEY ?? '');
 
 // Use a verified domain email here if you have one, e.g., 'hello@yourdomain.com'
 // For testing without a verified domain, Resend only allows sending to your own email using 'onboarding@resend.dev'
@@ -43,6 +46,14 @@ export async function submitContactForm(formData: { name: string; email: string;
     const safeEmail = escapeHTML(email);
     const safeMessage = escapeHTML(message);
     const safeSubject = escapeHTML(subject);
+
+    if (!process.env.RESEND_API_KEY) {
+        return { success: false, error: 'Email service is temporarily unavailable. Please try again later.' };
+    }
+
+    // Submission reference ID for audit trail
+    const submissionId = `cs-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    console.log(`[contact] Submission ${submissionId} — name: ${name.slice(0, 20)}`);
 
     try {
         // 1. Send notification to YOU (the portfolio owner)
