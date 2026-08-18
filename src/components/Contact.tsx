@@ -495,19 +495,6 @@ const Contact = () => {
                                             
                                             {/* Quick Action Buttons */}
                                             <div className="space-y-2">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleCopy(portfolioData.personal.email, "EMAIL")}
-                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group"
-                                                >
-                                                    <span className="truncate mr-2 font-mono text-[11px] text-zinc-700 font-bold group-hover:text-black">
-                                                        {portfolioData.personal.email}
-                                                    </span>
-                                                    <span className="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-xs text-[9px] shrink-0">
-                                                        <span className="material-symbols-outlined text-xs">content_copy</span>
-                                                        COPY
-                                                    </span>
-                                                </button>
 
                                                 <button
                                                     type="button"
