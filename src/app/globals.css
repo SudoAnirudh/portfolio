@@ -278,37 +278,9 @@ body.custom-cursor-text * {
   --lost-mountain:   #121C38;
 }
 
-@keyframes cloud-drift {
-  from { transform: translateX(110vw); }
-  to   { transform: translateX(-30%);  }
-}
-
-@keyframes cloud-drift-slow {
-  from { transform: translateX(120vw); }
-  to   { transform: translateX(-40%);  }
-}
-
 @keyframes char-idle {
   0%,100% { transform: translateY(0px); }
   50%     { transform: translateY(-2px); }
-}
-
-@keyframes char-walk {
-  0%,100% { transform: translateY(0px)  rotate(0deg); }
-  25%     { transform: translateY(-3px) rotate(-1deg); }
-  75%     { transform: translateY(-1px) rotate(1deg);  }
-}
-
-@keyframes char-confused {
-  0%,100% { transform: rotate(0deg); }
-  25%     { transform: rotate(-4deg); }
-  75%     { transform: rotate(4deg);  }
-}
-
-@keyframes char-celebrate {
-  0%,100% { transform: translateY(0px)   scaleY(1); }
-  30%     { transform: translateY(-12px) scaleY(1.05); }
-  60%     { transform: translateY(-6px)  scaleY(0.97); }
 }
 
 @keyframes crt-flicker {
@@ -323,34 +295,9 @@ body.custom-cursor-text * {
   100% { transform: translateY(-80px) rotate(180deg); opacity: 0;   }
 }
 
-@keyframes dialogue-slide-in {
-  from { transform: translateY(12px); opacity: 0; }
-  to   { transform: translateY(0px);  opacity: 1; }
-}
-
-@keyframes boot-cursor {
-  0%,100% { opacity: 1; }
-  50%     { opacity: 0; }
-}
-
-@keyframes xp-float {
-  0%   { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-60px); opacity: 0; }
-}
-
-@keyframes interact-pulse {
-  0%,100% { transform: translateY(0); opacity: 1; }
-  50%     { transform: translateY(-4px); opacity: 0.6; }
-}
-
 @keyframes star-twinkle {
   0%,100% { opacity: 0.4; }
   50%     { opacity: 1; }
-}
-
-@keyframes secret-flash {
-  0%,100% { background: transparent; }
-  50%     { background: rgba(244, 201, 93, 0.12); }
 }
 
 @keyframes fog-drift {
