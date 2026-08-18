@@ -14,6 +14,7 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
+    const rafId = useRef<number | null>(null);
     const lastMoveTime = useRef(Date.now());
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
@@ -95,7 +96,13 @@ const RetroCursor = () => {
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                // PERFORMANCE: Throttle React state update on high-frequency mousemove to prevent main thread blocking
+                if (rafId.current !== null) {
+                    cancelAnimationFrame(rafId.current);
+                }
+                rafId.current = requestAnimationFrame(() => {
+                    setStaticPos({ x: e.clientX, y: e.clientY });
+                });
             }
 
             // Target context detection
@@ -244,6 +251,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (rafId.current !== null) {
+                cancelAnimationFrame(rafId.current);
+            }
         };
     }, [reducedMotion]);
 
