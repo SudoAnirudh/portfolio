@@ -11,3 +11,7 @@
 **Vulnerability:** Missing client-side length validation on contact form inputs.
 **Learning:** Client-side inputs lacked maxLength attributes corresponding to server-side constraints in actions/contact.ts, which could allow rudimentary application-layer DoS via oversized payloads.
 **Prevention:** Always ensure client-side form inputs enforce maxLength attributes explicitly aligned with their server-side validation counterparts.
+## 2025-02-23 - [Security] Add client-side and server-side maxLength validation to subject input
+**Vulnerability:** Missing client-side and server-side length validation on the optional contact form 'subject' input.
+**Learning:** Client-side inputs lacked maxLength attributes corresponding to server-side constraints in actions/contact.ts, which could allow rudimentary application-layer DoS via oversized payloads. Additionally, the server-side actions/contact.ts logic did not enforce length validation on the subject field.
+**Prevention:** Always ensure client-side form inputs enforce maxLength attributes explicitly aligned with their server-side validation counterparts. Add bounds checking to optional fields on the server.
