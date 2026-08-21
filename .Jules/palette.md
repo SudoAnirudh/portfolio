@@ -28,3 +28,7 @@
 ## 2024-05-18 - Form and Social Links Accessibility Improvements
 **Learning:** In the `Contact.tsx` component, form inputs were relying solely on placeholders without `<label>` elements, which breaks screen reader support. Social icons were missing `aria-label`s, and text inside `span` with `material-symbols-outlined` was being read by screen readers.
 **Action:** Always provide `<label>` elements (using `sr-only` class if they should be visually hidden) for inputs, associate error states using `aria-invalid` and `aria-describedby`, add `aria-label` to icon-only links, and use `aria-hidden="true"` on the internal icon elements to prevent redundant reading. Also ensure external links include `target="_blank" rel="noopener noreferrer"` for security.
+
+## $(date +%Y-%m-%d) - Focus-visible Accessibility Pattern
+**Learning:** Some form inputs (like in `Contact.tsx`) still rely on `focus:outline-none` overriding default focus rings without providing alternatives for keyboard navigation. Replacing `focus:outline-none` with `focus-visible:ring-2` (and specific color/outline properties like `focus-visible:ring-black focus-visible:outline-none`) restores proper a11y focus indication for keyboard users while keeping click interactions clean.
+**Action:** When updating form elements or interactive items, always check for `focus:outline-none` and replace it with `focus-visible:*` equivalents to guarantee keyboard accessibility.
