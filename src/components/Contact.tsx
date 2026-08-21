@@ -594,6 +594,7 @@ const Contact = () => {
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
                                                 placeholder="Subject details..."
                                                 type="text"
+                                                maxLength={200}
                                             />
                                         </div>
                                         <div>
