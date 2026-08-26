@@ -19,3 +19,15 @@
 ## 2026-07-30 - [Throttled Scroll Listeners]
 **Learning:** High-frequency event listeners like `scroll` or `resize` that trigger React state updates (e.g., in `Navbar.tsx`) can cause significant main thread blocking and jank if not properly managed.
 **Action:** Always throttle these updates using `requestAnimationFrame` to synchronize with screen refreshes, and use `{ passive: true }` on the event listener to avoid blocking the main thread.
+
+## $(date +%Y-%m-%d) - [Throttled Mousemove Listeners for React State]
+**Learning:** Syncing high-frequency event coordinates (like `mousemove`) directly to React state without throttling causes layout thrashing and main thread blocking, as React re-renders on every pixel move.
+**Action:** Always wrap `mousemove` coordinate state updates in `requestAnimationFrame` to sync with screen refreshes, capture the latest coordinates in a mutable `useRef` synchronously outside the rAF to prevent stale state, and cancel the frame on unmount.
+
+## 2026-08-26 - [Throttled Mousemove Listeners for React State]
+**Learning:** Syncing high-frequency event coordinates (like `mousemove`) directly to React state without throttling causes layout thrashing and main thread blocking, as React re-renders on every pixel move.
+**Action:** Always wrap `mousemove` coordinate state updates in `requestAnimationFrame` to sync with screen refreshes, capture the latest coordinates in a mutable `useRef` synchronously outside the rAF to prevent stale state, and cancel the frame on unmount.
+
+## 2026-08-26 - [Throttled Mousemove Listeners for React State]
+**Learning:** Syncing high-frequency event coordinates (like `mousemove`) directly to React state without throttling causes layout thrashing and main thread blocking, as React re-renders on every pixel move.
+**Action:** Always wrap `mousemove` coordinate state updates in `requestAnimationFrame` to sync with screen refreshes, capture the latest coordinates in a mutable `useRef` synchronously outside the rAF to prevent stale state, and cancel the frame on unmount.
