@@ -11,3 +11,8 @@
 **Vulnerability:** Missing client-side length validation on contact form inputs.
 **Learning:** Client-side inputs lacked maxLength attributes corresponding to server-side constraints in actions/contact.ts, which could allow rudimentary application-layer DoS via oversized payloads.
 **Prevention:** Always ensure client-side form inputs enforce maxLength attributes explicitly aligned with their server-side validation counterparts.
+
+## $(date +%Y-%m-%d) - [Security] Enforce Server and Client Validation Length Parity for DoS Prevention
+**Vulnerability:** The application was susceptible to rudimentary application-layer DoS attacks via oversized payloads because length constraints applied on the server (in `actions/contact.ts`) did not encompass all form fields (e.g., `subject` was ignored), and the client-side implementation (in `Contact.tsx`) similarly lacked a corresponding `maxLength` enforcement.
+**Learning:** Security validations on form fields, especially length constraints (e.g., `<input maxLength={200} />`), must always maintain strict parity between the client-side UI and server-side action handlers to prevent resource exhaustion and data truncation errors.
+**Prevention:** Systematically enforce explicitly matched maximum length limits (e.g., `maxLength`) on all client-side inputs, including optional ones, corresponding exactly to robust server-side validation checks before interacting with external APIs like Resend.
