@@ -1,6 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 import { Project } from '@/data/portfolio';
+import { caseStudies } from '@/data/caseStudies';
+import { ArchitectureFlow } from '@/components/ArchitectureFlow';
+import { CodeSnippetCard } from '@/components/CodeSnippetCard';
 import { motion } from 'framer-motion';
 
 // --- SUB-SIMULATORS FOR PORTFOLIO PROJECTS ---
@@ -2528,6 +2532,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     }, [onClose, onNavigate, project]);
 
     if (!project) return null;
+    const currentStudy = caseStudies[project.slug];
 
     return (
         <motion.div
@@ -2725,6 +2730,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                                                     ))}
                                                 </div>
                                             </div>
+
+                                            {caseStudies[project.slug] && (
+                                                <div className="mb-5 space-y-4 border-t-2 border-dashed border-black/15 pt-4">
+                                                    {caseStudies[project.slug].architectureFlow && (
+                                                        <ArchitectureFlow steps={caseStudies[project.slug].architectureFlow} />
+                                                    )}
+                                                    {caseStudies[project.slug].codeSnippet && (
+                                                        <CodeSnippetCard snippet={caseStudies[project.slug].codeSnippet} />
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="pt-2 flex flex-wrap gap-3 mt-auto border-t-2 border-dashed border-black/15">

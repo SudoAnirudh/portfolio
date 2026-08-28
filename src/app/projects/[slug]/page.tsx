@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { caseStudies } from '@/data/caseStudies';
+import { ArchitectureFlow } from '@/components/ArchitectureFlow';
+import { CodeSnippetCard } from '@/components/CodeSnippetCard';
 
 interface PageProps {
     params: Promise<{
@@ -152,6 +154,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
                     </p>
                 </div>
 
+                {/* System Architecture Diagram / Pipeline */}
+                {study.architectureFlow && study.architectureFlow.length > 0 && (
+                    <ArchitectureFlow steps={study.architectureFlow} />
+                )}
+
                 {/* Section 2: Technical Approach & Key Decisions */}
                 <div className="bg-zinc-100 dark:bg-zinc-800 bento-card rounded-3xl p-6 sm:p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-6">
                     <div className="flex items-center gap-2">
@@ -191,6 +198,11 @@ export default async function CaseStudyPage({ params }: PageProps) {
                         ))}
                     </div>
                 </div>
+
+                {/* Core Code Snippet */}
+                {study.codeSnippet && (
+                    <CodeSnippetCard snippet={study.codeSnippet} />
+                )}
 
                 {/* Section 3: Trade-offs & What I'd Do Differently */}
                 <div className="bg-zinc-100 dark:bg-zinc-800 bento-card rounded-3xl p-6 sm:p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-3">
