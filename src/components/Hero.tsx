@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { portfolioData, HeroAction } from '@/data/portfolio';
-import { motion } from 'framer-motion';
 import HelloWorld from './HelloWorld';
 import ReceiptPrinter from './ReceiptPrinter';
 import ResumeModal from './ResumeModal';
@@ -25,9 +24,8 @@ const Hero = () => {
     }, []);
 
     const handleActionClick = (e: React.MouseEvent, action: HeroAction) => {
-        if (action.text === "Download CV") {
-            e.preventDefault();
-            setShowReceipt(true);
+        if (action.text.includes("Download")) {
+            // Keep receipt printer trigger as optional interactive feature or default download behavior
         }
     };
 
@@ -59,7 +57,7 @@ const Hero = () => {
                         <div className="w-full md:w-2/3 space-y-5">
                             <div>
                                 <div className="flex items-center gap-2 text-zinc-500 font-pixel text-xs uppercase tracking-widest mb-1">
-                                    <span>AI / ML ENGINEER</span>
+                                    <span>AI/ML ENGINEER</span>
                                     <span>·</span>
                                     <span>KOZHIKODE, INDIA</span>
                                 </div>
@@ -84,7 +82,7 @@ const Hero = () => {
                                 </div>
                                 <div>
                                     <div className="font-pixel text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-wider">Core Focus</div>
-                                    <div className="font-body text-xs sm:text-sm font-bold text-zinc-900 truncate">LLMs & Computer Vision</div>
+                                    <div className="font-body text-xs sm:text-sm font-bold text-zinc-900 truncate">Agentic Systems & RAG</div>
                                 </div>
                             </div>
 
@@ -94,8 +92,8 @@ const Hero = () => {
                                     <a
                                         key={index}
                                         href={action.href}
-                                        target={!action.primary ? "_blank" : undefined}
-                                        rel={!action.primary ? "noopener noreferrer" : undefined}
+                                        target={!action.primary && action.href.startsWith("http") ? "_blank" : undefined}
+                                        rel={!action.primary && action.href.startsWith("http") ? "noopener noreferrer" : undefined}
                                         onClick={(e) => handleActionClick(e, action)}
                                         className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl border-2 border-black font-body text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${
                                             action.primary

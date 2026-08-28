@@ -28,19 +28,22 @@ const pacifico = Pacifico({
 });
 
 export const metadata: Metadata = {
-  title: "Anirudh S | AI & ML Engineer Portfolio",
-  description: "Portfolio of Anirudh S, an AI/ML Engineer specializing in Deep Learning, CNNs, and NLP. Exploring the gap between data, models, and real-world deployment.",
+  title: "Anirudh S | AI/ML & Agentic Systems Engineer",
+  description: "Building Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems.",
   keywords: [
     "Anirudh S",
-    "AI Engineer",
-    "Machine Learning Engineer",
-    "Deep Learning",
-    "Computer Vision",
-    "NLP",
-    "TensorFlow",
-    "Keras",
-    "Python Developer",
-    "Portfolio",
+    "AI/ML Engineer",
+    "Generative AI Engineer",
+    "Agentic Workflows",
+    "Autonomous Agents",
+    "ReAct Architecture",
+    "FastAPI",
+    "pgvector",
+    "Supabase",
+    "Groq API",
+    "NVIDIA NIM",
+    "TensorFlow Lite",
+    "PyTorch",
     "SudoAnirudh"
   ],
   authors: [{ name: "Anirudh S" }],
@@ -54,24 +57,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://portfolio-blue-five-10.vercel.app/",
-    siteName: "Anirudh S Portfolio",
-    title: "Anirudh S | AI & ML Engineer",
-    description: "AI/ML Undergraduate with hands-on exposure to Deep Learning, CNNs, and NLP. Check out my latest projects and work.",
+    siteName: "Anirudh S | AI/ML & Agentic Systems Engineer",
+    title: "Anirudh S | AI/ML & Agentic Systems Engineer",
+    description: "Explore production-grade AI systems, multi-agent frameworks, FastAPI backends, and edge ML applications.",
     images: [
       {
-        url: "/profile_pixel.png", // Using the existing profile image
+        url: "/profile_pixel.png",
         width: 1200,
         height: 630,
-        alt: "Anirudh S Portfolio",
+        alt: "Anirudh S | AI/ML & Agentic Systems Engineer Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anirudh S | AI & ML Engineer",
-    description: "AI/ML Undergraduate with hands-on exposure to Deep Learning, CNNs, and NLP.",
+    title: "Anirudh S | AI/ML & Agentic Systems Engineer",
+    description: "Building Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems.",
     images: ["/profile_pixel.png"],
-    creator: "@SudoAnirudh", // Assuming the GH username is useable or fallback
+    creator: "@SudoAnirudh",
   },
   verification: {
     google: "9247cc91dc1d8725",
@@ -84,29 +87,30 @@ const jsonLd = {
   name: "Anirudh S",
   url: "https://portfolio-blue-five-10.vercel.app/",
   image: "https://portfolio-blue-five-10.vercel.app/profile_pixel.png",
-  jobTitle: "AI & ML Engineer",
+  jobTitle: "AI/ML Engineer | Generative AI & Agentic Systems",
   alumniOf: {
     "@type": "EducationalOrganization",
     name: "Srinivas Institute Of Technology"
   },
   knowsAbout: [
+    "Autonomous Agents",
+    "Agentic Workflows",
+    "ReAct Control Loops",
+    "FastAPI",
+    "pgvector",
+    "Supabase",
+    "Multi-Agent Systems",
     "Machine Learning",
     "Deep Learning",
-    "Natural Language Processing",
-    "Computer Vision",
+    "TensorFlow Lite",
     "PyTorch",
-    "Retrieval-Augmented Generation",
-    "FastAPI",
-    "Next.js",
-    "TensorFlow",
-    "Kotlin",
-    "LLM Systems"
+    "Next.js"
   ],
   sameAs: [
     "https://github.com/SudoAnirudh",
     "https://linkedin.com/in/sudoanirudh"
   ],
-  description: "AI & ML Engineer specializing in Deep Learning, RAG Pipelines, Computer Vision, and FastAPI deployment."
+  description: "AI/ML Engineer specializing in Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems."
 };
 
 export default function RootLayout({

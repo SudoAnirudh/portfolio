@@ -103,10 +103,10 @@ export interface PortfolioData {
 export const portfolioData: PortfolioData = {
     personal: {
         name: "ANIRUDH S",
-        role: "AI & ML Engineer",
+        role: "AI/ML Engineer | Generative AI & Agentic Systems",
         email: "anirudhsudheer@gmail.com",
         phone: "+91 95391 02851",
-        location: "Kozhikode, Kerala, India",
+        location: "Kozhikode, Kerala, India (Open to Relocate & Remote)",
         social: {
             github: "https://github.com/SudoAnirudh",
             linkedin: "https://linkedin.com/in/sudoanirudh",
@@ -114,28 +114,28 @@ export const portfolioData: PortfolioData = {
         }
     },
     hero: {
-        status: "Open for AI/ML & GenAI Roles",
+        status: "📍 Kozhikode / Open to Relocate across India & Remote | Available for Full-Time & High-Impact Contract Roles",
         taglines: [
-            "Building end-to-end AI systems that solve real problems.",
-            "Transforming data pipelines into production-grade models.",
-            "Architecting LLM orchestration, RAG, and vector search systems.",
-            "Bridging the gap between deep learning research and deployment.",
-            "Crafting fast, offline-first ML mobile and web applications."
+            "Building Autonomous Agentic Workflows & Multi-Agent Systems.",
+            "Architecting Production GenAI Backends (FastAPI & pgvector).",
+            "Deploying Edge Machine Learning Systems & Mobile AI Apps.",
+            "Engineering Resilient Data Pipelines & Entity Resolution Engines."
         ],
-        subtext: "AI/ML Engineer specializing in production-grade machine learning pipelines, LLM orchestration (RAG/Agents), vector databases, and full-stack AI deployment.",
+        subtext: "Building Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems.",
         actions: [
-            { text: "View Selected Work", href: "#projects", icon: "arrow_forward", primary: true },
-            { text: "Download CV", href: "https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link", icon: "north_east", primary: false }
+            { text: "View Flagship Projects", href: "#projects", icon: "arrow_forward", primary: true },
+            { text: "Download Resume (PDF)", href: "https://drive.google.com/file/d/1V6g7AmD1qLFil0PY0rPI54-Rfp0RgajU/view?usp=drive_link", icon: "download", primary: false },
+            { text: "LinkedIn", href: "https://linkedin.com/in/sudoanirudh", icon: "open_in_new", primary: false }
         ]
     },
     about: {
         title: "About / Identity",
-        bio: "I build applied AI systems end-to-end — from raw data pipelines to deployed products. Recent work spans multilingual mobile apps with on-device ML, RAG and agentic LLM orchestration pipelines, and high-performance async backends in FastAPI and Django. I move fast with modern AI tooling, write clean production code, and I'm looking for an engineering team building real products with machine learning at the core.",
+        bio: "I build production-grade AI systems end-to-end — from asynchronous backends and vector search engines to autonomous multi-agent control loops and edge ML deployments. My technical core centers on Python, FastAPI, pgvector, LangChain/ReAct architectures, PyTorch, and TensorFlow Lite. I focus on measurable engineering impact: reducing API latency, eliminating hallucination loops, optimizing token budgets, and shipping clean, maintainable systems.",
         image: "/profile_pixel.png",
         highlights: [
             { label: "DEGREE", value: "B.E. in AI & ML (CGPA: 7.77)", icon: "school" },
             { label: "EXPERIENCE", value: "2 Machine Learning & Android Internships", icon: "work" },
-            { label: "SHIPPED", value: "8 End-to-End AI & Full-Stack Projects", icon: "rocket_launch" }
+            { label: "SHIPPED", value: "8 End-to-End AI & Full-Stack Systems", icon: "rocket_launch" }
         ]
     },
     education: [
@@ -170,28 +170,28 @@ export const portfolioData: PortfolioData = {
     ],
     skills: [
         {
-            category: "AI & Machine Learning",
-            items: "Python, PyTorch, scikit-learn, TensorFlow, TensorFlow Lite, LangChain, ChromaDB, pgvector, NVIDIA NIM, Gemini API, Ollama"
+            category: "AI & Agentic Systems",
+            items: "Python, FastAPI, pgvector, Supabase, ReAct Control Loops, LangChain, NVIDIA NIM, Groq API, Google Gemini API, ChromaDB, PyTorch"
         },
         {
             category: "AI Coding & Agent Tooling",
             items: "Cursor, Claude Code, Antigravity, OpenAI Codex, Gemini CLI, Hermes, OpenClaw"
         },
         {
-            category: "Languages",
-            items: "Python, JavaScript, TypeScript, Kotlin, SQL"
+            category: "Languages & Frameworks",
+            items: "Python, TypeScript, JavaScript, Kotlin, SQL, Next.js, React, Jetpack Compose, Flutter"
         },
         {
             category: "Backend & Databases",
-            items: "FastAPI, Flask, Django, PostgreSQL, Supabase, Firebase, MongoDB"
+            items: "FastAPI, Celery, Redis, PostgreSQL, SQLAlchemy, Supabase, Firebase, Docker, RapidFuzz"
         },
         {
-            category: "Frontend & Mobile",
-            items: "React, Next.js, Jetpack Compose, Flutter"
+            category: "Edge ML & Mobile",
+            items: "TensorFlow Lite, MobileNetV3, Android Native (Kotlin), Flutter"
         },
         {
             category: "Tools & Infrastructure",
-            items: "Git, Docker, Google Cloud, Android Studio, Jupyter, Power BI, VS Code"
+            items: "Git, GitHub Actions, Docker Compose, Streamlit, Linux, Vercel"
         }
     ],
     projects: [
@@ -200,77 +200,109 @@ export const portfolioData: PortfolioData = {
             title: "Hirenix",
             icon: "psychology",
             featured: true,
-            description: "AI SaaS platform for resume intelligence, GitHub portfolio analysis, and automated mock interview prep.",
-            problem: "Recruiters and job seekers struggle to map complex candidate skill sets to job requirements accurately and quickly.",
-            approach: "Built an async FastAPI backend using Supabase pgvector and LangChain to calculate hybrid semantic resume-to-job match scores, with sub-200ms candidate indexing.",
-            outcome: "Delivered real-time resume parsing, automated GitHub code quality scoring, and interactive mock interview evaluation.",
+            description: "Full-Stack AI Career Intelligence Platform featuring multi-provider LLM orchestration, async API throughput, and pgvector semantic resume search.",
+            problem: "ATS keyword matching misses contextual candidate experience and codebase quality, delaying talent discovery.",
+            approach: "Built an async FastAPI backend ingesting Resume PDF, GitHub repository histories, and LinkedIn profiles into a unified candidate representation with hybrid pgvector search (<200ms API response).",
+            outcome: "Integrated a GitHub Production Index (GPI) algorithm evaluating code quality, and a voice-enabled real-time interview evaluation engine powered by Groq LLaMA 3.",
             image: "/projects/hirenix.png",
             github: "https://github.com/SudoAnirudh/Hirenix",
             demo: "https://hirenix-frontend.vercel.app/",
             specs: [
                 { label: "Architecture", value: "Next.js + FastAPI" },
                 { label: "Vector Search", value: "Supabase pgvector" },
-                { label: "LLM Pipeline", value: "LangChain + OpenAI" },
-                { label: "Latency", value: "< 200ms Indexing" }
+                { label: "LLM Pipeline", value: "Groq LLaMA 3 + NVIDIA NIM" },
+                { label: "API Latency", value: "< 200ms Indexing Response" }
             ],
             category: ["AI & ML", "Full-Stack"],
-            techStack: ["Next.js", "FastAPI", "Supabase", "pgvector", "LangChain", "Python"]
+            techStack: ["Next.js", "FastAPI", "Groq API", "NVIDIA NIM", "Supabase", "pgvector", "Docker"]
         },
         {
-            slug: "pashu-swasthya",
-            title: "PashuSwasthya",
-            icon: "agriculture",
+            slug: "self-correcting-agent",
+            title: "Self-Correcting ReAct Agent",
+            icon: "auto_fix_high",
             featured: true,
-            description: "Offline-first, multilingual mobile application for cattle breed identification and disease detection.",
-            problem: "Rural farmers lack immediate access to veterinary diagnostic services in low-connectivity remote regions.",
-            approach: "Trained lightweight Convolutional Neural Network (CNN) image classification models and optimized them into quantized TensorFlow Lite models deployed directly on-device.",
-            outcome: "Enabled instant offline disease diagnosis with multilingual audio support for non-tech-literate agricultural workers.",
-            image: "/projects/pashu_swasthya.png",
-            github: "https://github.com/SudoAnirudh/PashuSwasthya",
+            description: "Autonomous ReAct agent control loop built from scratch featuring deterministic evaluation, budget-capped recovery engines, and prompt reformulation.",
+            problem: "Standard LLM tool-calling fails silently or enters infinite loops upon malformed tool responses or missing API parameters.",
+            approach: "Engineered a multi-step ReAct framework from scratch featuring modular components: Planner, Orchestrator, Tool Router, Working Memory, and Evaluator with budget-capped state backtracking.",
+            outcome: "Evaluated against a 10-task benchmark suite: logged 41 self-correction events and reduced unverified/hallucinated answers from 5/10 to 0/10.",
+            image: "/projects/self_correcting_agent.png",
+            github: "https://github.com/SudoAnirudh/Self_Correcting_Agent",
             specs: [
-                { label: "Deployment", value: "On-Device TFLite" },
-                { label: "Network Mode", value: "100% Offline First" },
-                { label: "UI Layer", value: "Flutter Multilingual" },
-                { label: "Core Model", value: "Custom CNN" }
+                { label: "Control Loop", value: "ReAct Architecture From Scratch" },
+                { label: "Inference", value: "NVIDIA NIM + Groq API" },
+                { label: "Recovery Engine", value: "Budget-Capped Backtracking" },
+                { label: "Benchmark Suite", value: "0/10 Unverified Failures" }
             ],
-            category: ["Mobile", "AI & ML"],
-            techStack: ["Flutter", "TensorFlow Lite", "Python", "CNN"]
+            category: ["AI & ML"],
+            techStack: ["Python", "ReAct Architecture", "NVIDIA NIM", "Groq API", "Pytest"]
         },
         {
-            slug: "ai-career-copilot",
-            title: "AI Career CoPilot",
-            icon: "work_history",
+            slug: "messydata",
+            title: "MessyData",
+            icon: "dataset",
             featured: true,
-            description: "Multi-agent job search assistant automating opportunity discovery, resume tailoring, and Kanban application tracking.",
-            problem: "High-volume job searching is repetitive, manual, and difficult to track across disparate job portals.",
-            approach: "Engineered a multi-agent orchestration pipeline using Gemini API, Celery task queues, and ChromaDB vector embeddings to match job descriptions with tailored resume variants.",
-            outcome: "Automated candidate-job alignment, custom cover letter drafting, and Kanban pipeline state updates.",
-            image: "/projects/ai_career_copilot.png",
-            github: "https://github.com/SudoAnirudh/AI_Career_CoPilot",
+            description: "Resilient multi-source ETL pipeline and tiered entity resolution engine for customer record reconciliation.",
+            problem: "Inconsistent customer records spread across legacy databases, rate-limited APIs, and varied CSV encodings generate duplicate data.",
+            approach: "Engineered an idempotent ETL pipeline with tiered entity resolution combining exact key matching with C++ accelerated RapidFuzz fuzzy similarity scoring to generate a golden record.",
+            outcome: "Executed 518 automatic profile merges with a 20-record manual triage queue, Streamlit lineage observability dashboard, and automated GitHub Actions CI/CD tests.",
+            image: "/projects/messy_data.png",
+            github: "https://github.com/SudoAnirudh/MessyData",
             specs: [
-                { label: "Orchestration", value: "Multi-Agent System" },
-                { label: "Task Queue", value: "Celery + Redis" },
-                { label: "Embeddings", value: "ChromaDB Vector Store" },
-                { label: "Inference", value: "Gemini API + NIM" }
+                { label: "Entity Resolution", value: "RapidFuzz Tiered Matching" },
+                { label: "Profile Merges", value: "518 Auto / 20 Triage" },
+                { label: "Observability", value: "Streamlit Lineage Dashboard" },
+                { label: "CI/CD Pipeline", value: "GitHub Actions + Docker" }
             ],
-            category: ["AI & ML", "Full-Stack"],
-            techStack: ["Next.js", "FastAPI", "Celery", "PostgreSQL", "ChromaDB", "Gemini API"]
+            category: ["Full-Stack", "AI & ML"],
+            techStack: ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "RapidFuzz", "Docker Compose", "Streamlit"]
         },
         {
             slug: "nimma-guru",
             title: "Nimma-Guru",
             icon: "diversity_3",
             featured: false,
-            description: "Community mentor directory connecting village students with local domain experts using Google Gemini.",
+            description: "Generative AI community mentorship mobile application with on-device voice assistance and Google Gemini 2.0 Flash mentor matching.",
             image: "/projects/nimma_guru.png",
             github: "https://github.com/SudoAnirudh/Nimma-Guru",
             specs: [
-                { label: "Platform", value: "Android Native" },
+                { label: "Platform", value: "Android Native (Kotlin)" },
                 { label: "UI Framework", value: "Jetpack Compose" },
-                { label: "AI Engine", value: "Gemini 2.0 Flash" }
+                { label: "AI Engine", value: "Google Gemini 2.0 Flash" }
             ],
             category: ["Mobile", "AI & ML"],
-            techStack: ["Kotlin", "Jetpack Compose", "Firebase", "Gemini API"]
+            techStack: ["Kotlin", "Jetpack Compose", "Google Gemini 2.0", "Firebase"]
+        },
+        {
+            slug: "pashu-swasthya",
+            title: "PashuSwasthya",
+            icon: "agriculture",
+            featured: false,
+            description: "Multilingual offline-first cattle disease diagnostic mobile app powered by INT8 quantized TensorFlow Lite edge inference.",
+            image: "/projects/pashu_swasthya.png",
+            github: "https://github.com/SudoAnirudh/PashuSwasthya",
+            specs: [
+                { label: "Edge Inference", value: "On-Device TFLite (INT8)" },
+                { label: "Network Requirement", value: "100% Offline First" },
+                { label: "Latency", value: "< 50ms On-Device" }
+            ],
+            category: ["Mobile", "AI & ML"],
+            techStack: ["Flutter", "TensorFlow Lite", "MobileNetV3", "Python"]
+        },
+        {
+            slug: "ai-career-copilot",
+            title: "AI Career CoPilot",
+            icon: "work_history",
+            featured: false,
+            description: "Asynchronous multi-agent job discovery engine running background scraping, ChromaDB match scoring, and automated outreach generation.",
+            image: "/projects/ai_career_copilot.png",
+            github: "https://github.com/SudoAnirudh/AI_Career_CoPilot",
+            specs: [
+                { label: "Orchestration", value: "FastAPI + Celery" },
+                { label: "Task Queue", value: "Redis" },
+                { label: "Vector DB", value: "ChromaDB" }
+            ],
+            category: ["AI & ML", "Full-Stack"],
+            techStack: ["FastAPI", "Celery", "Redis", "ChromaDB", "NVIDIA NIM", "Next.js"]
         },
         {
             slug: "cnn-visualizer",
@@ -281,48 +313,18 @@ export const portfolioData: PortfolioData = {
             image: "/projects/cnn_visualizer.png",
             github: "https://github.com/SudoAnirudh/CNN-VISUALIZER",
             specs: [
-                { label: "Category", value: "Model Interpretability" },
+                { label: "Interpretability", value: "Layer Feature Map Inspection" },
                 { label: "Framework", value: "TensorFlow & Keras" }
             ],
             category: ["AI & ML"],
             techStack: ["Python", "TensorFlow", "Keras", "Streamlit"]
         },
         {
-            slug: "self-correcting-agent",
-            title: "Self-Correcting Agent",
-            icon: "auto_fix_high",
-            featured: false,
-            description: "Autonomous ReAct web research agent with self-evaluation loops, fallback LLM routing, and budget limits.",
-            image: "/projects/self_correcting_agent.png",
-            github: "https://github.com/SudoAnirudh/Self_Correcting_Agent",
-            specs: [
-                { label: "Pattern", value: "ReAct Loop + Fallbacks" },
-                { label: "Inference", value: "NVIDIA NIM & Groq" }
-            ],
-            category: ["AI & ML"],
-            techStack: ["Python", "NVIDIA NIM", "Groq API", "Pytest"]
-        },
-        {
-            slug: "messydata",
-            title: "MessyData",
-            icon: "dataset",
-            featured: false,
-            description: "Resilient multi-source ETL pipeline and fuzzy matching identity resolution engine for customer record reconciliation.",
-            image: "/projects/messy_data.png",
-            github: "https://github.com/SudoAnirudh/MessyData",
-            specs: [
-                { label: "Engine", value: "RapidFuzz + Tenacity" },
-                { label: "Database", value: "PostgreSQL" }
-            ],
-            category: ["Full-Stack"],
-            techStack: ["Python", "PostgreSQL", "Docker", "RapidFuzz"]
-        },
-        {
             slug: "community-connect",
             title: "Community Connect",
             icon: "groups",
             featured: false,
-            description: "Civic engagement app connecting citizens with ward representatives using Firebase Auth and Supabase RLS.",
+            description: "Civic engagement app connecting citizens with ward representatives using Firebase Auth and Supabase Row Level Security.",
             image: "/projects/community_connect.png",
             github: "https://github.com/SudoAnirudh/Community_Connect",
             specs: [
@@ -345,8 +347,9 @@ export const portfolioData: PortfolioData = {
         "Selected for the Student Leadership Team at USAII Global AI Hackathon 2026, coordinating communications for 100+ participants"
     ],
     footer: {
-        copyright: "© 2026 Anirudh S · AI & ML Engineer"
+        copyright: "© 2026 Anirudh S · AI/ML Engineer | Generative AI & Agentic Systems"
     }
 };
+
 
 
