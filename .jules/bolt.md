@@ -19,3 +19,7 @@
 ## 2026-07-30 - [Throttled Scroll Listeners]
 **Learning:** High-frequency event listeners like `scroll` or `resize` that trigger React state updates (e.g., in `Navbar.tsx`) can cause significant main thread blocking and jank if not properly managed.
 **Action:** Always throttle these updates using `requestAnimationFrame` to synchronize with screen refreshes, and use `{ passive: true }` on the event listener to avoid blocking the main thread.
+
+## $(date +%Y-%m-%d) - Throttling React State Updates in Event Listeners
+**Learning:** High-frequency event listeners (like `mousemove`, `scroll`, `resize`) that update React state can cause severe layout thrashing and performance degradation, especially on high polling rate peripherals. Wrapping state updates in `requestAnimationFrame` forces React to batch and synchronize updates with the display's actual refresh cycle. Also, pure components shouldn't call impure functions like `Date.now()` within their body during render (e.g. `useRef(Date.now())`); instead initialize with a static value like `0` or execute the logic in an effect/handler.
+**Action:** Always throttle React state updates derived from continuous user input events using `requestAnimationFrame`, and ensure you cancel the frame ID during component unmount to prevent memory leaks and state updates on unmounted components. Use `useRef(0)` instead of `useRef(Date.now())` for initialization.
