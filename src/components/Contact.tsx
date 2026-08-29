@@ -594,7 +594,9 @@ const Contact = () => {
                                                 className="w-full bg-zinc-50 border-2 border-black/30 rounded-lg p-3 font-body focus:outline-none focus:border-black focus:bg-white transition-colors text-zinc-900 placeholder-zinc-400 text-sm sm:text-base"
                                                 placeholder="Subject details..."
                                                 type="text"
+                                                maxLength={200}
                                             />
+                                            {/* SECURITY: Enforce maxLength on optional fields to prevent application-layer DoS */}
                                         </div>
                                         <div>
                                             <label htmlFor="message" className="block font-pixel text-xs uppercase tracking-wider text-zinc-600 mb-1">Your Message</label>
