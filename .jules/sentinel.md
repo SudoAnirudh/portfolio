@@ -11,3 +11,7 @@
 **Vulnerability:** Missing client-side length validation on contact form inputs.
 **Learning:** Client-side inputs lacked maxLength attributes corresponding to server-side constraints in actions/contact.ts, which could allow rudimentary application-layer DoS via oversized payloads.
 **Prevention:** Always ensure client-side form inputs enforce maxLength attributes explicitly aligned with their server-side validation counterparts.
+## 2026-08-05 - Missing Input Length Limits
+**Vulnerability:** Missing length limits on optional fields like subject.
+**Learning:** Unrestricted fields can cause DoS via resource exhaustion.
+**Prevention:** Enforce explicit maxLength limits on all inputs.
