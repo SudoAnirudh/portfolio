@@ -14,7 +14,7 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef<number | null>(null);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
@@ -89,13 +89,20 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let updateStaticPosRafId: number;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                // PERFORMANCE: Throttle React state updates from mousemove events using requestAnimationFrame
+                if (updateStaticPosRafId) {
+                    cancelAnimationFrame(updateStaticPosRafId);
+                }
+                updateStaticPosRafId = requestAnimationFrame(() => {
+                    setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                });
             }
 
             // Target context detection
@@ -157,7 +164,7 @@ const RetroCursor = () => {
         const loop = () => {
             if (!reducedMotion && segsRef.current.length > 0) {
                 const now = Date.now();
-                const idleDuration = now - lastMoveTime.current;
+                const idleDuration = now - (lastMoveTime.current || now);
                 const isIdle = idleDuration > 2000;
 
                 const head = segsRef.current[0];
@@ -244,6 +251,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (updateStaticPosRafId) {
+                cancelAnimationFrame(updateStaticPosRafId);
+            }
         };
     }, [reducedMotion]);
 
