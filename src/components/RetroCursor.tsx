@@ -14,7 +14,7 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef(0);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
@@ -89,13 +89,18 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let rafId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+            if (reducedMotion && !rafId) {
+                // PERFORMANCE: Wrap state updates in rAF to prevent layout thrashing
+                rafId = requestAnimationFrame(() => {
+                    setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                    rafId = null;
+                });
             }
 
             // Target context detection
@@ -244,6 +249,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
         };
     }, [reducedMotion]);
 
