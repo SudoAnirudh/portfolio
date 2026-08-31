@@ -1,3 +1,6 @@
 ## 2026-07-07 - Add ARIA Labels to Custom OS Components
 **Learning:** Icon-only interactive controls and text-based icon fonts (like material-symbols-outlined) in custom retro UI components must explicitly implement `aria-label` and `aria-hidden='true'` to prevent screen readers from reading literal icon text, and custom form inputs must be linked to labels via `id`/`htmlFor`.
 **Action:** Always add descriptive `aria-label` to icon buttons, apply `aria-hidden='true'` to their internal text-based icon spans, and associate form inputs correctly.
+## $(date +%Y-%m-%d) - Added visual required indicators to contact form fields
+**Learning:** Added explicit visual required indicators (`<span className="text-red-500 ml-1" aria-hidden="true">*</span>`) directly inside `<label>` elements for fields with the `required` attribute. This is an accessibility and UX convention to clearly communicate required fields to sighted users before form submission, while preventing redundant screen reader announcements by using `aria-hidden="true"`.
+**Action:** Always verify if forms clearly mark their required fields. If inputs use the `required` attribute, ensure a visual indicator (like an asterisk) is explicitly provided within the corresponding `<label>` to improve usability and accessibility for sighted users.
