@@ -547,6 +547,7 @@ const Contact = () => {
                                                 type="text"
                                                 maxLength={100}
                                                 required
+                                                maxLength={100}
                                             />
                                         </div>
                                         <div>
@@ -563,6 +564,7 @@ const Contact = () => {
                                                 aria-describedby={emailError ? "email-error" : undefined}
                                                 maxLength={255}
                                                 required
+                                                maxLength={255}
                                             />
                                             {emailError && <p id="email-error" className="text-red-500 text-xs mt-1 font-bold font-mono">{emailError}</p>}
                                         </div>
@@ -607,6 +609,7 @@ const Contact = () => {
                                                 placeholder="Write your message..."
                                                 maxLength={5000}
                                                 required
+                                                maxLength={5000}
                                             ></textarea>
                                         </div>
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2">
