@@ -31,6 +31,11 @@ export async function submitContactForm(formData: { name: string; email: string;
         return { success: false, error: 'Name must be between 2 and 100 characters.' };
     }
 
+    // SECURITY: Enforce length limit on optional subject to prevent application-layer DoS via oversized payloads
+    if (subject && subject.length > 200) {
+        return { success: false, error: 'Subject must be less than 200 characters.' };
+    }
+
     if (email.length > 255 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
         return { success: false, error: 'Please enter a valid email address.' };
     }
