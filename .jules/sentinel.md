@@ -11,3 +11,7 @@
 **Vulnerability:** Missing client-side length validation on contact form inputs.
 **Learning:** Client-side inputs lacked maxLength attributes corresponding to server-side constraints in actions/contact.ts, which could allow rudimentary application-layer DoS via oversized payloads.
 **Prevention:** Always ensure client-side form inputs enforce maxLength attributes explicitly aligned with their server-side validation counterparts.
+## 2026-08-02 - Add Permissions-Policy security header
+**Vulnerability:** The application was missing a Permissions-Policy header, potentially allowing unauthorized access to browser features if compromised.
+**Learning:** Security headers should proactively restrict unused browser APIs (like camera, mic) as defense in depth.
+**Prevention:** Always define a strict Permissions-Policy in the global application configuration.
