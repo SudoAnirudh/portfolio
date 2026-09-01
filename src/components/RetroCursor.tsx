@@ -90,12 +90,17 @@ const RetroCursor = () => {
 
         let lastTarget: EventTarget | null = null;
 
+        let rafId: number | null = null;
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                if (rafId) cancelAnimationFrame(rafId);
+                // PERFORMANCE: Throttle React state update on mousemove with requestAnimationFrame
+                rafId = requestAnimationFrame(() => {
+                    setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                });
             }
 
             // Target context detection
@@ -238,6 +243,7 @@ const RetroCursor = () => {
         loop();
 
         return () => {
+            if (rafId) cancelAnimationFrame(rafId);
             document.body.classList.remove('custom-cursor');
             document.body.classList.remove('custom-cursor-text');
             window.removeEventListener('mousemove', updateMousePos);
