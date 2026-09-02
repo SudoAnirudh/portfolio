@@ -89,13 +89,21 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let rAFId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                if (rAFId !== null) {
+                    cancelAnimationFrame(rAFId);
+                }
+                rAFId = requestAnimationFrame(() => {
+                    // PERFORMANCE: Throttling React state update in mousemove using requestAnimationFrame
+                    setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                    rAFId = null;
+                });
             }
 
             // Target context detection
@@ -244,6 +252,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (rAFId !== null) {
+                cancelAnimationFrame(rAFId);
+            }
         };
     }, [reducedMotion]);
 
