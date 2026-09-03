@@ -89,62 +89,71 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let mouseMoveRafId: number | null = null;
+        let latestTarget: HTMLElement | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
-            }
+            latestTarget = e.target as HTMLElement;
 
-            // Target context detection
-            const target = e.target as HTMLElement;
+            if (mouseMoveRafId === null) {
+                mouseMoveRafId = requestAnimationFrame(() => {
+                    mouseMoveRafId = null;
 
-            if (target && target !== lastTarget) {
-                lastTarget = target;
+                    // PERFORMANCE: Throttle React state updates in mousemove using requestAnimationFrame to prevent layout thrashing and main thread blocking, using the synced ref values.
+                    if (reducedMotion) {
+                        setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                    }
 
-                // 1. Text input & selection context check
-                const isInput = !!(
-                    target.tagName === 'INPUT' ||
-                    target.tagName === 'TEXTAREA' ||
-                    target.tagName === 'SELECT' ||
-                    target.isContentEditable ||
-                    target.closest('input, textarea, select, [contenteditable]') ||
-                    target.getAttribute('data-native-cursor') === 'true' ||
-                    getComputedStyle(target).cursor === 'text'
-                );
+                    // Target context detection
+                    if (latestTarget && latestTarget !== lastTarget) {
+                        lastTarget = latestTarget;
 
-                if (isInput) {
-                    setIsTextInput(true);
-                    document.body.classList.add('custom-cursor-text');
-                    setHoverType('none');
-                    return;
-                } else {
-                    setIsTextInput(false);
-                    document.body.classList.remove('custom-cursor-text');
-                }
+                        // 1. Text input & selection context check
+                        const isInput = !!(
+                            latestTarget.tagName === 'INPUT' ||
+                            latestTarget.tagName === 'TEXTAREA' ||
+                            latestTarget.tagName === 'SELECT' ||
+                            latestTarget.isContentEditable ||
+                            latestTarget.closest('input, textarea, select, [contenteditable]') ||
+                            latestTarget.getAttribute('data-native-cursor') === 'true' ||
+                            getComputedStyle(latestTarget).cursor === 'text'
+                        );
 
-                // 2. Project Card specific hover vs general link hover
-                const isProjectCard = !!(
-                    target.closest('[data-project-card="true"]') ||
-                    target.closest('[data-project="true"]')
-                );
+                        if (isInput) {
+                            setIsTextInput(true);
+                            document.body.classList.add('custom-cursor-text');
+                            setHoverType('none');
+                            return;
+                        } else {
+                            setIsTextInput(false);
+                            document.body.classList.remove('custom-cursor-text');
+                        }
 
-                if (isProjectCard) {
-                    setHoverType('project');
-                } else {
-                    const isClickable = !!(
-                        target.tagName === 'A' ||
-                        target.tagName === 'BUTTON' ||
-                        target.closest('a') ||
-                        target.closest('button') ||
-                        target.getAttribute('role') === 'button' ||
-                        getComputedStyle(target).cursor === 'pointer'
-                    );
+                        // 2. Project Card specific hover vs general link hover
+                        const isProjectCard = !!(
+                            latestTarget.closest('[data-project-card="true"]') ||
+                            latestTarget.closest('[data-project="true"]')
+                        );
 
-                    setHoverType(isClickable ? 'link' : 'none');
-                }
+                        if (isProjectCard) {
+                            setHoverType('project');
+                        } else {
+                            const isClickable = !!(
+                                latestTarget.tagName === 'A' ||
+                                latestTarget.tagName === 'BUTTON' ||
+                                latestTarget.closest('a') ||
+                                latestTarget.closest('button') ||
+                                latestTarget.getAttribute('role') === 'button' ||
+                                getComputedStyle(latestTarget).cursor === 'pointer'
+                            );
+
+                            setHoverType(isClickable ? 'link' : 'none');
+                        }
+                    }
+                });
             }
         };
 
@@ -244,6 +253,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (mouseMoveRafId !== null) cancelAnimationFrame(mouseMoveRafId);
         };
     }, [reducedMotion]);
 
