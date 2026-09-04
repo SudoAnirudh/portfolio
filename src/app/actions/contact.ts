@@ -39,6 +39,10 @@ export async function submitContactForm(formData: { name: string; email: string;
         return { success: false, error: 'Message must be between 10 and 5000 characters.' };
     }
 
+    if (subject && subject.length > 200) {
+        return { success: false, error: 'Subject must be less than 200 characters.' };
+    }
+
     const safeName = escapeHTML(name);
     const safeEmail = escapeHTML(email);
     const safeMessage = escapeHTML(message);
