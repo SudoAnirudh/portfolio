@@ -89,63 +89,75 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let updateRafId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
-            mousePos.current = { x: e.clientX, y: e.clientY };
-            lastMoveTime.current = Date.now();
-
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
-            }
-
-            // Target context detection
+            // Capture latest values synchronously to avoid stale closures
+            const clientX = e.clientX;
+            const clientY = e.clientY;
             const target = e.target as HTMLElement;
 
-            if (target && target !== lastTarget) {
-                lastTarget = target;
+            // Immediately update the non-react state for the animation loop
+            mousePos.current = { x: clientX, y: clientY };
+            lastMoveTime.current = Date.now();
 
-                // 1. Text input & selection context check
-                const isInput = !!(
-                    target.tagName === 'INPUT' ||
-                    target.tagName === 'TEXTAREA' ||
-                    target.tagName === 'SELECT' ||
-                    target.isContentEditable ||
-                    target.closest('input, textarea, select, [contenteditable]') ||
-                    target.getAttribute('data-native-cursor') === 'true' ||
-                    getComputedStyle(target).cursor === 'text'
-                );
+            if (updateRafId !== null) return;
 
-                if (isInput) {
-                    setIsTextInput(true);
-                    document.body.classList.add('custom-cursor-text');
-                    setHoverType('none');
-                    return;
-                } else {
-                    setIsTextInput(false);
-                    document.body.classList.remove('custom-cursor-text');
+            // PERFORMANCE: Wrap React state updates and expensive DOM checks in requestAnimationFrame to prevent layout thrashing and main thread blocking on mousemove.
+            updateRafId = requestAnimationFrame(() => {
+                updateRafId = null;
+
+                if (reducedMotion) {
+                    setStaticPos({ x: clientX, y: clientY });
                 }
 
-                // 2. Project Card specific hover vs general link hover
-                const isProjectCard = !!(
-                    target.closest('[data-project-card="true"]') ||
-                    target.closest('[data-project="true"]')
-                );
+                // Target context detection
+                if (target && target !== lastTarget) {
+                    lastTarget = target;
 
-                if (isProjectCard) {
-                    setHoverType('project');
-                } else {
-                    const isClickable = !!(
-                        target.tagName === 'A' ||
-                        target.tagName === 'BUTTON' ||
-                        target.closest('a') ||
-                        target.closest('button') ||
-                        target.getAttribute('role') === 'button' ||
-                        getComputedStyle(target).cursor === 'pointer'
+                    // 1. Text input & selection context check
+                    const isInput = !!(
+                        target.tagName === 'INPUT' ||
+                        target.tagName === 'TEXTAREA' ||
+                        target.tagName === 'SELECT' ||
+                        target.isContentEditable ||
+                        target.closest('input, textarea, select, [contenteditable]') ||
+                        target.getAttribute('data-native-cursor') === 'true' ||
+                        getComputedStyle(target).cursor === 'text'
                     );
 
-                    setHoverType(isClickable ? 'link' : 'none');
+                    if (isInput) {
+                        setIsTextInput(true);
+                        document.body.classList.add('custom-cursor-text');
+                        setHoverType('none');
+                        return;
+                    } else {
+                        setIsTextInput(false);
+                        document.body.classList.remove('custom-cursor-text');
+                    }
+
+                    // 2. Project Card specific hover vs general link hover
+                    const isProjectCard = !!(
+                        target.closest('[data-project-card="true"]') ||
+                        target.closest('[data-project="true"]')
+                    );
+
+                    if (isProjectCard) {
+                        setHoverType('project');
+                    } else {
+                        const isClickable = !!(
+                            target.tagName === 'A' ||
+                            target.tagName === 'BUTTON' ||
+                            target.closest('a') ||
+                            target.closest('button') ||
+                            target.getAttribute('role') === 'button' ||
+                            getComputedStyle(target).cursor === 'pointer'
+                        );
+
+                        setHoverType(isClickable ? 'link' : 'none');
+                    }
                 }
-            }
+            });
         };
 
         const handleMouseDown = () => setIsClicking(true);
@@ -244,6 +256,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (updateRafId !== null) cancelAnimationFrame(updateRafId);
         };
     }, [reducedMotion]);
 
