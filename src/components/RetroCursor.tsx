@@ -14,8 +14,9 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef(0);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
+    const latestEventRef = useRef({ x: -100, y: -100, targetChanged: false, isInput: false, hoverType: 'none' as 'none' | 'link' | 'project' });
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
     const segsRef = useRef<{ x: number; y: number; angle: number }[]>([]);
@@ -89,23 +90,24 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let mouseMoveRafId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
-            }
+            latestEventRef.current.x = e.clientX;
+            latestEventRef.current.y = e.clientY;
 
             // Target context detection
             const target = e.target as HTMLElement;
 
             if (target && target !== lastTarget) {
                 lastTarget = target;
+                latestEventRef.current.targetChanged = true;
 
                 // 1. Text input & selection context check
-                const isInput = !!(
+                latestEventRef.current.isInput = !!(
                     target.tagName === 'INPUT' ||
                     target.tagName === 'TEXTAREA' ||
                     target.tagName === 'SELECT' ||
@@ -115,36 +117,51 @@ const RetroCursor = () => {
                     getComputedStyle(target).cursor === 'text'
                 );
 
-                if (isInput) {
-                    setIsTextInput(true);
-                    document.body.classList.add('custom-cursor-text');
-                    setHoverType('none');
-                    return;
-                } else {
-                    setIsTextInput(false);
-                    document.body.classList.remove('custom-cursor-text');
-                }
-
-                // 2. Project Card specific hover vs general link hover
-                const isProjectCard = !!(
-                    target.closest('[data-project-card="true"]') ||
-                    target.closest('[data-project="true"]')
-                );
-
-                if (isProjectCard) {
-                    setHoverType('project');
-                } else {
-                    const isClickable = !!(
-                        target.tagName === 'A' ||
-                        target.tagName === 'BUTTON' ||
-                        target.closest('a') ||
-                        target.closest('button') ||
-                        target.getAttribute('role') === 'button' ||
-                        getComputedStyle(target).cursor === 'pointer'
+                if (!latestEventRef.current.isInput) {
+                    // 2. Project Card specific hover vs general link hover
+                    const isProjectCard = !!(
+                        target.closest('[data-project-card="true"]') ||
+                        target.closest('[data-project="true"]')
                     );
 
-                    setHoverType(isClickable ? 'link' : 'none');
+                    if (isProjectCard) {
+                        latestEventRef.current.hoverType = 'project';
+                    } else {
+                        const isClickable = !!(
+                            target.tagName === 'A' ||
+                            target.tagName === 'BUTTON' ||
+                            target.closest('a') ||
+                            target.closest('button') ||
+                            target.getAttribute('role') === 'button' ||
+                            getComputedStyle(target).cursor === 'pointer'
+                        );
+
+                        latestEventRef.current.hoverType = isClickable ? 'link' : 'none';
+                    }
                 }
+            }
+
+            // PERFORMANCE: Throttle React state updates in mousemove using requestAnimationFrame
+            if (mouseMoveRafId === null) {
+                mouseMoveRafId = requestAnimationFrame(() => {
+                    if (reducedMotion) {
+                        setStaticPos({ x: latestEventRef.current.x, y: latestEventRef.current.y });
+                    }
+
+                    if (latestEventRef.current.targetChanged) {
+                        if (latestEventRef.current.isInput) {
+                            setIsTextInput(true);
+                            document.body.classList.add('custom-cursor-text');
+                            setHoverType('none');
+                        } else {
+                            setIsTextInput(false);
+                            document.body.classList.remove('custom-cursor-text');
+                            setHoverType(latestEventRef.current.hoverType);
+                        }
+                        latestEventRef.current.targetChanged = false;
+                    }
+                    mouseMoveRafId = null;
+                });
             }
         };
 
@@ -244,6 +261,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (mouseMoveRafId !== null) cancelAnimationFrame(mouseMoveRafId);
         };
     }, [reducedMotion]);
 
