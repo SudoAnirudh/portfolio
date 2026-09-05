@@ -114,7 +114,7 @@ export const portfolioData: PortfolioData = {
         }
     },
     hero: {
-        status: "📍 Kozhikode / Open to Relocate across India & Remote | Available for Full-Time & High-Impact Contract Roles",
+        status: "📍 Kozhikode / Pan-India Relocation & Remote | Available for Full-Time AI/ML Roles & High-Impact Contracts",
         taglines: [
             "Building Autonomous Agentic Workflows & Multi-Agent Systems.",
             "Architecting Production GenAI Backends (FastAPI & pgvector).",

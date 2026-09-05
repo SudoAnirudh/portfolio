@@ -340,15 +340,15 @@ const CliChannel = () => {
         } else if (trimmed === 'help') {
             output = 'COMMANDS:\n • help     : List available commands\n • skills   : View core tech stack\n • projects : View top projects\n • contact  : Get contact details\n • resume   : Print resume summary\n • about    : Read bio summary\n • clear    : Clear terminal screen';
         } else if (trimmed === 'skills') {
-            output = 'CORE STACK:\n[AI/ML] PyTorch, TensorFlow, LangChain, ChromaDB\n[Backend] FastAPI, Python, PostgreSQL, Supabase\n[Frontend] Next.js, React, TypeScript\n[Mobile] Flutter, Jetpack Compose, TFLite';
+            output = 'CORE STACK:\n[AI/ML & Agents] Custom ReAct Loops, FastAPI, pgvector, Groq API, NVIDIA NIM, PyTorch\n[Backend & DB] Python, PostgreSQL, Supabase, Celery, Redis, RapidFuzz\n[Frontend & Mobile] Next.js, React, Jetpack Compose, Flutter, TFLite';
         } else if (trimmed === 'projects') {
-            output = 'TOP PROJECTS:\n1. Hirenix (AI Resume & Candidate SaaS)\n2. PashuSwasthya (Offline TFLite Mobile App)\n3. AI Career CoPilot (Multi-Agent RAG System)';
+            output = 'TOP PROJECTS:\n1. Hirenix (AI Career Intelligence & Semantic Resume Search)\n2. Self-Correcting ReAct Agent (Autonomous Control Loop From Scratch)\n3. MessyData (Tiered Entity Resolution & Deduplication)\n4. PashuSwasthya (Offline Edge ML Diagnostic)';
         } else if (trimmed === 'contact') {
-            output = 'CONTACT INFO:\nEmail: anirudhsudheer@gmail.com\nGitHub: github.com/SudoAnirudh\nLinkedIn: linkedin.com/in/sudoanirudh\nLocation: Kozhikode, Kerala, India';
+            output = 'CONTACT INFO:\nEmail: anirudhsudheer@gmail.com\nGitHub: github.com/SudoAnirudh\nLinkedIn: linkedin.com/in/sudoanirudh\nLocation: Kozhikode, KL (Open for Relocation & Remote)';
         } else if (trimmed === 'cat resume.txt' || trimmed === 'resume') {
-            output = 'RESUME SUMMARY:\nAnirudh S | B.E. AI & ML (CGPA 7.77)\n• Android & AI Intern @ MindMatrix\n• ML Intern @ HeproAI\n• Shipped 8+ AI/ML & Full-Stack Projects';
+            output = 'RESUME SUMMARY:\nAnirudh S | Full-Time AI/ML Engineer (B.E. AI & ML, CGPA 7.77)\n• Shipped 8+ Production GenAI, Agentic & Edge ML Systems\n• Available for Full-Time Roles & High-Impact Contracts';
         } else if (trimmed === 'about') {
-            output = 'ABOUT:\nAI/ML Engineer building production ML pipelines, RAG systems, and on-device vision models.';
+            output = 'ABOUT:\nAI/ML Engineer building production ML backends, custom agentic workflows, and edge inference systems.';
         } else {
             output = `Command not found: "${trimmed}". Type "help" for options.`;
         }
@@ -423,8 +423,9 @@ const HelloWorld = () => {
 
     const statusPhrases = [
         'SudoAnirudh // READY_',
-        'AI/ML ENGINEER_',
-        'OPEN FOR ROLES_',
+        'FULL-TIME AI/ML ENGINEER_',
+        'CUSTOM REACT AGENT LOOPS_',
+        'PAN-INDIA & REMOTE_',
         'SYSTEM OPERATIONAL_'
     ];
     const [phraseIndex, setPhraseIndex] = useState(0);

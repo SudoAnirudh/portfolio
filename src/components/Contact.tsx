@@ -6,10 +6,10 @@ import { submitContactForm } from '@/app/actions/contact';
 
 const SUBJECT_OPTIONS = [
     {
-        id: 'internship',
-        label: 'Job / Internship',
-        subject: 'Internship / Full-time Opportunity',
-        starter: "Hi Anirudh,\n\nI am reaching out regarding a Job / Internship opportunity at [Company Name] for the role of [Position]. We were impressed by your profile and would love to connect!\n\nBest regards,"
+        id: 'fulltime',
+        label: 'Full-Time / Contract',
+        subject: 'Full-Time AI/ML Opportunity',
+        starter: "Hi Anirudh,\n\nI am reaching out regarding a Full-Time / Contract opportunity at [Company Name] for the role of [Position]. We were impressed by your profile and would love to connect!\n\nBest regards,"
     },
     {
         id: 'collaboration',
@@ -451,12 +451,12 @@ const Contact = () => {
                                                     <span className="text-zinc-600">Status</span>
                                                     <span className="text-retro-charcoal font-bold text-right flex items-center gap-1">
                                                         <span className="w-2 h-2 rounded-full bg-retro-green animate-pulse inline-block"></span>
-                                                        Open for Internships
+                                                        Open for Full-Time Roles
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between gap-2 border-b border-black/10 pb-1.5">
                                                     <span className="text-zinc-600">Preferred Role</span>
-                                                    <span className="text-retro-charcoal text-right font-bold">AI/ML Intern</span>
+                                                    <span className="text-retro-charcoal text-right font-bold">Full-Time AI/ML Engineer</span>
                                                 </div>
                                                 <div className="flex justify-between gap-2 border-b border-black/10 pb-1.5">
                                                     <span className="text-zinc-600">Location</span>
