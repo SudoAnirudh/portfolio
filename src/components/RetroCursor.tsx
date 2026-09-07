@@ -14,7 +14,7 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef(0);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
@@ -89,13 +89,20 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let staticPosRafId = 0;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                // PERFORMANCE: Wrap high-frequency mousemove state update in requestAnimationFrame to prevent layout thrashing and main thread blocking.
+                cancelAnimationFrame(staticPosRafId);
+                const currentX = e.clientX;
+                const currentY = e.clientY;
+                staticPosRafId = requestAnimationFrame(() => {
+                    setStaticPos({ x: currentX, y: currentY });
+                });
             }
 
             // Target context detection
@@ -244,6 +251,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (staticPosRafId) cancelAnimationFrame(staticPosRafId);
         };
     }, [reducedMotion]);
 
