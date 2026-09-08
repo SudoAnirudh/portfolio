@@ -1,7 +1,8 @@
 import React from 'react';
 import { portfolioData } from '@/data/portfolio';
 
-const Experience = () => {
+// PERFORMANCE: Use React.memo for completely static presentation components to prevent unnecessary re-renders when parent layout state changes
+const Experience = React.memo(() => {
     return (
         <section className="max-w-7xl mx-auto mb-6 px-3 sm:px-4 md:px-0" id="experience">
             <div className="bg-retro-charcoal bento-card rounded-3xl p-6 sm:p-8 md:p-10 relative overflow-hidden border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
@@ -55,7 +56,8 @@ const Experience = () => {
             </div>
         </section>
     );
-};
+});
 
+Experience.displayName = 'Experience';
 export default Experience;
 

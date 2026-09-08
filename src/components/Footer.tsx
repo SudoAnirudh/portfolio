@@ -3,7 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import { portfolioData } from '@/data/portfolio';
 
-const Footer = () => {
+// PERFORMANCE: Use React.memo for completely static presentation components to prevent unnecessary re-renders when parent layout state changes
+const Footer = React.memo(() => {
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -156,6 +157,7 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
+});
 
+Footer.displayName = 'Footer';
 export default Footer;
