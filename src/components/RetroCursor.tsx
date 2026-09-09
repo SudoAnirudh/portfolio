@@ -14,12 +14,13 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef(0);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
     const segsRef = useRef<{ x: number; y: number; angle: number }[]>([]);
     const segmentRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const latestEventData = useRef<{ target: HTMLElement | null }>({ target: null });
 
     // Keep refs in sync with state for rAF loop
     useEffect(() => {
@@ -89,22 +90,29 @@ const RetroCursor = () => {
         }));
 
         let lastTarget: EventTarget | null = null;
+        let updateRafId: number | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
             mousePos.current = { x: e.clientX, y: e.clientY };
             lastMoveTime.current = Date.now();
+            latestEventData.current.target = e.target as HTMLElement;
 
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
-            }
+            // PERFORMANCE: Wrap React state updates from mousemove in requestAnimationFrame to prevent layout thrashing
+            if (!updateRafId) {
+                updateRafId = requestAnimationFrame(() => {
+                    updateRafId = null;
 
-            // Target context detection
-            const target = e.target as HTMLElement;
+                    if (reducedMotion) {
+                        setStaticPos({ x: mousePos.current.x, y: mousePos.current.y });
+                    }
 
-            if (target && target !== lastTarget) {
-                lastTarget = target;
+                    // Target context detection
+                    const target = latestEventData.current.target;
 
-                // 1. Text input & selection context check
+                    if (target && target !== lastTarget) {
+                        lastTarget = target;
+
+                        // 1. Text input & selection context check
                 const isInput = !!(
                     target.tagName === 'INPUT' ||
                     target.tagName === 'TEXTAREA' ||
@@ -145,6 +153,8 @@ const RetroCursor = () => {
 
                     setHoverType(isClickable ? 'link' : 'none');
                 }
+            }
+                });
             }
         };
 
@@ -244,6 +254,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (updateRafId) cancelAnimationFrame(updateRafId);
         };
     }, [reducedMotion]);
 
