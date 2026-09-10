@@ -20,6 +20,7 @@ const RetroCursor = () => {
     const isTextInputRef = useRef(false);
     const segsRef = useRef<{ x: number; y: number; angle: number }[]>([]);
     const segmentRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const mouseMoveRafIdRef = useRef<number | null>(null);
 
     // Keep refs in sync with state for rAF loop
     useEffect(() => {
@@ -95,7 +96,16 @@ const RetroCursor = () => {
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                if (mouseMoveRafIdRef.current !== null) {
+                    cancelAnimationFrame(mouseMoveRafIdRef.current);
+                }
+                const currentX = e.clientX;
+                const currentY = e.clientY;
+                // PERFORMANCE: Wrap React state update in rAF to prevent layout thrashing and main thread blocking on high-frequency mousemove events
+                mouseMoveRafIdRef.current = requestAnimationFrame(() => {
+                    setStaticPos({ x: currentX, y: currentY });
+                    mouseMoveRafIdRef.current = null;
+                });
             }
 
             // Target context detection
@@ -244,6 +254,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (mouseMoveRafIdRef.current !== null) {
+                cancelAnimationFrame(mouseMoveRafIdRef.current);
+            }
         };
     }, [reducedMotion]);
 
