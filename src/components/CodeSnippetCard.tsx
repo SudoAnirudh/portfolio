@@ -12,7 +12,8 @@ interface CodeSnippetCardProps {
     snippet?: CodeSnippet;
 }
 
-export const CodeSnippetCard: React.FC<CodeSnippetCardProps> = ({ snippet }) => {
+// PERFORMANCE: Memoize CodeSnippetCard to prevent unnecessary re-renders when parent components update
+export const CodeSnippetCard: React.FC<CodeSnippetCardProps> = React.memo(({ snippet }) => {
     const [copied, setCopied] = useState(false);
 
     if (!snippet || !snippet.code) return null;
@@ -89,4 +90,5 @@ export const CodeSnippetCard: React.FC<CodeSnippetCardProps> = ({ snippet }) => 
             </div>
         </div>
     );
-};
+});
+CodeSnippetCard.displayName = 'CodeSnippetCard';
