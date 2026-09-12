@@ -34,22 +34,36 @@ const Projects = () => {
         };
     }, []);
 
-    const filteredProjects = portfolioData.projects.filter(project => {
-        const matchesCategory = selectedCategory === 'ALL' || project.category?.includes(selectedCategory);
-        const matchesSkill = !selectedSkillFilter || project.techStack.some(tech => 
-            tech.toLowerCase().includes(selectedSkillFilter.toLowerCase()) || 
-            selectedSkillFilter.toLowerCase().includes(tech.toLowerCase())
-        );
-        return matchesCategory && matchesSkill;
-    });
+    // PERFORMANCE: Memoize filtered projects to prevent unnecessary recalculations on re-renders
+    const filteredProjects = React.useMemo(() => {
+        return portfolioData.projects.filter(project => {
+            const matchesCategory = selectedCategory === 'ALL' || project.category?.includes(selectedCategory);
+            const matchesSkill = !selectedSkillFilter || project.techStack.some(tech =>
+                tech.toLowerCase().includes(selectedSkillFilter.toLowerCase()) ||
+                selectedSkillFilter.toLowerCase().includes(tech.toLowerCase())
+            );
+            return matchesCategory && matchesSkill;
+        });
+    }, [selectedCategory, selectedSkillFilter]);
 
-    const featuredProjects = filteredProjects.filter(p => p.featured);
-    const secondaryProjects = filteredProjects.filter(p => !p.featured);
+    // PERFORMANCE: Memoize derived project lists to avoid re-filtering on unrelated state changes
+    const featuredProjects = React.useMemo(() => filteredProjects.filter(p => p.featured), [filteredProjects]);
+    const secondaryProjects = React.useMemo(() => filteredProjects.filter(p => !p.featured), [filteredProjects]);
 
-    const getCategoryCount = (catId: string) => {
-        if (catId === 'ALL') return portfolioData.projects.length;
-        return portfolioData.projects.filter(p => p.category?.includes(catId)).length;
-    };
+    // PERFORMANCE: Pre-calculate and memoize static category counts to avoid O(N) filtering per category per render
+    const categoryCounts = React.useMemo(() => {
+        const counts: Record<string, number> = { 'ALL': portfolioData.projects.length };
+        CATEGORIES.forEach(cat => {
+            if (cat.id !== 'ALL') {
+                counts[cat.id] = portfolioData.projects.filter(p => p.category?.includes(cat.id)).length;
+            }
+        });
+        return counts;
+    }, []);
+
+    const getCategoryCount = React.useCallback((catId: string) => {
+        return categoryCounts[catId] || 0;
+    }, [categoryCounts]);
 
     const handleOpenProject = (project: Project) => {
         const indexInAll = portfolioData.projects.findIndex(p => p.title === project.title);
