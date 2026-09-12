@@ -505,7 +505,7 @@ const Contact = () => {
                                                         {portfolioData.personal.phone}
                                                     </span>
                                                     <span className="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-xs text-[9px] shrink-0">
-                                                        <span className="material-symbols-outlined text-xs">call</span>
+                                                        <span className="material-symbols-outlined text-xs" aria-hidden="true">call</span>
                                                         COPY
                                                     </span>
                                                 </button>
