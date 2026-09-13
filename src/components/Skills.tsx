@@ -469,7 +469,7 @@ const Skills = () => {
                                     className="hover:bg-red-500 p-1 transition-colors flex items-center justify-center cursor-pointer rounded-xs"
                                     aria-label="Close modal"
                                 >
-                                    <span className="material-symbols-outlined text-sm block">close</span>
+                                    <span className="material-symbols-outlined text-sm block" aria-hidden="true">close</span>
                                 </button>
                             </div>
 

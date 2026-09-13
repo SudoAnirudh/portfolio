@@ -336,7 +336,7 @@ const ReceiptPrinter: React.FC<ReceiptPrinterProps> = ({ onClose }) => {
                             onClick={onClose}
                             className="px-4 py-2.5 bg-white text-zinc-900 font-pixel text-xs sm:text-sm uppercase font-bold border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 transition-all cursor-pointer flex items-center gap-1"
                         >
-                            <span className="material-symbols-outlined text-base">close</span>
+                            <span className="material-symbols-outlined text-base" aria-hidden="true">close</span>
                             <span>Close</span>
                         </button>
                     </motion.div>

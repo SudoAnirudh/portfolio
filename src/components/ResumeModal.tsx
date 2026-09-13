@@ -104,7 +104,7 @@ const ResumeModal: React.FC<ResumeModalProps> = ({
                                 className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white border border-black rounded text-[10px] font-pixel font-bold uppercase transition-colors flex items-center justify-center cursor-pointer"
                                 aria-label="Close modal"
                             >
-                                <span className="material-symbols-outlined text-xs">close</span>
+                                <span className="material-symbols-outlined text-xs" aria-hidden="true">close</span>
                             </button>
                         </div>
                     </div>

@@ -132,7 +132,7 @@ const Projects = () => {
                             onClick={() => setSelectedSkillFilter(null)}
                             className="px-3 py-1 bg-black text-white hover:bg-red-600 border-2 border-black rounded-lg text-[10px] font-pixel uppercase tracking-wider font-bold cursor-pointer transition-colors flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                         >
-                            <span className="material-symbols-outlined text-xs">close</span>
+                            <span className="material-symbols-outlined text-xs" aria-hidden="true">close</span>
                             Clear Skill Filter
                         </button>
                     </div>
