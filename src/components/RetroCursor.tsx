@@ -14,12 +14,14 @@ const RetroCursor = () => {
     const [staticPos, setStaticPos] = useState({ x: -100, y: -100 });
 
     const mousePos = useRef({ x: -100, y: -100 });
-    const lastMoveTime = useRef(Date.now());
+    const lastMoveTime = useRef(0);
     const hoverTypeRef = useRef<'none' | 'link' | 'project'>('none');
     const isClickingRef = useRef(false);
     const isTextInputRef = useRef(false);
     const segsRef = useRef<{ x: number; y: number; angle: number }[]>([]);
     const segmentRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const pendingMousePos = useRef({ x: -100, y: -100 });
+    const updateRafId = useRef<number | null>(null);
 
     // Keep refs in sync with state for rAF loop
     useEffect(() => {
@@ -95,7 +97,14 @@ const RetroCursor = () => {
             lastMoveTime.current = Date.now();
 
             if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
+                pendingMousePos.current = { x: e.clientX, y: e.clientY };
+                if (updateRafId.current === null) {
+                    updateRafId.current = requestAnimationFrame(() => {
+                        // PERFORMANCE: Wrap mousemove state updates in requestAnimationFrame to prevent layout thrashing and main thread blocking
+                        setStaticPos({ x: pendingMousePos.current.x, y: pendingMousePos.current.y });
+                        updateRafId.current = null;
+                    });
+                }
             }
 
             // Target context detection
@@ -244,6 +253,9 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (updateRafId.current !== null) {
+                cancelAnimationFrame(updateRafId.current);
+            }
         };
     }, [reducedMotion]);
 
