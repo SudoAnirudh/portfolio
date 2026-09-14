@@ -196,6 +196,26 @@ export const portfolioData: PortfolioData = {
     ],
     projects: [
         {
+            slug: "agentkube",
+            title: "AgentKube",
+            icon: "dns",
+            featured: true,
+            description: "Kubernetes Multi-Agent AI Execution Platform engineered for asynchronous job queuing, Terraform IaC, GitOps delivery, and full-stack telemetry.",
+            problem: "Running multi-agent AI tasks synchronously causes gateway timeouts, lacks workload isolation, and lacks cluster execution metrics.",
+            approach: "Engineered an async task engine on AWS EKS using FastAPI, Celery, and Redis, automated GitOps delivery via Argo CD, and integrated Prometheus/Grafana telemetry.",
+            outcome: "Achieved 100% test pass rate (35/35), sub-15ms task enqueue response times, and sub-30s HPA worker auto-scaling under load.",
+            image: "/projects/agentkube.png",
+            github: "https://github.com/SudoAnirudh/AgentKube",
+            specs: [
+                { label: "Architecture", value: "FastAPI + Celery + K8s" },
+                { label: "GitOps & IaC", value: "Argo CD + Terraform" },
+                { label: "Observability", value: "Prometheus + Grafana" },
+                { label: "Performance", value: "< 15ms Enqueue | 3→8 HPA" }
+            ],
+            category: ["AI & ML", "Full-Stack"],
+            techStack: ["Python", "FastAPI", "Kubernetes", "Docker", "Terraform", "Argo CD", "Prometheus", "Grafana", "Redis", "Celery"]
+        },
+        {
             slug: "hirenix",
             title: "Hirenix",
             icon: "psychology",

@@ -34,6 +34,77 @@ export interface CaseStudy {
 }
 
 export const caseStudies: Record<string, CaseStudy> = {
+    "agentkube": {
+        slug: "agentkube",
+        title: "AgentKube",
+        subtitle: "Kubernetes Multi-Agent AI Execution Platform with GitOps & Telemetry",
+        category: ["AI & ML", "Full-Stack"],
+        techStack: ["Python", "FastAPI", "Kubernetes", "Docker", "Terraform", "Argo CD", "Prometheus", "Grafana", "Redis", "Celery"],
+        github: "https://github.com/SudoAnirudh/AgentKube",
+        image: "/projects/agentkube.png",
+        role: "Solo Cloud AI & DevOps Engineer",
+        timeline: "1 Month",
+        constraints: "Zero-downtime GitOps deployments, non-root security context hardening, and sub-15ms task enqueue response times on EKS.",
+        problem: "Running long-running multi-agent AI tasks synchronously freezes client interfaces and creates resource contention. Distributed AI workloads require robust task queuing, automated infrastructure provisioning, and continuous cluster health telemetry.",
+        architectureFlow: [
+            { step: "01. INGESTION", title: "FastAPI Ingestion & Redis Celery Queue", description: "FastAPI endpoint accepts job requests with HTTP 202 Accepted (<15ms latency) and pushes tasks to Redis backed Celery workers." },
+            { step: "02. INFRASTRUCTURE", title: "Terraform AWS EKS & Kubernetes Workloads", description: "Terraform provisions VPCs, EKS node groups, and IAM roles; Kubernetes manages dynamic HPA scaling (3 -> 8 worker replicas)." },
+            { step: "03. GITOPS", title: "GitHub Actions & Argo CD Reconciliation", description: "Build pipeline runs Pytest, Helm linting, and Trivy scans before pushing to ECR; Argo CD continuously reconciles cluster Helm state." },
+            { step: "04. TELEMETRY", title: "Prometheus Metrics & Grafana Dashboards", description: "Exposes GET /metrics endpoint with correlation IDs (execution_id), PromQL alerts, and 4 Grafana operational dashboards." }
+        ],
+        codeSnippet: {
+            filename: "app/api/endpoints.py",
+            language: "python",
+            explanation: "Asynchronous task enqueue handler returning immediate HTTP 202 status while offloading execution to Celery workers on Kubernetes.",
+            code: `@app.post("/api/v1/agent/run", status_code=status.HTTP_202_ACCEPTED, response_model=TaskRunResponse)
+async def submit_agent_task(
+    request: TaskRunRequest,
+    redis_client: Redis = Depends(get_redis_storage)
+):
+    execution_id = f"exec_{uuid.uuid4().hex[:12]}"
+    
+    # Store initial execution state with correlation ID
+    await redis_client.hset(
+        f"execution:{execution_id}",
+        mapping={
+            "execution_id": execution_id,
+            "status": "queued",
+            "task": request.task,
+            "created_at": datetime.utcnow().isoformat()
+        }
+    )
+    
+    # Offload asynchronous job to Celery K8s worker pool (<15ms response)
+    celery_app.send_task(
+        "worker.execute_agent_workflow",
+        args=[execution_id, request.task, request.context],
+        queue="agent_tasks"
+    )
+    
+    return TaskRunResponse(execution_id=execution_id, status="queued")`
+        },
+        approach: [
+            {
+                title: "Asynchronous Task Engine with Celery & Redis",
+                decision: "Decoupled task submission from agent execution using an async FastAPI API layer and Redis-backed Celery worker pools.",
+                rejectedAlternative: "Synchronous long-polling HTTP requests",
+                rationale: "Synchronous requests risk gateway timeouts during complex multi-agent execution steps. Async enqueueing delivers instant HTTP 202 responses (<15ms) while workers execute in the background."
+            },
+            {
+                title: "GitOps Automation & K8s Production Hardening",
+                decision: "Configured Argo CD for declarative Helm chart reconciliation and applied non-root security contexts with NetworkPolicies isolating Redis.",
+                rejectedAlternative: "Manual kubectl apply script deployments",
+                rationale: "GitOps guarantees cluster state matches Git repository definitions with automated rollbacks and immutable tags."
+            }
+        ],
+        tradeoffs: "Enforcing read-only root filesystems and isolated NetworkPolicies required explicit ephemeral volume mounts for Celery temporary files, but secured pods against unauthorized code injection.",
+        outcome: "Shipped an enterprise Kubernetes AI execution platform achieving 100% unit/integration test pass rate (35/35), sub-15ms task enqueue response times, and sub-30s HPA worker auto-scaling.",
+        metrics: [
+            { label: "Task Enqueue Latency", value: "< 15ms (HTTP 202)" },
+            { label: "Test Suite Pass Rate", value: "100% (35 / 35 Tests)" },
+            { label: "HPA Scale Speed", value: "< 30s (3 → 8 Replicas)" }
+        ]
+    },
     "hirenix": {
         slug: "hirenix",
         title: "Hirenix",
