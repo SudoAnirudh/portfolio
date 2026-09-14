@@ -20,6 +20,8 @@ const RetroCursor = () => {
     const isTextInputRef = useRef(false);
     const segsRef = useRef<{ x: number; y: number; angle: number }[]>([]);
     const segmentRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const pendingEventRef = useRef<{ x: number; y: number; target: EventTarget | null }>({ x: 0, y: 0, target: null });
+    const updateRafRef = useRef<number | null>(null);
 
     // Keep refs in sync with state for rAF loop
     useEffect(() => {
@@ -91,18 +93,25 @@ const RetroCursor = () => {
         let lastTarget: EventTarget | null = null;
 
         const updateMousePos = (e: MouseEvent) => {
-            mousePos.current = { x: e.clientX, y: e.clientY };
+            // PERFORMANCE: Wrap state update in rAF and capture event data in ref to prevent layout thrashing and stale references
+            pendingEventRef.current = { x: e.clientX, y: e.clientY, target: e.target };
             lastMoveTime.current = Date.now();
 
-            if (reducedMotion) {
-                setStaticPos({ x: e.clientX, y: e.clientY });
-            }
+            if (updateRafRef.current === null) {
+                updateRafRef.current = requestAnimationFrame(() => {
+                    updateRafRef.current = null;
+                    const { x, y, target: rawTarget } = pendingEventRef.current;
+                    mousePos.current = { x, y };
 
-            // Target context detection
-            const target = e.target as HTMLElement;
+                    if (reducedMotion) {
+                        setStaticPos({ x, y });
+                    }
 
-            if (target && target !== lastTarget) {
-                lastTarget = target;
+                    // Target context detection
+                    const target = rawTarget as HTMLElement;
+
+                    if (target && target !== lastTarget) {
+                        lastTarget = target;
 
                 // 1. Text input & selection context check
                 const isInput = !!(
@@ -145,6 +154,8 @@ const RetroCursor = () => {
 
                     setHoverType(isClickable ? 'link' : 'none');
                 }
+            }
+                });
             }
         };
 
@@ -244,6 +255,7 @@ const RetroCursor = () => {
             window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('mouseup', handleMouseUp);
             cancelAnimationFrame(animationFrameId);
+            if (updateRafRef.current !== null) cancelAnimationFrame(updateRafRef.current);
         };
     }, [reducedMotion]);
 
