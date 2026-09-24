@@ -1,63 +1,55 @@
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Skills from "@/components/Skills";
-import Experience from "@/components/Experience";
-import Projects from "@/components/Projects";
-import Credentials from "@/components/Credentials";
-import Contribution from "@/components/Contribution";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import ScrollObserver from "@/components/ScrollObserver";
+"use client";
+
+import React from "react";
+import LeftRailNav from "@/components/LeftRailNav";
+import HeroPreface from "@/components/HeroPreface";
+import ProjectMonographs from "@/components/ProjectMonographs";
+import EngineeringCore from "@/components/EngineeringCore";
+import ExperienceMonograph from "@/components/ExperienceMonograph";
+import CredentialsMonograph from "@/components/CredentialsMonograph";
+import ContactMonograph from "@/components/ContactMonograph";
+import RightMarginRail from "@/components/RightMarginRail";
+import ReadingProgress from "@/components/ReadingProgress";
+import FootnoteDrawer from "@/components/FootnoteDrawer";
+import { MarginaliaProvider } from "@/context/MarginaliaContext";
 
 export default function Home() {
   return (
-    <main className="relative">
-      <ScrollObserver />
+    <MarginaliaProvider>
+      <div className="relative min-h-screen selection:bg-[var(--accent-editorial)] selection:text-[var(--bg-primary)]">
+        {/* Top Reading Depth Indicator */}
+        <ReadingProgress />
 
-      {/* Grid container matches the HTML structure */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
+        {/* 12-Column Asymmetrical Grid Layout (max-w-6xl centered) */}
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            
+            {/* Columns 1–3: Sticky Left Rail (25% width on desktop) */}
+            <aside className="lg:col-span-3 lg:sticky lg:top-12 h-fit">
+              <LeftRailNav />
+            </aside>
 
-        {/* Row 1: Hero Section (Profile + Hello World) */}
-        <div className="lg:col-span-12">
-          <Hero />
-        </div>
+            {/* Columns 4–10: Main Editorial Text Flow (60% width on desktop) */}
+            <div className="lg:col-span-7 space-y-16">
+              <HeroPreface />
+              <ProjectMonographs />
+              <EngineeringCore />
+              <ExperienceMonograph />
+              <CredentialsMonograph />
+              <ContactMonograph />
+            </div>
 
-        {/* Row 2: About + Skills */}
-        <div className="lg:col-span-6 flex flex-col">
-          <About />
-        </div>
-        <div className="lg:col-span-6 flex flex-col">
-          <Skills />
-        </div>
+            {/* Columns 11–12: Right Margin Rail for Sidenotes & Benchmarks (15% width on desktop) */}
+            <div className="hidden lg:block lg:col-span-2">
+              <RightMarginRail />
+            </div>
 
-        {/* Row 3: Projects (Headline Flagships) */}
-        <div className="lg:col-span-12">
-          <Projects />
-        </div>
+          </div>
+        </main>
 
-        {/* Row 4: Experience (Career History) */}
-        <div className="lg:col-span-12">
-          <Experience />
-        </div>
-
-        {/* Row 5: Consolidated Credentials (Education, Certifications, Achievements) */}
-        <div className="lg:col-span-12">
-          <Credentials />
-        </div>
-
-        {/* Row 6: Contribution Graph */}
-        <div className="lg:col-span-12">
-          <Contribution />
-        </div>
-
-        {/* Row 7: Contact + Footer */}
-        <div className="lg:col-span-12">
-          <Contact />
-          <Footer />
-        </div>
-
+        {/* Mobile Footnote Popover Drawer */}
+        <FootnoteDrawer />
       </div>
-    </main>
+    </MarginaliaProvider>
   );
 }
-

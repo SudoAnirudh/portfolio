@@ -1,14 +1,19 @@
+# Next.js build output
+.next
+out
+
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 
+# Environment & Build Output
 .env
 dist
 .agents
