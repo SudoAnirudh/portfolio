@@ -51,15 +51,15 @@ export const metadata: Metadata = {
   publisher: "Anirudh S",
   robots: "index, follow",
   alternates: {
-    canonical: "https://portfolio-blue-five-10.vercel.app/",
+    canonical: "https://sudoanirudh.vercel.app/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://portfolio-blue-five-10.vercel.app/",
+    url: "https://sudoanirudh.vercel.app/",
     siteName: "Anirudh S | AI/ML & Agentic Systems Engineer",
     title: "Anirudh S | AI/ML & Agentic Systems Engineer",
-    description: "Explore production-grade AI systems, multi-agent frameworks, FastAPI backends, and edge ML applications.",
+    description: "Explore production-grade AI systems, multi-agent frameworks, FastAPI backends, and edge ML applications built by Anirudh S.",
     images: [
       {
         url: "/profile_pixel.png",
@@ -85,8 +85,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Anirudh S",
-  url: "https://portfolio-blue-five-10.vercel.app/",
-  image: "https://portfolio-blue-five-10.vercel.app/profile_pixel.png",
+  url: "https://sudoanirudh.vercel.app/",
+  image: "https://sudoanirudh.vercel.app/profile_pixel.png",
   jobTitle: "AI/ML Engineer | Generative AI & Agentic Systems",
   alumniOf: {
     "@type": "EducationalOrganization",
