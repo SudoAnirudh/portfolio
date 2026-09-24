@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo_Black, Space_Grotesk, VT323, Pacifico } from "next/font/google"; // Import fonts
 import "./globals.css";
 import RetroCursor from "@/components/RetroCursor";
+import { Analytics } from "@vercel/analytics/next";
 
 
 const archivoBlack = Archivo_Black({
@@ -139,6 +140,7 @@ export default function RootLayout({
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {children}
         </div>
+        <Analytics />
       </body>
     </html>
   );
