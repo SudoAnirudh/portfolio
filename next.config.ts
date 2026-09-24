@@ -4,7 +4,6 @@ import path from "path";
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
-  distDir: "dist",
   turbopack: {
     root: path.resolve(__dirname),
   },
