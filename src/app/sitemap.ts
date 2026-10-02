@@ -1,10 +1,12 @@
 import { MetadataRoute } from 'next';
-import { caseStudies } from '@/data/caseStudies';
+import { PROJECTS } from '@/config/projects';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://portfolio-blue-five-10.vercel.app';
+  const baseUrl = 'https://sudoanirudh.vercel.app';
 
-  const projectRoutes: MetadataRoute.Sitemap = Object.keys(caseStudies).map((slug) => ({
+  const uniqueSlugs = Array.from(new Set(Object.values(PROJECTS).map((p) => p.slug)));
+
+  const projectRoutes: MetadataRoute.Sitemap = uniqueSlugs.map((slug) => ({
     url: `${baseUrl}/projects/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
