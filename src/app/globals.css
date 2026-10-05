@@ -52,13 +52,22 @@
 }
 
 .bento-card {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.3);
 }
 
 .bento-card:hover {
   transform: translate(-2px, -2px);
   box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.4);
+}
+
+.tactile-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.tactile-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
 }
 
 .pixel-border {

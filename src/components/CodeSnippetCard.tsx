@@ -5,7 +5,7 @@ export interface CodeSnippet {
     filename: string;
     language: string;
     code: string;
-    explanation: string;
+    explanation?: string;
 }
 
 interface CodeSnippetCardProps {

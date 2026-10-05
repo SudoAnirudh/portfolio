@@ -114,6 +114,8 @@ const jsonLd = {
   description: "AI/ML Engineer specializing in Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems."
 };
 
+import CommandPalette from "@/components/CommandPalette";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -137,6 +139,7 @@ export default function RootLayout({
         />
         {/* Helper for cursor hiding handled inside component, but adding it here to be safe */}
         <RetroCursor />
+        <CommandPalette />
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
           {children}
         </div>

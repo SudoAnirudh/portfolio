@@ -495,20 +495,43 @@ const Contact = () => {
                                             
                                             {/* Quick Action Buttons */}
                                             <div className="space-y-2">
+                                                <motion.button
+                                                    type="button"
+                                                    onClick={() => handleCopy(portfolioData.personal.email, "EMAIL")}
+                                                    whileTap={{ scale: 0.96 }}
+                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group cursor-pointer"
+                                                >
+                                                    <span className="truncate mr-2 font-mono text-[11px] text-zinc-700 font-bold group-hover:text-black">
+                                                        {portfolioData.personal.email}
+                                                    </span>
+                                                    <motion.span 
+                                                        animate={{ scale: toastData?.title.includes("EMAIL") ? [0.85, 1.15, 1] : 1 }}
+                                                        transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                                                        className={`flex items-center gap-1 px-2 py-0.5 rounded-xs text-[9px] shrink-0 font-bold ${toastData?.title.includes("EMAIL") ? 'bg-emerald-600 text-white' : 'bg-black text-white'}`}
+                                                    >
+                                                        <span className="material-symbols-outlined text-xs">{toastData?.title.includes("EMAIL") ? 'check' : 'mail'}</span>
+                                                        {toastData?.title.includes("EMAIL") ? 'COPIED!' : 'COPY EMAIL'}
+                                                    </motion.span>
+                                                </motion.button>
 
-                                                <button
+                                                <motion.button
                                                     type="button"
                                                     onClick={() => handleCopy(portfolioData.personal.phone, "PHONE")}
-                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group"
+                                                    whileTap={{ scale: 0.96 }}
+                                                    className="w-full bg-white hover:bg-retro-yellow border-2 border-black p-2 flex items-center justify-between text-xs font-pixel uppercase tracking-wider transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none group cursor-pointer"
                                                 >
                                                     <span className="truncate mr-2 font-mono text-[11px] text-zinc-700 font-bold group-hover:text-black">
                                                         {portfolioData.personal.phone}
                                                     </span>
-                                                    <span className="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-xs text-[9px] shrink-0">
-                                                        <span className="material-symbols-outlined text-xs">call</span>
-                                                        COPY
-                                                    </span>
-                                                </button>
+                                                    <motion.span 
+                                                        animate={{ scale: toastData?.title.includes("PHONE") ? [0.85, 1.15, 1] : 1 }}
+                                                        transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                                                        className={`flex items-center gap-1 px-2 py-0.5 rounded-xs text-[9px] shrink-0 font-bold ${toastData?.title.includes("PHONE") ? 'bg-emerald-600 text-white' : 'bg-black text-white'}`}
+                                                    >
+                                                        <span className="material-symbols-outlined text-xs">{toastData?.title.includes("PHONE") ? 'check' : 'call'}</span>
+                                                        {toastData?.title.includes("PHONE") ? 'COPIED!' : 'COPY PHONE'}
+                                                    </motion.span>
+                                                </motion.button>
                                             </div>
                                         </div>
 

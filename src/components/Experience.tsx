@@ -1,5 +1,51 @@
-import React from 'react';
+"use client";
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { portfolioData } from '@/data/portfolio';
+
+const IlluminatedExperienceItem = ({ exp, index }: { exp: typeof portfolioData.experience[number]; index: number }) => {
+    const itemRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: itemRef,
+        offset: ["start 90%", "center 50%", "end 10%"]
+    });
+
+    const opacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35]);
+    const x = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [-8, 0, 0, -8]);
+
+    return (
+        <motion.div 
+            ref={itemRef}
+            style={{ opacity, x }}
+            className="group relative pl-6 border-l-2 border-retro-green/40 hover:border-retro-yellow transition-colors duration-300"
+        >
+            {/* Process ID & Period */}
+            <div className="text-xs font-pixel text-retro-green/80 mb-1">
+                [{exp.period}] :: PROCESS_ID_{1000 + index}
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-3">
+                <h3 className="text-xl sm:text-2xl font-display text-white uppercase tracking-tight">
+                    {exp.role}
+                </h3>
+                <span className="text-retro-yellow font-body font-bold text-sm uppercase">
+                    @ {exp.company}
+                </span>
+            </div>
+
+            <div className="text-zinc-300 font-body text-sm sm:text-base leading-relaxed max-w-4xl space-y-2">
+                <ul className="space-y-2 list-none">
+                    {exp.description.map((bullet, bulletIdx) => (
+                        <li key={bulletIdx} className="flex items-start gap-2.5">
+                            <span className="text-retro-green font-pixel text-xs mt-1">▶</span>
+                            <span>{bullet}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </motion.div>
+    );
+};
 
 const Experience = () => {
     return (
@@ -13,42 +59,17 @@ const Experience = () => {
                     <h2 className="text-base sm:text-lg md:text-xl font-pixel uppercase tracking-widest text-retro-green flex items-center gap-2">
                         <span className="animate-pulse">_</span> SYSTEM_BOOT_LOG // CAREER_HISTORY
                     </h2>
-                    <div className="text-[10px] sm:text-xs font-pixel text-retro-green/50">
+                    <div className="text-[10px] sm:text-xs font-pixel text-retro-green/70">
                         STATUS: OPERATIONAL
                     </div>
                 </div>
 
                 <div className="space-y-8">
                     {portfolioData.experience.map((exp, index) => (
-                        <div key={index} className="group relative pl-6 border-l-2 border-retro-green/30 hover:border-retro-yellow transition-colors duration-300">
-                            {/* Process ID & Period */}
-                            <div className="text-xs font-pixel text-retro-green/70 mb-1">
-                                [{exp.period}] :: PROCESS_ID_{1000 + index}
-                            </div>
-
-                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-3">
-                                <h3 className="text-xl sm:text-2xl font-display text-white uppercase tracking-tight">
-                                    {exp.role}
-                                </h3>
-                                <span className="text-retro-yellow font-body font-bold text-sm uppercase">
-                                    @ {exp.company}
-                                </span>
-                            </div>
-
-                            <div className="text-zinc-300 font-body text-sm sm:text-base leading-relaxed max-w-4xl space-y-2">
-                                <ul className="space-y-2 list-none">
-                                    {exp.description.map((bullet, bulletIdx) => (
-                                        <li key={bulletIdx} className="flex items-start gap-2.5">
-                                            <span className="text-retro-green font-pixel text-xs mt-1">▶</span>
-                                            <span>{bullet}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
+                        <IlluminatedExperienceItem key={index} exp={exp} index={index} />
                     ))}
 
-                    <div className="text-retro-green/40 font-pixel text-xs animate-pulse pt-4 border-t border-retro-green/20">
+                    <div className="text-retro-green/50 font-pixel text-xs animate-pulse pt-4 border-t border-retro-green/20">
                         &gt; AWAITING NEXT ENGINEERING ROLE...
                     </div>
                 </div>

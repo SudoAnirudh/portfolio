@@ -19,6 +19,13 @@ const Projects = () => {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const { currentTarget, clientX, clientY } = e;
+        const { left, top } = currentTarget.getBoundingClientRect();
+        currentTarget.style.setProperty("--mouse-x", `${clientX - left}px`);
+        currentTarget.style.setProperty("--mouse-y", `${clientY - top}px`);
+    };
+
     React.useEffect(() => {
         const handleFilterEvent = (e: Event) => {
             const customEvent = e as CustomEvent<{ skill: string }>;
@@ -88,8 +95,8 @@ const Projects = () => {
             </div>
 
             <div className="bg-retro-white border-4 border-black p-5 sm:p-8 rounded-b-2xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                {/* Category Pill Filters */}
-                <div className="mb-6 flex flex-wrap items-center gap-2 border-b-2 border-black/10 pb-5">
+                {/* Category Pill Filters with Gliding Active Indicator */}
+                <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-black/15 pb-5 relative">
                     <span className="font-pixel text-xs text-zinc-500 uppercase tracking-wider mr-2 flex items-center gap-1">
                         <span className="material-symbols-outlined text-sm">filter_list</span>
                         FILTER BY:
@@ -102,14 +109,19 @@ const Projects = () => {
                             <button
                                 key={cat.id}
                                 onClick={() => setSelectedCategory(cat.id)}
-                                className={`px-3 py-1.5 font-pixel text-xs uppercase tracking-wider border-2 transition-all flex items-center gap-2 rounded-lg cursor-pointer ${
-                                    isActive
-                                        ? 'bg-black text-white border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] scale-[1.02]'
-                                        : 'bg-zinc-100 text-zinc-800 border-black/30 hover:border-black hover:bg-zinc-200'
-                                }`}
+                                className="relative px-3.5 py-1.5 font-pixel text-xs uppercase tracking-wider transition-colors flex items-center gap-2 rounded-lg cursor-pointer select-none"
                             >
-                                <span>{cat.label}</span>
-                                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold ${isActive ? 'bg-retro-yellow text-black' : 'bg-black/10 text-zinc-600'}`}>
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="activeFilterPill"
+                                        className="absolute inset-0 bg-black rounded-lg -z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)]"
+                                        transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                                    />
+                                )}
+                                <span className={isActive ? "text-white font-bold" : "text-zinc-700 hover:text-black"}>
+                                    {cat.label}
+                                </span>
+                                <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold transition-colors ${isActive ? 'bg-retro-yellow text-black' : 'bg-black/10 text-zinc-600'}`}>
                                     {count}
                                 </span>
                             </button>
@@ -119,7 +131,7 @@ const Projects = () => {
 
                 {/* Active Skill Filter Banner */}
                 {selectedSkillFilter && (
-                    <div className="mb-8 bg-retro-yellow border-3 border-black p-3.5 rounded-xl flex items-center justify-between shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="mb-8 bg-retro-yellow border-2 border-black p-3.5 rounded-xl flex items-center justify-between shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         <div className="flex flex-wrap items-center gap-2 font-pixel text-xs sm:text-sm text-black font-bold uppercase">
                             <span className="material-symbols-outlined text-lg text-black">psychology</span>
                             <span>FILTERED BY SKILL:</span>
@@ -130,7 +142,7 @@ const Projects = () => {
                         </div>
                         <button
                             onClick={() => setSelectedSkillFilter(null)}
-                            className="px-3 py-1 bg-black text-white hover:bg-red-600 border-2 border-black rounded-lg text-[10px] font-pixel uppercase tracking-wider font-bold cursor-pointer transition-colors flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                            className="px-3 py-1 bg-black text-white hover:bg-red-600 border border-black rounded-lg text-[10px] font-pixel uppercase tracking-wider font-bold cursor-pointer transition-colors flex items-center gap-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                         >
                             <span className="material-symbols-outlined text-xs">close</span>
                             Clear Skill Filter
@@ -140,7 +152,7 @@ const Projects = () => {
 
                 {/* Empty State */}
                 {filteredProjects.length === 0 && (
-                    <div className="text-center py-12 bg-zinc-100 border-2 border-dashed border-black/20 rounded-xl my-6">
+                    <div className="text-center py-12 bg-zinc-100 border border-dashed border-black/20 rounded-xl my-6">
                         <span className="material-symbols-outlined text-4xl text-zinc-400 mb-2">search_off</span>
                         <p className="font-pixel text-sm text-zinc-600 uppercase">No projects match the selected criteria</p>
                         <button
@@ -148,7 +160,7 @@ const Projects = () => {
                                 setSelectedCategory('ALL');
                                 setSelectedSkillFilter(null);
                             }}
-                            className="mt-4 px-4 py-2 bg-black text-white font-pixel text-xs uppercase rounded-lg border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-retro-yellow hover:text-black transition-all cursor-pointer font-bold"
+                            className="mt-4 px-4 py-2 bg-black text-white font-pixel text-xs uppercase rounded-lg border border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:bg-retro-yellow hover:text-black transition-all cursor-pointer font-bold"
                         >
                             Reset All Filters
                         </button>
@@ -166,122 +178,135 @@ const Projects = () => {
                         </div>
 
                         <div className="space-y-8">
-                            {featuredProjects.map((project) => (
-                                <motion.div
-                                    key={project.title}
-                                    layout
-                                    initial={{ opacity: 0, y: 15 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                >
-                                    <article
-                                        data-project-card="true"
-                                        className="group relative bg-zinc-50 border-3 border-black rounded-2xl p-5 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] focus-within:ring-2 focus-within:ring-yellow-400 transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center"
+                            <AnimatePresence mode="popLayout">
+                                {featuredProjects.map((project) => (
+                                    <motion.div
+                                        key={project.title}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.96 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.96 }}
+                                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
                                     >
-                                        {/* Preview Image */}
-                                        <Link href={`/projects/${project.slug}`} aria-label={`View full case study for ${project.title}`} className="lg:col-span-5 relative w-full aspect-video border-2 border-black rounded-xl overflow-hidden bg-zinc-200 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] group block cursor-pointer">
-                                            {project.image ? (
-                                                <Image
-                                                    src={project.image}
-                                                    alt={`Project Preview: ${project.title}`}
-                                                    fill
-                                                    sizes="(max-width: 1024px) 100vw, 40vw"
-                                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-zinc-300">
-                                                    <span className="material-symbols-outlined text-6xl text-zinc-500">{project.icon}</span>
-                                                </div>
-                                            )}
-                                            <div className="absolute top-3 left-3 bg-black text-white px-2.5 py-1 rounded-md text-[9px] font-pixel uppercase tracking-wider font-bold">
-                                                TIER 1 FLAGSHIP
-                                            </div>
-                                        </Link>
+                                        <article
+                                            data-project-card="true"
+                                            onMouseMove={handleMouseMove}
+                                            className="group relative tactile-card bg-zinc-50 border border-black/20 hover:border-black rounded-2xl p-5 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.8)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] focus-within:ring-2 focus-within:ring-yellow-400 transition-all grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center overflow-hidden"
+                                        >
+                                            {/* Radial Spotlight Hover Glow */}
+                                            <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(500px_circle_at_var(--mouse-x,0px)_var(--mouse-y,0px),rgba(250,204,21,0.12),transparent_80%)] z-0" />
 
-                                        {/* Project Technical Narrative */}
-                                        <div className="lg:col-span-7 space-y-4">
-                                            <header className="flex flex-wrap items-center justify-between gap-2">
-                                                <h4 className="text-2xl sm:text-3xl font-display uppercase tracking-tight text-retro-charcoal hover:text-retro-orange transition-colors">
-                                                    <Link href={`/projects/${project.slug}`} className="focus:outline-none" aria-label={`Read ${project.title} technical case study`}>
-                                                        {project.title}
-                                                    </Link>
-                                                </h4>
-                                                <div className="flex flex-wrap gap-1.5">
-                                                    {project.techStack.map((tech, i) => (
-                                                        <button
-                                                            key={i}
-                                                            onClick={() => setSelectedSkillFilter(tech)}
-                                                            title={`Filter projects by ${tech}`}
-                                                            aria-label={`Filter projects by ${tech}`}
-                                                            className={`text-[10px] font-pixel px-2 py-0.5 border border-black/20 rounded font-bold uppercase transition-all cursor-pointer ${
-                                                                selectedSkillFilter === tech
-                                                                    ? 'bg-black text-white border-black'
-                                                                    : 'bg-zinc-200 text-zinc-800 hover:bg-retro-yellow hover:text-black hover:border-black'
-                                                            }`}
-                                                        >
-                                                            {tech}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </header>
-
-                                            <p className="font-body text-base text-zinc-700 leading-relaxed font-medium">
-                                                {project.description}
-                                            </p>
-
-                                            {/* Problem / Approach / Outcome Breakdown */}
-                                            {project.problem && (
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-body bg-white border border-black/20 p-3.5 rounded-xl">
-                                                    <div>
-                                                        <span className="font-pixel text-[9px] text-zinc-500 uppercase tracking-wider block mb-0.5">THE PROBLEM</span>
-                                                        <p className="text-zinc-700 leading-snug">{project.problem}</p>
+                                            {/* Preview Image */}
+                                            <Link href={`/projects/${project.slug}`} aria-label={`View full case study for ${project.title}`} className="lg:col-span-5 relative w-full aspect-video border border-black/30 rounded-xl overflow-hidden bg-zinc-200 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] group block cursor-pointer z-10">
+                                                {project.image ? (
+                                                    <Image
+                                                        src={project.image}
+                                                        alt={`Project Preview: ${project.title}`}
+                                                        fill
+                                                        sizes="(max-width: 1024px) 100vw, 40vw"
+                                                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center bg-zinc-300">
+                                                        <span className="material-symbols-outlined text-6xl text-zinc-500">{project.icon}</span>
                                                     </div>
-                                                    <div>
-                                                        <span className="font-pixel text-[9px] text-zinc-500 uppercase tracking-wider block mb-0.5">TECHNICAL ARCHITECTURE</span>
-                                                        <p className="text-zinc-700 leading-snug">{project.approach}</p>
-                                                    </div>
+                                                )}
+                                                <div className="absolute top-3 left-3 bg-black text-white px-2.5 py-1 rounded-md text-[9px] font-pixel uppercase tracking-wider font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,0.5)]">
+                                                    TIER 1 FLAGSHIP
                                                 </div>
-                                            )}
+                                            </Link>
 
-                                            {/* Action CTAs */}
-                                            <footer className="flex flex-wrap items-center gap-3 pt-2 border-t border-black/10">
-                                                <Link
-                                                    href={`/projects/${project.slug}`}
-                                                    aria-label={`View full case study for ${project.title}`}
-                                                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-black text-white rounded-lg border-2 border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-retro-yellow hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
-                                                >
-                                                    <span>View Case Study</span>
-                                                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                                </Link>
+                                            {/* Project Technical Narrative */}
+                                            <div className="lg:col-span-7 space-y-4 z-10">
+                                                <header className="flex flex-wrap items-center justify-between gap-2">
+                                                    <h4 className="text-2xl sm:text-3xl font-display uppercase tracking-tight text-retro-charcoal hover:text-retro-orange transition-colors">
+                                                        <Link href={`/projects/${project.slug}`} className="focus:outline-none" aria-label={`Read ${project.title} technical case study`}>
+                                                            {project.title}
+                                                        </Link>
+                                                    </h4>
+                                                    <div className="flex flex-wrap gap-1.5">
+                                                        {project.techStack.map((tech, i) => (
+                                                            <button
+                                                                key={i}
+                                                                onClick={() => setSelectedSkillFilter(tech)}
+                                                                title={`Filter projects by ${tech}`}
+                                                                aria-label={`Filter projects by ${tech}`}
+                                                                className={`text-[10px] font-pixel px-2 py-0.5 border border-black/15 rounded font-bold uppercase transition-all cursor-pointer ${
+                                                                    selectedSkillFilter === tech
+                                                                        ? 'bg-black text-white border-black'
+                                                                        : 'bg-zinc-200/80 text-zinc-800 hover:bg-retro-yellow hover:text-black hover:border-black'
+                                                                }`}
+                                                            >
+                                                                {tech}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </header>
 
-                                                {project.demo && (
-                                                    <a
-                                                        href={project.demo}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label={`View ${project.title} live production demo`}
-                                                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-retro-green text-black rounded-lg border-2 border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-emerald-300 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                                    >
-                                                        <span>Live Demo</span>
-                                                        <span className="material-symbols-outlined text-sm">open_in_new</span>
-                                                    </a>
+                                                <p className="font-body text-base text-zinc-700 leading-relaxed font-medium">
+                                                    {project.description}
+                                                </p>
+
+                                                {/* Problem / Approach / Outcome Breakdown */}
+                                                {project.problem && (
+                                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-body bg-white/90 border border-black/15 p-3.5 rounded-xl">
+                                                        <div>
+                                                            <span className="font-pixel text-[9px] text-zinc-500 uppercase tracking-wider block mb-0.5">THE PROBLEM</span>
+                                                            <p className="text-zinc-700 leading-snug">{project.problem}</p>
+                                                        </div>
+                                                        <div>
+                                                            <span className="font-pixel text-[9px] text-zinc-500 uppercase tracking-wider block mb-0.5">TECHNICAL ARCHITECTURE</span>
+                                                            <p className="text-zinc-700 leading-snug">{project.approach}</p>
+                                                        </div>
+                                                    </div>
                                                 )}
 
-                                                <a
-                                                    href={project.github}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    aria-label={`Inspect ${project.title} source code on GitHub`}
-                                                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-black rounded-lg border-2 border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                                >
-                                                    <span>GitHub Repo</span>
-                                                    <span className="material-symbols-outlined text-sm">code</span>
-                                                </a>
-                                            </footer>
-                                        </div>
-                                    </article>
-                                </motion.div>
-                            ))}
+                                                {/* Action CTAs */}
+                                                <footer className="flex flex-wrap items-center gap-3 pt-2 border-t border-black/10">
+                                                    <Link
+                                                        href={`/projects/${project.slug}`}
+                                                        aria-label={`View full case study for ${project.title}`}
+                                                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-black text-white rounded-lg border border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-retro-yellow hover:text-black transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer group/btn"
+                                                    >
+                                                        <span>View Case Study</span>
+                                                        <motion.span 
+                                                            className="inline-block"
+                                                            whileHover={{ x: 4 }}
+                                                            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                                                        >
+                                                            ➔
+                                                        </motion.span>
+                                                    </Link>
+
+                                                    {project.demo && (
+                                                        <a
+                                                            href={project.demo}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label={`View ${project.title} live production demo`}
+                                                            className="inline-flex items-center gap-1.5 px-4 py-2 bg-retro-green text-black rounded-lg border border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-emerald-300 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                                        >
+                                                            <span>Live Demo</span>
+                                                            <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                                        </a>
+                                                    )}
+
+                                                    <a
+                                                        href={project.github}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={`Inspect ${project.title} source code on GitHub`}
+                                                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-black rounded-lg border border-black font-body text-xs font-bold uppercase tracking-wider hover:bg-zinc-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                                    >
+                                                        <span>GitHub Repo</span>
+                                                        <span className="material-symbols-outlined text-sm">code</span>
+                                                    </a>
+                                                </footer>
+                                            </div>
+                                        </article>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
                     </div>
                 )}
@@ -289,7 +314,7 @@ const Projects = () => {
                 {/* Section 2: Tier 2 Specialized & Applied AI Systems */}
                 {secondaryProjects.length > 0 && (
                     <div>
-                        <div className="flex items-center gap-2 mb-6 pt-4 border-t-2 border-black/10">
+                        <div className="flex items-center gap-2 mb-6 pt-4 border-t border-black/15">
                             <span className="w-2.5 h-2.5 rounded-full bg-zinc-400 inline-block"></span>
                             <h3 className="font-pixel text-xs sm:text-sm uppercase tracking-widest text-zinc-600 font-bold">
                                 TIER 2: SPECIALIZED & APPLIED AI SYSTEMS
@@ -305,14 +330,19 @@ const Projects = () => {
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
                                     >
                                         <article
                                             data-project-card="true"
-                                            className="group relative bg-zinc-50 border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] focus-within:ring-2 focus-within:ring-yellow-400 transition-all flex flex-col justify-between h-full"
+                                            onMouseMove={handleMouseMove}
+                                            className="group relative tactile-card bg-zinc-50 border border-black/15 hover:border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] focus-within:ring-2 focus-within:ring-yellow-400 transition-all flex flex-col justify-between h-full overflow-hidden"
                                         >
-                                            <div>
+                                            {/* Radial Spotlight Hover Glow */}
+                                            <div className="pointer-events-none absolute -inset-px rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(350px_circle_at_var(--mouse-x,0px)_var(--mouse-y,0px),rgba(250,204,21,0.15),transparent_80%)] z-0" />
+
+                                            <div className="z-10">
                                                 <header className="flex justify-between items-center mb-3">
-                                                    <div className="w-9 h-9 bg-zinc-200 border border-black rounded-lg flex items-center justify-center">
+                                                    <div className="w-9 h-9 bg-zinc-200/80 border border-black/20 rounded-lg flex items-center justify-center">
                                                         <span className="material-symbols-outlined text-xl text-retro-charcoal">{project.icon}</span>
                                                     </div>
                                                     <div className="flex gap-1">
@@ -335,7 +365,7 @@ const Projects = () => {
                                                 </p>
                                             </div>
 
-                                            <div>
+                                            <div className="z-10">
                                                 <div className="flex flex-wrap gap-1 mb-3">
                                                     {project.techStack.map((tech, i) => (
                                                         <button
@@ -346,7 +376,7 @@ const Projects = () => {
                                                             className={`text-[9px] font-mono px-1.5 py-0.2 rounded border transition-colors cursor-pointer ${
                                                                 selectedSkillFilter === tech
                                                                     ? 'bg-black text-white border-black font-bold'
-                                                                    : 'text-zinc-600 bg-white border-black/10 hover:border-black hover:bg-retro-yellow hover:text-black'
+                                                                    : 'text-zinc-600 bg-white border-black/15 hover:border-black hover:bg-retro-yellow hover:text-black'
                                                             }`}
                                                         >
                                                             {tech}
@@ -358,10 +388,16 @@ const Projects = () => {
                                                     <Link
                                                         href={`/projects/${project.slug}`}
                                                         aria-label={`View case study for ${project.title}`}
-                                                        className="px-2.5 py-1 bg-black text-white text-[10px] font-pixel uppercase tracking-wider font-bold rounded border border-black hover:bg-retro-yellow hover:text-black transition-all flex items-center gap-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                                                        className="px-2.5 py-1 bg-black text-white text-[10px] font-pixel uppercase tracking-wider font-bold rounded border border-black hover:bg-retro-yellow hover:text-black transition-all flex items-center gap-1 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] group/btn"
                                                     >
                                                         <span>Case Study</span>
-                                                        <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                                                        <motion.span 
+                                                            className="inline-block"
+                                                            whileHover={{ x: 3 }}
+                                                            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                                                        >
+                                                            ➔
+                                                        </motion.span>
                                                     </Link>
 
                                                     {project.demo && (

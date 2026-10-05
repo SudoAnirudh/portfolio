@@ -413,11 +413,57 @@ const AppleMonochromeLogo = () => (
     </svg>
 );
 
+// Channel 09: Live Telemetry Benchmarks Ticker
+const TelemetryChannel = () => {
+    const [tick, setTick] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTick(t => t + 1);
+        }, 1200);
+        return () => clearInterval(interval);
+    }, []);
+
+    const metrics = [
+        { key: "hirenix.api.latency", val: "sub-200ms", unit: "P99" },
+        { key: "self_correcting_agent.eval", val: "10/10 tasks", unit: "0 errors" },
+        { key: "agentkube.orchestration", val: "AWS EKS", unit: "Celery Active" },
+        { key: "pgvector.semantic_recall", val: "99.4%", unit: "HNSW Index" },
+        { key: "tflite.edge_inference", val: "42ms", unit: "ARM Cortex" },
+    ];
+
+    return (
+        <div className="w-full h-full font-mono text-[9px] md:text-[10px] text-zinc-900 bg-[#ede8db] p-2 flex flex-col justify-between select-none">
+            <div className="flex items-center justify-between border-b border-black/20 pb-1 mb-1">
+                <span className="font-bold text-black flex items-center gap-1 font-pixel text-xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    LIVE TELEMETRY MODE
+                </span>
+                <span className="text-[8px] text-zinc-600 font-mono">TICK: {1024 + tick}</span>
+            </div>
+            <div className="space-y-1 my-auto">
+                {metrics.map((m, idx) => (
+                    <div key={idx} className="flex justify-between items-center text-[9px] font-pixel border-b border-black/10 pb-0.5">
+                        <span className="text-zinc-800 font-bold truncate">&gt; {m.key}</span>
+                        <span className="text-black font-mono font-bold bg-black/10 px-1 rounded ml-1 shrink-0">
+                            {m.val} <span className="text-[7.5px] opacity-70">({m.unit})</span>
+                        </span>
+                    </div>
+                ))}
+            </div>
+            <div className="text-[8px] text-zinc-600 border-t border-black/15 pt-1 text-center font-pixel font-bold">
+                [REAL-TIME ENGINEERING BENCHMARKS VERIFIED]
+            </div>
+        </div>
+    );
+};
+
 const HelloWorld = () => {
     const [channel, setChannel] = useState(3);
     const [text, setText] = useState('');
     const [isTyping, setIsTyping] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [phosphorDecay, setPhosphorDecay] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [ledFlash, setLedFlash] = useState(false);
 
@@ -461,25 +507,30 @@ const HelloWorld = () => {
         playClickSound();
         playStaticSound();
         setLedFlash(true);
+        setPhosphorDecay(true);
         setIsTransitioning(true);
+        
+        // 150ms Phosphor Persistence Decay transition phase
         setTimeout(() => {
             setChannel(nextChannel);
-        }, 120);
+            setPhosphorDecay(false);
+        }, 150);
+
         setTimeout(() => {
             setIsTransitioning(false);
             setLedFlash(false);
-        }, 400);
+        }, 380);
     };
 
     const handleNextChannel = () => {
         if (isTransitioning) return;
-        const next = channel === 8 ? 3 : channel + 1;
+        const next = channel === 9 ? 3 : channel + 1;
         changeChannel(next);
     };
 
     const handlePrevChannel = () => {
         if (isTransitioning) return;
-        const prev = channel === 3 ? 8 : channel - 1;
+        const prev = channel === 3 ? 9 : channel - 1;
         changeChannel(prev);
     };
 
@@ -494,12 +545,15 @@ const HelloWorld = () => {
                     <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.04)_50%,rgba(0,0,0,0.1)_50%)] z-20 bg-[length:100%_3px] pointer-events-none"></div>
                     <div className="absolute inset-0 bg-black/2 z-10 pointer-events-none"></div>
                     
-                    {/* Static Noise Overlay during transitions */}
+                    {/* Static Noise & Phosphor Persistence Decay Overlay during transitions */}
                     {isTransitioning && (
-                        <div className="absolute inset-0 bg-[#f4efe3] z-50 flex flex-col items-center justify-center pointer-events-none">
+                        <div className={`absolute inset-0 bg-[#f4efe3] z-50 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-150 ${
+                            phosphorDecay ? 'opacity-100 bg-[#12281a]/90 text-emerald-400' : 'opacity-80'
+                        }`}>
                             <div className="tv-static !opacity-25 absolute inset-0 bg-white"></div>
-                            <div className="text-[12px] text-zinc-900 font-pixel uppercase tracking-widest animate-pulse border-2 border-zinc-900 px-3 py-1.5 bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
-                                SYS BOOT...
+                            <div className="text-[11px] font-pixel uppercase tracking-widest animate-pulse border border-black/80 px-2.5 py-1 bg-white text-black shadow-[2px_2px_0px_rgba(0,0,0,1)] flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                                <span>PHOSPHOR DECAY...</span>
                             </div>
                         </div>
                     )}
@@ -516,21 +570,23 @@ const HelloWorld = () => {
                             <div className="relative">
                                 <span 
                                     onClick={() => setMenuOpen(!menuOpen)}
-                                    className={`font-bold px-1.5 py-0.5 cursor-pointer rounded-sm ${menuOpen ? 'bg-black text-white' : 'hover:bg-black/10'}`}
+                                    className={`font-bold px-1.5 py-0.5 cursor-pointer rounded-sm flex items-center gap-1 ${menuOpen ? 'bg-black text-white' : 'bg-retro-yellow/80 hover:bg-black hover:text-white border border-black/40'}`}
                                 >
-                                    DevMenu
+                                    <span>DevMenu</span>
+                                    <span className="text-[8px]">▾</span>
                                 </span>
                                 {menuOpen && (
                                     <>
                                         <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)}></div>
-                                        <div className="absolute top-[15px] left-0 w-32 bg-white border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] z-50 py-0.5 text-[9px] font-pixel">
+                                        <div className="absolute top-[15px] left-0 w-36 bg-white border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] z-50 py-0.5 text-[9px] font-pixel">
                                             {[
                                                 { ch: 3, label: 'Ch 3: Greeting' },
                                                 { ch: 4, label: 'Ch 4: Matrix' },
                                                 { ch: 5, label: 'Ch 5: 3D Cube' },
                                                 { ch: 6, label: 'Ch 6: retroPet' },
                                                 { ch: 7, label: 'Ch 7: Static' },
-                                                { ch: 8, label: 'Ch 8: CLI Shell 💻' }
+                                                { ch: 8, label: 'Ch 8: CLI Shell 💻' },
+                                                { ch: 9, label: 'Ch 9: Live Telemetry ⚡' }
                                             ].map((item) => (
                                                 <div
                                                     key={item.ch}
@@ -552,8 +608,17 @@ const HelloWorld = () => {
                                 )}
                             </div>
                         </div>
+
+                        {/* Interactive Channel Cue Badge */}
                         <div className="flex items-center gap-1.5">
-                            <span className="opacity-75 uppercase">CH 0{channel}</span>
+                            <span 
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                title="Click to open DevMenu channels"
+                                className="bg-black/10 hover:bg-black hover:text-white px-1.5 py-0.2 rounded font-bold cursor-pointer transition-colors flex items-center gap-1 text-[8px]"
+                            >
+                                <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span className="uppercase">CH 0{channel}</span>
+                            </span>
                             <span className="w-[1px] h-2.5 bg-black/20"></span>
                             <span className="opacity-75">1984</span>
                         </div>
@@ -572,6 +637,7 @@ const HelloWorld = () => {
                         {channel === 6 && <AsciiPet />}
                         {channel === 7 && <StaticChannel />}
                         {channel === 8 && <CliChannel />}
+                        {channel === 9 && <TelemetryChannel />}
                     </div>
 
                     {/* Scanline Overlay */}
