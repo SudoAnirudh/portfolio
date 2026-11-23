@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 
 interface CodeSnippet {
   filename: string;
@@ -29,62 +30,64 @@ export const CodeWindow: React.FC<CodeWindowProps> = ({ snippet }) => {
   const lines = snippet.code.split('\n');
 
   return (
-    <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-4">
+    <div className="bg-white border-[3px] border-[#0D0D0D] p-6 sm:p-8 shadow-[6px_6px_0px_0px_#0D0D0D] space-y-4">
       <div className="flex items-center gap-2">
-        <span className="material-symbols-outlined text-amber-400 text-xl">terminal</span>
-        <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-zinc-400 font-semibold">
-          // 04. CORE ARCHITECTURAL LOGIC
+        <span className="bg-[#FFDE59] text-[#0D0D0D] border-[2px] border-[#0D0D0D] px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-[2px_2px_0px_0px_#0D0D0D]">
+          CODE
+        </span>
+        <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-[#0D0D0D] font-black">
+          {"//"} 04. CORE ARCHITECTURAL LOGIC
         </h2>
       </div>
 
       {snippet.explanation && (
-        <p className="text-xs sm:text-sm text-zinc-400 font-sans leading-relaxed">
+        <p className="font-mono text-xs sm:text-sm text-zinc-700 leading-relaxed font-medium">
           {snippet.explanation}
         </p>
       )}
 
-      {/* Code Window IDE Container */}
-      <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl">
+      {/* Code Window Container */}
+      <div className="bg-[#0D0D0D] border-[2.5px] border-[#0D0D0D] shadow-[6px_6px_0px_0px_#0D0D0D] overflow-hidden">
         {/* Top Header Bar */}
-        <div className="bg-zinc-900/90 border-b border-zinc-800 px-4 py-2.5 flex items-center justify-between">
+        <div className="bg-[#1E1E1E] border-b-[2px] border-[#333333] px-4 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <div className="w-3 h-3 rounded-full bg-green-500/80" />
+              <div className="w-3 h-3 rounded-full bg-[#FF7A9E] border border-black/40" />
+              <div className="w-3 h-3 rounded-full bg-[#FFDE59] border border-black/40" />
+              <div className="w-3 h-3 rounded-full bg-[#B5E635] border border-black/40" />
             </div>
-            <span className="font-mono text-xs text-zinc-400 border-l border-zinc-800 pl-3">
+            <span className="font-mono text-xs font-bold text-zinc-300 border-l border-zinc-700 pl-3">
               {snippet.filename}
             </span>
           </div>
 
           <button
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 font-mono text-xs text-zinc-400 hover:text-zinc-100 bg-zinc-800/60 hover:bg-zinc-800 border border-zinc-700/60 px-2.5 py-1 rounded transition-colors"
+            className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#0D0D0D] bg-[#B5E635] hover:bg-lime-400 border-[1.5px] border-[#0D0D0D] px-2.5 py-1 shadow-[2px_2px_0px_0px_#0D0D0D] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
           >
             {copied ? (
               <>
-                <span className="text-emerald-400">✓</span>
-                <span className="text-emerald-400">Copied!</span>
+                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                <span>COPIED!</span>
               </>
             ) : (
               <>
-                <span className="material-symbols-outlined text-sm">content_copy</span>
-                <span>Copy Code</span>
+                <Copy className="w-3.5 h-3.5" />
+                <span>COPY CODE</span>
               </>
             )}
           </button>
         </div>
 
         {/* Code Content View */}
-        <div className="p-4 overflow-x-auto">
+        <div className="p-4 overflow-x-auto bg-[#0D0D0D]">
           <pre className="font-mono text-xs sm:text-sm text-zinc-200 leading-relaxed flex">
-            <div className="flex flex-col text-zinc-600 select-none pr-4 text-right border-r border-zinc-800/80 font-mono text-xs">
+            <div className="flex flex-col text-zinc-600 select-none pr-4 text-right border-r border-zinc-800 font-mono text-xs">
               {lines.map((_, i) => (
                 <span key={i}>{i + 1}</span>
               ))}
             </div>
-            <code className="pl-4 font-mono text-zinc-200 whitespace-pre">
+            <code className="pl-4 font-mono text-lime-300 whitespace-pre">
               {snippet.code}
             </code>
           </pre>

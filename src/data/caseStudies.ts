@@ -1,4 +1,4 @@
-import { PROJECTS, ProjectData } from '@/config/projects';
+import { PROJECTS } from '@/config/projects';
 
 export interface CaseStudy {
     slug: string;

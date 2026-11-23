@@ -2,9 +2,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { Project } from '@/data/portfolio';
-import { caseStudies } from '@/data/caseStudies';
-import { ArchitectureFlow } from '@/components/ArchitectureFlow';
-import { CodeSnippetCard } from '@/components/CodeSnippetCard';
 import { motion } from 'framer-motion';
 
 // --- SUB-SIMULATORS FOR PORTFOLIO PROJECTS ---
@@ -562,7 +559,7 @@ const IdsSimulator: React.FC = () => {
                 className="h-32 border-4 border-black bg-zinc-900 text-green-400 p-2 text-[9px] uppercase leading-tight overflow-y-auto space-y-1 shadow-[inset_0px_0px_8px_rgba(0,255,0,0.4)]"
             >
                 {logs.length === 0 ? (
-                    <div className="text-zinc-500 italic text-center pt-10">Click "Arm Firewall" to start log monitoring.</div>
+                    <div className="text-zinc-500 italic text-center pt-10">Click &quot;Arm Firewall&quot; to start log monitoring.</div>
                 ) : (
                     logs.map((log, idx) => {
                         let color = "text-green-400";
@@ -652,7 +649,7 @@ const MessyDataSimulator: React.FC = () => {
             while (index < timeline.length && timeline[index].time <= elapsed) {
                 const item = timeline[index];
                 setIngestLogs(prev => [...prev, item.log]);
-                setActiveSource(item.source as any);
+                setActiveSource(item.source as 'none' | 'pg' | 'api' | 'csv');
                 setProgress(Math.min(100, Math.round((index / timeline.length) * 100)));
                 index++;
             }
@@ -856,7 +853,7 @@ const MessyDataSimulator: React.FC = () => {
                     ) : (
                         <div className="space-y-3">
                             <div className="bg-zinc-100 border-2 border-zinc-400 p-2 text-[10px] text-zinc-600 font-bold uppercase text-center rounded">
-                                ❌ profiles separated. new profile 'usr_94a90' registered.
+                                ❌ profiles separated. new profile &apos;usr_94a90&apos; registered.
                             </div>
                             <button
                                 onClick={() => setStep('done')}
@@ -1586,23 +1583,57 @@ const HirenixSimulator: React.FC = () => {
     );
 };
 
+interface Mentor {
+    name: string;
+    nameKn: string;
+    role: string;
+    roleKn: string;
+    ward: string;
+    wardKn: string;
+    rating: string;
+    contact: string;
+    bio: string;
+    bioKn: string;
+}
+
+interface Booking {
+    id: number;
+    mentorName: string;
+    mentorNameKn: string;
+    date: string;
+    time: string;
+    status: string;
+}
+
+interface KudosItem {
+    id: number;
+    sender: string;
+    senderKn: string;
+    mentor: string;
+    mentorKn: string;
+    text: string;
+    textKn: string;
+}
+
+type GeminiResult = Mentor;
+
 const NimmaGuruSimulator: React.FC = () => {
     const [language, setLanguage] = useState<'en' | 'kn'>('en');
     const [tab, setTab] = useState<'directory' | 'gemini' | 'kudos' | 'bookings'>('directory');
-    const [selectedMentor, setSelectedMentor] = useState<any | null>(null);
+    const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [bookings, setBookings] = useState<any[]>([
+    const [bookings, setBookings] = useState<Booking[]>([
         { id: 1, mentorName: 'Ramesh Kumar', mentorNameKn: 'ರಮೇಶ್ ಕುಮಾರ್', date: '2026-07-05', time: '10:00 AM', status: 'Confirmed' }
     ]);
     const [newKudos, setNewKudos] = useState({ name: '', mentor: 'Ramesh Kumar', message: '' });
-    const [kudosList, setKudosList] = useState<any[]>([
+    const [kudosList, setKudosList] = useState<KudosItem[]>([
         { id: 1, sender: 'Anand S.', senderKn: 'ಆನಂದ್ ಎಸ್.', mentor: 'Ramesh Kumar', mentorKn: 'ರಮೇಶ್ ಕುಮಾರ್', text: 'Helped resolve my soil acidity issue in one visit!', textKn: 'ಕೇವಲ ಒಂದು ಭೇಟಿಯಲ್ಲಿ ನನ್ನ ಮಣ್ಣಿನ ಆಮ್ಲೀಯತೆಯ ಸಮಸ್ಯೆಯನ್ನು ಬಗೆಹರಿಸಲು ಸಹಾಯ ಮಾಡಿದರು!' },
         { id: 2, sender: 'Meera K.', senderKn: 'ಮೀರಾ ಕೆ.', mentor: 'Gowri Amma', mentorKn: 'ಗೌರಿ ಅಮ್ಮ', text: 'Patient teacher. My kids loved learning pottery basics.', textKn: 'ಅತ್ಯಂತ ತಾಳ್ಮೆಯ ಶಿಕ್ಷಕಿ. ನನ್ನ ಮಕ್ಕಳಿಗೆ ಮಡಕೆ ತಯಾರಿಕೆಯ ಮೂಲಭೂತ ಅಂಶಗಳನ್ನು ಕಲಿಯಲು ತುಂಬಾ ಖುಷಿಯಾಯಿತು.' }
     ]);
 
     const [geminiQuery, setGeminiQuery] = useState('');
     const [geminiLogs, setGeminiLogs] = useState<string[]>([]);
-    const [geminiResult, setGeminiResult] = useState<any | null>(null);
+    const [geminiResult, setGeminiResult] = useState<GeminiResult | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
     const mentors = [
@@ -1700,7 +1731,7 @@ const NimmaGuruSimulator: React.FC = () => {
         }, 400);
     };
 
-    const handleBookSession = (mentor: any) => {
+    const handleBookSession = (mentor: Mentor) => {
         const newBooking = {
             id: Date.now(),
             mentorName: mentor.name,
@@ -2084,7 +2115,7 @@ const NimmaGuruSimulator: React.FC = () => {
                                         <span>To: {language === 'kn' ? k.mentorKn : k.mentor}</span>
                                     </div>
                                     <p className="text-[8px] text-zinc-700 leading-snug italic font-body font-bold">
-                                        "{language === 'kn' ? k.textKn : k.text}"
+                                        &ldquo;{language === 'kn' ? k.textKn : k.text}&rdquo;
                                     </p>
                                 </div>
                             ))}
@@ -2478,6 +2509,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     onNavigate,
 }) => {
     const [showSimulator, setShowSimulator] = useState(false);
+    const [prevSlug, setPrevSlug] = useState(project?.slug);
+    if (project && project.slug !== prevSlug) {
+        setPrevSlug(project.slug);
+        setShowSimulator(false);
+    }
 
     // Check if the current project title has a simulator
     const hasSimulator = project ? [
@@ -2490,11 +2526,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         "AI Career CoPilot",
         "Self-Correcting Agent"
     ].includes(project.title) : false;
-
-    // Reset simulator tab when project changes
-    useEffect(() => {
-        setShowSimulator(false);
-    }, [project]);
 
     const renderSimulator = (title: string) => {
         switch (title) {
@@ -2532,11 +2563,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     }, [onClose, onNavigate, project]);
 
     if (!project) return null;
-    const currentStudy = caseStudies[project.slug];
 
     return (
         <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-retro-charcoal/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -2544,296 +2574,238 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             transition={{ duration: 0.2 }}
         >
             <motion.div
-                className="bg-retro-white border-4 border-black p-0 max-w-3xl w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative flex flex-col max-h-[92vh] overflow-hidden animate-zoom-in"
+                className="bg-white border-[3px] border-[#0D0D0D] p-0 max-w-4xl w-full shadow-[10px_10px_0px_0px_#0D0D0D] relative flex flex-col max-h-[90vh] overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
                 initial={{ scale: 0.96, y: 14, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.98, y: 8, opacity: 0 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
             >
-                <div className="bg-retro-charcoal text-white p-2 flex justify-between items-center gap-2 border-b-4 border-black">
-                    <div className="flex items-center gap-2 min-w-0">
-                        <span className="material-symbols-outlined text-sm">deployed_code</span>
-                        <span className="font-pixel text-[10px] sm:text-sm tracking-wider truncate">CARTRIDGE_SLOT_A://{project.title.toUpperCase()}</span>
+                {/* Neo-Brutalist Top Chrome Bar */}
+                <div className="bg-[#6D4AFF] text-white px-4 py-3 flex justify-between items-center gap-2 border-b-[2.5px] border-[#0D0D0D]">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#B5E635] border border-black animate-pulse" />
+                        <span className="font-mono text-xs sm:text-sm font-black tracking-wider truncate uppercase">
+                            PROJECT DOSSIER // {project.title.toUpperCase()}
+                        </span>
                     </div>
                     <button
                         onClick={onClose}
-                        className="hover:bg-red-500 p-1 rounded-none transition-colors"
+                        className="w-7 h-7 bg-white text-black border-[2px] border-black shadow-[2px_2px_0px_0px_#0D0D0D] hover:bg-[#FF7A9E] flex items-center justify-center transition-colors cursor-pointer"
+                        aria-label="Close modal"
                     >
-                        <span className="material-symbols-outlined text-sm block">close</span>
+                        <span className="material-symbols-outlined text-sm font-bold block">close</span>
                     </button>
                 </div>
 
-                <div className="p-3 sm:p-6 overflow-y-auto font-body">
-                    <div className="border-4 border-black bg-zinc-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                        <div className="grid lg:grid-cols-12">
-                            <div className="lg:col-span-5 p-4 border-b-4 lg:border-b-0 lg:border-r-4 border-black bg-retro-cream">
-                                <div className="font-pixel text-xs uppercase tracking-wider bg-black text-white inline-block px-2 py-1 mb-3">
-                                    Project Cartridge
+                <div className="overflow-y-auto">
+                    <div className="grid lg:grid-cols-12 min-h-full">
+                        {/* Left Column: Image Artwork & Specifications */}
+                        <div className="lg:col-span-5 p-5 border-b-[2.5px] lg:border-b-0 lg:border-r-[2.5px] border-[#0D0D0D] bg-[#FFFDF5] flex flex-col justify-between space-y-4">
+                            <div>
+                                <div className="inline-flex items-center gap-1.5 font-mono text-xs font-black uppercase tracking-wider bg-[#B5E635] text-black border-[2px] border-[#0D0D0D] px-2.5 py-1 mb-4 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                                    ★ FLAGSHIP ASSET
                                 </div>
-                                <motion.div
-                                    className="h-3 bg-zinc-800 border-2 border-black mb-3 overflow-hidden"
-                                    initial={{ clipPath: "inset(0 100% 0 0)" }}
-                                    animate={{ clipPath: "inset(0 0% 0 0)" }}
-                                    transition={{ duration: 0.28, delay: 0.1, ease: "easeOut" }}
-                                >
-                                    <div className="h-full bg-retro-yellow w-1/2" />
-                                </motion.div>
 
-                                <motion.div
-                                    className="border-4 border-black bg-white mb-4 relative overflow-hidden"
-                                    initial={{ opacity: 0, x: -14 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.3, delay: 0.08 }}
-                                >
+                                <div className="border-[2.5px] border-[#0D0D0D] bg-white mb-4 relative overflow-hidden shadow-[4px_4px_0px_0px_#0D0D0D]">
                                     {project.image ? (
                                         <img
                                             src={project.image}
                                             alt={project.title}
-                                            className="w-full aspect-video object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                            className="w-full aspect-video object-cover"
                                         />
                                     ) : (
-                                        <div className="w-full aspect-video flex items-center justify-center bg-retro-charcoal/5">
-                                            <span className="material-symbols-outlined text-6xl text-retro-charcoal/30">{project.icon}</span>
+                                        <div className="w-full aspect-video flex items-center justify-center bg-zinc-100">
+                                            <span className="material-symbols-outlined text-6xl text-zinc-400">{project.icon}</span>
                                         </div>
                                     )}
-                                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                                        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.12)_50%,transparent_100%)] animate-scanline" />
-                                    </div>
-                                </motion.div>
+                                </div>
 
-                                <motion.div
-                                    className="font-pixel text-[11px] uppercase tracking-wider text-zinc-700 space-y-1"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.25, delay: 0.15 }}
-                                >
-                                    <div>Slot: A1</div>
-                                    <div>File: {project.title.toUpperCase().replace(/\s+/g, "_")}.CRT</div>
-                                    <div>Build: Stable</div>
-                                </motion.div>
+                                <div className="font-mono text-xs text-zinc-800 space-y-1.5 bg-white border-[2px] border-[#0D0D0D] p-3 shadow-[2px_2px_0px_0px_#0D0D0D]">
+                                    <div className="flex justify-between">
+                                        <span className="text-zinc-500 font-bold">STATUS:</span>
+                                        <span className="font-black text-[#6D4AFF]">PRODUCTION READY</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-zinc-500 font-bold">SLUG:</span>
+                                        <span className="font-black">{project.slug.toUpperCase()}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-zinc-500 font-bold">INDEX:</span>
+                                        <span className="font-black">{(currentIndex ?? 0) + 1} OF {totalProjects}</span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <motion.div
-                                className="lg:col-span-7 p-3 sm:p-4 bg-retro-white flex flex-col justify-between"
-                                initial={{ opacity: 0, x: 16 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: 0.05 }}
+                            <Link
+                                href={`/projects/${project.slug}`}
+                                className="w-full py-2.5 bg-[#B5E635] hover:bg-lime-300 text-black border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase text-center shadow-[3px_3px_0px_0px_#0D0D0D] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 transition-all block"
                             >
-                                {showSimulator ? (
-                                    <div className="flex-1 flex flex-col justify-between h-full">
-                                        <div className="space-y-4">
-                                            <div className="flex justify-between items-center border-b-2 border-black pb-2 mb-2">
-                                                <h2 className="font-display text-xl sm:text-2xl uppercase tracking-tight leading-none text-retro-charcoal">
-                                                    {project.title} Simulator
-                                                </h2>
-                                                <button
-                                                    onClick={() => setShowSimulator(false)}
-                                                    className="px-2 py-1 bg-zinc-100 border-2 border-black font-pixel text-[10px] uppercase hover:bg-zinc-200 transition-colors"
-                                                >
-                                                    Back to Details
-                                                </button>
-                                            </div>
-                                            {renderSimulator(project.title)}
-                                        </div>
+                                READ FULL CASE STUDY →
+                            </Link>
+                        </div>
 
-                                        <div className="pt-4 flex flex-wrap gap-3 mt-auto border-t-2 border-dashed border-black/15">
-                                            <motion.button
-                                                onClick={() => onNavigate('prev')}
-                                                className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
-                                                whileHover={{ y: -1 }}
-                                            >
-                                                <span className="material-symbols-outlined text-sm">arrow_back</span>
-                                                Prev
-                                            </motion.button>
-
-                                            <motion.button
-                                                onClick={() => onNavigate('next')}
-                                                className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
-                                                whileHover={{ y: -1 }}
-                                            >
-                                                Next
-                                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                            </motion.button>
-
-                                            <motion.a
-                                                href={project.github}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="px-4 py-2 bg-retro-green border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
-                                                whileHover={{ y: -1 }}
-                                            >
-                                                <span className="material-symbols-outlined text-sm">code</span>
-                                                View Source
-                                            </motion.a>
-
+                        {/* Right Column: Project Details or Simulator */}
+                        <div className="lg:col-span-7 p-5 sm:p-6 bg-white flex flex-col justify-between">
+                            {showSimulator ? (
+                                <div className="flex-1 flex flex-col justify-between h-full">
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center border-b-[2px] border-[#0D0D0D] pb-3 mb-2">
+                                            <h2 className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight text-[#0D0D0D]">
+                                                {project.title} Playground
+                                            </h2>
                                             <button
-                                                onClick={onClose}
-                                                className="px-4 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors"
+                                                onClick={() => setShowSimulator(false)}
+                                                className="px-3 py-1 bg-white border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase hover:bg-zinc-100 shadow-[2px_2px_0px_0px_#0D0D0D] transition-colors cursor-pointer"
                                             >
-                                                Eject
+                                                Back to Details
                                             </button>
                                         </div>
+                                        <div className="p-1 bg-[#FFFDF5] border-[2px] border-[#0D0D0D] shadow-[3px_3px_0px_0px_#0D0D0D]">
+                                            {renderSimulator(project.title)}
+                                        </div>
                                     </div>
-                                ) : (
-                                    <div className="flex-1 flex flex-col justify-between h-full">
-                                        <div>
-                                            <motion.h2
-                                                className="font-display text-2xl sm:text-3xl uppercase tracking-tight leading-none mb-3 text-retro-charcoal"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.12 }}
-                                            >
-                                                {project.title}
-                                            </motion.h2>
-                                            <motion.p
-                                                className="text-zinc-700 leading-relaxed mb-5"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.17 }}
-                                            >
-                                                {project.description}
-                                            </motion.p>
 
-                                            <div className="mb-5">
-                                                <h3 className="font-pixel text-sm uppercase mb-2 border-b-2 border-black inline-block">Specs</h3>
-                                                <div className="grid sm:grid-cols-2 gap-2 text-xs">
-                                                    {project.specs.map((spec, index) => (
-                                                        <motion.div
-                                                            key={`${spec.label}-${spec.value}`}
-                                                            className="border-2 border-black bg-zinc-100 px-3 py-2"
-                                                            initial={{ opacity: 0, y: 8 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ duration: 0.2, delay: 0.2 + index * 0.05 }}
-                                                            whileHover={{ y: -2, x: -2 }}
-                                                        >
-                                                            <div className="font-pixel uppercase text-zinc-500 tracking-wider">{spec.label}</div>
-                                                            <div className="font-body text-sm text-zinc-800">{spec.value}</div>
-                                                        </motion.div>
-                                                    ))}
-                                                </div>
+                                    <div className="pt-4 flex flex-wrap gap-2.5 mt-auto border-t-[2px] border-[#0D0D0D]">
+                                        <button
+                                            onClick={() => onNavigate('prev')}
+                                            className="px-3.5 py-2 bg-white border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase hover:bg-zinc-100 shadow-[2px_2px_0px_0px_#0D0D0D] transition-colors flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">arrow_back</span>
+                                            Prev
+                                        </button>
+
+                                        <button
+                                            onClick={() => onNavigate('next')}
+                                            className="px-3.5 py-2 bg-white border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase hover:bg-zinc-100 shadow-[2px_2px_0px_0px_#0D0D0D] transition-colors flex items-center gap-1 cursor-pointer"
+                                        >
+                                            Next
+                                            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                        </button>
+
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-4 py-2 bg-[#B5E635] text-black border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#0D0D0D] hover:bg-lime-300 transition-all flex items-center gap-1.5 ml-auto"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">code</span>
+                                            GitHub
+                                        </a>
+
+                                        <button
+                                            onClick={onClose}
+                                            className="px-4 py-2 bg-[#0D0D0D] text-white border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#0D0D0D] hover:bg-zinc-800 transition-colors cursor-pointer"
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex-1 flex flex-col justify-between h-full space-y-5">
+                                    <div>
+                                        <h2 className="font-display text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0D0D0D] mb-2">
+                                            {project.title}
+                                        </h2>
+                                        <p className="font-mono text-xs sm:text-sm text-zinc-700 leading-relaxed font-medium mb-5">
+                                            {project.description}
+                                        </p>
+
+                                        {/* Specs Grid */}
+                                        <div className="mb-5 space-y-2">
+                                            <span className="font-mono text-xs font-black uppercase text-[#0D0D0D] tracking-wider block">
+                                                TECHNICAL SPECIFICATIONS
+                                            </span>
+                                            <div className="grid sm:grid-cols-2 gap-2.5 text-xs">
+                                                {project.specs.map((spec) => (
+                                                    <div
+                                                        key={`${spec.label}-${spec.value}`}
+                                                        className="border-[2px] border-[#0D0D0D] bg-[#FFFDF5] p-2.5 shadow-[2px_2px_0px_0px_#0D0D0D]"
+                                                    >
+                                                        <div className="font-mono text-[10px] uppercase font-bold text-zinc-500 tracking-wider">{spec.label}</div>
+                                                        <div className="font-mono text-xs font-black text-[#0D0D0D] mt-0.5">{spec.value}</div>
+                                                    </div>
+                                                ))}
                                             </div>
-
-                                            <div className="mb-5">
-                                                <h3 className="font-pixel text-sm uppercase mb-2 border-b-2 border-black inline-block">Stack</h3>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {project.techStack?.map((tech, index) => (
-                                                        <motion.span
-                                                            key={tech}
-                                                            className="px-2 py-1 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                                            initial={{ opacity: 0, scale: 0.9 }}
-                                                            animate={{ opacity: 1, scale: 1 }}
-                                                            transition={{ duration: 0.18, delay: 0.22 + index * 0.04 }}
-                                                        >
-                                                            {tech}
-                                                        </motion.span>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {caseStudies[project.slug] && (
-                                                <div className="mb-5 space-y-4 border-t-2 border-dashed border-black/15 pt-4">
-                                                    {caseStudies[project.slug].architectureFlow && (
-                                                        <ArchitectureFlow steps={caseStudies[project.slug].architectureFlow} />
-                                                    )}
-                                                    {caseStudies[project.slug].codeSnippet && (
-                                                        <CodeSnippetCard snippet={caseStudies[project.slug].codeSnippet} />
-                                                    )}
-                                                </div>
-                                            )}
                                         </div>
 
-                                        <div className="pt-2 flex flex-wrap gap-3 mt-auto border-t-2 border-dashed border-black/15">
-                                            <motion.button
-                                                onClick={() => onNavigate('prev')}
-                                                className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.28 }}
-                                                whileHover={{ y: -1 }}
+                                        {/* Tech Stack Chips */}
+                                        <div className="mb-5 space-y-2">
+                                            <span className="font-mono text-xs font-black uppercase text-[#0D0D0D] tracking-wider block">
+                                                TECHNOLOGIES &amp; ASSETS
+                                            </span>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {project.techStack?.map((tech) => (
+                                                    <span
+                                                        key={tech}
+                                                        className="px-2.5 py-1 bg-white border-[1.5px] border-[#0D0D0D] font-mono text-xs font-bold text-[#0D0D0D] shadow-[1.5px_1.5px_0px_0px_#0D0D0D]"
+                                                    >
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Buttons Row */}
+                                    <div className="pt-3 flex flex-wrap items-center gap-2.5 border-t-[2px] border-[#0D0D0D]">
+                                        <button
+                                            onClick={() => onNavigate('prev')}
+                                            className="px-3 py-2 bg-white border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase hover:bg-zinc-100 shadow-[2px_2px_0px_0px_#0D0D0D] flex items-center gap-1 cursor-pointer"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">arrow_back</span>
+                                            Prev
+                                        </button>
+
+                                        <button
+                                            onClick={() => onNavigate('next')}
+                                            className="px-3 py-2 bg-white border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase hover:bg-zinc-100 shadow-[2px_2px_0px_0px_#0D0D0D] flex items-center gap-1 cursor-pointer"
+                                        >
+                                            Next
+                                            <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                        </button>
+
+                                        {hasSimulator && (
+                                            <button
+                                                onClick={() => setShowSimulator(true)}
+                                                className="px-3.5 py-2 bg-[#FF7A9E] text-black border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#0D0D0D] hover:bg-pink-400 flex items-center gap-1.5 cursor-pointer"
                                             >
-                                                <span className="material-symbols-outlined text-sm">arrow_back</span>
-                                                Prev
-                                            </motion.button>
+                                                <span className="material-symbols-outlined text-sm">sports_esports</span>
+                                                Playground
+                                            </button>
+                                        )}
 
-                                            <motion.button
-                                                onClick={() => onNavigate('next')}
-                                                className="px-3 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors flex items-center gap-1"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.29 }}
-                                                whileHover={{ y: -1 }}
-                                            >
-                                                Next
-                                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                                            </motion.button>
-
-                                            {project.demo && (
-                                                <motion.a
-                                                    href={project.demo}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="px-4 py-2 bg-retro-yellow border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 text-black"
-                                                    initial={{ opacity: 0, y: 8 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.2, delay: 0.3 }}
-                                                    whileHover={{ y: -1 }}
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">open_in_new</span>
-                                                    Launch Demo
-                                                </motion.a>
-                                            )}
-
-                                            {hasSimulator && (
-                                                <motion.button
-                                                    onClick={() => setShowSimulator(true)}
-                                                    className="px-4 py-2 bg-retro-orange border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
-                                                    initial={{ opacity: 0, y: 8 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.2, delay: 0.3 }}
-                                                    whileHover={{ y: -1 }}
-                                                >
-                                                    <span className="material-symbols-outlined text-sm">sports_esports</span>
-                                                    Launch Simulator
-                                                </motion.button>
-                                            )}
-
-                                            <motion.a
-                                                href={project.github}
+                                        {project.demo && (
+                                            <a
+                                                href={project.demo}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="px-4 py-2 bg-retro-green border-2 border-black font-pixel text-xs uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.35 }}
-                                                whileHover={{ y: -1 }}
+                                                className="px-3.5 py-2 bg-[#B5E635] text-black border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#0D0D0D] hover:bg-lime-400 flex items-center gap-1.5"
                                             >
-                                                <span className="material-symbols-outlined text-sm">code</span>
-                                                View Source
-                                            </motion.a>
+                                                <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                                Demo
+                                            </a>
+                                        )}
 
-                                            <motion.button
-                                                onClick={onClose}
-                                                className="px-4 py-2 bg-zinc-100 border-2 border-black font-pixel text-xs uppercase hover:bg-zinc-200 transition-colors"
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.2, delay: 0.4 }}
-                                                whileHover={{ y: -1 }}
-                                            >
-                                                Eject
-                                            </motion.button>
-                                        </div>
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-3.5 py-2 bg-white text-black border-[2px] border-[#0D0D0D] font-mono text-xs font-bold uppercase shadow-[2px_2px_0px_0px_#0D0D0D] hover:bg-zinc-100 flex items-center gap-1.5 ml-auto"
+                                        >
+                                            <span className="material-symbols-outlined text-sm">code</span>
+                                            GitHub
+                                        </a>
+
+                                        <button
+                                            onClick={onClose}
+                                            className="px-3.5 py-2 bg-[#0D0D0D] text-white border-[2px] border-[#0D0D0D] font-mono text-xs font-black uppercase shadow-[2px_2px_0px_0px_#0D0D0D] hover:bg-zinc-800 cursor-pointer"
+                                        >
+                                            Close
+                                        </button>
                                     </div>
-                                )}
-                                <motion.div
-                                    className="mt-4 font-pixel text-[11px] uppercase text-zinc-500 tracking-wider"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.2, delay: 0.45 }}
-                                >
-                                    Cartridge {currentIndex !== null ? currentIndex + 1 : 1} / {totalProjects}
-                                </motion.div>
-                            </motion.div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

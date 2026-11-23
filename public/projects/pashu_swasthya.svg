@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Clean Cream Background -->
+  <rect width="800" height="450" fill="#FFFDF5"/>
+
+  <!-- Background Grid -->
+  <defs>
+    <pattern id="grid-pashu-clean" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0D0D0D" stroke-width="1" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid-pashu-clean)"/>
+
+  <!-- Big Decorative Soft Mint Backdrop Circle -->
+  <circle cx="280" cy="225" r="140" fill="#B5E635" stroke="#0D0D0D" stroke-width="5"/>
+
+  <!-- Main Hero Graphic: Cute Illustrated Cattle Silhouette inside Camera Viewfinder -->
+  <g transform="translate(190, 95)">
+    <!-- Camera Viewfinder Frame -->
+    <rect x="10" y="10" width="260" height="250" rx="18" fill="#0D0D0D"/>
+    <rect x="0" y="0" width="260" height="250" rx="18" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="6"/>
+
+    <!-- Viewfinder Corner Brackets -->
+    <path d="M 25 50 L 25 25 L 50 25" stroke="#0D0D0D" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 235 50 L 235 25 L 210 25" stroke="#0D0D0D" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 25 200 L 25 225 L 50 225" stroke="#0D0D0D" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 235 200 L 235 225 L 210 225" stroke="#0D0D0D" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- Cute Cattle Illustration Inside -->
+    <!-- Horns -->
+    <path d="M 85 95 C 70 65 50 65 50 75 C 50 90 85 105 85 105" fill="#FFDE59" stroke="#0D0D0D" stroke-width="4"/>
+    <path d="M 175 95 C 190 65 210 65 210 75 C 210 90 175 105 175 105" fill="#FFDE59" stroke="#0D0D0D" stroke-width="4"/>
+
+    <!-- Ears -->
+    <ellipse cx="65" cy="115" rx="20" ry="10" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="4" transform="rotate(-20 65 115)"/>
+    <ellipse cx="195" cy="115" rx="20" ry="10" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="4" transform="rotate(20 195 115)"/>
+
+    <!-- Head -->
+    <path d="M 85 95 Q 130 85 175 95 L 185 170 Q 130 185 75 170 Z" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="5"/>
+    <!-- Spot -->
+    <circle cx="105" cy="120" r="18" fill="#0D0D0D"/>
+
+    <!-- Eyes -->
+    <circle cx="100" cy="130" r="5" fill="#FFFFFF"/>
+    <circle cx="160" cy="130" r="5" fill="#0D0D0D"/>
+
+    <!-- Muzzle / Snout -->
+    <ellipse cx="130" cy="175" rx="42" ry="24" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="4"/>
+    <circle cx="118" cy="175" r="4" fill="#0D0D0D"/>
+    <circle cx="142" cy="175" r="4" fill="#0D0D0D"/>
+  </g>
+
+  <!-- Big Illustrated Health Cross Badge / Scan Status (Right Side) -->
+  <g transform="translate(500, 110)">
+    <!-- Floating Circle Badge -->
+    <circle cx="70" cy="70" r="65" fill="#FFDE59" stroke="#0D0D0D" stroke-width="5"/>
+    <!-- Big Bold Cross -->
+    <rect x="58" y="25" width="24" height="90" rx="6" fill="#B5E635" stroke="#0D0D0D" stroke-width="4"/>
+    <rect x="25" y="58" width="90" height="24" rx="6" fill="#B5E635" stroke="#0D0D0D" stroke-width="4"/>
+  </g>
+
+  <!-- Big Bold Neo Metric Stamp (Like 24°C in Weatherly) -->
+  <g transform="translate(470, 280)">
+    <rect x="5" y="5" width="200" height="70" rx="8" fill="#0D0D0D"/>
+    <rect x="0" y="0" width="200" height="70" rx="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="4"/>
+    <text x="22" y="48" font-family="'Space Grotesk', Impact, sans-serif" font-size="38" font-weight="900" fill="#0D0D0D">HEALTHY ✓</text>
+  </g>
+</svg>

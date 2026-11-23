@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface NavItem {
   slug: string;
@@ -16,16 +17,17 @@ export const ProjectNavigation: React.FC<ProjectNavigationProps> = ({
   nextProject,
 }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-zinc-800/80">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t-[2.5px] border-[#0D0D0D]">
       {prevProject ? (
         <Link
           href={`/projects/${prevProject.slug}`}
-          className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-5 hover:border-zinc-700 transition-colors backdrop-blur-md group flex flex-col justify-between"
+          className="bg-white border-[2.5px] border-[#0D0D0D] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#FFE8EE] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 transition-all group flex flex-col justify-between"
         >
-          <span className="font-mono text-xs text-zinc-500 uppercase tracking-wider block mb-1">
-            ← PREVIOUS CASE STUDY
+          <span className="font-mono text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+            <ArrowLeft className="w-3.5 h-3.5 stroke-[2.5] group-hover:-translate-x-1 transition-transform" />
+            <span>PREVIOUS CASE STUDY</span>
           </span>
-          <span className="text-base font-semibold text-zinc-200 group-hover:text-zinc-100 transition-colors font-sans">
+          <span className="font-display text-base sm:text-lg font-black uppercase text-[#0D0D0D] tracking-tight">
             {prevProject.title}
           </span>
         </Link>
@@ -36,12 +38,13 @@ export const ProjectNavigation: React.FC<ProjectNavigationProps> = ({
       {nextProject ? (
         <Link
           href={`/projects/${nextProject.slug}`}
-          className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-5 hover:border-zinc-700 transition-colors backdrop-blur-md group flex flex-col justify-between text-right sm:text-right"
+          className="bg-white border-[2.5px] border-[#0D0D0D] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] hover:bg-[#B5E635] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 transition-all group flex flex-col justify-between text-right"
         >
-          <span className="font-mono text-xs text-zinc-500 uppercase tracking-wider block mb-1">
-            NEXT CASE STUDY →
+          <span className="font-mono text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center justify-end gap-1.5 mb-1">
+            <span>NEXT CASE STUDY</span>
+            <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
           </span>
-          <span className="text-base font-semibold text-zinc-200 group-hover:text-zinc-100 transition-colors font-sans">
+          <span className="font-display text-base sm:text-lg font-black uppercase text-[#0D0D0D] tracking-tight">
             {nextProject.title}
           </span>
         </Link>

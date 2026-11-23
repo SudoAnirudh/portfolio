@@ -1,4 +1,5 @@
 import React from 'react';
+import { Code, ExternalLink } from 'lucide-react';
 
 interface SpecCardProps {
   title: string;
@@ -26,43 +27,48 @@ export const SpecCard: React.FC<SpecCardProps> = ({
   liveUrl,
 }) => {
   return (
-    <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-md hover:border-zinc-700 transition-colors space-y-6">
+    <div className="bg-white border-[3px] border-[#0D0D0D] p-6 sm:p-10 shadow-[8px_8px_0px_0px_#0D0D0D] space-y-7 relative overflow-hidden">
+      {/* Decorative Corner Starburst / Accent */}
+      <div className="absolute top-0 right-0 w-16 h-16 bg-[#FFDE59] border-l-[3px] border-b-[3px] border-[#0D0D0D] flex items-center justify-center font-mono font-black text-xs">
+        v1.0
+      </div>
+
       {/* Category Pills & Micro Label */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 pr-16">
         <div className="flex flex-wrap items-center gap-2">
           {categories.map((cat, i) => (
             <span
               key={i}
-              className="font-mono text-xs text-zinc-300 bg-zinc-800/60 border border-zinc-700/60 px-2.5 py-0.5 rounded-md uppercase tracking-wider"
+              className="font-mono text-xs font-bold text-[#0D0D0D] bg-[#FFE8EE] border-[2px] border-[#0D0D0D] px-3 py-1 uppercase tracking-wider shadow-[2px_2px_0px_0px_#0D0D0D]"
             >
               {cat}
             </span>
           ))}
         </div>
-        <span className="font-mono text-xs text-zinc-500 uppercase tracking-widest hidden sm:inline">
-          // ENGINEERING SPECIFICATION
+        <span className="font-mono text-xs font-bold text-zinc-500 uppercase tracking-widest hidden md:inline">
+          {"//"} ARCHITECTURE SPECIFICATION
         </span>
       </div>
 
       {/* Main Title & Tagline */}
-      <div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-zinc-100 font-sans">
+      <div className="space-y-3">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#0D0D0D]">
           {title}
         </h1>
-        <p className="text-base sm:text-lg text-zinc-400 mt-3 leading-relaxed max-w-3xl">
+        <p className="font-mono text-sm sm:text-base text-zinc-700 leading-relaxed max-w-3xl font-medium">
           {tagline}
         </p>
       </div>
 
       {/* Tech Stack Pills Row */}
-      <div className="flex flex-wrap items-center gap-2 pt-2">
-        <span className="font-mono text-xs text-zinc-500 uppercase tracking-wider mr-1">
-          Stack:
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <span className="font-mono text-xs font-black text-[#0D0D0D] uppercase tracking-wider mr-1">
+          STACK:
         </span>
         {techStack.map((tech, idx) => (
           <span
             key={idx}
-            className="bg-zinc-800/50 border border-zinc-700/50 text-zinc-300 font-mono text-xs px-2.5 py-1 rounded-md"
+            className="bg-[#FFFDF5] border-[2px] border-[#0D0D0D] text-[#0D0D0D] font-mono text-xs font-bold px-3 py-1 shadow-[2px_2px_0px_0px_#0D0D0D]"
           >
             {tech}
           </span>
@@ -70,16 +76,16 @@ export const SpecCard: React.FC<SpecCardProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap items-center gap-3 pt-2">
+      <div className="flex flex-wrap items-center gap-3.5 pt-2">
         {liveUrl && (
           <a
             href={liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-500/50 font-mono text-xs sm:text-sm font-semibold rounded-lg transition-all"
+            className="inline-flex items-center gap-2 px-5 py-3 bg-[#B5E635] border-[2.2px] border-[#0D0D0D] text-[#0D0D0D] hover:bg-lime-300 font-mono text-xs sm:text-sm font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#0D0D0D] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer"
           >
-            <span>Live Demo</span>
-            <span className="material-symbols-outlined text-base">open_in_new</span>
+            <span>LIVE DEMO</span>
+            <ExternalLink className="w-4 h-4 stroke-[2.5]" />
           </a>
         )}
 
@@ -87,47 +93,47 @@ export const SpecCard: React.FC<SpecCardProps> = ({
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-zinc-800/80 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 hover:text-zinc-100 hover:border-zinc-600 font-mono text-xs sm:text-sm font-semibold rounded-lg transition-all"
+          className="inline-flex items-center gap-2 px-5 py-3 bg-white border-[2.2px] border-[#0D0D0D] text-[#0D0D0D] hover:bg-zinc-100 font-mono text-xs sm:text-sm font-black uppercase tracking-wider shadow-[4px_4px_0px_0px_#0D0D0D] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all cursor-pointer"
         >
-          <span>GitHub Repository</span>
-          <span className="material-symbols-outlined text-base">code</span>
+          <span>GITHUB REPOSITORY</span>
+          <Code className="w-4 h-4 stroke-[2.5]" />
         </a>
       </div>
 
       {/* 4-Field Metadata Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-5 bg-zinc-950/60 border border-zinc-800/80 rounded-xl mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-5 sm:p-6 bg-[#FFFDF5] border-[2.5px] border-[#0D0D0D] shadow-[4px_4px_0px_0px_#0D0D0D] mt-6">
         <div>
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">
-            YOUR ROLE & SCOPE
+          <span className="text-[11px] font-mono font-bold text-zinc-500 uppercase tracking-wider block mb-1">
+            ROLE &amp; SCOPE
           </span>
-          <span className="text-sm font-sans font-medium text-zinc-200 leading-snug block">
+          <span className="text-sm font-sans font-bold text-[#0D0D0D] leading-snug block">
             {role}
           </span>
         </div>
 
         <div>
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">
+          <span className="text-[11px] font-mono font-bold text-zinc-500 uppercase tracking-wider block mb-1">
             TIMELINE
           </span>
-          <span className="text-sm font-sans font-medium text-zinc-200 leading-snug block">
+          <span className="text-sm font-sans font-bold text-[#0D0D0D] leading-snug block">
             {timeline}
           </span>
         </div>
 
         <div>
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">
+          <span className="text-[11px] font-mono font-bold text-zinc-500 uppercase tracking-wider block mb-1">
             CORE CONSTRAINTS
           </span>
-          <span className="text-sm font-sans font-medium text-zinc-200 leading-snug block">
+          <span className="text-sm font-sans font-bold text-[#0D0D0D] leading-snug block">
             {constraints}
           </span>
         </div>
 
         <div>
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-wider block mb-1">
+          <span className="text-[11px] font-mono font-bold text-zinc-500 uppercase tracking-wider block mb-1">
             DEPLOYMENT
           </span>
-          <span className="text-sm font-sans font-medium text-zinc-200 leading-snug block">
+          <span className="text-sm font-sans font-bold text-[#0D0D0D] leading-snug block">
             {deployment}
           </span>
         </div>

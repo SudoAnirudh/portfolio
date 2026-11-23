@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Clean Cream Background -->
+  <rect width="800" height="450" fill="#FFFDF5"/>
+
+  <!-- Subtle Grid -->
+  <defs>
+    <pattern id="grid-messy-clean" width="35" height="35" patternUnits="userSpaceOnUse">
+      <path d="M 35 0 L 0 0 0 35" fill="none" stroke="#0D0D0D" stroke-width="1" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid-messy-clean)"/>
+
+  <!-- Giant Orange Sun Backdrop on Left -->
+  <circle cx="220" cy="200" r="120" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="5"/>
+
+  <!-- Left Side: Messy Corrupted Data Block (Tilted Red Card) -->
+  <g transform="translate(140, 140) rotate(-10)">
+    <rect x="0" y="0" width="150" height="150" rx="16" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="5"/>
+    <!-- Glitch / Warning Sign -->
+    <polygon points="75,25 125,115 25,115" fill="#FFDE59" stroke="#0D0D0D" stroke-width="4"/>
+    <text x="70" y="90" font-family="'Space Grotesk', sans-serif" font-size="36" font-weight="900" fill="#0D0D0D">!</text>
+    <rect x="35" y="125" width="80" height="8" rx="4" fill="#FF7A9E"/>
+  </g>
+
+  <!-- Center: Magic Transformation Pipe / Arrow -->
+  <g transform="translate(340, 205)">
+    <line x1="0" y1="0" x2="90" y2="0" stroke="#0D0D0D" stroke-width="10" stroke-linecap="round"/>
+    <polygon points="90,-16 120,0 90,16" fill="#0D0D0D"/>
+    <!-- Sparkles -->
+    <polygon points="50,-35 55,-20 70,-15 55,-10 50,5 45,-10 30,-15 45,-20" fill="#FFDE59" stroke="#0D0D0D" stroke-width="2.5"/>
+  </g>
+
+  <!-- Right Side: Clean, Sparkling Spreadsheet / Database Cylinder -->
+  <g transform="translate(480, 110)">
+    <!-- Shadow -->
+    <rect x="10" y="10" width="190" height="210" rx="16" fill="#0D0D0D"/>
+    <!-- Main Card -->
+    <rect x="0" y="0" width="190" height="210" rx="16" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="5"/>
+    
+    <!-- Table Header (Acid Lime) -->
+    <rect x="0" y="0" width="190" height="48" rx="16" fill="#B5E635"/>
+    <rect x="0" y="24" width="190" height="24" fill="#B5E635"/>
+    <circle cx="25" cy="24" r="7" fill="#0D0D0D"/>
+    <rect x="45" y="18" width="100" height="12" rx="6" fill="#0D0D0D"/>
+    <line x1="0" y1="48" x2="190" y2="48" stroke="#0D0D0D" stroke-width="4"/>
+
+    <!-- Clean Organized Rows with Checkmarks -->
+    <g transform="translate(20, 70)">
+      <circle cx="10" cy="10" r="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="2"/>
+      <rect x="30" y="4" width="100" height="12" rx="4" fill="#0D0D0D"/>
+    </g>
+    <g transform="translate(20, 110)">
+      <circle cx="10" cy="10" r="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="2"/>
+      <rect x="30" y="4" width="85" height="12" rx="4" fill="#0D0D0D"/>
+    </g>
+    <g transform="translate(20, 150)">
+      <circle cx="10" cy="10" r="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="2"/>
+      <rect x="30" y="4" width="115" height="12" rx="4" fill="#0D0D0D"/>
+    </g>
+  </g>
+
+  <!-- Big Bold Neo Metric Stamp (Like 24°C in Weatherly) -->
+  <g transform="translate(480, 335)">
+    <rect x="5" y="5" width="190" height="60" rx="8" fill="#0D0D0D"/>
+    <rect x="0" y="0" width="190" height="60" rx="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="4"/>
+    <text x="22" y="42" font-family="'Space Grotesk', Impact, sans-serif" font-size="34" font-weight="900" fill="#0D0D0D">100% OK</text>
+  </g>
+</svg>

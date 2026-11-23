@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Clean Cream Background -->
+  <rect width="800" height="450" fill="#FFFDF5"/>
+
+  <!-- Background Grid -->
+  <defs>
+    <pattern id="grid-cnn-clean" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0D0D0D" stroke-width="1" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#grid-cnn-clean)"/>
+
+  <!-- Big Yellow Backdrop Circle -->
+  <circle cx="280" cy="225" r="130" fill="#FFDE59" stroke="#0D0D0D" stroke-width="5"/>
+
+  <!-- Hero Graphic: 3D Stacked Convolutional Neural Network Feature Maps -->
+  <g transform="translate(200, 100)">
+    <!-- Layer 1: Input Matrix (Cyan) -->
+    <g transform="translate(0, 50)">
+      <polygon points="0,90 90,40 140,75 50,125" fill="#38BDF8" stroke="#0D0D0D" stroke-width="5"/>
+      <circle cx="55" cy="80" r="5" fill="#0D0D0D"/>
+      <circle cx="85" cy="65" r="5" fill="#0D0D0D"/>
+    </g>
+
+    <!-- Convolution Ray Lines -->
+    <line x1="120" y1="125" x2="160" y2="105" stroke="#0D0D0D" stroke-width="4" stroke-dasharray="6 4"/>
+
+    <!-- Layer 2: Conv Layer (Lime) -->
+    <g transform="translate(80, 30)">
+      <polygon points="0,90 90,40 140,75 50,125" fill="#B5E635" stroke="#0D0D0D" stroke-width="5"/>
+      <circle cx="55" cy="80" r="5" fill="#0D0D0D"/>
+      <circle cx="85" cy="65" r="5" fill="#0D0D0D"/>
+    </g>
+
+    <!-- Convolution Ray Lines -->
+    <line x1="200" y1="105" x2="240" y2="85" stroke="#0D0D0D" stroke-width="4" stroke-dasharray="6 4"/>
+
+    <!-- Layer 3: Pooling Layer (Pink) -->
+    <g transform="translate(160, 10)">
+      <polygon points="0,90 90,40 140,75 50,125" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="5"/>
+      <circle cx="55" cy="80" r="5" fill="#0D0D0D"/>
+      <circle cx="85" cy="65" r="5" fill="#0D0D0D"/>
+    </g>
+
+    <!-- Layer 4: Dense Vector (Violet Column) -->
+    <g transform="translate(270, 30)">
+      <rect x="0" y="0" width="35" height="150" rx="10" fill="#6D4AFF" stroke="#0D0D0D" stroke-width="5"/>
+      <circle cx="17.5" cy="30" r="6" fill="#B5E635" stroke="#0D0D0D" stroke-width="2"/>
+      <circle cx="17.5" cy="60" r="6" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="2"/>
+      <circle cx="17.5" cy="90" r="6" fill="#FFDE59" stroke="#0D0D0D" stroke-width="2"/>
+      <circle cx="17.5" cy="120" r="6" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="2"/>
+    </g>
+  </g>
+
+  <!-- Big Bold Neo Metric Stamp (Like 24°C in Weatherly) -->
+  <g transform="translate(480, 280)">
+    <rect x="5" y="5" width="190" height="70" rx="8" fill="#0D0D0D"/>
+    <rect x="0" y="0" width="190" height="70" rx="8" fill="#B5E635" stroke="#0D0D0D" stroke-width="4"/>
+    <text x="24" y="50" font-family="'Space Grotesk', Impact, sans-serif" font-size="44" font-weight="900" fill="#0D0D0D">3D CNN</text>
+  </g>
+</svg>

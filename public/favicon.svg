@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Hard Drop Shadow -->
+  <rect x="8" y="8" width="52" height="52" rx="3" fill="#0D0D0D" />
+  
+  <!-- Main Badge: Acid Lime with Heavy Black Border -->
+  <rect x="4" y="4" width="52" height="52" rx="3" fill="#B5E635" stroke="#0D0D0D" stroke-width="4.5" />
+  
+  <!-- Code Symbol </> in Bold Neo-Brutalist Black Linework -->
+  <!-- Left bracket < -->
+  <path d="M21 21 L13 30 L21 39" fill="none" stroke="#0D0D0D" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter" />
+  <!-- Center slash / -->
+  <path d="M33 18 L27 42" fill="none" stroke="#0D0D0D" stroke-width="4.5" stroke-linecap="square" />
+  <!-- Right bracket > -->
+  <path d="M39 21 L47 30 L39 39" fill="none" stroke="#0D0D0D" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter" />
+</svg>

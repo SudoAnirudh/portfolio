@@ -65,13 +65,13 @@ export default async function CaseStudyPage({ params }: PageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100 py-10 px-4 sm:px-6 md:px-8 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
+    <main className="min-h-screen bg-[#F4F4EE] text-[#0D0D0D] py-8 sm:py-12 px-4 sm:px-6 md:px-8 font-sans selection:bg-[#B5E635] selection:text-black">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd).replace(/</g, '\\u003c') }}
       />
 
-      <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
+      <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
         {/* Header & Navigation Bar */}
         <CaseStudyHeader categories={project.categories} />
 
@@ -90,14 +90,16 @@ export default async function CaseStudyPage({ params }: PageProps) {
         />
 
         {/* Section 1: The Problem */}
-        <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-3">
+        <div className="bg-white border-[3px] border-[#0D0D0D] p-6 sm:p-8 shadow-[6px_6px_0px_0px_#0D0D0D] space-y-3">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-rose-400 text-xl">error_outline</span>
-            <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-zinc-400 font-semibold">
-              // 01. THE PROBLEM
+            <span className="bg-[#FF7A9E] text-[#0D0D0D] border-[2px] border-[#0D0D0D] px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-[2px_2px_0px_0px_#0D0D0D]">
+              PROBLEM
+            </span>
+            <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-[#0D0D0D] font-black">
+              {"//"} 01. THE PROBLEM
             </h2>
           </div>
-          <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans">
+          <p className="font-mono text-sm sm:text-base text-zinc-800 leading-relaxed font-medium pt-1">
             {project.problem}
           </p>
         </div>
@@ -119,14 +121,16 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
         {/* Section 5: Trade-Offs & Honest Reflection */}
         {project.tradeoffs && (
-          <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-3">
+          <div className="bg-white border-[3px] border-[#0D0D0D] p-6 sm:p-8 shadow-[6px_6px_0px_0px_#0D0D0D] space-y-3">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-amber-400 text-xl">task_alt</span>
-              <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-zinc-400 font-semibold">
-                // 05. TRADE-OFFS & HONEST REFLECTION
+              <span className="bg-[#FFDE59] text-[#0D0D0D] border-[2px] border-[#0D0D0D] px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-[2px_2px_0px_0px_#0D0D0D]">
+                REFLECTION
+              </span>
+              <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-[#0D0D0D] font-black">
+                {"//"} 05. TRADE-OFFS &amp; HONEST REFLECTION
               </h2>
             </div>
-            <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans">
+            <p className="font-mono text-sm sm:text-base text-zinc-800 leading-relaxed font-medium pt-1">
               {project.tradeoffs}
             </p>
           </div>

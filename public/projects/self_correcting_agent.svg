@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Clean Cream Background -->
+  <rect width="800" height="450" fill="#FFFDF5"/>
+
+  <!-- Background Pattern -->
+  <defs>
+    <pattern id="diag-react" width="30" height="30" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="30" stroke="#0D0D0D" stroke-width="1.5" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#diag-react)"/>
+
+  <!-- Big Decorative Sunny Burst in Background -->
+  <circle cx="280" cy="225" r="140" fill="#38BDF8" stroke="#0D0D0D" stroke-width="5"/>
+
+  <!-- Hero Illustration: Cute Neo-Brutalist Robot Head with Looping Feedback Arrow -->
+  <g transform="translate(190, 110)">
+    <!-- Antenna -->
+    <line x1="140" y1="35" x2="140" y2="0" stroke="#0D0D0D" stroke-width="6"/>
+    <circle cx="140" cy="-6" r="14" fill="#FFDE59" stroke="#0D0D0D" stroke-width="4"/>
+
+    <!-- Robot Head Frame -->
+    <!-- Head Shadow -->
+    <rect x="14" y="44" width="250" height="210" rx="28" fill="#0D0D0D"/>
+    <!-- Head Base -->
+    <rect x="0" y="30" width="250" height="210" rx="28" fill="#FFFFFF" stroke="#0D0D0D" stroke-width="6"/>
+
+    <!-- Big Eyes Screen -->
+    <rect x="35" y="70" width="180" height="85" rx="16" fill="#0D0D0D"/>
+    <!-- Friendly Glowing Green Eyes -->
+    <circle cx="85" cy="112" r="22" fill="#B5E635"/>
+    <circle cx="80" cy="108" r="6" fill="#FFFFFF"/>
+    <circle cx="165" cy="112" r="22" fill="#B5E635"/>
+    <circle cx="160" cy="108" r="6" fill="#FFFFFF"/>
+
+    <!-- Cheerful Smile Line -->
+    <path d="M 95 185 Q 125 205 155 185" stroke="#0D0D0D" stroke-width="5" fill="none" stroke-linecap="round"/>
+
+    <!-- Cute Ear Bolts -->
+    <rect x="-18" y="115" width="20" height="40" rx="6" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="4"/>
+    <rect x="248" y="115" width="20" height="40" rx="6" fill="#FF7A9E" stroke="#0D0D0D" stroke-width="4"/>
+  </g>
+
+  <!-- Big Illustrated ReAct Loop / Recycle Arrow Around Right Side -->
+  <g transform="translate(490, 120)">
+    <!-- Looping Arrow Path -->
+    <path d="M 60 40 A 75 75 0 1 1 20 150" fill="none" stroke="#6D4AFF" stroke-width="12" stroke-linecap="round"/>
+    <!-- Arrowhead -->
+    <polygon points="55,20 85,45 45,60" fill="#6D4AFF" stroke="#0D0D0D" stroke-width="3"/>
+    
+    <!-- Central Shield / Check -->
+    <circle cx="95" cy="115" r="45" fill="#B5E635" stroke="#0D0D0D" stroke-width="5"/>
+    <path d="M 80 115 L 90 128 L 115 100" stroke="#0D0D0D" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Big Bold Neo Metric Stamp (Like 24°C in Weatherly) -->
+  <g transform="translate(470, 290)">
+    <rect x="5" y="5" width="190" height="70" rx="8" fill="#0D0D0D"/>
+    <rect x="0" y="0" width="190" height="70" rx="8" fill="#FFDE59" stroke="#0D0D0D" stroke-width="4"/>
+    <text x="24" y="50" font-family="'Space Grotesk', Impact, sans-serif" font-size="44" font-weight="900" fill="#0D0D0D">0 ERR</text>
+  </g>
+</svg>

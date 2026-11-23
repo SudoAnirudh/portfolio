@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Space_Grotesk, VT323, Pacifico } from "next/font/google"; // Import fonts
 import "./globals.css";
-import RetroCursor from "@/components/RetroCursor";
 import { Analytics } from "@vercel/analytics/next";
 
 
@@ -54,6 +53,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://sudoanirudh.vercel.app/",
   },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -63,7 +67,7 @@ export const metadata: Metadata = {
     description: "Explore production-grade AI systems, multi-agent frameworks, FastAPI backends, and edge ML applications built by Anirudh S.",
     images: [
       {
-        url: "/profile_pixel.png",
+        url: "/profile_anirudh.jpg",
         width: 1200,
         height: 630,
         alt: "Anirudh S | AI/ML & Agentic Systems Engineer Portfolio",
@@ -74,7 +78,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Anirudh S | AI/ML & Agentic Systems Engineer",
     description: "Building Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems.",
-    images: ["/profile_pixel.png"],
+    images: ["/profile_anirudh.jpg"],
     creator: "@SudoAnirudh",
   },
   verification: {
@@ -87,7 +91,7 @@ const jsonLd = {
   "@type": "Person",
   name: "Anirudh S",
   url: "https://sudoanirudh.vercel.app/",
-  image: "https://sudoanirudh.vercel.app/profile_pixel.png",
+  image: "https://sudoanirudh.vercel.app/profile_anirudh.jpg",
   jobTitle: "AI/ML Engineer | Generative AI & Agentic Systems",
   alumniOf: {
     "@type": "EducationalOrganization",
@@ -114,8 +118,6 @@ const jsonLd = {
   description: "AI/ML Engineer specializing in Autonomous Agentic Workflows, Production GenAI Backends (FastAPI & pgvector), and Edge Machine Learning Systems."
 };
 
-import CommandPalette from "@/components/CommandPalette";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -129,7 +131,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet" />
       </head>
       <body
-        className={`${archivoBlack.variable} ${spaceGrotesk.variable} ${vt323.variable} ${pacifico.variable} bg-retro-charcoal font-body text-zinc-900 overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-10`}
+        className={`${archivoBlack.variable} ${spaceGrotesk.variable} ${vt323.variable} ${pacifico.variable} bg-[#F4F4EE] font-body text-zinc-900 overflow-x-hidden p-2 sm:p-4 md:p-6 lg:p-8`}
         suppressHydrationWarning
       >
         <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] z-50"></div>
@@ -137,10 +139,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
         />
-        {/* Helper for cursor hiding handled inside component, but adding it here to be safe */}
-        <RetroCursor />
-        <CommandPalette />
-        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+        <div className="w-full max-w-7xl mx-auto">
           {children}
         </div>
         <Analytics />

@@ -7,11 +7,13 @@ interface MetricBentoProps {
 
 export const MetricBento: React.FC<MetricBentoProps> = ({ metrics }) => {
   return (
-    <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-6">
+    <div className="bg-white border-[3px] border-[#0D0D0D] p-6 sm:p-8 shadow-[6px_6px_0px_0px_#0D0D0D] space-y-6">
       <div className="flex items-center gap-2">
-        <span className="material-symbols-outlined text-emerald-400 text-xl">query_stats</span>
-        <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-zinc-400 font-semibold">
-          // 06. CONCRETE OUTCOMES & VERIFIED METRICS
+        <span className="bg-[#B5E635] text-[#0D0D0D] border-[2px] border-[#0D0D0D] px-2.5 py-1 font-mono text-xs font-bold uppercase shadow-[2px_2px_0px_0px_#0D0D0D]">
+          RESULTS
+        </span>
+        <h2 className="font-mono text-xs sm:text-sm uppercase tracking-widest text-[#0D0D0D] font-black">
+          {"//"} 06. CONCRETE OUTCOMES &amp; VERIFIED METRICS
         </h2>
       </div>
 
@@ -19,17 +21,17 @@ export const MetricBento: React.FC<MetricBentoProps> = ({ metrics }) => {
         {metrics.map((metric, idx) => (
           <div
             key={idx}
-            className="bg-zinc-950/60 border border-zinc-800/80 rounded-xl p-5 hover:border-zinc-700 transition-colors backdrop-blur-md flex flex-col justify-between"
+            className="bg-[#FFFDF5] border-[2.5px] border-[#0D0D0D] p-5 shadow-[4px_4px_0px_0px_#0D0D0D] flex flex-col justify-between"
           >
             <div>
-              <div className="text-3xl sm:text-4xl font-bold font-mono text-zinc-100">
+              <div className="text-3xl sm:text-4xl font-black font-display text-[#0D0D0D] tracking-tight">
                 {metric.value}
               </div>
-              <div className="text-xs uppercase tracking-wider font-mono text-zinc-300 font-medium mt-3">
+              <div className="text-xs uppercase tracking-wider font-mono text-[#0D0D0D] font-black mt-3">
                 {metric.label}
               </div>
             </div>
-            <div className="text-xs text-zinc-500 mt-2 font-sans border-t border-zinc-900 pt-2">
+            <div className="font-mono text-xs text-zinc-600 mt-2 border-t-[2px] border-[#0D0D0D] pt-2">
               {metric.subtext}
             </div>
           </div>
